@@ -1,0 +1,151 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.542 --> 00:00:13.120
+We start working with sounds. UE supports several audio formats: wav, flac, ogg and some others.
+
+00:00:13.120 --> 00:00:19.259
+We will use wav format with you. I added all shooter game sounds to our project.
+
+00:00:19.259 --> 00:00:26.377
+We will not use all of them. Sound files are just as easy to add as images.
+
+00:00:26.377 --> 00:00:30.324
+We just drag and drop them into the content browser.
+
+00:00:30.324 --> 00:00:38.095
+This tutorial will be pretty simple. We'll start with the sounds of the interface. Let's add sounds for hovering and clicking on buttons.
+
+00:00:39.513 --> 00:00:44.543
+Let's open the weapon folder, rifle sounds.
+
+00:00:45.278 --> 00:00:51.864
+When we add a sound file to the UE, it converts it to an internal format. It is called sound wave.
+
+00:00:51.864 --> 00:00:58.375
+This is one of the basic sound assets. On hovering, the play icon appears and we can play it right away.
+
+00:01:01.480 --> 00:01:07.874
+The sound of a rifle played. If we open the soundwave asset, we can see various sound settings in it.
+
+00:01:07.874 --> 00:01:14.243
+It starts from compression, ending with volume, pitch adjustment and others.
+
+00:01:15.788 --> 00:01:23.822
+Go to the UI sounds directory, the wav folder. These sound assets are interface sounds.
+
+00:01:23.822 --> 00:01:30.289
+When clicking on the interface buttons, we will use the toggle sound, and on hover, the hover sound.
+
+00:01:33.956 --> 00:01:38.758
+Let's right click in the content browser. Let's go to the sounds category.
+
+00:01:38.758 --> 00:01:44.811
+We can see that there are quite a few different assets in the UE that are related to sounds.
+
+00:01:44.811 --> 00:01:50.324
+The UE audio module is powerful enough. We'll be using some of these assets.
+
+00:01:50.324 --> 00:01:56.462
+Let's start with an asset called SoundQue. This asset has its own blueprint editor.
+
+00:01:56.462 --> 00:02:01.810
+We can combine different sounds, adjust sound parameters dynamically.
+
+00:02:01.810 --> 00:02:06.668
+Roughly speaking, influence the final audio result in various ways.
+
+00:02:06.668 --> 00:02:15.219
+We call the first SoundQue ButtonHovered. Copy this asset and call the second SoundQue ButtonPresssed.
+
+00:02:18.988 --> 00:02:30.592
+Opening the asset, this is how the SoundQue blueprint editor looks like. Let's drag the UI_Hovered asset into the given blueprint.
+
+00:02:31.646 --> 00:02:36.989
+We drop it on the graph, connect the pins. Above, on the left, there is a play button.
+
+00:02:41.030 --> 00:02:49.867
+The SOundQue editor has various nodes to control and customize the sound. For example, we can add a delay node
+
+00:02:50.300 --> 00:02:56.178
+that triggers a sound with a delay. Let's set the upper and lower bounds for delay - 2 seconds.
+
+00:02:58.263 --> 00:02:59.384
+Click on play.
+
+00:03:01.980 --> 00:03:09.000
+That is, now the sound is played with a delay of 2 seconds. In SoundQue, we can add as many sounds as we like.
+
+00:03:09.000 --> 00:03:16.354
+Let's drag and drop any of the UI sounds. We can randomly play one of these sounds.
+
+00:03:16.354 --> 00:03:23.040
+Select the random node, connect the pins and press the play button several times.
+
+00:03:27.685 --> 00:03:31.788
+In fact, with this editor, we can program the behavior of the sound.
+
+00:03:32.407 --> 00:03:37.769
+This SoundQue will play only one sound, so remove unnecessary nodes.
+
+00:03:40.231 --> 00:03:47.435
+And also open SoundQue Pressed. Drag the sound wave by clicking on the button.
+
+00:03:50.846 --> 00:03:59.149
+We connect the pins. We have created two Sound Queues. Let's see how we can play these sounds in the widget.
+
+00:04:00.682 --> 00:04:07.254
+Let's start with a menu widget. You can hide the ShowImage. Click on the eye.
+
+00:04:08.560 --> 00:04:16.337
+And let's start with the start game button. The button details panel has two properties called
+
+00:04:16.337 --> 00:04:22.343
+pressed sound and hovered sound. We can see that we can select both SoundQue and SoundWave.
+
+00:04:22.343 --> 00:04:27.369
+We don't need to program anything for the interface - the sounds will be played automatically.
+
+00:04:27.369 --> 00:04:32.513
+We just need to indicate them. Let's do the same for the quick button.
+
+00:04:34.329 --> 00:04:36.781
+For the LevelItem button.
+
+00:04:40.231 --> 00:04:42.352
+Next, go to the GameOver widget.
+
+00:04:44.268 --> 00:04:48.137
+We also specify sounds for the GoToMenu widget button.
+
+00:04:49.610 --> 00:04:54.536
+And the last widget is GamePause. Specify sounds for the Continue button.
+
+00:04:58.890 --> 00:05:01.240
+We have added sounds to all buttons on the interface.
+
+00:05:01.240 --> 00:05:06.130
+Let's see if this works in the game. We launch our project.
+
+00:05:11.058 --> 00:05:12.747
+Guidance works.
+
+00:05:17.906 --> 00:05:20.244
+And the sound of pressing the button also works.
+
+00:05:25.794 --> 00:05:28.874
+Let's create our own directory in the content browser for sounds.
+
+00:05:31.091 --> 00:05:32.447
+Let's call it sounds.
+
+00:05:36.604 --> 00:05:40.055
+Drag our SoundQue to this directory.
+
+00:05:47.336 --> 00:05:50.914
+And also create another directory. Let's call it UI.
+
+00:05:52.780 --> 00:05:58.434
+Drag SoundQue to this directory. This concludes the current lesson.
+

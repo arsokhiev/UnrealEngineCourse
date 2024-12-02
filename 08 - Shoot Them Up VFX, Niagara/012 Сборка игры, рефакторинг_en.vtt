@@ -1,0 +1,88 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.711 --> 00:00:12.264
+In this tutorial, we will finalize our special effects. In the projectile class, I commented out the DrawDebugSphere line,
+
+00:00:12.264 --> 00:00:16.236
+because we now have an explosion and we don't need this rendering.
+
+00:00:16.664 --> 00:00:22.085
+I have ported the shooter game effects using Cascade to Niagara.
+
+00:00:22.085 --> 00:00:26.602
+The first effect is the explosion of the projectile. It consists of four emitters.
+
+00:00:27.238 --> 00:00:30.503
+The first emitter is a system of particles that have a collision.
+
+00:00:30.930 --> 00:00:40.616
+The second emitter is a blue burst. The third is a simple flash and the fourth is smoke particles. Thus, a complex effect is obtained.
+
+00:00:41.368 --> 00:00:44.621
+I also added new impacts to the appropriate folder.
+
+00:00:44.965 --> 00:00:49.761
+The first effect is the default, when we fall into an object that does not have a physical material set.
+
+00:00:50.135 --> 00:00:55.876
+The effect also consists of multiple emitters and looks like a bullet hits a metal surface.
+
+00:00:56.797 --> 00:01:00.368
+Ground effect will not be different. I just copied the default effect.
+
+00:01:01.231 --> 00:01:07.368
+Next comes body impact. In fact, these are the same emitters, but I increased the number of particles.
+
+00:01:07.971 --> 00:01:15.050
+And the last effect is the head impact, when we fall into the character's head. I increased the number of splash particles significantly
+
+00:01:15.050 --> 00:01:21.342
+and also gave them a shade of red. I will not delete the old effects. I'll move them to the dev folder.
+
+00:01:21.342 --> 00:01:27.022
+Let's set the final effects for our weapon. Let's start with projectile.
+
+00:01:28.332 --> 00:01:36.418
+Open the asset and in WeaponFXComponent replace our old Niagara effect with the new explosion effect.
+
+00:01:39.247 --> 00:01:41.076
+NS_ProjectileExplosion
+
+00:01:44.096 --> 00:01:49.728
+Next, move to the STURifleWeapon asset.
+
+00:01:51.102 --> 00:01:57.107
+And also in WeaponFXComponent we replace all old Niagara effects with new ones.
+
+00:02:01.792 --> 00:02:04.885
+Let's see what happened. We start the game.
+
+00:02:07.485 --> 00:02:11.795
+We shoot at the ground. A subtle bullet effect spawns.
+
+00:02:12.487 --> 00:02:21.181
+If we shoot at the character, then there is much more spray, and if we shoot the head, then a whole fountain will spawn.
+
+00:02:22.742 --> 00:02:29.369
+The effects will spawn even if we kill our opponent. Checking the explosion of the launcher.
+
+00:02:29.369 --> 00:02:36.406
+It looks quite impressive. Plus, the particles have collisions, so they will remain on the surface for some time.
+
+00:02:36.912 --> 00:02:40.935
+Let's put our game together. Let's check that everything works in a packaged form.
+
+00:02:45.376 --> 00:02:51.894
+The assembly was successful. Checking special effects. Checking the impacts on the enemy character.
+
+00:02:55.202 --> 00:03:00.632
+Then we shoot from the grenade launcher. Checking the explosion and trace from the rocket.
+
+00:03:02.028 --> 00:03:06.983
+We run into the sphere. The camera shakes. The red widget is flashing.
+
+00:03:08.100 --> 00:03:13.740
+We are dying. Postprocessing is displayed as well and ragdoll works too.
+

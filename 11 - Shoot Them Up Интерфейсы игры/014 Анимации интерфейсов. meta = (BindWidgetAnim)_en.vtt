@@ -1,0 +1,322 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.207 --> 00:00:10.255
+In this tutorial, we'll work with animations. Let's see how to manage them in C ++.
+
+00:00:10.255 --> 00:00:18.412
+Let's start by animating the Damage in the PlayerHUD widget. Let's rewrite the launch of animation in blueprints in C ++.
+
+00:00:19.059 --> 00:00:24.190
+If you press f12 on the BindWidget meta information, you can see that
+
+00:00:24.190 --> 00:00:31.915
+this is actually an enum and that this enum has an element called BindWidgetAnim.
+
+00:00:31.915 --> 00:00:38.648
+If we specify this value in the property meta information, we can access the animation.
+
+00:00:39.370 --> 00:00:45.657
+Copy the uproperty macro and replace BindWidget with BindWidgetAnim.
+
+00:00:46.538 --> 00:00:51.583
+We need to specify the animation class. It's called UWidgetAnimation.
+
+00:00:53.129 --> 00:00:55.671
+We call property DamageAnimation.
+
+00:00:56.495 --> 00:01:01.539
+When we dealt damage, we triggered an event that we subscribed to in blueprints
+
+00:01:01.539 --> 00:01:05.997
+and started the Damage animation. Now let's do it programmatically.
+
+00:01:05.997 --> 00:01:13.341
+Let's call the same functions, but in C ++. Functions are methods of the UserWidget class.
+
+00:01:14.615 --> 00:01:23.680
+First, we check if the animation is playing or. And if not, then we start this animation using the PlayAnimation function.
+
+00:01:23.680 --> 00:01:29.548
+As we can see absolutely the same parameters as in blueprints, because this is the same function.
+
+00:01:29.548 --> 00:01:34.380
+Leave all parameters by default. Also, if you go inside the function, you can
+
+00:01:34.380 --> 00:01:38.954
+find that the check for a null pointer is already present.
+
+00:01:38.954 --> 00:01:44.203
+We won't need the OnTakeDamage event anymore, but let's leave it in the code. We will not delete.
+
+00:01:45.000 --> 00:01:53.631
+The editor started, but as we can see, at the bottom in the CompileResults window we have several problems. Let's deal with warning - this is
+
+00:01:53.631 --> 00:01:58.360
+a message with a yellow exclamation mark. It says that we did not specify an access
+
+00:01:58.360 --> 00:02:04.150
+specifier for the animation property, for example, BlueprintReadWrite, which allows us to refer to this
+
+00:02:04.150 --> 00:02:09.749
+property on the blueprint graph. But we don't need these nodes, since we rewrote everything into code.
+
+00:02:09.749 --> 00:02:14.777
+And the error message says that the animation property does not have the transient specifier.
+
+00:02:14.777 --> 00:02:20.980
+When specifying the transient specifier, the property value will not be saved to disk and at the start of the game it will
+
+00:02:20.980 --> 00:02:27.970
+always have the default value. Let's set this specifier in our code, and then see
+
+00:02:27.970 --> 00:02:34.768
+an example of how this specifier works. Add a transient to the animation uproperty macro.
+
+00:02:36.720 --> 00:02:42.689
+Launch the editor. So, the blueprint widget has finally compiled. Let's check
+
+00:02:42.689 --> 00:02:49.722
+that the animation works in code. Take some damage and the red screen is flashing.
+
+00:02:49.722 --> 00:02:59.785
+Let's test the transient specifier. To do this, let's create a test blueprint class. We inherit from the actor. We call it TestActor.
+
+00:03:01.440 --> 00:03:09.000
+Open up blueprint and create some variable. Let's call it TestVar.
+
+00:03:10.283 --> 00:03:16.106
+Click on the eye to the right of the variable. This will allow us to edit it in an instance of the class.
+
+00:03:17.460 --> 00:03:25.013
+Let's change the type to float. Compile. Let's set any default value.
+
+00:03:26.040 --> 00:03:30.624
+And on Tick we will output the value of this variable using PrintString.
+
+00:03:33.975 --> 00:03:41.067
+We compile the blueprint, go to the level menu map and throw the blueprint onto the stage.
+
+00:03:41.067 --> 00:03:47.665
+So our property is not Transient. We can change the value of the instance, for example, put 23.
+
+00:03:47.665 --> 00:03:53.330
+And when the game starts, this value is displayed. Now let's see what happens if we
+
+00:03:53.330 --> 00:03:59.247
+set the Transient specifier. The specifier can also be set in blueprints.
+
+00:03:59.247 --> 00:04:06.139
+We click on the variable and in the details panel you can change some of the specifiers via blueprint.
+
+00:04:06.139 --> 00:04:12.740
+For example, set the category, ClampMin, ClampMax and so on. We can also expose
+
+00:04:12.740 --> 00:04:20.455
+the transient specifier. To do this, in the corresponding property, click on the checkbox. Compile blueprint.
+
+00:04:22.415 --> 00:04:27.509
+In the instance, we changed the value of the variable to 23, but now at the start of the game the value
+
+00:04:27.509 --> 00:04:32.692
+is 11, that is, now saving our property to disk is ignored.
+
+00:04:33.510 --> 00:04:38.699
+Next, let's add a start animation to all the main widgets of our project.
+
+00:04:38.699 --> 00:04:44.841
+To do this, we will create a base class for our widgets, which will have one single function - Show,
+
+00:04:44.841 --> 00:04:50.939
+which will start the animation of showing the widget. Go to the UI directory.
+
+00:04:53.200 --> 00:04:57.673
+We create a new class. We inherit from UserWidget.
+
+00:05:01.260 --> 00:05:05.186
+We call the class STUBaseWidget.
+
+00:05:07.150 --> 00:05:10.000
+Create a protected section in the base class of the widget.
+
+00:05:13.137 --> 00:05:17.751
+Copy the property with animation from the PlayerHUDWidget class.
+
+00:05:20.150 --> 00:05:22.504
+Let's rename the property to ShowAnimation.
+
+00:05:25.287 --> 00:05:29.132
+We will also create a public function called Show.
+
+00:05:32.540 --> 00:05:35.690
+It will also be possible to make it virtual in the future
+
+00:05:35.690 --> 00:05:40.729
+and in child classes, if desired, to override, but for now we do not need it.
+
+00:05:44.480 --> 00:05:51.898
+This function will start the animation. We call the PlayAnimation function and pass ShowAnimation into it.
+
+00:05:56.320 --> 00:05:59.920
+Next, we need to change the base class of all main widgets
+
+00:05:59.920 --> 00:06:08.235
+to STUBaseWidget. We do this in PlayerHUDWidget, PauseWidget, GameOverWidget
+
+00:06:09.160 --> 00:06:15.076
+and also in MenuWidget. Next, let's include the header file with STUBaseWidget.
+
+00:06:18.289 --> 00:06:25.780
+Copy include. Replace UserWidget in all files with STUBaseWidget.
+
+00:06:30.030 --> 00:06:42.517
+Let's start with the main menu. Go to the .cpp file. We also include the STUBaseWidget header file here.
+
+00:06:43.248 --> 00:06:50.205
+We pass STUBaseWidget as a template parameter to CreateWidget.
+
+00:06:50.205 --> 00:06:56.764
+Now MenuWidget has a pointer type to STUBaseWidget
+
+00:06:56.764 --> 00:07:02.350
+and therefore we can call the Show function. In the case of a menu, when we add it to the viewport, we
+
+00:07:02.350 --> 00:07:09.691
+immediately call the display animation. Next, you need to modify STUGameHUD.
+
+00:07:09.691 --> 00:07:20.282
+Let's go to the .cpp file first. Also insert the STUBaseWidget header file. And everywhere we change the CreateWidget template parameter.
+
+00:07:22.951 --> 00:07:29.073
+Go to the .h file and also replace the type in the associative array.
+
+00:07:30.243 --> 00:07:32.629
+And the pointer type is CurrentWidget.
+
+00:07:35.000 --> 00:07:40.195
+We don't have a header file here, so we add a forward declaration STUBaseWidget.
+
+00:07:41.670 --> 00:07:48.883
+And the last thing. You must call the Show function. We will do this when we
+
+00:07:48.883 --> 00:07:54.893
+assign Visibility to the current widget in Visible. Thus, when the MatchState changes,
+
+00:07:55.580 --> 00:08:00.140
+we will also have an initial animation called for each of the screens.
+
+00:08:01.949 --> 00:08:03.240
+We compile the project.
+
+00:08:04.517 --> 00:08:10.000
+We have a compilation error in all the main widgets because we need to add the ShowAnimation animation.
+
+00:08:10.908 --> 00:08:16.134
+Let's start with MenuWidget. Add animation ShowAnimation.
+
+00:08:18.108 --> 00:08:23.911
+Let's make a simple animation. Let's put an image on top.
+
+00:08:27.355 --> 00:08:30.678
+Stretch it in width and height.
+
+00:08:32.619 --> 00:08:34.704
+Let's change the color to black.
+
+00:08:36.229 --> 00:08:44.543
+You also need to change the property visibility. You need to put it in NonHitTestable. This Visibility value
+
+00:08:44.543 --> 00:08:49.650
+means that mouse events will not be triggered for this UI element and therefore the
+
+00:08:49.650 --> 00:08:55.932
+picture will not block our buttons. We name the picture ShowImage.
+
+00:08:57.775 --> 00:09:02.910
+Add to the timeline. We will animate ColorAndOpacity.
+
+00:09:07.280 --> 00:09:15.197
+Let this animation play long enough - three seconds, for example. Set the final keyframe
+
+00:09:15.197 --> 00:09:22.793
+and replace the alpha value with 0. This way our interface will emerge from the darkness.
+
+00:09:23.570 --> 00:09:28.220
+You can also change the interpolation of keyframes (in another way "easing"). If you right
+
+00:09:28.220 --> 00:09:34.880
+-click on the frame, you can change the KeyInterpolation value. Let's set CubicBreak to
+
+00:09:34.880 --> 00:09:40.940
+the same value for the end frame. Also for reference: UE has special
+
+00:09:40.940 --> 00:09:46.400
+curve editors and with them you can customize animation interpolation more flexibly.
+
+00:09:48.156 --> 00:09:53.397
+Go to PlayerHUDWidget. We also add ShowAnimation.
+
+00:09:54.670 --> 00:09:59.470
+Let's do the appearance of PlayerHUDWidget as follows: all elements of the user interface,
+
+00:09:59.470 --> 00:10:06.843
+except for the sight, will move out from the edges. Let's start with the GameData widget.
+
+00:10:07.832 --> 00:10:14.085
+Add a track for it. We will animate a property called transform.
+
+00:10:16.775 --> 00:10:20.559
+Set the end frame at 0.75 seconds.
+
+00:10:25.096 --> 00:10:31.197
+And change the starting position of X and Y. Find the translation category. We open it.
+
+00:10:31.870 --> 00:10:38.275
+We put x in the minus so that the widget disappears behind the left border of the screen.
+
+00:10:38.275 --> 00:10:43.472
+And in the same way, set Y. This is a diagonal animation.
+
+00:10:44.772 --> 00:10:51.348
+We do the same with the health block. Only he will leave from another corner.
+
+00:10:57.272 --> 00:11:00.109
+And the last block is the weapon block.
+
+00:11:01.049 --> 00:11:03.687
+It will drive out from the bottom right.
+
+00:11:06.018 --> 00:11:13.407
+The overall animation will eventually look like this. Click on the space bar. All elements will move out from the corners.
+
+00:11:14.380 --> 00:11:18.580
+Next, add ShowAnimation to the GamePause widget.
+
+00:11:21.180 --> 00:11:27.472
+And ShowAnimation in GameOver widget. Let's not waste time creating animation data.
+
+00:11:27.472 --> 00:11:31.640
+Let's just go over the property elements that we will animate.
+
+00:11:32.690 --> 00:11:41.037
+So, the GamePause widget animates the BlurStrength, that is, the blur of the screen from 0 to 4.
+
+00:11:41.037 --> 00:11:48.157
+And the Y position of the center block is also animated.When we updated the design, I forgot to tell you
+
+00:11:48.157 --> 00:11:55.000
+that I added an additional black image under blur with an alpha = 0.1. to shade the screen a bit,
+
+00:11:55.000 --> 00:12:01.430
+I did the same in the GameOver widget. And the animation of the GameOver widget is exactly the same as the GamePause.
+
+00:12:02.670 --> 00:12:07.679
+Let's check. The interface has arrived. We press pause - a pause has arrived.
+
+00:12:10.292 --> 00:12:12.374
+And at the very end of the game.
+
+00:12:14.740 --> 00:12:22.090
+GameOver is shown. And in the main menu, the animation works too. This concludes this lesson.
+

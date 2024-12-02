@@ -1,0 +1,526 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.467 --> 00:00:12.347
+Hello! In this tutorial, we will create the PlayerController class. Let's add our own input to it
+
+00:00:12.795 --> 00:00:15.908
+and learn how to switch between multiple pays.
+
+00:00:17.300 --> 00:00:25.244
+First, let's tweak the SandboxPawn class a bit. Let's add a visual part to it so that we can distinguish the spiders on the stage.
+
+00:00:26.090 --> 00:00:32.080
+Let's add two additional components. The first one we are familiar with is the static mesh component.
+
+00:00:32.899 --> 00:00:39.325
+The second component is new, it is called UCameraComponent, it is responsible for the settings of the camera viewport.
+
+00:00:40.093 --> 00:00:45.340
+We need to include the appropriate header file for this component. Let's connect
+
+00:00:45.340 --> 00:00:51.370
+it in C ++, and in the .h file add a forward declaration of this class. For those who do not know what a
+
+00:00:51.370 --> 00:00:56.386
+forward declaration is, I recommend reading it, because we will use this concept all the time.
+
+00:00:56.386 --> 00:01:03.460
+Go to the .cpp file and include the header files for the static mesh component and the camera component.
+
+00:01:09.730 --> 00:01:17.701
+Let's create two components by analogy with SceneComponent. For this we use the CreateDefaultSubobject function.
+
+00:01:22.830 --> 00:01:28.575
+Next, we need to add these components to the component hierarchy of our spawn.
+
+00:01:28.575 --> 00:01:35.083
+To do this, we will use the SceneComponent function called SetupAttachment. Yes, precisely by the SceneComponent
+
+00:01:35.083 --> 00:01:41.370
+function , because both the static mesh and the camera component inherit from SceneComponent.
+
+00:01:41.370 --> 00:01:46.060
+It is a basic component that has a transformation in the scene. The
+
+00:01:46.060 --> 00:01:51.610
+function also takes a pointer to the SceneComponent as a parameter . We will attach to
+
+00:01:51.610 --> 00:01:57.550
+our root component, which is the scene component. Therefore, we can explicitly pass
+
+00:01:57.550 --> 00:02:03.280
+a pointer to our component to the function , or do it a little differently: use the
+
+00:02:03.280 --> 00:02:08.860
+actor function called GetRootComponent. This function returns a pointer to the root
+
+00:02:08.860 --> 00:02:14.350
+component of the actor. In the previous section, we specified the SceneComponent as the root, so both of
+
+00:02:14.350 --> 00:02:20.598
+these options are suitable for us. In the same way we attach the camera component.
+
+00:02:20.598 --> 00:02:26.640
+The hierarchy of component scenes in the actor can be configured in an arbitrary way, that is, you can attach a camera to a
+
+00:02:26.640 --> 00:02:33.570
+static mesh, or vice versa. It all depends on the design of your actor. Essentially, attachment affects the final transformation
+
+00:02:33.570 --> 00:02:38.190
+matrix of your component, which will be calculated as the product of the
+
+00:02:38.190 --> 00:02:43.920
+parent component's transformation matrix by the local transformation matrix. You can change the transformation
+
+00:02:43.920 --> 00:02:47.970
+relative to the parent component using functions that begin
+
+00:02:47.970 --> 00:02:54.575
+with SetRelative .. You can change all elements of the transformation: scale, location and rotation.
+
+00:02:54.575 --> 00:02:59.700
+Let's see how it all looks in blueprints. Therefore, we compile the project.
+
+00:03:02.367 --> 00:03:10.891
+Open the directory with C ++ classes. Let's create a blueprint class based on our C ++ class.
+
+00:03:12.507 --> 00:03:22.429
+Let's call it BP_SandboxPawn. Click the create blueprint class button. We look on the left into the Components window.
+
+00:03:22.429 --> 00:03:29.722
+All components of our actor are presented here. The scene component is the root
+
+00:03:29.722 --> 00:03:35.100
+component and a static mesh component and a camera component are attached to it . Let's set some kind of mesh to a static
+
+00:03:35.100 --> 00:03:44.138
+mesh component. For example, a cube. The cube is gigantic. Let's change the scale for him. Let it be 0.3 Let's
+
+00:03:45.413 --> 00:03:52.810
+move the camera a little further. We change the scale of the cube and the position of the camera in space relative to the
+
+00:03:52.810 --> 00:03:59.263
+parent transformation. Let's create an additional component in blueprints as an example.
+
+00:03:59.263 --> 00:04:07.564
+Let's select a cube and attach it to the camera. And if you and I change the position of the camera in space, then the cube
+
+00:04:07.564 --> 00:04:13.820
+also changes its position, because it is a child component of the camera component.
+
+00:04:15.142 --> 00:04:20.949
+Save the blueprint. In WorldSettings, we see that we cannot change any other classes except GameMode.
+
+00:04:21.522 --> 00:04:26.791
+This is because our GameMode only has a C ++ version. Let's create a
+
+00:04:27.462 --> 00:04:35.472
+blueprint of our C ++ GameMode successor. Add BP_ to the class name.
+
+00:04:35.815 --> 00:04:44.732
+We can select the DefaultPawnClass we are interested in inside the GameMode blueprint. We select our BP_SandboxPawn.
+
+00:04:44.732 --> 00:04:50.150
+We are saved. In world settings, we specify the blueprint game mod and now we can configure
+
+00:04:50.150 --> 00:04:58.393
+any class of interest to us. We start the game. Our pawn now has an appearance. This is the geometry of a cube.
+
+00:04:59.808 --> 00:05:06.294
+Let's add some additional mapping. Go to project settings, to the input category. This time we need
+
+00:05:06.294 --> 00:05:14.100
+action mapping. We will switch between different pounders on a key press. Let's call our
+
+00:05:14.100 --> 00:05:26.432
+action mapping ChangePawn. And add any key. Let it be a gap. Find spacebar. Switching between pays
+
+00:05:26.432 --> 00:05:31.058
+will take place in the playercontroller class. So let's create this class.
+
+00:05:33.428 --> 00:05:36.039
+Find the PlayerController class in the list.
+
+00:05:39.756 --> 00:05:43.286
+Click Next. Let's call our class SandboxPlayerController.
+
+00:05:46.380 --> 00:05:52.960
+Click on Create Class. Our own playercontroller class has been created. Unlike other
+
+00:05:52.960 --> 00:05:58.277
+actors, it is completely empty, so all functions will have to be added manually.
+
+00:05:58.752 --> 00:06:05.157
+We'll start by overriding the playercontroller class in game mode. Open the game mod .cpp file.
+
+00:06:06.862 --> 00:06:09.292
+We include the header file playercontroller.
+
+00:06:11.971 --> 00:06:17.460
+The proper game mod for the playercontroller class is named PlayerControllerClass.
+
+00:06:17.460 --> 00:06:21.957
+We override it by analogy, as we did for the pawn class.
+
+00:06:22.569 --> 00:06:28.970
+We return to the controller class. Click on playercontroller F12. Let's start with a function
+
+00:06:28.970 --> 00:06:35.030
+that configures input. Press Ctrl + F and in the search will be SetupInput
+
+00:06:38.377 --> 00:06:43.089
+Copy this function and redefine the playercontroller in our class.
+
+00:06:46.013 --> 00:06:47.603
+We create a protected section.
+
+00:06:54.213 --> 00:06:56.725
+Create the body of the function in a .cpp file.
+
+00:07:00.260 --> 00:07:06.170
+So playercontroller can accept input too. The controller's SetupInputComponent function is
+
+00:07:06.170 --> 00:07:11.510
+slightly different from the corresponding pawn function. In the spawn function, a pointer to the
+
+00:07:11.510 --> 00:07:16.580
+input component is passed as an argument to the function. For playercontroller, this input
+
+00:07:16.580 --> 00:07:22.938
+component is a member of the class. We will also include the component input header file in the controller.
+
+00:07:24.383 --> 00:07:31.510
+The member of the class is called InputComponent. We can directly address it and bind the mappings
+
+00:07:31.510 --> 00:07:37.691
+we need. This time we need another component input function called BindAction.
+
+00:07:37.691 --> 00:07:43.030
+It is responsible for the binding of discrete mappings and is slightly different from the BindAxis function.
+
+00:07:43.940 --> 00:07:53.830
+In the first argument, we need to specify the name of our ChangePawn mapping. The second parameter is of type EInputEvent.
+
+00:07:53.830 --> 00:07:59.274
+This is an enum. It is responsible for the type of event that happens to the control.
+
+00:07:59.667 --> 00:08:08.495
+We will pass the IE_Pressed value there. If you press F12, you can see what values
+
+00:08:08.495 --> 00:08:15.347
+this enum has. The main types are when the key is pressed, or when the key is released. We have specified
+
+00:08:15.347 --> 00:08:22.490
+IE_Pressed and our callback function will be called when a key is pressed. And the last two classic
+
+00:08:22.490 --> 00:08:28.995
+parameters for delegates are a pointer to an object and a reference to a called function.
+
+00:08:31.801 --> 00:08:39.708
+We will now create the function. Let's call it ChangePawn. And in the .h file, create a private section.
+
+00:08:41.999 --> 00:08:50.692
+We declare the sleeper ChangePawn function for the action mapping callback functions. No parameters are needed in the signature.
+
+00:08:52.626 --> 00:08:54.876
+Create the body of the function in a .cpp file.
+
+00:08:57.660 --> 00:09:02.550
+Let's create our own logging category for the controller. We copy the macro we know.
+
+00:09:05.472 --> 00:09:08.172
+And we will immediately pledge that we are changing the pawn.
+
+00:09:12.705 --> 00:09:19.860
+So, in our case, the ChangePawn function is called every time we press the spacebar. We will add some pawns
+
+00:09:19.860 --> 00:09:26.130
+to the stage a little later and add logic to the ChangePawn function that will allow changing the pawn that
+
+00:09:26.130 --> 00:09:31.560
+we are currently controlling to one of those on the stage. First, we need to somehow
+
+00:09:31.560 --> 00:09:37.260
+get all the spiders that are on the stage. The most convenient way to do this is in the BeginPlay function,
+
+00:09:37.260 --> 00:09:44.081
+which is called once at the start of the game. Every actor has a BeginPlay function.
+
+00:09:44.691 --> 00:09:49.851
+The player controller is also an actor, so we can override its BeginPlay function.
+
+00:09:53.073 --> 00:09:58.830
+Create the body of the BeginPlay function in a .cpp file. There are many different helper classes
+
+00:09:58.830 --> 00:10:05.870
+in the unreal engine that greatly speed up the development process. One of these classes is called UGameplayStatics. Let's include
+
+00:10:06.592 --> 00:10:12.740
+its header file Kismet / GameplayStatics This class consists of various static
+
+00:10:12.740 --> 00:10:18.500
+functions. All the functions of this class are also available in blueprints, so if you have worked
+
+00:10:18.500 --> 00:10:24.850
+with them before , then many of the functions of this class will be familiar to you. The GameplayStatics function, which
+
+00:10:24.850 --> 00:10:32.451
+allows you to get all the actors of a certain type from the scene, is called GetAllActorsOfClass.
+
+00:10:33.130 --> 00:10:38.820
+This function takes three arguments. The first one is a pointer to a WorldContextObject -
+
+00:10:38.820 --> 00:10:45.390
+essentially any object in the game. We can pass both a pointer to the global world object by calling
+
+00:10:45.390 --> 00:10:53.161
+the GetWorld function, and a pointer to the current player controller object, passing the this keyword there.
+
+00:10:53.783 --> 00:10:57.780
+The next parameter is a pointer to the class whose objects we want to get.
+
+00:10:59.049 --> 00:11:04.179
+We want to get all SandboxPawn, so we pass a pointer to this class.
+
+00:11:04.890 --> 00:11:08.482
+And you also need to add the SandboxPawn header file.
+
+00:11:11.071 --> 00:11:18.800
+The last parameter is an array of pointers to actors. This parameter is passed by reference, i.e. passing an array to the function,
+
+00:11:18.800 --> 00:11:25.422
+we get it filled with pointers to the actors of the type of interest to us, which are on the stage.
+
+00:11:26.110 --> 00:11:30.983
+Let's create a local array of pointers to actors for this purpose. Let's call it Pawns.
+
+00:11:33.514 --> 00:11:39.670
+This function returns an array of pointers to the base type of the actor. We will have to do Cast - that is, convert the
+
+00:11:39.670 --> 00:11:46.090
+pointer from AActor type to APawn type. We will switch pawns in the ChangePawn function,
+
+00:11:46.090 --> 00:11:52.060
+so we need to make this array a member of our class. Go
+
+00:11:52.060 --> 00:11:59.560
+to the header file and add this array to the private section. We also mark this class member with the
+
+00:12:00.880 --> 00:12:06.872
+UPROPERTY macro, without any parameters. Why this is needed, we will consider in the next lecture.
+
+00:12:09.010 --> 00:12:14.662
+So, go to the ChangePawn function and at the very beginning check that the number of array
+
+00:12:14.662 --> 00:12:20.796
+elements we have is greater than one, i.e. we check that we have at least one more pounder to which we
+
+00:12:20.796 --> 00:12:25.530
+can switch. The TArray function that returns the number of elements in an array
+
+00:12:25.530 --> 00:12:31.560
+is called Num. Therefore, if this value is less than or equal to one, then we immediately exit the function.
+
+00:12:32.607 --> 00:12:38.357
+Next, we get a pointer to pawn from the array. To do this, we create a local variable of the
+
+00:12:39.253 --> 00:12:45.610
+type of a pointer to ASandboxPawn, although in this particular case, we just need a pointer
+
+00:12:45.610 --> 00:12:55.210
+to the base APawn class. We name the variable CurrentPawn and assign this variable to a custom element from the
+
+00:12:55.210 --> 00:13:02.140
+array. Each time you press the space bar, we will receive a new pawn, changing the array index.
+
+00:13:03.630 --> 00:13:09.933
+We are missing an array element index variable. Let's call it CurrentPawnIndex.
+
+00:13:13.260 --> 00:13:20.930
+Let's add it to the SandboxPawn header file. It will have the integer type int32 and by default we will
+
+00:13:20.930 --> 00:13:28.130
+assign it 0. After that, we need to increase the CurrentPawnIndex by one so that the next
+
+00:13:28.130 --> 00:13:34.190
+time we press the spacebar, we get the next element of the array - the next pawn. Let's take the whole expression
+
+00:13:34.190 --> 00:13:40.730
+modulo the size of the array so that CurrentPawnIndex never goes beyond its bounds. Under the lecture there will be a
+
+00:13:40.730 --> 00:13:44.732
+link to how the modulo operator works (if anyone is not in the know)
+
+00:13:44.732 --> 00:13:50.489
+Next, we check for nullptr the pointer to the pawn, over which we want to gain control.
+
+00:13:50.489 --> 00:13:57.560
+If the pointer is null, then immediately exit the function. Optionally, you can also check that the pawn that we want to install
+
+00:13:57.560 --> 00:14:03.140
+does not match the current pawn. The player controller function that changes
+
+00:14:03.140 --> 00:14:10.326
+control of the pawn is called Possess. It takes as an argument a pointer to the pawn
+
+00:14:10.326 --> 00:14:12.692
+that we want to control.
+
+00:14:15.945 --> 00:14:19.312
+Let's print the log before calling this function.
+
+00:14:20.650 --> 00:14:27.850
+And additionally, let's add two functions to the SandboxPawn class, which are called directly when control over the pawn has
+
+00:14:27.850 --> 00:14:34.540
+been acquired and when it has been lost. The functions are virtual, they are in the base pounder class.
+
+00:14:35.416 --> 00:14:40.323
+And we can override them in our own class. The first is called PossessedBy
+
+00:14:40.323 --> 00:14:44.242
+. It has one parameter - a pointer to the controller
+
+00:14:44.242 --> 00:14:49.720
+that took control of this spawn. And the second function is called UnPossessed.
+
+00:14:55.072 --> 00:14:57.137
+We create it in a .cpp file.
+
+00:15:04.140 --> 00:15:11.064
+We added these functions purely for educational purposes, so that we know about their existence and see in what order they are called.
+
+00:15:14.591 --> 00:15:19.243
+Therefore, there will be no logic in them, we just display messages in the console.
+
+00:15:20.628 --> 00:15:26.000
+In the Possess function, we display the names of the pawn and the controller that captured our spawn.
+
+00:15:31.596 --> 00:15:36.606
+The UnPossess function comes without parameters, so we just print the name of the pawn.
+
+00:15:39.860 --> 00:15:42.695
+Let's see what we got. Launch editor.
+
+00:15:46.764 --> 00:15:54.753
+In WorldSettings, we see that the player controller class has been overridden. We have specified SandboxPlayerController.
+
+00:15:55.953 --> 00:15:58.400
+Let's add some spiders to the scene.
+
+00:16:03.452 --> 00:16:06.000
+Let's place them in different parts of the scene.
+
+00:16:07.357 --> 00:16:16.033
+We start the game. At the beginning we control the default spawn and there are also 3 additional spawns on the stage.
+
+00:16:17.302 --> 00:16:21.493
+We press the spacebar and we have gained control over another pawn.
+
+00:16:21.931 --> 00:16:25.200
+Once again, a space is above the next, and so on.
+
+00:16:26.362 --> 00:16:34.512
+Let's clear the log. We will also remove the GeometryHubActor from the scene so that we do not have spam in the log.
+
+00:16:37.047 --> 00:16:45.908
+We start the game. In the penultimate line, we see that SandboxPawn_C0 was captured by the controller - this is our default pawn.
+
+00:16:47.893 --> 00:16:54.312
+And before that, we see other 3 lines, in which it is reported that AIController took possession of other pawns.
+
+00:16:54.883 --> 00:17:00.786
+Also, if we look in WorldOutliner, we will see that there are 3 data on the scene. AIController
+
+00:17:00.786 --> 00:17:07.580
+Unreal did it automatically. We can change the settings as we don't need the AIController right now.
+
+00:17:08.042 --> 00:17:14.136
+Open the pawn class and in the settings we find a property called Auto Possess AI.
+
+00:17:14.597 --> 00:17:18.511
+By default, this property is in Place World.
+
+00:17:18.511 --> 00:17:23.769
+We can turn off the AIController spawn by selecting the Disabled option.
+
+00:17:25.476 --> 00:17:31.283
+Compile the blueprint. Open the log, clear it and run the game again.
+
+00:17:32.506 --> 00:17:39.540
+All now no AIController has spawned. We can see this both in WorldOutliner and in our log.
+
+00:17:42.678 --> 00:17:45.710
+Press the space bar, we see all the information in the logs.
+
+00:17:46.634 --> 00:17:52.740
+Changed the pawn. The UnPossess function was called on the current pawn and the Possess function was called
+
+00:17:52.740 --> 00:17:55.369
+on the pounder we got control over.
+
+00:18:01.919 --> 00:18:08.081
+We have a bug: if we hold down any movement key and at this moment change the pawn,
+
+00:18:08.519 --> 00:18:13.370
+then the previous pawn will continue to move. Let's fix this bug.
+
+00:18:14.408 --> 00:18:20.274
+So, we move around the scene: that is, one of the keys, or both of us are held down and at the moment
+
+00:18:20.274 --> 00:18:26.120
+we press the spacebar to change the pawn. Then the UnPossess function is called.
+
+00:18:26.120 --> 00:18:32.727
+If you go into the parent UnPossess function, you can see that the DestroyPlayerInputComponent function is called.
+
+00:18:33.280 --> 00:18:39.040
+In this function, the input component is removed. After that, the binding of all our functions is automatically
+
+00:18:39.040 --> 00:18:45.564
+removed and when the user releases the key, the MoveForward and MoveRight functions will not be called.
+
+00:18:45.564 --> 00:18:51.732
+Therefore, VelocityVector components will never nullify. This bug can be fixed in several ways.
+
+00:18:51.732 --> 00:18:56.675
+The first of them is to add an additional condition when we change the position of the actor.
+
+00:18:56.675 --> 00:19:02.913
+The spawn class has helper functions that check who owns a given spawn.
+
+00:19:02.913 --> 00:19:10.023
+Functions start with IsControlled .. Just IsControlled, IsPlayerControlled, IsLocallyControlled, and so on.
+
+00:19:10.023 --> 00:19:18.894
+Let's go into the IsControlled function. The pounder has a pointer member to the current controller, and in fact it
+
+00:19:18.894 --> 00:19:24.000
+checks if it is a playercontroller or not. Below we see that there is a function IsPawnControlled
+
+00:19:24.000 --> 00:19:30.208
+that simply checks if any controller exists. It can be either AIController or PlayerController.
+
+00:19:30.775 --> 00:19:33.799
+But there is an easier way to fix this bug:
+
+00:19:33.799 --> 00:19:39.509
+after we set the pawn to a new position, just reset the VelocityVector.
+
+00:19:41.071 --> 00:19:43.111
+Set it to ZeroVector
+
+00:19:45.130 --> 00:19:53.178
+Let's also add null pointer checks in the PossessdBy function. We are using a pointer to the
+
+00:19:53.870 --> 00:19:59.740
+controller, but we do not check for nullptr. Also check the PlayerInputComponent
+
+00:20:02.830 --> 00:20:10.464
+And in the SandboxPlayerController we also used InputComponent. Add it under the if
+
+00:20:13.527 --> 00:20:15.678
+This concludes this lesson.
+

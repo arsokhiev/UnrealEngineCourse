@@ -1,0 +1,22 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.715 --> 00:00:08.902
+Hello everyone! In this section, we will create our project with you.
+
+00:00:08.902 --> 00:00:13.612
+Let's import the materials we need from the unreal ShooterGame training project.
+
+00:00:14.348 --> 00:00:20.130
+Let's create the base classes of the game, set up our character. Let's learn how to control it with a mouse and keyboard.
+
+00:00:20.880 --> 00:00:27.059
+And the main emphasis will be on customizing the animation of the character's movement. We will teach him to run forward,
+
+00:00:27.059 --> 00:00:33.393
+backward, right, left. Consider the animation of a jump, acceleration, work with you in both c ++
+
+00:00:33.393 --> 00:00:39.320
+and blueprints and learn how to manage animation states and transitions between them.
+

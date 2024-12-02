@@ -1,0 +1,82 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.324 --> 00:00:11.667
+Hello everyone! In our last lesson, we stopped at the fact that when a character dies,
+
+00:00:12.502 --> 00:00:18.986
+we stop all movement of the character around the scene. After five seconds, it is destroyed
+
+00:00:19.339 --> 00:00:24.382
+and the controller is left without character, meaning it no longer possesses any pawn.
+
+00:00:24.941 --> 00:00:31.499
+In the architecture of the engine, there is a special class for such purposes. It's called the spectator class.
+
+00:00:32.363 --> 00:00:38.429
+Let's test the default class and replace the default pawn class with the spectator class.
+
+00:00:38.429 --> 00:00:42.990
+In fact, it's just a pawn with a camera that flies around the scene. It has input
+
+00:00:42.990 --> 00:00:47.837
+for movement and rotation with the mouse. This behavior is often used in games
+
+00:00:47.837 --> 00:00:52.499
+when a character dies - we have the opportunity to watch the game continue.
+
+00:00:53.075 --> 00:00:58.451
+Let's do this: when our character dies, we switch to the given spectator class.
+
+00:00:58.451 --> 00:01:02.610
+Also, we don't need to create our own class. We will use the
+
+00:01:02.610 --> 00:01:07.309
+default spectator class . The function that is responsible for switching the
+
+00:01:07.309 --> 00:01:13.680
+pawn is in the controller, so let's at the top of our character class include the controller
+
+00:01:13.680 --> 00:01:20.340
+header file GameFramework / Controller.h Let's go to the OnDeath function, which is called when
+
+00:01:20.340 --> 00:01:27.189
+we die. We check the controller for validity. The pointer is in the variable controller.
+
+00:01:28.868 --> 00:01:36.790
+And we call the controller function called ChangeState. It has one parameter of type FName. We will use a
+
+00:01:36.790 --> 00:01:42.709
+constant called Name_Spectating. Open the header file of our controller
+
+00:01:42.709 --> 00:01:48.551
+and press F12 on the base class playercontroller. In the search, enter ChangeState.
+
+00:01:49.350 --> 00:01:55.376
+Press F12 again - we get into the .cpp file. In this function, the control of the pawn is changed.
+
+00:01:56.260 --> 00:02:02.435
+In the function code, the change of two states is checked: one of them is Name_Spectating and the other Name_Playing,
+
+00:02:02.435 --> 00:02:06.770
+which are respectively responsible for spectator pawn and regular pawn.
+
+00:02:07.129 --> 00:02:12.700
+If we fall into the BeginSpectatingState function, we will see that at first the pawn is checked
+
+00:02:12.700 --> 00:02:18.715
+or not, if it was, then UnPossess occurs, then the previous spectator is destroyed, if it was,
+
+00:02:19.398 --> 00:02:24.289
+and at the end a new spectator spawns and the controller gets control over it.
+
+00:02:26.637 --> 00:02:35.710
+We launch the project. We run into the red sphere, we die. The controller takes control of the spectator pawn.
+
+00:02:36.402 --> 00:02:41.087
+That is, after death we can freely observe our character from the side.
+
+00:02:41.518 --> 00:02:48.440
+And also, if you look in the world outliner during the game, you can find our spectator pawn here.
+

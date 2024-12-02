@@ -1,0 +1,124 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.017 --> 00:00:11.344
+In this lesson, we continue to work with interface sounds. Now let's learn how to play sounds in C ++
+
+00:00:11.677 --> 00:00:14.000
+Let's add two new sounds to the interface: the
+
+00:00:14.000 --> 00:00:18.909
+first of them will be played when one of the main widgets is opened, the
+
+00:00:20.830 --> 00:00:25.103
+second sound will be played when the user clicks on the start game button.
+
+00:00:29.790 --> 00:00:32.453
+Let's create two new sound cues.
+
+00:00:32.453 --> 00:00:38.693
+This can be done by right-clicking on the sound wave and selecting create cue from the menu.
+
+00:00:40.826 --> 00:00:42.986
+We name the first sound cue - game start.
+
+00:00:48.396 --> 00:00:53.726
+Create a second sound cue. We call it - widget open.
+
+00:00:57.820 --> 00:01:02.227
+Move them to the UI folder
+
+00:01:06.802 --> 00:01:08.302
+and we can go to the code.
+
+00:01:10.033 --> 00:01:17.846
+Let's start with the widget menu, add a forward declaration for the sound cue, it is called in the code - USoundCue
+
+00:01:19.310 --> 00:01:24.450
+and create a property that will store the pointer to the sound cue we need.
+
+00:01:25.843 --> 00:01:28.123
+Change the category to Sound in the property,
+
+00:01:31.530 --> 00:01:34.420
+name the pointer StartGasmeSound.
+
+00:01:36.764 --> 00:01:45.392
+Go to the .cpp file. We connect the header file "Sound / SoundCue.h"
+
+00:01:47.361 --> 00:01:53.930
+When you press the button to start the game, the StartGame function is called, so it is logical to add
+
+00:01:53.930 --> 00:02:00.140
+sound playback to this function. The static function for playing sound is in the UGamePlayStatics class
+
+00:02:00.140 --> 00:02:07.087
+and is called PlaySound2D. It has several parameters: a pointer to the world, a pointer to
+
+00:02:07.087 --> 00:02:13.668
+the SoundBase class - this is the base class for all sounds. Both sound wave and sound cue are inherited from it.
+
+00:02:13.668 --> 00:02:17.733
+There are also various additional parameters, for example, we can override the
+
+00:02:17.733 --> 00:02:23.780
+volume of a given sound, override pitch, and others. We pass in the function a pointer to the world
+
+00:02:23.780 --> 00:02:30.260
+and also our StartGameSound pointer. Elementary code for playing sound.
+
+00:02:30.260 --> 00:02:37.960
+Next, we go to the BaseWidget class and in fact do the same here: add a forward declaration, add a
+
+00:02:40.725 --> 00:02:42.131
+property.
+
+00:02:47.630 --> 00:02:50.570
+Change the name of the property to OpenSound.
+
+00:02:54.040 --> 00:03:00.771
+Go to the .cpp file. We include header files. We need SoundCue.h
+
+00:03:02.210 --> 00:03:03.346
+and GameplayStatics.h
+
+00:03:08.464 --> 00:03:10.396
+Copy the sound playback code.
+
+00:03:13.331 --> 00:03:14.967
+Add to the Show function.
+
+00:03:15.595 --> 00:03:18.397
+And change the second parameter to OpenSound.
+
+00:03:21.147 --> 00:03:22.000
+We compile the project.
+
+00:03:23.528 --> 00:03:30.911
+Let's start with the main menu widget. We will not play the OpenSound sound in this widget - we will leave the property empty.
+
+00:03:30.911 --> 00:03:37.070
+And in StartGame, set the appropriate SoundCue. In this list, SoundWave is unavailable for us, because we
+
+00:03:37.070 --> 00:03:43.845
+specified the USoundCue property class. Go to the game pause widget. Install OpenSound.
+
+00:03:45.747 --> 00:03:47.944
+We do the same in the game over widget.
+
+00:03:48.700 --> 00:03:54.089
+Also, we will not install OpenSound in the player HUD widget, so as not to overdo it with sounds.
+
+00:03:56.310 --> 00:03:59.460
+We start the game and check the sound work.
+
+00:04:04.736 --> 00:04:06.593
+The game start sound was played.
+
+00:04:11.759 --> 00:04:17.336
+The spawn sound plays during game pause. And we are waiting for the appearance of the game over widget.
+
+00:04:20.207 --> 00:04:21.311
+Everything works.
+

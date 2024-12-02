@@ -1,0 +1,181 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.870 --> 00:00:10.400
+In this tutorial, we'll start working with impact effects. The first thing we will do is
+
+00:00:10.400 --> 00:00:16.313
+create a vfx component - an additional component that will be responsible for the weapon's special effect.
+
+00:00:17.330 --> 00:00:25.409
+We will add it to the rifle class and to the projectile class. Name the component WeaponFXComponent
+
+00:00:26.016 --> 00:00:33.779
+and create an additional directory in the weapon folder, call it components. We create a class.
+
+00:00:36.130 --> 00:00:42.990
+We check that the path to the component is added by PublicIncludePaths. To activate Niagara in C ++ code,
+
+00:00:42.990 --> 00:00:50.086
+we need to add a plug-in called Niagara. This is done PublicDependencyModuleNames
+
+00:00:51.386 --> 00:00:55.976
+Let's build the project without starting the editor, so that all Niagara code is available in C ++
+
+00:00:55.976 --> 00:01:01.410
+To do this, right-click on our project in the solution explorer and click build.
+
+00:01:04.390 --> 00:01:08.957
+Go to the component we created and start adding the necessary functionality.
+
+00:01:10.080 --> 00:01:13.626
+We'll start with a public function we'll call PlayImpactFX.
+
+00:01:15.585 --> 00:01:21.703
+The function will have one parameter of type FHitInfo, this object contains all the information necessary
+
+00:01:21.703 --> 00:01:26.900
+for the correct spawn of the effect: position in the world, normal and other parameters, which
+
+00:01:26.900 --> 00:01:32.860
+we will use a little later in subsequent lessons. We also need a property with the effect
+
+00:01:32.860 --> 00:01:38.800
+we want to spawn. Add the UPROPERTY macro, the category will be VFX.
+
+00:01:39.965 --> 00:01:46.947
+Property is of type UNiagaraSystem. The type name speaks for itself. In this property, we
+
+00:01:46.947 --> 00:01:53.263
+will install the Niagara system from the editor. Add a forward declaration of this class.
+
+00:01:54.490 --> 00:02:02.382
+Go to the .cpp file. We create the body of the PlayImpactFX function and include the header file, which contains the
+
+00:02:02.382 --> 00:02:08.817
+functions we need to spawn the Niagara system. The header file is called NiagaraFunctionLibrary.h
+
+00:02:11.074 --> 00:02:15.490
+In this functional library there is a special static function that can
+
+00:02:15.490 --> 00:02:21.501
+spawn a Niagara system into the world. It is called SpawnSystemAtLocation: the first parameter is
+
+00:02:21.501 --> 00:02:28.760
+the world context object, we can pass this, or a pointer through GetWorld. The next parameter is
+
+00:02:28.760 --> 00:02:36.270
+a pointer to the Niagara system. We use our property. Next is the location in the world.
+
+00:02:36.270 --> 00:02:44.266
+We can get it from the HitResult object. The variable is called ImpactPoint, followed by orientation in space.
+
+00:02:44.266 --> 00:02:51.206
+We'll use the ImpactNormal variable. This variable stores the normal.
+
+00:02:51.206 --> 00:02:58.667
+And we create an object of type FRotator, calling the function of the FVector class - Rotation. Leave the rest of the parameters as default.
+
+00:02:58.667 --> 00:03:03.240
+One of the important parameters is called AutoDestroy. It is set to true by default, that is,
+
+00:03:03.240 --> 00:03:09.586
+after the Niagara system has finished animating, it will automatically be removed from the world.
+
+00:03:09.586 --> 00:03:15.720
+If you go inside the function, you will notice that checks for a null pointer for the Niagara system
+
+00:03:15.720 --> 00:03:23.093
+and the world exist inside this function, so we do not need to set them. Let's create a component in the rifle class.
+
+00:03:23.093 --> 00:03:28.297
+Please note that we create it not in the base weapon class, but in a specific rifle class,
+
+00:03:28.297 --> 00:03:33.150
+because in the launcher class we only have a logical hit and
+
+00:03:33.150 --> 00:03:40.022
+its projectile object is directly responsible for collision damage . We create a property for the component.
+
+00:03:42.342 --> 00:03:49.150
+We need a class constructor to create a component, so let's add one.
+
+00:03:49.150 --> 00:03:55.090
+We create the BeginPlay function. In it, we will check that our component exists, we will make a check.
+
+00:04:00.494 --> 00:04:05.804
+Add the class constructor to the .cpp file. Add the component header file.
+
+00:04:08.820 --> 00:04:11.281
+And we create it in the class constructor.
+
+00:04:14.650 --> 00:04:16.713
+Add BeginPlay.
+
+00:04:22.239 --> 00:04:23.199
+Insert check.
+
+00:04:27.090 --> 00:04:28.603
+Let's go to the MakeShot function.
+
+00:04:31.500 --> 00:04:38.100
+Let me remind you that we do trace and, in case of a successful hit, the bBlockingHit variable becomes
+
+00:04:38.100 --> 00:04:44.765
+equal to true. It was in this branch that the hit occurred, so we call the PlayImpactFX function here
+
+00:04:44.765 --> 00:04:52.919
+and pass the HitResult object. We also comment on the debug line and debug sphere and similarly add the
+
+00:04:52.919 --> 00:04:58.890
+VFX component to the projectile class. This shows the architectural power of the components.
+
+00:04:58.890 --> 00:05:05.355
+We can add it both to the weapon and to some logical parts of the weapon, in this case to the projectile.
+
+00:05:05.824 --> 00:05:11.480
+So far, we have only one function called in PlayImpactFX, so the advantage of this approach
+
+00:05:11.480 --> 00:05:17.840
+may not be so noticeable, but from the next lesson we will see that creating a component was a
+
+00:05:17.840 --> 00:05:27.954
+good idea. So, we add the creation of the component to the projectile constructor, we also add the header file.
+
+00:05:30.121 --> 00:05:37.996
+And check. Projectile already has BeginPlay. A collision with an object of the external environment
+
+00:05:37.996 --> 00:05:43.305
+takes place in the OnProjectileHit function. Therefore, we can add a special effect spawn to this function.
+
+00:05:45.000 --> 00:05:48.828
+We will pass the Hit object, which came to us in the callback, to the function.
+
+00:05:50.927 --> 00:05:51.925
+Compile.
+
+00:05:52.924 --> 00:06:00.680
+Let's install our effects. Open up the rifle's blueprint, find the vfx category and set our
+
+00:06:00.680 --> 00:06:07.137
+single BaseImpact effect. We do the same with projectile.
+
+00:06:09.708 --> 00:06:17.457
+We start the game. We shoot and the particle system spawns in the place where we got.
+
+00:06:18.456 --> 00:06:26.576
+The orientation of the particle system is incorrect. Let's change this directly in the emitter. Open BaseImpact.
+
+00:06:31.046 --> 00:06:36.713
+The Add Velocity In Cone setting sets the cone in which we want to add velocities.
+
+00:06:36.713 --> 00:06:42.817
+And this cone is not oriented correctly. We should have one on X, and zero on Z.
+
+00:06:46.718 --> 00:06:55.695
+We start again, shoot. The system now spawns correctly along the normals that come in HitResultInfo.
+
+00:06:57.839 --> 00:07:04.474
+Let's change the weapon to the launcher. When the projectile collides, the same particle system spawns.
+

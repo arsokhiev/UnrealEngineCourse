@@ -1,0 +1,78 @@
+
+001 Unreal-Editor-Interface
+https://docs.unrealengine.com/en-US/Engine/UI/index.html
+
+001 Unreal-Engine-YouTube-channel
+https://www.youtube.com/c/UnrealEngine
+
+001 UE-shortcuts
+https://www.unrealengine.com/en-US/tech-blog/designer-s-guide-to-unreal-engine-keyboard-shortcuts
+
+003 -printf
+http://www.cplusplus.com/reference/cstdio/printf/
+
+004 -FString
+https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/StringHandling/FString/index.html
+
+005 -UPROPERTY
+https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Reference/Properties/index.html
+
+006 -
+https://docs.unrealengine.com/en-US/ProgrammingAndScripting/ProgrammingWithCPP/UnrealArchitecture/Actors/Components/index.html
+
+008 -
+https://docs.unrealengine.com/en-US/RenderingAndGraphics/Materials/index.html
+
+009 -this
+https://en.cppreference.com/w/cpp/language/this
+
+009 Bind-C-
+https://www.geeksforgeeks.org/bind-function-placeholders-c/
+
+009 -
+https://docs.unrealengine.com/en-US/ProgrammingAndScripting/ProgrammingWithCPP/UnrealArchitecture/Timers/index.html
+
+010 -SpawnActor
+https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Actors/Spawning/index.html
+
+010 -TSubclassOf
+https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/TSubclassOf/index.html
+
+010 -TArray
+https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/TArrays/index.html
+
+011 -UFUNCTION
+https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Reference/Functions/index.html
+
+011 -Delegates
+https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Delegates/index.html
+
+012 Gameplay-Framework
+https://docs.unrealengine.com/en-US/Gameplay/Framework/index.html
+
+013 -APawn
+https://docs.unrealengine.com/en-US/Gameplay/Framework/Pawn/index.html
+
+013 -Input
+https://docs.unrealengine.com/en-US/Gameplay/Input/index.html
+
+013 -
+https://resh.edu.ru/subject/lesson/6287/conspect/46886/
+
+014 -APlayerController
+https://docs.unrealengine.com/en-US/Gameplay/Framework/Controller/PlayerController/index.html
+
+014 -
+https://ru.wikipedia.org/wiki/%D0%94%D0%B5%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5_%D1%81_%D0%BE%D1%81%D1%82%D0%B0%D1%82%D0%BA%D0%BE%D0%BC
+
+015 Modules
+https://docs.unrealengine.com/en-US/ProductionPipelines/BuildTools/UnrealBuildTool/ModuleFiles/index.html
+
+015 IWYU
+https://docs.unrealengine.com/en-US/ProductionPipelines/BuildTools/UnrealBuildTool/IWYU/index.html
+
+015 Targets
+https://docs.unrealengine.com/en-US/ProductionPipelines/BuildTools/UnrealBuildTool/TargetFiles/index.html
+
+016 Unreal-Object-Handling
+https://docs.unrealengine.com/en-US/ProgrammingAndScripting/ProgrammingWithCPP/UnrealArchitecture/Objects/Optimizations/index.html

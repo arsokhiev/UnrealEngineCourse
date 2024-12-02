@@ -1,0 +1,250 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.950 --> 00:00:13.070
+In the current lesson, we will make all UI elements invisible when our character dies and add an additional
+
+00:00:13.070 --> 00:00:18.321
+UI widget that will be displayed in spectator mode.
+
+00:00:18.850 --> 00:00:26.251
+Let's start by declaring the functions we need. The first function will be called IsPlayerAlive.
+
+00:00:26.960 --> 00:00:31.365
+It will return true when charter is alive and false when dead.
+
+00:00:34.010 --> 00:00:37.810
+And the second function will be called IsPlayerSpactating.
+
+00:00:38.489 --> 00:00:42.149
+It will return true when we are in observer mode.
+
+00:00:45.760 --> 00:00:52.385
+In the IsPlayerAlive function, we will also use the health component, so we will separate the code for getting it
+
+00:00:52.385 --> 00:00:55.784
+into a separate GetHealthComponent method.
+
+00:00:58.549 --> 00:01:06.423
+Add a forward declaration at the top of our file. Let's create a body for each function in a .cpp file.
+
+00:01:10.378 --> 00:01:17.602
+Let's start with the GetHealthComponent method. Let's copy GetWeaponComponent and replace weapon with health everywhere.
+
+00:01:24.554 --> 00:01:30.589
+We replace the code for obtaining the health component in the GetHealthPercent function.
+
+00:01:43.090 --> 00:01:45.791
+Let's write the code for the IsPlayerAlive function.
+
+00:01:47.384 --> 00:01:54.583
+In the health component, we have a method called IsDead and it returns true when our character is dead.
+
+00:01:55.503 --> 00:02:02.492
+Therefore, the character is alive when we have a health component and when the IsDead function returned false.
+
+00:02:02.492 --> 00:02:08.232
+After the death of the character, our controller is captured by the spectator pawn, so
+
+00:02:08.232 --> 00:02:12.125
+the IsDead function in our current logic will never return true.
+
+00:02:12.475 --> 00:02:16.330
+The condition that the character has died will be determined by a
+
+00:02:16.330 --> 00:02:22.966
+null pointer to the health component. Next, go to the IsPlayerSpactating function.
+
+00:02:23.925 --> 00:02:30.679
+The function for getting the current player controller in the user widget is called GetOwningPlayer.
+
+00:02:33.000 --> 00:02:40.990
+Not the best name for a getter function for a controller, but we can't do anything about it this engine API.
+
+00:02:40.990 --> 00:02:46.464
+We are in the observer state when the pointer to our controller is not null
+
+00:02:49.595 --> 00:02:55.635
+and when the controller's GetStateName function returns NAME_Spectating.
+
+00:02:56.900 --> 00:03:02.060
+We used the setter function, set the state values
+
+00:03:02.060 --> 00:03:07.729
+when the character dies, and now we are reading this value.
+
+00:03:09.535 --> 00:03:17.397
+Let's figure out the visibility of our elements, select the progress bar and in the details panel we find in the category behavior
+
+00:03:17.397 --> 00:03:24.291
+property Visibility. Click create binding. We call the function IsPlayerAlive.
+
+00:03:26.823 --> 00:03:33.877
+Find the IsPlayerAlive function we just created. Let's use the select node we are familiar with.
+
+00:03:36.177 --> 00:03:42.378
+We connect it to the output parameter of the function. Visibility is an enum, the value of which is generally responsible for
+
+00:03:42.378 --> 00:03:48.000
+whether the element will be shown or not. If IsPlayerAlive returns false, then set the element to Hidden.
+
+00:03:48.000 --> 00:03:54.842
+If true, then leave Visible. Select the crosshair element, also go to the property Visibility and select
+
+00:03:54.842 --> 00:04:00.112
+our IsPlayerAlive function, and do the same for the horizontal box.
+
+00:04:00.112 --> 00:04:09.463
+That is, we use the same function for all three elements. Let's check. We run into our sphere.
+
+00:04:09.883 --> 00:04:15.360
+All custom elements are now invisible. Let's create an additional widget.
+
+00:04:15.360 --> 00:04:24.000
+Let's call it spectator HUD and show this widget when the player is in spectator mode.
+
+00:04:24.909 --> 00:04:33.663
+We open the widget. Let's add an element called the throbber. In fact, this is a kind of preloader
+
+00:04:34.764 --> 00:04:37.465
+that will rotate when our character is killed.
+
+00:04:39.557 --> 00:04:42.471
+Let's add a text block as well.
+
+00:04:45.630 --> 00:04:48.332
+Let's enter the value into the text - dead.
+
+00:04:53.383 --> 00:04:57.297
+Let's use another element called overlay.
+
+00:04:58.315 --> 00:05:05.164
+It is a container that helps to group elements and arrange them in layers, that is, one on top of the other.
+
+00:05:05.164 --> 00:05:15.550
+Add text and preloader to this container and resize it. Let's put, for example, SizeX = 200 and SizeY also 200.
+
+00:05:17.460 --> 00:05:23.793
+Let's center the text in the container. Let's choose horizontal alignment in the middle and vertical alignment in the middle.
+
+00:05:24.299 --> 00:05:29.259
+For the preloader, we will choose an alignment in which the element completely fills the container.
+
+00:05:30.180 --> 00:05:34.760
+The throbber has several useful settings. The number of segments can be selected.
+
+00:05:35.853 --> 00:05:43.068
+For example, enter 14. 14 circles will rotate. For example, put a period of 2. They will rotate a little slower.
+
+00:05:43.827 --> 00:05:47.501
+And let's put some kind of red.
+
+00:05:53.746 --> 00:05:57.076
+Compile the widget. Go to the player HUD.
+
+00:05:57.878 --> 00:06:04.951
+Each widget can contain other widgets, so if we open the user created category in the palette, we will see the
+
+00:06:05.296 --> 00:06:14.585
+spectator HUD we have created. Add it to the viewport and make the alignment the same as for the scope.
+
+00:06:15.298 --> 00:06:20.160
+That is, anchor in the middle and alignment (0.5, 0.5) It
+
+00:06:24.169 --> 00:06:29.032
+remains to figure out the visibility of this widget. Also, go to the behavior
+
+00:06:30.309 --> 00:06:33.360
+category in the property Visibility. Click bind.
+
+00:06:35.704 --> 00:06:36.998
+create binding We
+
+00:06:39.070 --> 00:06:42.523
+call the function IsPlayerSpectating.
+
+00:06:44.130 --> 00:06:48.624
+And let's use our sPlayerSpectating C ++ function.
+
+00:06:49.962 --> 00:06:53.982
+We select select, substitute it in output.
+
+00:06:55.120 --> 00:07:00.434
+If the player is in observer mode, then Visibility = true, if not - Hidden.
+
+00:07:02.792 --> 00:07:03.855
+Checking.
+
+00:07:06.190 --> 00:07:12.520
+We run into our volume. All elements are gone, the observer widget is visible.
+
+00:07:13.652 --> 00:07:21.532
+Let's open the Spectator HUD again. Click on the text and at the bottom there is a window called Animation.
+
+00:07:21.532 --> 00:07:30.531
+Press the + button. We call the animation TextBlinking. Next, go to the track button, select the text.
+
+00:07:31.646 --> 00:07:38.718
+An element was created on the TextBlock_85 timeline. Let's rename it to DeadTextBlock.
+
+00:07:39.374 --> 00:07:46.010
+Let's add color animation. The UE has an animation editor in UMG that allows you to
+
+00:07:46.010 --> 00:07:54.307
+animate various property UI elements. Click on our text box plus track and select color and opacity.
+
+00:07:54.307 --> 00:08:03.000
+By default, we have one frame. We can move the slider by 0.35 fractions of a second
+
+00:08:03.643 --> 00:08:12.209
+and press the + button. This adds an extra keyframe. Let's make the color red.
+
+00:08:12.782 --> 00:08:21.555
+Next, move the slider to 0.7, press plus, add a keyframe and return the color to white.
+
+00:08:24.000 --> 00:08:29.133
+Thus, we have got a mini animation. It will be played real-time.
+
+00:08:29.133 --> 00:08:34.370
+You can also press the space bar to play the animation. The last thing we need to do is
+
+00:08:34.370 --> 00:08:42.659
+start playing this animation when the game starts. In the panel on the left, we have a variable that
+
+00:08:43.426 --> 00:08:50.664
+is responsible for animation, it is called TextBlinking. And on this object, we need to call the PlayAnimation function.
+
+00:08:51.412 --> 00:08:55.477
+The function has several input parameters, but we are interested in NumLoopsToPlay.
+
+00:08:55.477 --> 00:09:00.203
+If the value is set to zero, the animation will play endlessly in a loop.
+
+00:09:00.203 --> 00:09:08.551
+Widgets don't have the familiar BeginPlay function. There is an EventConstruct here. In general, you can run animation on this event.
+
+00:09:08.551 --> 00:09:13.766
+But we will all dynamically delete and add a widget to the viewport, then this event will be
+
+00:09:14.450 --> 00:09:20.605
+called every time it is added. There is another event that looks more like BeginPlay.
+
+00:09:20.605 --> 00:09:26.488
+It is called OnInitialized, and it will only be called once at the start of the game.
+
+00:09:28.980 --> 00:09:35.876
+We launch. We run into our volume and the animation of the text is also played.
+
+00:09:36.810 --> 00:09:42.710
+And the last moment. We just created a widget for our main widget
+
+00:09:42.710 --> 00:09:50.814
+and in general it would be logical to group our life, sight and weapon elements into a separate widget.
+
+00:09:50.814 --> 00:09:55.741
+And set the Visibility to the whole widget, not individual elements.
+
+00:09:55.741 --> 00:10:03.234
+But 3 elements are not so many, so this is more information for thought and possibly future refactoring.
+

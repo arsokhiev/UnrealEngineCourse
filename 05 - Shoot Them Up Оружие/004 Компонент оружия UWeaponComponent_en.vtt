@@ -1,0 +1,229 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.589 --> 00:00:09.669
+In this lesson, we will do a little refactoring. Let's create a weapon component
+
+00:00:09.669 --> 00:00:17.368
+and all the logic related to the weapon will be in it. And also create an entry point for shooting.
+
+00:00:17.368 --> 00:00:21.610
+Therefore, we will start with you a new action mapping - Fire.
+
+00:00:23.554 --> 00:00:32.180
+Add a new action mapping to project settings, input. Name it Fire and assign this
+
+00:00:32.180 --> 00:00:39.830
+mapping to the left mouse button. We will shoot by clicking on the left mouse button.
+
+00:00:42.000 --> 00:00:47.929
+We return to the content browser. Let's create a weapon component.
+
+00:00:49.521 --> 00:00:56.845
+Go to the components folder. We inherit from Actor Component.
+
+00:00:59.136 --> 00:01:02.894
+Let's call it STUWeaponComponent.
+
+00:01:04.251 --> 00:01:06.550
+Click the create class button.
+
+00:01:07.870 --> 00:01:12.890
+Our component has been created. I cleaned it up a bit beforehand. I set the
+
+00:01:12.890 --> 00:01:18.770
+bCanEverTick variable to false and removed the Tick function itself.
+
+00:01:19.660 --> 00:01:25.150
+Let's move all the logic we wrote in the first tutorial related to weapons into our new
+
+00:01:25.150 --> 00:01:30.460
+weapon component. We did this initially in the character in order to concentrate on the spawning of weapons
+
+00:01:30.460 --> 00:01:37.993
+and not to complicate everything from the very beginning with the architecture of the components. Therefore, we transfer the SpawnWeapon function first.
+
+00:01:37.993 --> 00:01:46.258
+Add it to BeginPlay in the component. Remove the SpawnWeapon from the character class.
+
+00:01:47.371 --> 00:01:52.672
+We transfer the BaseWeapon header file to the component.
+
+00:01:53.804 --> 00:02:00.434
+From the character's header file, we transfer the weapon class that we want to spawn.
+
+00:02:02.840 --> 00:02:08.399
+Add it to the protected section of the component header file.
+
+00:02:09.352 --> 00:02:16.316
+We transfer the forward declaration for BaseWeapon.
+
+00:02:17.443 --> 00:02:24.553
+Moving the declaration of the SpawnWeapon function
+
+00:02:27.490 --> 00:02:32.236
+Add a private section and insert the declaration of the SpawnWeapon function.
+
+00:02:33.099 --> 00:02:43.057
+All is ready. We have moved all the logic to the weapon component. But we need to tweak a few things. Let's go to the .cpp file.
+
+00:02:44.400 --> 00:02:51.810
+So, the SpawnWeapon function creates a weapon of the WeaponClass class in the world and then attaches
+
+00:02:52.560 --> 00:02:58.157
+this weapon to the mesh. Naturally, there is no mesh in the component, but you and I have a
+
+00:02:58.157 --> 00:03:05.234
+pointer to the owner of the component on owner, so let's include the character.
+
+00:03:05.910 --> 00:03:11.380
+And we cast the pointer to the pawn, which returns the GetOwner function to the Character class.
+
+00:03:17.610 --> 00:03:22.638
+We make a check: if our pointer is null, then we immediately exit the function.
+
+00:03:26.910 --> 00:03:34.005
+If Cast is successful, then we call the GetMesh function of the character. Also, let's rewrite the if with the weapon
+
+00:03:34.779 --> 00:03:42.244
+so that we have a uniformity: if the pointer is null, then we exit the function.
+
+00:03:42.244 --> 00:03:49.951
+It is also more readable because we are not producing indentation. One more point. Let's bring Cast to the character
+
+00:03:49.951 --> 00:03:55.590
+above the weapon, because if there is no character, then we won't even spawn the weapon.
+
+00:03:59.564 --> 00:04:09.909
+For the socket name, let's create a property so that we can change it in the blueprint. Let's name our variable WeaponAttachPointName
+
+00:04:09.909 --> 00:04:14.453
+and add it to the .h file as well. The variable must be of type FName.
+
+00:04:21.744 --> 00:04:28.924
+So, we spawned the weapon with you, attached it to the character. All perfectly. We will add the component to the character a little later.
+
+00:04:30.508 --> 00:04:36.000
+Let's declare a function that will be the entry point for shooting. Let's call it Fire.
+
+00:04:38.709 --> 00:04:46.444
+We also create the body of the function in a .cpp file. I don't always use the automatic create declaration / defenition function,
+
+00:04:46.444 --> 00:04:51.000
+because sometimes visual studio is slow and this operation takes too
+
+00:04:51.000 --> 00:04:57.732
+long. Easier to add manually. The logic will be as follows: the player will press the button for the action Fire.
+
+00:04:58.110 --> 00:05:03.420
+We will call the Fire function in the weapon component and then the Fire function of the weapon will be called
+
+00:05:03.420 --> 00:05:09.156
+. We will have two types of weapons, so all the logic of changing weapons,
+
+00:05:09.156 --> 00:05:13.080
+reloading will also be in this component. This is quite convenient because
+
+00:05:13.080 --> 00:05:19.523
+we encapsulate this logic in a component. We need to get a pointer to the weapon, so let's
+
+00:05:20.273 --> 00:05:25.481
+create a CurrentWeapon class variable instead of the local Weapon variable.
+
+00:05:27.118 --> 00:05:34.240
+Go to the .h file. Also, do not forget that all pointers must be marked at the top with the UPROPERTY macro.
+
+00:05:35.072 --> 00:05:39.761
+Otherwise, there may be problems with the garbage collector in the unreal engine.
+
+00:05:41.407 --> 00:05:43.597
+We make the default pointer null.
+
+00:05:49.171 --> 00:05:52.094
+All CurrentWeapon we now have a member variable.
+
+00:05:53.200 --> 00:05:58.180
+Therefore, we can use it in the Fire function. Let's first check
+
+00:05:58.180 --> 00:06:03.000
+that the CurrentWeapon pointer is not null. If it is zero, then we immediately exit the function.
+
+00:06:06.527 --> 00:06:12.079
+And if the pointer is not null, then we call the Fire function, which
+
+00:06:12.079 --> 00:06:21.847
+does not yet exist in our BaseWeapon class. Let's create it. Let's go to the BaseWeapon class.
+
+00:06:25.167 --> 00:06:36.584
+We add the body of the Fire function and also we need to declare it in the .h file. We copy. Add to the .h file.
+
+00:06:39.000 --> 00:06:45.695
+Let's make this function virtual right away, because we will have inheritors of the BaseWeapon class in the future.
+
+00:06:45.695 --> 00:06:49.761
+And our weapons will shoot in different ways. Therefore, we make the function virtual in
+
+00:06:49.761 --> 00:06:56.127
+order to redefine it in the future. We will write the logic of shooting in the next lessons.
+
+00:06:56.127 --> 00:07:02.200
+For now, let's just add a local log category and log "Fire".
+
+00:07:03.254 --> 00:07:11.430
+We'll call the category LogBaseWeapon and when shooting occurs, we'll just type "Fire".
+
+00:07:16.660 --> 00:07:23.920
+We all made a bunch of BaseWeapon with the weapon component, that is, when
+
+00:07:23.920 --> 00:07:28.966
+the Fire function of the weapon component is called, the Fire function of the CurrentWeapon class will be called.
+
+00:07:30.290 --> 00:07:36.050
+Add a weapon component to our character. We have already added many components, so
+
+00:07:36.050 --> 00:07:41.524
+I will not focus on this. The only thing is that the weapon component, like the
+
+00:07:41.524 --> 00:07:46.287
+health component, is purely logical - it does not need to configure attachment.
+
+00:08:04.380 --> 00:08:12.609
+The only thing left to do is bind the function. To do this, we move to the SetupPlayerInputComponent function.
+
+00:08:14.238 --> 00:08:24.602
+Add BindAction. We call it Fire. The action will take place on Pressed.
+
+00:08:26.380 --> 00:08:32.697
+And here is perhaps the most tricky moment of this entire lesson. We will now call the function not of the character,
+
+00:08:32.697 --> 00:08:39.326
+but directly of the weapon component. Therefore, we pass a pointer to this object
+
+00:08:39.326 --> 00:08:44.639
+and indicate a link to the function of our object, which we created for shooting - Fire.
+
+00:08:46.277 --> 00:08:50.387
+And also for correctness, let's add a check for our component.
+
+00:08:54.108 --> 00:08:59.185
+So, we have completed the refactoring. Let's run and watch.
+
+00:09:02.938 --> 00:09:05.339
+Go to the character's blueprint.
+
+00:09:09.316 --> 00:09:11.078
+The weapon component has been created.
+
+00:09:13.240 --> 00:09:17.050
+SocketPoint is now available in details, in the weapon category.
+
+00:09:17.050 --> 00:09:21.197
+And we specify the class for the BP_STUBaseWeapon weapon.
+
+00:09:23.904 --> 00:09:30.050
+We open the log, clean it. We start the game. The weapon spawned, that is, the refactoring
+
+00:09:30.050 --> 00:09:35.000
+was successful and by pressing the left mouse button "Fire" is printed.
+

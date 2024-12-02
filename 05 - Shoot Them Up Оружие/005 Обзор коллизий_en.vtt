@@ -1,0 +1,223 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.030 --> 00:00:10.890
+Hello everyone! In this lesson, we will briefly look at collisions. Collisions are responsible for the
+
+00:00:10.890 --> 00:00:16.620
+physical interactions of objects in the world. We have already dealt with them indirectly. In the base character class
+
+00:00:16.620 --> 00:00:22.560
+, a collision component is created - a capsule, thanks to it we do not fall through the floor, we are able to jump up
+
+00:00:22.560 --> 00:00:28.199
+steps and also crash into another character, that is, we cannot go through him through and through.
+
+00:00:28.199 --> 00:00:33.180
+Also, thanks to the collision, we can make logical trace, that is, in the code, see
+
+00:00:33.180 --> 00:00:39.000
+if the segment from point A to point B intersects any object on the scene. Thus, for example, we will do shooting
+
+00:00:39.000 --> 00:00:44.640
+with you . Before we get started, let's take a look at how to launch the console in the UE. Click on the
+
+00:00:44.640 --> 00:00:52.079
+apostrophe sign . An input field has opened in the viewport at the bottom. In this field, we can enter various debug commands.
+
+00:00:52.079 --> 00:00:58.084
+For example, let's display the number of frames per second. To do this, let's enter stat fps.
+
+00:00:59.940 --> 00:01:04.670
+Press Enter and the number of frames per second is displayed in the upper right corner.
+
+00:01:04.670 --> 00:01:10.815
+There is a huge amount of debug commands, for example, we can also display GPU statistics.
+
+00:01:10.815 --> 00:01:15.475
+To hide the debug information, it is enough to enter the same command again,
+
+00:01:15.475 --> 00:01:22.520
+or you can enter the Stat None command - this command will hide all the statistics that we have opened. Let's introduce a command
+
+00:01:22.520 --> 00:01:28.422
+called Show Collision - this command displays all collisions that are on the scene.
+
+00:01:28.422 --> 00:01:33.715
+Capsules have appeared around the characters. This is very convenient because the collision components are
+
+00:01:33.715 --> 00:01:38.900
+purely logical and are hidden in the game by default. We can set the key to open the console
+
+00:01:38.900 --> 00:01:44.516
+in project settings. The apostrophe key is not entirely obvious, so you can override it.
+
+00:01:44.516 --> 00:01:50.622
+In the search, we enter console and find a property in which we can specify the key we are interested in.
+
+00:01:50.622 --> 00:01:59.240
+Moving on to collisions. We take out the cube object and also the sphere object onto the scene. Go to the details panel
+
+00:02:00.400 --> 00:02:05.830
+and find a category called Collision. This category defines all object collision
+
+00:02:05.830 --> 00:02:12.651
+settings . We will now be interested in the property Collision Preset. The default is Default.
+
+00:02:12.651 --> 00:02:18.433
+Change preset to Custom. All properties are available for editing in this preset.
+
+00:02:20.142 --> 00:02:25.462
+The first property is Collision Enabled. This enum has several elements. The first one is
+
+00:02:25.462 --> 00:02:31.753
+NoCollision. From the name it is clear that with this setup, all collisions will be ignored. The second element is
+
+00:02:31.753 --> 00:02:37.120
+QueryOnly - if the body does not have physical simulation enabled, or we are only interested in the logical
+
+00:02:37.120 --> 00:02:42.610
+trace with the given object, then we select this element. The third element is used when the body has
+
+00:02:42.610 --> 00:02:50.467
+physics simulation enabled , and the fourth one combines the second and third options. Next comes the property, which contains the type of the object.
+
+00:02:50.467 --> 00:02:55.403
+It is called Object Type. If you open the combobox, you can see what types are available
+
+00:02:55.403 --> 00:03:03.250
+by default: world static, dynamic, pawn, and so on. Let's leave the object type as world static. Next is a
+
+00:03:03.250 --> 00:03:09.173
+table that specifies how an object of this type reacts with objects of other types,
+
+00:03:09.173 --> 00:03:14.482
+that is, how world static reacts with another world static, world dynamic, or with pawn.
+
+00:03:14.482 --> 00:03:20.073
+Objects can ignore each other, generate intersection events, or block each other.
+
+00:03:20.650 --> 00:03:26.524
+Above is the category trace responses, it has two channels defined. One is called visibility, the
+
+00:03:26.524 --> 00:03:31.330
+other camera. These channels are virtual, they are used to obtain information during
+
+00:03:31.330 --> 00:03:37.434
+logical trace. We will also see this soon. If we open the blueprint of the character.
+
+00:03:38.042 --> 00:03:45.204
+Let's select the component of the capsule. We will also find the Collision category in the details panel. You can see that
+
+00:03:45.204 --> 00:03:50.840
+by default the capsule has preset - pawn. Let's also change to Custom.
+
+00:03:51.224 --> 00:04:00.050
+Object type is set to pawn and all other objects react to block. If we now start the game, then the pawn object
+
+00:04:00.050 --> 00:04:07.242
+is blocked with the world static object, that is, we cannot go through objects of this type.
+
+00:04:07.465 --> 00:04:15.218
+If the sphere has a reaction with pawn - overlap, then we cannot go through the cube, but we can go through the sphere.
+
+00:04:15.794 --> 00:04:23.189
+The camera also has an interesting effect - it is somewhere in the middle of the character. This is due to the spring arm component.
+
+00:04:23.189 --> 00:04:28.653
+If we select it, then in the details panel we can find a property called probe channel.
+
+00:04:28.653 --> 00:04:33.728
+That is, in fact, our spring arm component also knows how to physically interact with the world.
+
+00:04:33.728 --> 00:04:40.179
+And the name of the collision channel is called camera. That is, we can change the reaction to the camera channel in the sphere
+
+00:04:40.179 --> 00:04:45.140
+and set it to Ignore. One of the reasons why there is a collision in the spring arm component
+
+00:04:45.140 --> 00:04:50.990
+is that when we are standing next to a wall, we will not be able to look behind it.
+
+00:04:50.990 --> 00:04:57.410
+Now we are quietly walking through the sphere, because the camera channel is ignored. Move on. We also
+
+00:04:57.410 --> 00:05:04.092
+have the ability to understand when we collided with an object, or when we crossed an object in the world.
+
+00:05:04.092 --> 00:05:09.850
+Let's reopen the character's blueprint and on the event graph the character has an event
+
+00:05:09.850 --> 00:05:15.716
+by default called ActorBeginOverlap. Let's print the name of the object that we are crossing.
+
+00:05:15.716 --> 00:05:21.760
+We output to the print string node and connect the other actor pin to the string pin. Additionally, we need to set the
+
+00:05:21.760 --> 00:05:28.060
+property to true, which is called generate overlap events. It is set to false by default.
+
+00:05:28.060 --> 00:05:35.045
+This is done from an optimization point of view. Let's also change the collision preset of the cube. Choose custom.
+
+00:05:35.045 --> 00:05:41.253
+Set generate overlap events to true and react to pawn with overlap. We launch.
+
+00:05:41.950 --> 00:05:47.260
+Cross the cube - prints the cube, cross the sphere prints - sphere. Similarly, you can
+
+00:05:47.260 --> 00:05:53.342
+get information about collisions. To do this, you need to activate a property called
+
+00:05:55.154 --> 00:06:02.281
+Simulation Generates Hit Events. It is at the very top and the event that occurs on collisions
+
+00:06:02.281 --> 00:06:06.410
+is called EventHit. And the last moment. Let's take a look at how
+
+00:06:06.410 --> 00:06:13.433
+you can create your own channels and object types. Find the Collision category in the project settings.
+
+00:06:14.172 --> 00:06:21.282
+There are 3 subcategories: object channels, trace channels and preset, that is, roughly speaking, we can create
+
+00:06:21.282 --> 00:06:27.290
+our own preset by clicking on the new button. We can set a rule for how some objects react with others, or we can
+
+00:06:27.290 --> 00:06:34.782
+change an existing preset. Let's create our own channel for the object. Click on the new object channel button.
+
+00:06:34.782 --> 00:06:41.061
+A window opens. Enter the name Enemy and leave the default response block.
+
+00:06:43.525 --> 00:06:50.798
+Let's create another channel. We call it Geometry and set the default behavior to Ignore.
+
+00:06:50.798 --> 00:06:55.843
+That is, all types of objects will ignore this type of object by default.
+
+00:06:55.843 --> 00:07:02.315
+In the object type, two data types immediately became available: enemy and geometry. Let's set the
+
+00:07:03.150 --> 00:07:07.106
+cube to geometry, and for the sphere, let's set the object type to enemy.
+
+00:07:07.460 --> 00:07:15.155
+We have already edited the interaction matrix. For an object of type Enemy, we set the Block reaction with an object of the Pawn type,
+
+00:07:17.060 --> 00:07:22.402
+and for a cube, which is of the geometry type, we set the Ignore reaction to pawn.
+
+00:07:24.346 --> 00:07:30.540
+Also, if we open the blueprint of the character, we can see that the collision of the pawn object has a default
+
+00:07:30.540 --> 00:07:36.065
+reaction with enemy - block, and with geometry - ignore. We start the game.
+
+00:07:37.250 --> 00:07:42.050
+We cross the cube and crash into the sphere. Thus, we can create
+
+00:07:42.050 --> 00:07:47.570
+our own types of objects, presets, channels. Everything can be fine-tuned in the Unreal Engine.
+

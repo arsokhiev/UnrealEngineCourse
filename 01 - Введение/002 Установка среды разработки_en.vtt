@@ -1,0 +1,280 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.840 --> 00:00:09.620
+Hello everyone! In this tutorial, we will install all the software we need.
+
+00:00:09.620 --> 00:00:14.017
+If you are not a beginner and are already working with the Unreal Engine, then this tutorial can be skipped.
+
+00:00:14.017 --> 00:00:18.200
+All software that we will be using is absolutely free.
+
+00:00:18.200 --> 00:00:25.088
+Let's start with Visual Studio. Download the installation file for Community version 2019.
+
+00:00:26.800 --> 00:00:28.392
+Run it.
+
+00:00:31.040 --> 00:00:36.050
+Click continue. We are waiting for the installation program for Visual Studio.
+
+00:00:36.050 --> 00:00:39.230
+I will speed up the video in many places for obvious reasons.
+
+00:00:41.885 --> 00:00:46.517
+The hub Visual Studio was opened, with which you can install various components, programs,
+
+00:00:46.517 --> 00:00:51.964
+development tools for various platforms, programming languages, and so on.
+
+00:00:51.964 --> 00:00:57.840
+We need to select in the category gaming game development with C ++. On the right you can see
+
+00:00:57.840 --> 00:01:02.280
+what will be installed directly. Most likely you do not have .net installed.
+
+00:01:02.280 --> 00:01:05.171
+It is also required for the Unreal Engine to work correctly.
+
+00:01:05.171 --> 00:01:11.834
+We will take this step a little later. We are waiting for all the necessary packages to be downloaded and installed.
+
+00:01:12.948 --> 00:01:16.661
+While we are waiting, let's also download Unreal Engine in parallel.
+
+00:01:17.260 --> 00:01:23.060
+Go to the site unrealengine.com Unreal Engine is also installed using a special
+
+00:01:23.060 --> 00:01:27.080
+program called Epic Launcher. This is a hub program with which you can
+
+00:01:27.080 --> 00:01:31.730
+install different versions of the engine. It also gives you quick access to all
+
+00:01:31.730 --> 00:01:38.150
+your projects. There is also a game store and an asset store. You will need an Epic Games account
+
+00:01:38.150 --> 00:01:42.230
+if you don't have one. You can download Epic Launcher without this account,
+
+00:01:42.230 --> 00:01:47.240
+but you won't be able to access it without an account. You can add an account using
+
+00:01:47.240 --> 00:01:53.381
+one of the available services, or completely create it from scratch using only mail.
+
+00:01:55.010 --> 00:02:01.420
+We return to the main page. In the upper right corner, click on the download button.
+
+00:02:04.720 --> 00:02:11.639
+We select the Publishing License option. Scroll down the page and click on the download now button.
+
+00:02:12.850 --> 00:02:15.142
+The Epic Launcher installer is being downloaded.
+
+00:02:20.830 --> 00:02:26.620
+We launch the installer. Click on the install button. During installation , Windows pop-up windows are
+
+00:02:26.620 --> 00:02:32.230
+also possible , in which you need to give administrator access. In each of these
+
+00:02:32.230 --> 00:02:36.490
+windows, we naturally provide access. The page also has a video from Unreal
+
+00:02:36.490 --> 00:02:42.419
+describing the installation. We are waiting for the installers to complete their work.
+
+00:02:50.189 --> 00:02:55.096
+So Epic Launcher is installed. Let's log in.
+
+00:02:55.096 --> 00:03:00.450
+Also, when logging into your account, a two-factor authorization request is possible. In this case,
+
+00:03:00.450 --> 00:03:06.220
+you will additionally have to enter an access code, which will be sent in a letter to your mail.
+
+00:03:14.485 --> 00:03:19.289
+The Epic Launcher has opened. We need to go at the top to the library tab.
+
+00:03:19.289 --> 00:03:25.080
+All versions of the engine will be located here. Click on the "+" button. We can install absolutely
+
+00:03:25.080 --> 00:03:30.180
+any binary version of Unreal Engine. Naturally, we choose the last 4.26.
+
+00:03:30.180 --> 00:03:34.950
+Click on install. It is also possible to have several different versions at the same time.
+
+00:03:34.950 --> 00:03:40.345
+We agree with the terms of use. We put the checkbox. Click accept.
+
+00:03:40.940 --> 00:03:46.970
+Select the location on the disk where we want to install Unreal Engine. And we also check that we have a
+
+00:03:46.970 --> 00:03:52.190
+checkmark in front of the Engine Source field. In the course, we will often go
+
+00:03:52.190 --> 00:03:57.686
+inside the Unreal Engine source code, so it is advisable that you also have the source code.
+
+00:03:59.620 --> 00:04:04.694
+Click the apply and install button. Again we will have to wait.
+
+00:04:08.010 --> 00:04:12.535
+In the meantime, we have installed Visual Studio and all the necessary components.
+
+00:04:13.160 --> 00:04:17.360
+A Microsoft account is not required to work with the community version, but I also recommend that
+
+00:04:17.360 --> 00:04:21.650
+you create one, it is convenient, because Visual Studio will remember all your
+
+00:04:21.650 --> 00:04:26.840
+settings regarding the account. For now, you can click on not now. Next, you are asked
+
+00:04:26.840 --> 00:04:33.090
+to choose a color scheme. I use dark colors. Click on start Visual Studio.
+
+00:04:35.249 --> 00:04:39.600
+The main Visual Studio window opens. We can already start working with the code.
+
+00:04:39.600 --> 00:04:43.290
+Create some kind of console application. Let's wait until Unreal Engine is
+
+00:04:43.290 --> 00:04:46.380
+installed and check out Visual Studio and Unreal Engine together.
+
+00:04:48.868 --> 00:04:52.079
+Unreal Engine is installed. We launch it.
+
+00:04:53.167 --> 00:04:58.562
+In the Windows window, click allow access. The Unreal Editor starts up.
+
+00:05:00.127 --> 00:05:04.610
+The project creation assistant has opened. We'll talk about it a little later, but now we select
+
+00:05:04.610 --> 00:05:11.810
+games on the first screen. On the next screen, the project blank. Click next. Choosing a
+
+00:05:11.810 --> 00:05:16.490
+C ++ project. We do not touch all other settings. Select the directory
+
+00:05:16.490 --> 00:05:22.760
+where we want to create the project. We name it test project and click the create button.
+
+00:05:23.504 --> 00:05:28.780
+We have a mistake. As I said at the beginning, we will need to install .net. Unreal Engine has
+
+00:05:28.780 --> 00:05:33.940
+additional routines that require the installation of .net. Using the
+
+00:05:33.940 --> 00:05:39.546
+Visual Studio installer, we can add or remove the components we need. We open it again.
+
+00:05:42.972 --> 00:05:46.221
+Click on the modify button.
+
+00:05:47.350 --> 00:05:53.557
+And in the components, in the desktop and mobile categories, select .net desktop development.
+
+00:05:53.557 --> 00:05:56.177
+Click on the modify button.
+
+00:05:57.807 --> 00:06:00.988
+Everything was established. We close the installer.
+
+00:06:02.200 --> 00:06:05.670
+Also close the error window and click on create project again.
+
+00:06:06.770 --> 00:06:10.400
+There is no more error. The process of creating a project has begun.
+
+00:06:15.730 --> 00:06:19.830
+The project was successfully created. Unreal Editor is working.
+
+00:06:21.630 --> 00:06:26.326
+We also have a Visual Studio project created. Let's close the editor.
+
+00:06:27.769 --> 00:06:33.410
+Visual Studio should be open, if not, then you can run the solution from your project
+
+00:06:33.410 --> 00:06:40.400
+directory . Our project can be seen in the solution explorer. We will talk about the internals of the project a
+
+00:06:40.400 --> 00:06:46.622
+little later, directly in the lessons. At the bottom you can change the font size.
+
+00:06:46.870 --> 00:06:53.530
+Click on the combobox and select, for example, 150 percent. Click on the local
+
+00:06:53.530 --> 00:07:01.180
+windows debugger button with a green triangle. Unreal Editor runs under the Visual Studio debugger.
+
+00:07:01.180 --> 00:07:05.560
+In general, we have installed all the necessary components to start development.
+
+00:07:05.560 --> 00:07:12.790
+Visual Studio and Unreal Engine. We close all windows. Epic Launcher tells us that it wants to see
+
+00:07:12.790 --> 00:07:19.330
+all our projects. It will be guided by the .uproject file. Click on fix now. We go to the
+
+00:07:19.330 --> 00:07:24.940
+library and now we will have quick access to all our Unreal projects through the Epic Launcher.
+
+00:07:28.243 --> 00:07:29.781
+Let's go back to the browser.
+
+00:07:32.534 --> 00:07:35.900
+All links will be added to the lecture. You
+
+00:07:35.900 --> 00:07:41.523
+can also read about the process of installing and configuring Visual Studio on the Unreal documentation site .
+
+00:07:43.113 --> 00:07:47.690
+Let's go further. I highly recommend using the git version control system during development.
+
+00:07:47.690 --> 00:07:53.390
+All source codes of projects can be downloaded without using git, but in the modern world
+
+00:07:53.390 --> 00:08:00.173
+without version control there is nowhere and if you still do not use git, then it's time to start doing it.
+
+00:08:00.173 --> 00:08:04.330
+You can download git from the official site. The site also has detailed documentation
+
+00:08:04.330 --> 00:08:12.648
+and a free book on using git can be accessed. We launch the installer.
+
+00:08:13.461 --> 00:08:15.638
+Click next everywhere.
+
+00:08:18.622 --> 00:08:23.125
+Git is installed. We will see how to clone a repository in the next lesson.
+
+00:08:25.630 --> 00:08:29.359
+Next, I recommend downloading some git interface program.
+
+00:08:29.359 --> 00:08:36.868
+For example, it could be smart git. It's free for non-commercial use. Perfect for educational purposes.
+
+00:08:38.430 --> 00:08:43.850
+Another popular option is the source tree. It's completely free. It is a product of
+
+00:08:43.850 --> 00:08:48.890
+Atlassian, which also develops jira and confluence. There are actually
+
+00:08:48.890 --> 00:08:54.140
+quite a few git user interface programs . You can google it. Jump. Try
+
+00:08:54.140 --> 00:09:00.760
+and find the most suitable one for yourself. Globally, they all have the same essence. And the last moment.
+
+00:09:00.760 --> 00:09:06.430
+Consider it for everyone. In the next lesson, we will also download the source archives, so
+
+00:09:06.430 --> 00:09:13.631
+if you do not have an archiver in your system, I recommend downloading and installing the free 7zip.
+

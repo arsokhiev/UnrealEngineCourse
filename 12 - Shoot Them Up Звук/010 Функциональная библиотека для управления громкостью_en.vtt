@@ -1,0 +1,301 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.017 --> 00:00:11.550
+In this lesson, we will learn how to programmatically control the volume of the Sound class. This can come in
+
+00:00:11.550 --> 00:00:17.460
+handy in a variety of situations. As I said, we can make certain classes of sounds a little quieter,
+
+00:00:17.460 --> 00:00:24.141
+others louder, and so on. And also in this lesson we will learn how to completely turn off the sound in the game.
+
+00:00:24.872 --> 00:00:29.510
+We will use a functional library to manage sounds. Let's inherit from
+
+00:00:29.510 --> 00:00:34.670
+this class for the first time. It is called BlueprintFunctionLibrary. This class
+
+00:00:34.670 --> 00:00:40.940
+combines static families of functions that are used for various purposes. These can be
+
+00:00:40.940 --> 00:00:47.060
+helper functions for working with strings, some kind of mathematical functions. For example, we
+
+00:00:47.060 --> 00:00:52.507
+used GameplayStatics with you. It is also a functional library.
+
+00:00:52.507 --> 00:01:01.196
+We will create a library of functions for working with sounds. We call it STUSoundFuncLib.
+
+00:01:03.397 --> 00:01:09.750
+And put the class in the sound directory. Click on create class.
+
+00:01:11.070 --> 00:01:18.534
+Don't forget to add a new PublicIncludePaths directory. Let's go to the header file of our library.
+
+00:01:20.874 --> 00:01:23.514
+Let's create two functions in the public section.
+
+00:01:25.387 --> 00:01:30.733
+The first function will set the volume we need for a specific Sound class.
+
+00:01:31.600 --> 00:01:34.402
+The second function would be the switch function.
+
+00:01:34.402 --> 00:01:41.397
+It will set the volume to 0 for the sound class if the current volume is not zero and vice versa.
+
+00:01:43.070 --> 00:01:48.202
+We call the first function SetSoundClassVolume. It will have two parameters: the
+
+00:01:48.202 --> 00:01:54.299
+first is a pointer to the SoundClass. In C ++, its name is USoundClass.
+
+00:01:55.927 --> 00:01:59.312
+The second parameter is the volume to be set.
+
+00:02:02.120 --> 00:02:05.520
+Add a forward declaration for USoundClass.
+
+00:02:12.000 --> 00:02:14.020
+We create a second function.
+
+00:02:16.444 --> 00:02:26.707
+It will have only one parameter - a pointer to the SoundClass. We call it ToggleSoundClassVolume. We create a body for each function.
+
+00:02:29.666 --> 00:02:36.846
+We include the SoundClass header file.
+
+00:02:40.110 --> 00:02:42.611
+Let's start with the SetSoundClassVolume function.
+
+00:02:42.856 --> 00:02:50.356
+First, we check that we have a non-null pointer to the SoundClass. If zero, then exit the function.
+
+00:02:51.065 --> 00:02:57.273
+The loudness variable is in a special structure of the Sound class called properties.
+
+00:02:59.430 --> 00:03:06.572
+Press F12. Go to the Sound Class header file. Next F12 on the structure type.
+
+00:03:07.340 --> 00:03:15.391
+And in the structure, we can see which variables we have access to: volume, pitch and many others.
+
+00:03:15.391 --> 00:03:21.981
+We only need the volume parameter. We return to our function
+
+00:03:22.990 --> 00:03:27.880
+and assign the value of our Volume parameter to the field of the Volume structure.
+
+00:03:28.760 --> 00:03:33.692
+Volume changes from zero to one, so let's put clamp just in case.
+
+00:03:34.803 --> 00:03:42.211
+Any value can be passed to a function, it's better to take care of that. Minimum value = 0, maximum = 1
+
+00:03:44.582 --> 00:03:57.982
+Let's display the volume change in the log, add a macro with a log. We name our category LogSTUSoundFuncLib.
+
+00:04:00.508 --> 00:04:05.073
+The name of the Sound class and its new volume value will be displayed in the log.
+
+00:04:16.034 --> 00:04:21.413
+Let's program the second function. We also check the pointer first.
+
+00:04:22.861 --> 00:04:28.069
+For convenience, let's create a local variable called NextVolume.
+
+00:04:29.159 --> 00:04:36.366
+Let's assign it a value of 0 if the current volume value is greater than 0 and one otherwise.
+
+00:04:42.780 --> 00:04:48.345
+And then we can use the function SetSoundClassVolume we just created.
+
+00:04:50.120 --> 00:04:52.508
+We pass the pointer to the sound class
+
+00:04:53.591 --> 00:05:02.536
+and the second parameter NextVolume. All is ready. The only thing - let's remove the log of our timer from game mode,
+
+00:05:02.536 --> 00:05:07.276
+which is called every second. He will interfere with us. We compile the project.
+
+00:05:07.930 --> 00:05:13.330
+Let's check the work of our functional library in blueprints. In the controller, let's
+
+00:05:13.330 --> 00:05:19.980
+directly add the keypress event. In the search, you can enter the key you are interested in and the corresponding
+
+00:05:19.980 --> 00:05:26.344
+event will appear on the blueprint graph. The toggle function is available in blueprint.
+
+00:05:26.344 --> 00:05:32.679
+When you press the 1 key on the keyboard, we will enable / disable the sound of the character class.
+
+00:05:33.711 --> 00:05:41.160
+When we press key 2, let's use a special node called flip-flop. It alternately
+
+00:05:41.160 --> 00:05:46.470
+launches the nodes connected to A and B. That is, with odd clicks, node A will be called,
+
+00:05:46.470 --> 00:05:53.100
+and with even clicks, node B. We will test the SetSoundCLassVolume function. For odd
+
+00:05:53.100 --> 00:05:59.143
+clicks, we will set the sound volume to the weapon class to 0.1, and for even ones, to one.
+
+00:06:01.826 --> 00:06:10.560
+Compile. And to hear better, set the volume of the sound impact class to 0. Also, increase the number of rifle cartridges.
+
+00:06:13.453 --> 00:06:16.653
+We open the log. We start the game.
+
+00:06:20.590 --> 00:06:22.158
+I clicked on 1.
+
+00:06:24.776 --> 00:06:26.821
+The toggle function works.
+
+00:06:37.574 --> 00:06:43.674
+And the SetVolume function also works. Now, in order to turn off all sound in the game, we
+
+00:06:44.040 --> 00:06:49.740
+will need to set the volume of each sound class to 0. This is not very convenient, given that there
+
+00:06:49.740 --> 00:06:54.530
+can be much more sound classes. The UE has the ability to customize
+
+00:06:54.530 --> 00:06:58.250
+relationships between classes. Let's create an additional
+
+00:06:58.250 --> 00:07:04.797
+class that we will have as the parent of all classes. Let's call it SC_Master.
+
+00:07:07.341 --> 00:07:08.730
+Open the asset.
+
+00:07:09.905 --> 00:07:18.334
+On the left in the details panel, there is a property called ChildClasses. This is an array for storing child sound classes.
+
+00:07:18.980 --> 00:07:27.381
+Let's add an element. Click on the plus. We indicate, for example, the character class itself.
+
+00:07:28.943 --> 00:07:36.960
+The corresponding nodes and also arrows appear on the graph, which lead from the master to the corresponding classes.
+
+00:07:38.251 --> 00:07:45.270
+Add the remaining elements to the array. The Sound class master will be the parent for all of our sound classes.
+
+00:07:51.060 --> 00:07:57.650
+As a result of this relationship, the parameters that we apply to the master class will automatically
+
+00:07:57.650 --> 00:08:04.092
+be applied to the children as well. We can also make more complex circuits.
+
+00:08:05.250 --> 00:08:10.008
+For example, the sound class weapon can be a child of the sound class character.
+
+00:08:14.491 --> 00:08:21.021
+And the sound impact class can be a child of the sound class weapon. That is, the scheme can be quite complex.
+
+00:08:22.386 --> 00:08:28.649
+And now with this tree of relations between classes, after we change the volume of the character class
+
+00:08:28.649 --> 00:08:33.000
+, we will also change the volume of the weapon and impact classes,
+
+00:08:33.000 --> 00:08:38.780
+because they are child classes of our character. Let's test it.
+
+00:08:48.155 --> 00:08:53.148
+We pressed 1 and now we have no character sounds, no impact, no weapon.
+
+00:08:53.632 --> 00:08:58.390
+Now, to completely turn on, turn off the sound, we just need to
+
+00:08:58.390 --> 00:09:02.334
+specify the sound class master as a parameter of our toggle sound function.
+
+00:09:12.476 --> 00:09:19.236
+Click on 1, there are no sounds. There are also no sounds in the interface. Everything works.
+
+00:09:20.072 --> 00:09:27.000
+Let's transfer the logic of enabling and disabling sounds in C ++. This functionality may be required in different places in the program.
+
+00:09:27.000 --> 00:09:35.286
+For example, in the game settings user interface. Add a new action to the project settings and call it mute.
+
+00:09:37.436 --> 00:09:40.989
+We will turn on, turn off the sound when you press the M key.
+
+00:09:44.240 --> 00:09:50.590
+One more thing. In the project settings, we can specify the default sound class
+
+00:09:50.590 --> 00:09:58.705
+that will be set to the new SoundCue upon creation. Select the sound class master we created.
+
+00:09:59.080 --> 00:10:04.600
+There is also a property - Default Media Sound Class. It is intended for other assets, we
+
+00:10:04.600 --> 00:10:11.172
+will not change it now. The global logic for turning on, turning off the sound will be in GameInstance.
+
+00:10:11.172 --> 00:10:16.625
+This class exists throughout the life of the game, so it is logical to place the functionality here.
+
+00:10:16.625 --> 00:10:21.760
+For complex work with sound, you can create your own sound manager class and, for example, also
+
+00:10:21.760 --> 00:10:28.815
+store a pointer to it in GameInstance. Add a forward declaration for the sound class.
+
+00:10:30.975 --> 00:10:38.620
+We declare a public function, which we will call ToggleVolme. It will not have any parameters.
+
+00:10:38.620 --> 00:10:47.637
+In the protected section, create a property for the master sound class. Change the category to sound.
+
+00:10:52.610 --> 00:10:55.093
+We call the property Master Sound Class.
+
+00:10:58.840 --> 00:11:01.640
+We create the body of the ToggleVolume function.
+
+00:11:03.000 --> 00:11:08.811
+We can use the functional library we have created. Let's include the header file.
+
+00:11:14.500 --> 00:11:20.528
+To enable or disable the sound, just call the ToggleSoundClassVolume function
+
+00:11:21.170 --> 00:11:28.209
+and pass a pointer to the Master Sound Class there. Go to the header file playercontroller.
+
+00:11:28.209 --> 00:11:35.811
+Add a function that will be called when the M key is pressed. We call it OnMuteSound.
+
+00:11:38.606 --> 00:11:45.676
+We create the body of the function. Add a new action.
+
+00:11:50.632 --> 00:11:54.381
+Let's include the header file GameInstance.
+
+00:12:02.708 --> 00:12:08.932
+All we need to do in this function is to call the ToggleVolume function of the GameInstance class.
+
+00:12:22.370 --> 00:12:25.491
+All the code is ready. Let's compile the project.
+
+00:12:27.073 --> 00:12:33.000
+Open the game instace blueprint. We specify the property for the Master Sound Class.
+
+00:12:34.738 --> 00:12:39.000
+We compile the blueprint, open the log and launch the game.
+
+00:12:43.220 --> 00:12:51.889
+Press the M key, also look at the console. The volume for sound class master is zero. No sound.
+
+00:12:56.857 --> 00:12:58.710
+This ends the lesson.
+

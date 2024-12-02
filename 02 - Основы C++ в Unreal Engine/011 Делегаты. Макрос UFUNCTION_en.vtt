@@ -1,0 +1,553 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.260 --> 00:00:11.498
+In this lecture we will consider delegates with you, what they are, what types they are.
+
+00:00:11.498 --> 00:00:17.006
+We will teach the BaseGeometryActor class to send events, and the hub class to subscribe to these events
+
+00:00:17.006 --> 00:00:21.437
+and, depending on the type of event, execute some specific logic.
+
+00:00:21.437 --> 00:00:27.205
+Before we start working with delegates, let's take a look at the additional UPROPERTY specifier.
+
+00:00:27.205 --> 00:00:34.875
+It is called BlueprintReadWrite. This specifier allows you to access the property on the blueprint graph.
+
+00:00:35.619 --> 00:00:40.583
+Add this specifier to all properties of the GeometryData structure.
+
+00:00:44.670 --> 00:00:48.510
+We will not add to the TimerRate property and see what the difference is.
+
+00:00:50.875 --> 00:01:00.000
+We also need access to the GeometryData in the hub class. So let's create a getter function for this object.
+
+00:01:03.050 --> 00:01:05.471
+The function will return a copy of the object.
+
+00:01:06.318 --> 00:01:11.437
+It will also have a const specifier, because it does not change the class state.
+
+00:01:14.080 --> 00:01:19.300
+Let's make this function also available in blueprints. For this, the unreal engine has a
+
+00:01:19.300 --> 00:01:22.496
+special macro called UFUNCTION.
+
+00:01:25.190 --> 00:01:30.776
+The UFUNCTION parameters need to specify a qualifier called BlueprintCallable.
+
+00:01:33.856 --> 00:01:38.408
+Thanks to this, we can call the GetGeometryData function from the blueprint of the graph.
+
+00:01:39.000 --> 00:01:42.226
+We compile the project. Let's see how it all looks in the editor.
+
+00:01:43.667 --> 00:01:45.990
+Open the blueprint CubeGeometryActor.
+
+00:01:46.620 --> 00:01:51.606
+Let's check that we have access to the function and our GeometryData object.
+
+00:01:51.606 --> 00:01:57.867
+To do this, anywhere in the graph, right-click and enter GeometryData in the search.
+
+00:01:59.758 --> 00:02:07.206
+In the filtered information, we see that the GeometryData function is available to us, in which we specified the BlueprintReadWrite specifier
+
+00:02:07.206 --> 00:02:11.464
+and also pass the GeometryData. It is located in the protected section.
+
+00:02:11.464 --> 00:02:16.130
+This blueprint is the inheritor of our main class, so we have access to it.
+
+00:02:16.502 --> 00:02:21.902
+In the upper right corner you can also see from which class this blueprint is inherited.
+
+00:02:23.480 --> 00:02:28.640
+If you pull the thread from the Return Value pin, you can access all the fields of the structure.
+
+00:02:28.640 --> 00:02:32.215
+To do this, call the Break GeometryData node.
+
+00:02:33.195 --> 00:02:39.273
+In this node, we see that we have access to all fields of the structure, except for the TimerRate field.
+
+00:02:39.273 --> 00:02:45.000
+For this property, we did not specify BlueprintReadWrite, so it is not available in this node.
+
+00:02:45.000 --> 00:02:49.526
+Thanks to this specifier, we can read these variables and also change their values.
+
+00:02:49.526 --> 00:02:53.614
+There is an additional qualifier called BlueprintReadOnly,
+
+00:02:53.614 --> 00:02:57.507
+which only permits reading the values ​​of a variable in blueprints.
+
+00:02:58.031 --> 00:03:02.460
+You can access variables in a different way. Right click on return value
+
+00:03:02.460 --> 00:03:08.430
+and select split struct pin from the menu. It looks more concise - we don't need an additional break node
+
+00:03:08.430 --> 00:03:15.540
+to access structure changes. Another way to access class variables
+
+00:03:15.540 --> 00:03:22.089
+is to click on the eye button in the My Blueprint window and select the checkbox: show inherited variables.
+
+00:03:22.697 --> 00:03:32.518
+Thanks to this, in the variables section we will be able to find our GeometryData variable and with the mouse button held down, we can
+
+00:03:32.518 --> 00:03:40.996
+directly drag it onto the blueprint graph. A mini window opens in which you can select either a setter for this variable, or a getter.
+
+00:03:42.288 --> 00:03:46.101
+Moving on to the delegates. Delegates allow you to store a reference
+
+00:03:46.101 --> 00:03:52.047
+to a method with a specific signature of an arbitrary class and call this method when necessary.
+
+00:03:53.419 --> 00:04:01.782
+You and I used delegates when we created our timer. We passed the timer to the manager with the OnTimerFired function,
+
+00:04:01.782 --> 00:04:06.550
+and every time the timer was fired, the timer manager called our function.
+
+00:04:07.110 --> 00:04:13.470
+Let's create our own delegate. To do this, go to the GeometryActor header file and
+
+00:04:13.470 --> 00:04:19.606
+declare our first delegate at the very top of the class. This is done with the DECLARE_DELEGATE macro
+
+00:04:21.073 --> 00:04:30.280
+Let's press F12 on it. We have opened the DeleagateCombinations file, where all the macros that we can
+
+00:04:30.280 --> 00:04:37.170
+use to declare our delegates are defined . The simplest version is DECLARE_DELEGATE - it takes
+
+00:04:37.170 --> 00:04:43.980
+one parameter DelegateName - this is an arbitrary name that we can give our delegate
+
+00:04:45.217 --> 00:04:49.794
+This delegate is available only in C ++, one client can subscribe to it,
+
+00:04:49.794 --> 00:04:54.870
+that is, this is the simplest form of delegate. Go ahead. MULTICAST_DELEGATE is the same as the
+
+00:04:54.870 --> 00:05:00.280
+first one, only many clients can subscribe to it. The next delegate is DYNAMIC.
+
+00:05:01.374 --> 00:05:07.464
+This delegate differs from the first in that this type of delegate is available in blueprints.
+
+00:05:08.040 --> 00:05:16.055
+multicast - respectively, in blueprints and several clients can be written (in C ++ it is also available).
+
+00:05:17.026 --> 00:05:21.780
+The following are various combinations of these delegates with parameters. That is, we
+
+00:05:21.780 --> 00:05:29.983
+see _OneParam, _TwoParams, and so on up to _NineParams.
+
+00:05:33.520 --> 00:05:39.887
+Let's declare two delegates. 1 delegate will be called for us when the color of the material of our actor has changed.
+
+00:05:39.887 --> 00:05:45.786
+It will have two parameters - this color and a name. The second delegate will be called when the color
+
+00:05:45.786 --> 00:05:52.631
+change timer has finished completely. The delegate will have one parameter, which is a pointer to the current GeometryActor.
+
+00:05:52.631 --> 00:05:57.798
+We declare DYNAMIC_MULTICAST_DELEGATE. Several clients can subscribe to it.
+
+00:05:57.798 --> 00:06:02.576
+It will be available in blueprints and will also have two parameters.
+
+00:06:03.776 --> 00:06:06.604
+The delegate will have the name FOnColoredChanged
+
+00:06:07.356 --> 00:06:13.351
+The names of all delegates in unreal must start with a capital letter F - this is a requirement of unreal.
+
+00:06:16.410 --> 00:06:20.000
+The next argument to the macro is the type of the first parameter of the delegate.
+
+00:06:21.345 --> 00:06:26.151
+The first parameter will be color. We use the FLinearColor type.
+
+00:06:28.720 --> 00:06:33.621
+The next argument is the name of the first parameter. This is a purely cosmetic parameter.
+
+00:06:33.621 --> 00:06:38.144
+It is needed exclusively for displaying the parameter name in blueprints.
+
+00:06:38.624 --> 00:06:43.789
+The next argument is the type of the second parameter. We will return the name of the actor.
+
+00:06:43.789 --> 00:06:50.381
+Therefore, we will use the FString type. And the last argument is the name of the second parameter in blueprints.
+
+00:06:50.702 --> 00:06:58.540
+Let's declare a second delegate. Copy the entire macro, remove the DYNAMIC from the name. This delegate will
+
+00:06:58.540 --> 00:07:06.630
+only be available in C ++. And it will also have one parameter. Therefore, we change TwoParams to OneParam.
+
+00:07:09.235 --> 00:07:12.478
+Let's call our delegate FOnTimerFinished.
+
+00:07:16.670 --> 00:07:23.850
+The parameter type of this delegate will be a pointer to an actor. We will return a pointer to the current BaseGeometryActor.
+
+00:07:23.850 --> 00:07:30.650
+And since this delegate is only available in C ++, we do not need to specify a parameter that is responsible
+
+00:07:30.650 --> 00:07:39.210
+for the name of the variable in blueprints. We have declared the delegates, determined how they will look like in our country.
+
+00:07:39.210 --> 00:07:45.306
+Now they need to be created in the BaseGeometryActor class. We create the OnColorChanged delegate.
+
+00:07:47.306 --> 00:07:54.458
+And so is the second delegate OnTimerFinished. Add them to the public section of the BaseGeometryActor.
+
+00:07:57.551 --> 00:08:04.265
+To subscribe to the OnColorChanged delegate in blueprints, it must be marked with the UPROPERTY macro.
+
+00:08:05.746 --> 00:08:10.667
+And for UPROPERTY, specify a qualifier called BlueprintAssignable.
+
+00:08:14.298 --> 00:08:17.934
+Very soon we will see how it all looks on the blueprint graph.
+
+00:08:18.630 --> 00:08:22.990
+The last step left for us is to call these delegates directly.
+
+00:08:26.468 --> 00:08:32.734
+We will do this in the OnTimerFired function. The first delegate will fire when the color of the material changes.
+
+00:08:35.206 --> 00:08:42.650
+In order to call all functions that are subscribed to this delegate, you need to call the delegate function called Broadcast.
+
+00:08:43.224 --> 00:08:48.015
+We see that it has parameters that we defined in the delegate signature.
+
+00:08:48.015 --> 00:08:54.380
+The first parameter is this color, and the second is the name of the actor. We can pass the value
+
+00:08:54.380 --> 00:09:00.000
+returned by the GetName function to it. The second delegate will fire when the timer has finished running.
+
+00:09:04.640 --> 00:09:11.151
+As a parameter, we will pass a pointer to the current actor, for this we will use the this keyword.
+
+00:09:16.010 --> 00:09:21.349
+First, let's see how you can subscribe to the OnColorChanged delegate in blueprints,
+
+00:09:22.068 --> 00:09:26.960
+and then subscribe to both delegates in the GeometryHub class.
+
+00:09:28.499 --> 00:09:29.810
+We compile the project.
+
+00:09:32.173 --> 00:09:40.359
+Let's open the CubeGeometryActor blueprint. If the graph does not open automatically, then click on the Open Full Blueprint Editor button.
+
+00:09:40.359 --> 00:09:44.872
+Usually the graph does not open automatically if there are no changes to it.
+
+00:09:46.921 --> 00:09:56.292
+Let's subscribe to the OnColorChanged delegate of the BeginPlay function. Pull the thread from the back and enter assign in the input field.
+
+00:09:57.140 --> 00:10:02.207
+Find our delegate OnColorChanged in the list. We select it.
+
+00:10:03.890 --> 00:10:09.930
+2 nodes were automatically created. The first is called bind, which adds the OnColoredChanged Event
+
+00:10:09.930 --> 00:10:15.282
+function to our delegate. That is, we will hit this event every time the
+
+00:10:15.282 --> 00:10:21.776
+delegate's Broadcast function is called. We see that the function has two parameters: color and name.
+
+00:10:21.776 --> 00:10:27.719
+We specified these names in the delegate signature. Let's print the color and name of the actor on the screen.
+
+00:10:27.719 --> 00:10:31.066
+To do this, we will use a function called PrintString.
+
+00:10:31.066 --> 00:10:37.017
+This node calls the AddOnScreenDebugMessage function, which we have already considered.
+
+00:10:42.230 --> 00:10:47.900
+We need to concatenate a string of color and name. To do this, we will use a special node
+
+00:10:47.900 --> 00:10:55.425
+called Append. Add a name to the first pin. We can also add an additional pin for one more line.
+
+00:10:55.425 --> 00:11:00.110
+And for example, let's add some kind of separator. In the third pin, we display the color.
+
+00:11:00.110 --> 00:11:06.020
+A node for converting color to string was automatically created. And we connect the final string to PrintString.
+
+00:11:07.756 --> 00:11:13.947
+Let's remove the BaseGeometryActor we have from the scene and edit hub a little.
+
+00:11:14.488 --> 00:11:19.769
+We clear the property GeometryClass. As a result, 10 actors will not be spawned.
+
+00:11:20.790 --> 00:11:27.180
+And also in GeometryPayloads we will leave only one element of the array. We are doing all this so that a
+
+00:11:27.180 --> 00:11:33.030
+bunch of messages from different actors on the screen are not saddened. For the element, click on the triangle and select the
+
+00:11:33.030 --> 00:11:38.775
+delete option. That is, in fact, only one geometry actor will spawn on the stage.
+
+00:11:39.553 --> 00:11:48.115
+Also let's change the TimerRate so that the color changes, for example, every second. Save and run the game.
+
+00:11:48.715 --> 00:11:54.635
+Our code works. The name of the actor and the changed color of the material are printed on the screen.
+
+00:11:55.350 --> 00:12:01.373
+Now, let's subscribe to the BaseGeometry delegates for the actor in the hub class. To begin with, in the hub header file
+
+00:12:01.373 --> 00:12:07.064
+, we will declare two functions that will be called when the corresponding delegates are triggered.
+
+00:12:09.718 --> 00:12:16.546
+Let's call the first function OnColoredChanged. The function signature must match the delegate signature.
+
+00:12:24.486 --> 00:12:31.591
+And the second function OnTimerFinished. We create a body for each function in a .cpp file.
+
+00:12:37.160 --> 00:12:41.515
+Let's add our own log category GeometryHub to the actor.
+
+00:12:51.110 --> 00:12:56.066
+In the OnColorChanged function, let's print the color and name of the actor to the console.
+
+00:13:00.330 --> 00:13:06.524
+And we will also display a message when the timer has finished working. Copy log.
+
+00:13:07.703 --> 00:13:12.779
+Change Verbosity to Error so that the text in the console is highlighted in red.
+
+00:13:14.023 --> 00:13:22.795
+Let's print Timer finished. Additionally, let's display the name of the actor. To do this, we will use the GetName function.
+
+00:13:26.553 --> 00:13:30.090
+Also, before outputting, check that the pointer to actor is
+
+00:13:30.090 --> 00:13:34.620
+not null. If it is zero, then we immediately exit the function.
+
+00:13:38.528 --> 00:13:43.353
+And the last thing we need to do is bind these functions to the corresponding delegates.
+
+00:13:45.000 --> 00:13:49.913
+On BeginPlay, you can comment out the first and second spawns - we don't need them.
+
+00:13:51.820 --> 00:13:58.543
+So, let's move on to the third spawn function. We create an actor, change its GeometryData and end spawn.
+
+00:13:58.543 --> 00:14:02.288
+Before we finish spawn, we can bind our functions.
+
+00:14:03.185 --> 00:14:06.172
+The first OnColorChanged delegate is dynamic.
+
+00:14:08.061 --> 00:14:11.123
+To add a function to a dynamic delegate,
+
+00:14:11.123 --> 00:14:15.897
+you need to use a special macro called AddDynamic.
+
+00:14:21.120 --> 00:14:27.488
+The macro takes 2 parameters. The first is a pointer to an object, and the second is a reference to the function of
+
+00:14:27.488 --> 00:14:31.370
+this object, which we will call when the delegate is triggered.
+
+00:14:31.370 --> 00:14:37.270
+The first parameter is this - a pointer to the current object of the GeometryHubActor class.
+
+00:14:38.660 --> 00:14:41.983
+And the second parameter is a reference to the OnColorChanged function.
+
+00:14:43.920 --> 00:14:46.130
+And we also need to add a second function.
+
+00:14:49.490 --> 00:14:53.065
+The OnTimerFinished delegate is not dynamic.
+
+00:14:53.065 --> 00:14:59.444
+To add functions to this kind of delegate, use the AddUObject function.
+
+00:15:01.011 --> 00:15:05.210
+Its parameters are the same: a pointer to an object and a reference to a function.
+
+00:15:13.836 --> 00:15:18.854
+So, we have made a bind for two functions. Launch editor. Let's see how it all looks.
+
+00:15:21.305 --> 00:15:25.000
+Press the play button and the program has stopped.
+
+00:15:26.283 --> 00:15:36.214
+Let's see what happened. The code stopped due to assertion. Let's see what is written in the message text.
+
+00:15:37.350 --> 00:15:42.680
+The message says that it is not possible to bind the delegate because the callback
+
+00:15:42.680 --> 00:15:45.526
+function is not marked with the UFUNCTION macro.
+
+00:15:46.624 --> 00:15:55.346
+This message is for a dynamic delegate. Let's fix the error. Go to the header file GeometryHubActor.
+
+00:15:55.972 --> 00:16:04.532
+And add UFUNCTION above the OnColorChanged function. Why this is needed we will talk a little later at the end of this section,
+
+00:16:04.532 --> 00:16:09.729
+but for now we will keep in mind that the function that we add to dynamic delegates
+
+00:16:09.729 --> 00:16:15.360
+must be marked with UFUNCTION macros. In this case, UFUNCTION macros are irrelevant
+
+00:16:15.360 --> 00:16:22.433
+to whether we want to call the given function in blueprints or not. It has to do with the engine memory model.
+
+00:16:22.906 --> 00:16:30.677
+Press the continue button. Ignore. Stop the game and recompile the project in the editor.
+
+00:16:33.778 --> 00:16:37.558
+Let's open the log. Let's clean it up. And let's re-launch our project.
+
+00:16:42.890 --> 00:16:49.677
+GeometryHub functions are called. A log is printed with the actor name and new material color.
+
+00:16:51.215 --> 00:16:55.000
+And at the very end, the GeometryHub log says that the timer has finished working.
+
+00:16:57.052 --> 00:17:03.799
+Let's take a look at a couple more things now. When we call the Broadcast function of our delegate,
+
+00:17:03.799 --> 00:17:09.370
+we pass the pointer to the current actor as a parameter, that is, in fact, a pointer to
+
+00:17:09.370 --> 00:17:18.120
+BaseGeometryActor, but in the delegate signature we specified the parameter as a pointer to the base
+
+00:17:18.120 --> 00:17:24.600
+class of the actor - AActor. In fact, when the Broadcast function is called, an automatic
+
+00:17:24.600 --> 00:17:31.172
+up-cast occurs - the conversion of a pointer from ABaseGeometryActor to a pointer to just AActor.
+
+00:17:31.595 --> 00:17:38.066
+You and I, of course, can change the signature of the delegate and explicitly indicate the signature ABaseGeometryActor.
+
+00:17:38.438 --> 00:17:45.297
+We'll do it differently. And we ourselves convert pointers to AActor to pointer to ABaseGeometryActor.
+
+00:17:45.900 --> 00:17:50.000
+To do this, Unreal has a special function called Cast.
+
+00:17:50.000 --> 00:17:56.864
+In fact, it does a dawn-cast and convert a pointer to a base class to a pointer to a derived class.
+
+00:17:57.490 --> 00:18:03.963
+The function is template. As a template parameter, it accepts the type to which the pointer needs to be converted.
+
+00:18:05.722 --> 00:18:12.899
+Check the converted pointer to nullptr, if the result is a null pointer, then exit the function immediately,
+
+00:18:13.612 --> 00:18:16.438
+and if not, let's print some message.
+
+00:18:24.199 --> 00:18:28.313
+And we will output, for example, the value of the amplitude from the GeometryData object.
+
+00:18:33.590 --> 00:18:39.418
+To do this, we can use the function that we created at the beginning of this lesson - GetGeometryData.
+
+00:18:41.185 --> 00:18:50.208
+And we turn to the Amplitude field. As a practice, I suggest you create a special function ToString for the GeometryData structure.
+
+00:18:50.208 --> 00:18:55.000
+And program it in such a way that it prints all the fields of this structure.
+
+00:18:55.606 --> 00:18:59.882
+In the log, I made a mistake in the word Display and also put a bracket in the wrong place.
+
+00:19:01.337 --> 00:19:06.652
+Let's see how we can remove an actor from the scene. To do this, actors have a special function
+
+00:19:06.652 --> 00:19:15.638
+called Destroy. Alternatively, you can do this with a function called SetLifeSpan.
+
+00:19:15.992 --> 00:19:20.580
+This function takes one parameter - this is the number of seconds after how long the actor
+
+00:19:20.580 --> 00:19:26.160
+will be removed. That is, in fact, this function starts a timer, and when this
+
+00:19:26.160 --> 00:19:35.290
+timer fires, the Destroy function is called. Let's comment out the second call. Consider another actor function
+
+00:19:36.150 --> 00:19:44.516
+called EndPlay. Let's press F12 on the actor class. In the search, enter EndPlay.
+
+00:19:46.556 --> 00:19:50.517
+This function is called on the actor before it is removed from the scene.
+
+00:19:50.957 --> 00:19:54.557
+Let's override it in the BaseGeometryActor class.
+
+00:19:59.590 --> 00:20:05.699
+We declare it in the protected section. And add the override keyword.
+
+00:20:07.287 --> 00:20:09.703
+Create the body of the function in a .cpp file.
+
+00:20:18.691 --> 00:20:25.960
+We also need to call the base class function via the Super keyword so that we don't lose any functionality.
+
+00:20:30.810 --> 00:20:36.023
+And let's just print a message in this function that the actor has been destroyed.
+
+00:20:46.380 --> 00:20:48.481
+Set the logging level to Error.
+
+00:20:50.000 --> 00:20:52.083
+Compile the project, run editor.
+
+00:20:53.486 --> 00:20:57.785
+Open the log, clear and run the game.
+
+00:21:00.000 --> 00:21:01.190
+We are waiting for a while.
+
+00:21:06.200 --> 00:21:12.873
+So, we look at the latest logs. A message was displayed that the timer was stopped, then the timer was completed.
+
+00:21:13.829 --> 00:21:19.857
+After that, pointer conversion was successful. Next, we call the Destroy function of the actor.
+
+00:21:20.000 --> 00:21:27.870
+And the message of the EndPlay function was printed. The actor left the stage. Let's take another look.
+
+00:21:30.435 --> 00:21:34.531
+We aim the camera at the cube. And that's all - the cube is gone.
+

@@ -1,0 +1,19 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.853 --> 00:00:10.112
+Hello everyone. In this lesson, we will create a component for managing the health of a character.
+
+00:00:12.122 --> 00:00:16.912
+Let's learn to take damage. Let's make an automatic renewal of life.
+
+00:00:18.106 --> 00:00:22.225
+Let's figure out how to damage a character when falling from a height.
+
+00:00:25.606 --> 00:00:33.600
+Let's add the animation of death to the character and consider the spectator mode - the observer mode, that is, the mode
+
+00:00:33.600 --> 00:00:37.213
+in which we control the free camera after the death of the character.
+

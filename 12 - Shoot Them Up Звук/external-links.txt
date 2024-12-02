@@ -1,0 +1,21 @@
+
+002 Sound-Cue-Editor
+https://docs.unrealengine.com/en-US/WorkingWithMedia/Audio/SoundCues/Editor/index.html
+
+002 Audio-System-Overview
+https://docs.unrealengine.com/en-US/WorkingWithMedia/Audio/Overview/index.html
+
+004 Play-Sound-Notify
+https://docs.unrealengine.com/en-US/AnimatingObjects/SkeletalMeshAnimation/Sequences/Notifies/index.html#playsound
+
+007 Sound-Attenuation
+https://docs.unrealengine.com/en-US/WorkingWithMedia/Audio/DistanceModelAttenuation/index.html
+
+008 Sound-stop-bug-fix
+https://lifeexe-art.gitbook.io/unreal-engine-c-course-eng/lessons/lecture-148
+
+008 -
+https://lifeexe-art.gitbook.io/unreal-engine-c-course/dopolneniya-k-urokam/lekciya-148
+
+012 Sound-Mix
+https://docs.unrealengine.com/en-US/WorkingWithMedia/Audio/Overview/index.html#soundmix

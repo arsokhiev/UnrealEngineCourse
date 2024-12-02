@@ -1,0 +1,112 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.880 --> 00:00:11.910
+In this tutorial, we will add a cosmetic thing: we will make our pickup rotate around the z-axis.
+
+00:00:12.966 --> 00:00:18.680
+The rotation angle will be calculated randomly, this will happen at the start of the game and also every time
+
+00:00:18.680 --> 00:00:24.290
+we pick up the pickup. Let's create an additional variable in the private section and call it RotationYaw.
+
+00:00:24.290 --> 00:00:28.937
+It will store the angle by which we want to rotate our pickup
+
+00:00:28.937 --> 00:00:33.860
+and will also create an additional function, which we will call GenerateRotationYaw. The name speaks
+
+00:00:33.860 --> 00:00:38.406
+for itself - this function will calculate the angle we need.
+
+00:00:39.807 --> 00:00:41.107
+Go to the .cpp file.
+
+00:00:43.779 --> 00:00:45.572
+We define the function.
+
+00:00:48.030 --> 00:00:52.920
+The rotation angle will be added every frame, so go to the Tick function. The actor function that
+
+00:00:52.920 --> 00:01:00.423
+can change the rotation is called AddActorLocalRotation, or AddActorWorldRotation.
+
+00:01:00.423 --> 00:01:04.266
+In our situation, it makes absolutely no difference which function we will use.
+
+00:01:04.676 --> 00:01:09.008
+Both of these functions in the case of our simplest object will solve the same problem.
+
+00:01:09.582 --> 00:01:15.170
+Pass the FRotator function as a parameter. All angles, except for yaw, are zero, and directly
+
+00:01:15.170 --> 00:01:19.554
+to yaw we pass the RotationYaw variable, which we now have to calculate.
+
+00:01:20.039 --> 00:01:23.360
+Each Tick will call this function and the object will
+
+00:01:23.360 --> 00:01:29.921
+rotate uniformly by the RotationYaw. We call the GenerateRotationYaw function on BeginPlay
+
+00:01:30.690 --> 00:01:35.900
+and also add a call to this function at the moment when we respawn.
+
+00:01:35.900 --> 00:01:42.942
+Thus, there will be a little variation. Each time we pick up the pickup, the rotation angle will change.
+
+00:01:44.651 --> 00:01:50.678
+And we just need to implement the GenerateRotationYaw function. Let's go into it.
+
+00:01:50.678 --> 00:01:55.622
+In this function, we need to calculate the value of the RotationYaw variable.
+
+00:01:55.622 --> 00:02:02.869
+The random number generation function is in the FMath class. We'll use a function called RandRange.
+
+00:02:03.429 --> 00:02:10.072
+This function returns a random number from a segment, the extreme points of which we pass as parameters.
+
+00:02:10.543 --> 00:02:15.500
+We will not create additional variables for these numbers, add them to the blueprint, because
+
+00:02:15.500 --> 00:02:22.160
+this is a rather minor thing. And let's create an additional variable called Direction.
+
+00:02:22.160 --> 00:02:28.422
+She will be responsible for the direction of rotation. The variable must be 1 or -1.
+
+00:02:28.853 --> 00:02:35.649
+To do this, we just need to generate a random boolean value. The corresponding function to generate is called RandBool.
+
+00:02:36.648 --> 00:02:47.945
+If this function returned true, then we assign the variable the value 1, and if false, then -1
+
+00:02:48.332 --> 00:02:53.716
+We could generate RotationYaw from the segment, for example, from -1 to 1,
+
+00:02:53.716 --> 00:02:59.293
+but then our variable can be assigned 0 and our pickup will not move.
+
+00:03:00.394 --> 00:03:01.485
+We start the game.
+
+00:03:02.925 --> 00:03:08.975
+Pickups started spinning: one clockwise, the other counterclockwise. We were so lucky.
+
+00:03:08.975 --> 00:03:15.460
+Direction was generated differently for the given two pickups. If we press shift + f1 and after
+
+00:03:15.460 --> 00:03:20.955
+that the eject button in the interface, then the controller no longer controls the character, we can safely
+
+00:03:20.955 --> 00:03:25.750
+move around the scene. If you select pickup, you can observe how the local rotation changes.
+
+00:03:25.750 --> 00:03:30.296
+Also in the interface there is a cube that can show the axes in world coordinates.
+
+00:03:30.296 --> 00:03:35.738
+We see that they are not moving. And you can also press it again and the axes will start to rotate.
+

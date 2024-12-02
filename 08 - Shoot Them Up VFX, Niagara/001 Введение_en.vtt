@@ -1,0 +1,34 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.890 --> 00:00:13.223
+In this section, we will add special effects for our game. Let's consider a system for creating them in unreal - Niagara.
+
+00:00:13.822 --> 00:00:18.132
+The course is not devoted to special effects, so we will consider it at a minimum level.
+
+00:00:18.132 --> 00:00:23.721
+We will be interested in the c ++ part: how to spawn effects, how to remove them, and so on.
+
+00:00:23.721 --> 00:00:27.534
+We will also use design materials from the shooter game project.
+
+00:00:28.811 --> 00:00:35.157
+Let's create the effects of traces of bullets, a trace effect, effects of a flash from the muzzle of a weapon.
+
+00:00:35.485 --> 00:00:41.531
+Consider physical materials. The special effects will differ depending on the surface we fall into.
+
+00:00:42.187 --> 00:00:48.210
+Let's replace the death animation with the physical relaxation of the model. For the launcher, we will also have our own effects:
+
+00:00:48.210 --> 00:00:54.819
+the explosion effect and the trace effect from the projectile. Let's add effects when damaging the character: a
+
+00:00:55.747 --> 00:01:03.040
+red screen and camera shake. When the character dies, we will add black and white posprocessing to the camera in spectator mode.
+
+00:01:03.040 --> 00:01:07.536
+There will be no homework in this section, because the topics are quite diverse.
+

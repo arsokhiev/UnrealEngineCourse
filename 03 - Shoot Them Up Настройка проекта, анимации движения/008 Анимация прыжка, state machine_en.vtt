@@ -1,0 +1,292 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.244 --> 00:00:09.812
+Hello everyone! In this lesson, we will work with the state machines in an animated blueprint
+
+00:00:09.812 --> 00:00:12.992
+and program the jumping mechanics of our character.
+
+00:00:14.934 --> 00:00:19.890
+We start with the bind key, which will be responsible for the jump. Go to project settings,
+
+00:00:21.400 --> 00:00:22.435
+to the input category.
+
+00:00:24.250 --> 00:00:27.021
+This time we create a discrete mapping - action mapping.
+
+00:00:27.580 --> 00:00:31.877
+The jump will be carried out by pressing the key that we will set.
+
+00:00:33.930 --> 00:00:35.929
+We call mapping - Jump.
+
+00:00:37.570 --> 00:00:42.432
+Assign the spacebar key.
+
+00:00:45.110 --> 00:00:48.850
+Let's go to visual studio. Let's program the jump logic.
+
+00:00:51.718 --> 00:00:55.317
+Let's create a bind for jump.
+
+00:00:56.615 --> 00:01:00.575
+To do this, copy the pointer to the PlayerInputComponent.
+
+00:01:03.935 --> 00:01:09.205
+For this type of bind, we use the BindAction function of the input component class.
+
+00:01:09.990 --> 00:01:17.550
+The first argument to the function is the name of bind, the second argument is the state of the control at which the
+
+00:01:17.550 --> 00:01:25.714
+callback will be called. Enter IE_Pressed. The next argument is the same as for all other bind - it is
+
+00:01:25.714 --> 00:01:33.710
+a pointer to the current instance of the object. We use this as usual and the last argument is the function
+
+00:01:33.710 --> 00:01:41.269
+that will be called when clicked. Here we were lucky again. The function that is responsible for the physics of the jump is
+
+00:01:41.269 --> 00:01:47.142
+already implemented in the pawn class. It is called jump. We will call it when the space bar is pressed.
+
+00:01:47.550 --> 00:01:52.572
+If we press f12, we will see that the bPressedJump flag is set in this function.
+
+00:01:52.572 --> 00:02:00.706
+And in accordance with this variable, an impulse to our actor along the z axis will be added to the next Tick. Launch editor.
+
+00:02:03.000 --> 00:02:07.884
+Let's start the game, let's press the space bar.
+
+00:02:08.648 --> 00:02:15.152
+Our character receives an impulse, finds himself in the air and returns to the ground under the influence of gravity.
+
+00:02:18.250 --> 00:02:21.740
+Fine. The jump works, that is, we have the code part ready.
+
+00:02:21.740 --> 00:02:27.873
+Let's go to the animation blueprint and set up the jump animation.
+
+00:02:29.697 --> 00:02:35.451
+Let's create a boolean variable in the blueprint that will determine if
+
+00:02:35.451 --> 00:02:42.610
+our character is in the air or not. Cast the pawn pointer to character.
+
+00:02:45.280 --> 00:02:49.749
+If you double-click on the blueprint thread, you can get an additional bullet that
+
+00:02:49.749 --> 00:02:54.700
+allows you to align the nodes using Bezier curves. So, we made a cast.
+
+00:02:54.700 --> 00:03:01.420
+And to the class of the main character. We don't need to convert the pointer to BaseCharacter.
+
+00:03:01.420 --> 00:03:08.430
+All the information you need is already in character. Enter falling and take out the IsFalling variable,
+
+00:03:08.430 --> 00:03:12.997
+which is located in the character movement component. The value of this variable is true
+
+00:03:12.997 --> 00:03:18.280
+when the character is in the air and false when on the ground. Click on promote to variable.
+
+00:03:18.280 --> 00:03:24.040
+Create a variable, call it the same - IsFalling and use it in the animation graph,
+
+00:03:24.040 --> 00:03:30.905
+that is, this is another shared variable between two graphs. Let's go to the animation graph.
+
+00:03:30.905 --> 00:03:38.261
+In the output pose, only one animation, our blend space, is currently served. Let's see how you can add
+
+00:03:38.261 --> 00:03:44.449
+jump animation here . We need a specialized node called the state machine.
+
+00:03:45.394 --> 00:03:52.152
+This node allows you to manage multiple animations in an animation blueprint and customize the transitions between them.
+
+00:03:53.451 --> 00:03:57.302
+Let's call our state machine locomotion. She will be responsible for
+
+00:03:57.302 --> 00:04:03.560
+various animations of the movement of our character and connect it to the output pose. We double-click on the state
+
+00:04:03.560 --> 00:04:09.470
+machine. In the opened graph, we see only one node, it is called entry point. This is the starting
+
+00:04:09.470 --> 00:04:17.084
+point of our state machine. We pull out the arrow from entry, in the window that opens, select the Add State item.
+
+00:04:19.310 --> 00:04:21.503
+We call our state Walk.
+
+00:04:22.827 --> 00:04:30.000
+Double click on the walk node. Inside the graph, we notice that the output value is also Animation Pose.
+
+00:04:30.297 --> 00:04:35.703
+Therefore, we return to the very top of the anim graph. Let's take our blend space from here. Press Ctrl-X.
+
+00:04:36.199 --> 00:04:43.070
+We insert it into the walk node and connect the blend space to the output animation pose.
+
+00:04:44.170 --> 00:04:51.171
+We compile our animated blueprint. We launch the project. We check that we have not broken anything.
+
+00:04:51.171 --> 00:04:55.591
+All animations remained in place. More precisely, our one running animation.
+
+00:04:55.591 --> 00:05:02.554
+We have reorganized our animated blueprint using the state machine and now we will continue to work with it.
+
+00:05:05.360 --> 00:05:12.907
+Let's see what jump animations we have. Go to the asset browser. Find the jump start animation here.
+
+00:05:12.907 --> 00:05:17.111
+This animation will only play once, when the character starts his jump.
+
+00:05:17.111 --> 00:05:22.060
+After playing the initial animation, the jump loop animation starts. It plays
+
+00:05:22.060 --> 00:05:28.212
+all the time while the character is in the air. And as soon as the character is on the ground, the
+
+00:05:28.212 --> 00:05:34.670
+jump end animation plays once . Let's start combining animation data in our state machine.
+
+00:05:34.670 --> 00:05:42.000
+We return to the animation graph of the state of the car and all our animation assets can be dragged into this graph.
+
+00:05:42.000 --> 00:05:49.381
+They will be automatically encapsulated into states. Therefore, we throw out jump start, jump end, jump loop.
+
+00:05:53.700 --> 00:06:00.956
+Let's start setting up the logic of our state machine. We take out the arrow from the walk state and connect it to the jump start.
+
+00:06:00.956 --> 00:06:05.920
+At the top of the arrow, we see that a bullet has been automatically created - this is a transition rule.
+
+00:06:05.920 --> 00:06:13.613
+That is, the condition for the transition from the walk state to the jump start state. The transition rule calculates the boolean value of the variable,
+
+00:06:13.613 --> 00:06:16.492
+at which the transition from one state to another is carried out.
+
+00:06:17.023 --> 00:06:24.560
+As you might guess, this is where we connect our IsFalling variable. If, during the movement, the character finds himself in the air,
+
+00:06:24.560 --> 00:06:31.370
+then we carry out the transition from walk to jump start and at the end of the jump start animation, the character animation
+
+00:06:31.370 --> 00:06:36.710
+should go to the jump loop animation. Let's write down the condition under which this transition
+
+00:06:36.710 --> 00:06:42.865
+will be made. To do this, we will use a special function called time remaining.
+
+00:06:42.865 --> 00:06:48.630
+We drop this node onto the graph. In brackets, we display a hint that this
+
+00:06:48.630 --> 00:06:53.550
+function will be calculated for the jump start animation. This function returns the number of seconds
+
+00:06:53.550 --> 00:06:58.980
+left in the animation. Our condition for the transition in the jump loop will be that we check the given
+
+00:06:58.980 --> 00:07:07.014
+time, that it is less than a certain epsilon, let's say 0.1 seconds. This means that the jump start animation is almost over.
+
+00:07:07.439 --> 00:07:14.266
+As soon as this condition becomes true, we go from jump start to jump loop and stay
+
+00:07:14.266 --> 00:07:24.326
+in the jump loop until the value of the IsFalling variable becomes false. We calculate the logical NOT
+
+00:07:24.326 --> 00:07:29.530
+over the given variable and pass it to result. And the final transition that remains for us to make is
+
+00:07:29.530 --> 00:07:38.291
+from the jump end state to the walk state. In this condition, we check in a similar way that the jump end animation
+
+00:07:38.291 --> 00:07:48.297
+comes to an end. We compare the remaining time of the jump end with our epsilon 0.1 and feed it to result.
+
+00:07:49.727 --> 00:07:53.488
+So, we have programmed our first state machine to
+
+00:07:54.149 --> 00:08:01.689
+transition from a run state to a jump state. Also notice that we don't have any condition between entry and walk,
+
+00:08:01.689 --> 00:08:08.264
+because the entry element is purely decorative. Compile blueprint. We launch the project.
+
+00:08:08.877 --> 00:08:16.123
+Press the space bar. The character is in the air. The jump begins and the character is on the ground.
+
+00:08:17.050 --> 00:08:22.199
+Also note that he twitches somehow unpleasantly. Let's fix this.
+
+00:08:22.199 --> 00:08:28.990
+We return to the state machine. Let's fall into jump start. Click on our jump start animation and in the details panel,
+
+00:08:28.990 --> 00:08:34.164
+notice that the animation has a property loop animation. It is set to true by default.
+
+00:08:34.164 --> 00:08:38.554
+Let's remove this, because the jump start animation for us should play only once.
+
+00:08:38.838 --> 00:08:44.408
+The jump loop animation should play in a loop, so we check that this property is true.
+
+00:08:46.316 --> 00:08:54.798
+In the jump end, we also set this property to false. Compile. We launch the project. Press the space bar.
+
+00:08:54.798 --> 00:09:00.107
+We got rid of the twitching. The animations work smoothly and the jump also works when running.
+
+00:09:00.843 --> 00:09:04.430
+Let's take a closer look at how the jump loop animation works.
+
+00:09:04.430 --> 00:09:11.192
+To do this, go to the modes window. Select geometry and drop the geometry of the linear stairs.
+
+00:09:12.160 --> 00:09:17.185
+Increase the number of steps in brush settings, let it be 45.
+
+00:09:19.240 --> 00:09:22.652
+Press play. Let's climb up the stairs.
+
+00:09:24.907 --> 00:09:31.050
+We are at the very top of the stairs. Let's jump off. The jump loop animation works and the
+
+00:09:31.050 --> 00:09:36.810
+jump end animation works on landing . This can also be checked by jumping off our platform.
+
+00:09:37.448 --> 00:09:42.290
+We will be in the air forever and the jump loop animation will play continuously.
+
+00:09:43.750 --> 00:09:46.996
+The last point in this lecture: let's open our character.
+
+00:09:49.831 --> 00:09:57.000
+We select the component of motion and in the search we find the value that is responsible for the height of our jump.
+
+00:09:57.000 --> 00:10:06.850
+It's called JumpZVelocity. By default it is equal to 420. Let's set some big value, for example 2420. Press
+
+00:10:06.850 --> 00:10:13.225
+play. We press the spacebar and our character goes flying.
+
+00:10:13.225 --> 00:10:19.665
+Thus, by controlling the value of this variable, we can influence the impulse that the character receives when jumping.
+
+00:10:19.665 --> 00:10:27.485
+We can create various trampolines. Apply superpower to our character under certain
+
+00:10:27.485 --> 00:10:36.840
+circumstances, and so on. I will put this value on default, and this is the end of the lecture.
+

@@ -1,0 +1,259 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.301 --> 00:00:10.770
+In this tutorial, we will add a respawn for players in case of death during the game. This functionality
+
+00:00:10.770 --> 00:00:17.660
+will allow us not to wait for the end of the round to re-enter the game. We will initiate the respawn in game mode, and we will
+
+00:00:17.660 --> 00:00:22.290
+encapsulate part of the functionality in the controller. There is a small problem here.
+
+00:00:22.290 --> 00:00:29.533
+Since AI and Player controller are not related to each other in any way. They inherit from the general class AController.
+
+00:00:29.533 --> 00:00:35.070
+But this will not solve our problem in any way. The respawn code must be in one place. This problem
+
+00:00:35.070 --> 00:00:41.400
+can be easily solved using a component that we will add to AI and Player controller. Let's start by
+
+00:00:41.400 --> 00:00:47.330
+creating it. Go to the components directory. Select the actor component.
+
+00:00:48.434 --> 00:00:54.868
+We name the component STURespawnComponent. Click on the create class.
+
+00:00:55.858 --> 00:01:02.635
+Let's start with the respawn time. Let's add it to the GameData structure. Copy property RoundTime.
+
+00:01:04.620 --> 00:01:12.813
+Let's call the variable RespawnTime. The units will also be seconds. Let it be five seconds by default.
+
+00:01:14.126 --> 00:01:19.922
+And let's also change clamp a bit. Set the maximum value to 20 seconds.
+
+00:01:21.290 --> 00:01:29.399
+I cleaned up the component class as usual. Added a constructor. I set the bCanEverTick flag to false and added an include for the GameModeBase,
+
+00:01:29.399 --> 00:01:34.223
+which we will need soon. We return to the header file of the component.
+
+00:01:34.223 --> 00:01:40.277
+Let's create a public function called Respawn. The function will take one parameter.
+
+00:01:40.277 --> 00:01:45.245
+This is the respawn time. The respawn timer will start inside the function.
+
+00:01:47.000 --> 00:01:54.626
+We create a private section. The first variable we need is the TimerHandle.
+
+00:01:58.150 --> 00:02:06.129
+We call it RespawnTimerHandle. The timer logic will be similar to the timer logic in the Game Mode class.
+
+00:02:06.129 --> 00:02:12.715
+It will be executed once a second, thanks to this, in the next lesson we will display the time in the interface.
+
+00:02:13.212 --> 00:02:18.654
+The next variable is responsible for the remaining respawn time - RespawnCountDown.
+
+00:02:19.920 --> 00:02:25.830
+We also need the timer update functions. Let's call it RespawnTimerUpdate.
+
+00:02:27.994 --> 00:02:31.411
+Let's create a body for each function in a .cpp file.
+
+00:02:34.540 --> 00:02:39.940
+Let's start with the Respawn function that game mode will call. The GetTimerManager function of
+
+00:02:39.940 --> 00:02:46.390
+the component class does not exist, so we will get the timer manager from the UWorld object.
+
+00:02:46.390 --> 00:02:54.278
+We check that the pointer to the world is not null. We assign the RespawnTIme value to the counter variable.
+
+00:02:56.580 --> 00:03:01.769
+Get the TimerManager through GetWorld and start the respawn timer.
+
+00:03:04.380 --> 00:03:12.565
+So, every second we call the RespawnTimerUpdate function. We will decrease the RespawnCountDown value by one.
+
+00:03:12.565 --> 00:03:16.900
+And if the value of the variable equals zero, then the waiting time has expired
+
+00:03:16.900 --> 00:03:23.503
+and we are ready to respawn. Checking the pointer to UWorld again.
+
+00:03:24.770 --> 00:03:32.170
+Next, stop the respawn timer. We call ClearTimer. After that, you need to tell
+
+00:03:32.170 --> 00:03:39.772
+game mode that the character is ready to respawn. We get a pointer to the game mode via the UWorld object.
+
+00:03:39.772 --> 00:03:47.375
+We also make Cast to our game mode type, and if the pointer is null, then we exit the function.
+
+00:03:49.155 --> 00:03:57.488
+If it is not zero, then we will call the game mode function, which does not exist yet. Let's call it RespawnRequest
+
+00:03:58.130 --> 00:04:03.860
+and pass it a pointer to the component owner's controller. We will create the component in the
+
+00:04:03.860 --> 00:04:08.500
+controllers, so it is enough to use the GetOwner function call.
+
+00:04:08.500 --> 00:04:15.000
+It is more convenient to respawn a character in the game mode itself. We have a helper function for this purpose,
+
+00:04:15.000 --> 00:04:20.750
+in which, among other things, the color of the character is set depending on the team. Plus, there may be
+
+00:04:20.750 --> 00:04:26.420
+various conditions in the game under which respawn is impossible. This way we can deny the
+
+00:04:26.420 --> 00:04:32.920
+character to respawn. We move to game mode. Let's create the RespawnRequest function.
+
+00:04:35.226 --> 00:04:37.056
+Let's create it in the public section.
+
+00:04:38.656 --> 00:04:41.985
+It will have one parameter - a pointer to the controller.
+
+00:04:43.951 --> 00:04:49.700
+In the private section, we will create a helper function called StartRespawn. It is purely cosmetic
+
+00:04:49.700 --> 00:04:55.220
+to improve the readability of our code. It will also have one parameter - a pointer to the controller.
+
+00:04:56.480 --> 00:04:58.619
+Let's create a body for each function.
+
+00:05:02.880 --> 00:05:05.891
+We need to include two header files.
+
+00:05:05.891 --> 00:05:12.434
+One of them is STUUtils, and the second is the header file for the respawn component.
+
+00:05:14.665 --> 00:05:20.420
+We start with the StartRespawn function. First, let's get a pointer to the respawn component
+
+00:05:20.420 --> 00:05:27.413
+using our functions from STUUtils. If the component is zero, then exit the function.
+
+00:05:28.543 --> 00:05:34.761
+And if not zero, then we call the respawn function, which will start the countdown timer.
+
+00:05:35.618 --> 00:05:41.017
+As an argument, we pass a parameter from the GameData.RespawnTime structure.
+
+00:05:42.866 --> 00:05:49.580
+We need to call the StartRespawn function itself in the Killed function. That is, when a notification came
+
+00:05:49.580 --> 00:05:54.790
+that someone had killed someone. We pass VictimControlelr into it, that is, the
+
+00:05:54.790 --> 00:06:01.969
+controller of the killed character. And in the RespawnRequest function, we just call ResetOnePlayer,
+
+00:06:02.490 --> 00:06:07.510
+which will spawn the character and set it to the appropriate color.
+
+00:06:10.222 --> 00:06:16.833
+Let's summarize what we have going on. If the character dies, the Killed function is called.
+
+00:06:16.833 --> 00:06:22.929
+After that, we call the StartRespawn function, which starts the respawn timer.
+
+00:06:25.865 --> 00:06:31.382
+When the timer comes to an end, we ask the game mode to respawn.
+
+00:06:31.382 --> 00:06:38.044
+In game mode, there are no conditions for the respawn restrictions, so we just call the ResetOnePlayer function.
+
+00:06:41.143 --> 00:06:45.412
+Let's add the spawning component to the Player and AI controllers.
+
+00:06:47.286 --> 00:06:49.263
+Let's start with the AI ​​controller.
+
+00:06:50.469 --> 00:06:54.190
+Add a forward declaration component to the unspawn.
+
+00:06:56.114 --> 00:06:57.564
+We declare property.
+
+00:07:02.090 --> 00:07:04.190
+And in the constructor we create a component.
+
+00:07:11.610 --> 00:07:15.000
+Also, don't forget about the header file.
+
+00:07:19.460 --> 00:07:24.150
+The same must be done in the Player controller. Let's copy the code piece by piece.
+
+00:07:29.128 --> 00:07:34.488
+Our Player controller was empty, there was not even a constructor. Therefore, we add a constructor.
+
+00:07:40.240 --> 00:07:43.093
+Copy the component respawn header file.
+
+00:07:45.918 --> 00:07:53.098
+And also the code for creating the component. All is ready. Let's check. Compile the code.
+
+00:07:54.842 --> 00:08:00.655
+Let's set the round time a little more. Let it be 15 seconds. We start the game.
+
+00:08:01.736 --> 00:08:10.852
+And we wait 5 seconds for the opponents to appear again in the game. So the respawn worked. Everything works. We were also killed.
+
+00:08:11.797 --> 00:08:18.588
+We made a respawn. True, 2 seconds before the end of the round, so we actually respawned 2 times.
+
+00:08:18.588 --> 00:08:23.050
+Let's handle this situation. Let's add the minimum time until the end of the round,
+
+00:08:23.050 --> 00:08:28.210
+when respawn is possible. The variable for the minimum respawn time can be added
+
+00:08:28.210 --> 00:08:35.380
+both in game data and simply in game mode. I will create a constant in the game mode .cpp file. This parameter is not very
+
+00:08:35.380 --> 00:08:42.587
+significant to be configurable in the blueprint. Let's call the constant MinRoundTimeForRespawn.
+
+00:08:44.686 --> 00:08:46.912
+Let's assign a value of 10 seconds.
+
+00:08:50.090 --> 00:08:56.120
+Let's move to the StartRespawn function and add a check for the minimum time.
+
+00:08:57.018 --> 00:09:01.421
+Create a local variable of type boolean. Let's call it RespawnAvailable.
+
+00:09:03.220 --> 00:09:09.660
+It will accept the value true if the following condition is met: the round time at the respawn request
+
+00:09:09.660 --> 00:09:16.020
+must be greater than the sum of the constant with the respawn time. That is, when a respawn occurs
+
+00:09:16.020 --> 00:09:21.870
+, it is necessary that at least 10 seconds remain. If you do not add the respawn time,
+
+00:09:21.870 --> 00:09:26.730
+then you will have to control the dependence between these two variables,
+
+00:09:26.730 --> 00:09:31.860
+because, for example, you can set the respawn time at 30 seconds, and the minimum time required for
+
+00:09:31.860 --> 00:09:38.076
+respawn at 10 seconds. This combination will not make sense when, for example, 15 seconds remain.
+
+00:09:39.710 --> 00:09:44.344
+If this condition is not met, then we exit the function.
+
+00:09:46.335 --> 00:09:49.717
+We will not check this now in the editor. The condition is quite simple.
+

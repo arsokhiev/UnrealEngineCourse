@@ -1,0 +1,177 @@
+WEBVTT
+
+0
+00:05.684 --> 00:10.650
+In this lesson, we have our own work. It is necessary to create the main menu button,
+
+1
+00:10.650 --> 00:16.050
+by clicking on which we will return to the main menu. The button needs to be added to both the pause widget
+
+2
+00:16.050 --> 00:22.359
+and the game over widget. That is, you can create one widget in which the button will be located:
+
+3
+00:22.359 --> 00:28.800
+click on it and get to the main menu. The name of the menu level will be stored in the GameInstance class.
+
+4
+00:30.446 --> 00:35.906
+Let's start solving the task. Let's start by adding a c ++ class for a new widget.
+
+5
+00:39.907 --> 00:43.688
+Let's call the class STUGoToMenuWidget.
+
+6
+00:45.452 --> 00:47.191
+Click on the create class button.
+
+7
+00:48.630 --> 00:55.268
+In the GameInstance class, create a new property that will hold the name of the menu level.
+
+8
+00:57.526 --> 01:02.574
+We name it MenuLevelName. The default will also be None.
+
+9
+01:03.225 --> 01:08.330
+And create a getter for this property.
+
+10
+01:10.380 --> 01:18.970
+Go to the GoToMenu header file for the widget. We need a property for the button.
+
+11
+01:21.480 --> 01:27.533
+We name the button GoToMenuButton. Add a forward declaration for the UButton class.
+
+12
+01:29.960 --> 01:33.920
+We override the NativeOnInitialized function.
+
+13
+01:35.240 --> 01:40.923
+And in the private section, add a function that will be called when this button is pressed.
+
+14
+01:42.709 --> 01:45.246
+We call the function OnGoToMenu.
+
+15
+01:47.412 --> 01:54.526
+Go to the .cpp file and create a body for each of the functions.
+
+16
+02:03.894 --> 02:10.770
+We include all the necessary header files.
+
+17
+02:12.248 --> 02:17.743
+In the NativeOnInitialized function, add a callback function to the OnClicked delegate.
+
+18
+02:24.253 --> 02:28.054
+In the OnGoToMenu function, a menu level must be opened.
+
+19
+02:31.527 --> 02:36.104
+In fact, you and I can copy all the code that is in the menu widget.
+
+20
+02:40.715 --> 02:44.277
+Copy the code and paste it into the OnGoToMenu function.
+
+21
+02:46.718 --> 02:51.588
+We need to open the menu level, for this we call the GetMenuLevelName function.
+
+22
+02:55.371 --> 02:59.464
+Replace the message if you forgot to specify the name of the level menu.
+
+23
+03:00.674 --> 03:05.572
+And we will also create our own logging category for this widget.
+
+24
+03:09.148 --> 03:11.968
+Let's change the logging category in UE_LOG.
+
+25
+03:13.550 --> 03:15.260
+And we have everything ready. We start.
+
+26
+03:17.896 --> 03:23.066
+Create a blueprint widget, call it WBP_GoToMenu.
+
+27
+03:25.584 --> 03:31.267
+Open asset. We can copy the entire button from any widget.
+
+28
+03:33.658 --> 03:39.775
+In the SizeBox, set the size to content to true and change the text to the main menu.
+
+29
+03:41.860 --> 03:50.570
+Reparent the blueprint. We specify STUGoToMenuWidget as the parent class
+
+30
+03:51.204 --> 03:54.690
+and name the Go To Menu Button.
+
+31
+03:57.609 --> 04:04.423
+Add a button to game pause. First, we can wrap the size box in a horizontal box.
+
+32
+04:09.250 --> 04:18.500
+Add our widget to a new horizontal box and also add a spacer between these buttons.
+
+33
+04:22.086 --> 04:24.730
+For x we ​​indicate the value 50. We
+
+34
+04:28.283 --> 04:30.894
+do the same in the game over widget.
+
+35
+04:34.667 --> 04:37.300
+Let's check. We start the game.
+
+36
+04:38.816 --> 04:49.188
+We press pause. Click main menu. We have an error in editor. We have not specified the name of the menu level in GameInstance.
+
+37
+04:49.608 --> 04:52.486
+Actually, an error message should have printed.
+
+38
+04:52.923 --> 05:00.530
+We have a copy-paste error. Checking for None requires the name of the menu level. Correcting the moment.
+
+39
+05:02.450 --> 05:09.845
+Compile in the editor. We open the log. We start the game. We pause.
+
+40
+05:09.845 --> 05:17.784
+Click on the main menu button. The message is now printed. Let's set the name of the level to GameInstance.
+
+41
+05:19.779 --> 05:20.690
+MenuLevel
+
+42
+05:24.000 --> 05:30.183
+Compile. We check again. We pause and return to the main menu.
+
+43
+05:31.168 --> 05:35.570
+On the last screen we have the same widget with a button and of course everything works.

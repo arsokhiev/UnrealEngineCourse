@@ -1,0 +1,655 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.220 --> 00:00:12.577
+This tutorial will be one of the biggest. In it we will add the ability to select a level in the main menu.
+
+00:00:12.577 --> 00:00:18.900
+I have added some images in advance. One of them is called Frame. This frame will be displayed
+
+00:00:18.900 --> 00:00:24.300
+around the selected level and also added three pictures that will symbolize three
+
+00:00:24.300 --> 00:00:31.018
+different levels. But so far they do not carry any semantic load - these are just screenshots from our test level.
+
+00:00:31.900 --> 00:00:39.340
+So, let's create a new widget. We call it WBP_LevelItem. This widget will represent
+
+00:00:39.340 --> 00:00:46.653
+one tile for level selection. Open this asset. This widget will have several elements.
+
+00:00:46.653 --> 00:00:52.210
+We will need to group them by layers. We need a UI element that we already know.
+
+00:00:52.210 --> 00:00:58.180
+It's called Overlay. Add it to the element tree and set SizeToContent to true.
+
+00:00:58.970 --> 00:01:03.680
+We need an Image element. In the first image, we will keep a frame to
+
+00:01:03.680 --> 00:01:08.619
+represent the highlighted level. In the property Image, set the Frame texture.
+
+00:01:08.619 --> 00:01:14.109
+In the second image, we will store a texture that is a preview of our level.
+
+00:01:14.109 --> 00:01:20.513
+Let's select any of the added pictures for each of the images and align in the middle.
+
+00:01:23.200 --> 00:01:29.368
+Next, we need a text block that will display the name of the level.
+
+00:01:31.274 --> 00:01:39.174
+Let's align the text to the lower left edge. I also selected an adequate value for the indents:
+
+00:01:41.727 --> 00:01:44.752
+25, 2, 4, 20
+
+00:01:45.732 --> 00:01:50.754
+We also need a button element in order to respond to click events.
+
+00:01:50.754 --> 00:01:56.879
+Add it to the topmost layer. We do the alignment. We fill the space in width and height.
+
+00:01:56.879 --> 00:02:03.760
+Find a property called RenderOpacity. It is responsible for the alpha of the UI element. We'll set it to 0
+
+00:02:03.760 --> 00:02:09.091
+and the button will just be transparent. And also set the cursor to hand.
+
+00:02:10.622 --> 00:02:16.264
+For the Frame image, we can set the default Visibility value to Hidden.
+
+00:02:18.006 --> 00:02:23.817
+The visual part of the widget is ready. Let's see how it will be added to the menu widget.
+
+00:02:25.278 --> 00:02:33.170
+Go to the content browser. Open the widget menu. We will dynamically add a LevelItem to a horizontal box,
+
+00:02:33.170 --> 00:02:43.187
+which we will place under the Main Menu heading. We'll also add another Spacer to separate the horizontal box from the button.
+
+00:02:43.187 --> 00:02:47.740
+By analogy, as we did the statistics table, we will dynamically
+
+00:02:47.740 --> 00:02:53.798
+add LevelItem widgets to the horizontal box and very soon we will create an array of levels,
+
+00:02:53.798 --> 00:03:01.858
+which will store all the data we need. We will create the logic for adding LevelItem in the widget menu.
+
+00:03:01.858 --> 00:03:07.840
+Our widget is quite simple, but if the functionality in this widget increases,
+
+00:03:07.840 --> 00:03:14.230
+then I recommend adding LevelItem not to the horizontal box, but to create a special widget.
+
+00:03:14.230 --> 00:03:22.450
+Call it, for example, LevelSelector and encapsulate the logic for creating a LevelItem inside this widget, and in the main menu,
+
+00:03:22.450 --> 00:03:29.576
+just insert a whole widget in the middle. Let's create a C ++ class for LevelItem.
+
+00:03:32.622 --> 00:03:35.233
+We inherit the class from UserWidget.
+
+00:03:38.183 --> 00:03:41.686
+We name the class STULevelItemWidget.
+
+00:03:44.401 --> 00:03:53.390
+Click on create class. We start with the CoreTypes header file. We need an additional structure
+
+00:03:53.390 --> 00:04:00.245
+in which all the data for the LevelItem will be stored. We create a structure.
+
+00:04:05.000 --> 00:04:08.263
+We call it FLevelData.
+
+00:04:11.650 --> 00:04:15.905
+Copy the property macro, the categories will also be game.
+
+00:04:19.740 --> 00:04:22.876
+The first field of the structure will be of type FName.
+
+00:04:23.822 --> 00:04:29.918
+It will contain the name of the level LevelName, the default can be set to None.
+
+00:04:31.979 --> 00:04:38.200
+The second field of the structure will also have the FName type, it will store the name of the level that we want to display
+
+00:04:38.200 --> 00:04:43.570
+in our LevelItem, that is, there can be one level name. It is directly responsible
+
+00:04:43.570 --> 00:04:49.369
+for loading the map, and for display we can use any other string literal.
+
+00:04:50.269 --> 00:04:56.410
+The third field of the structure is a pointer to the texture. In this field we will store a picture
+
+00:04:56.410 --> 00:05:02.897
+for displaying in a LevelItem. We call the property LevelThumb, from the word thumbnail.
+
+00:05:05.525 --> 00:05:14.230
+We also need a new delegate that will pass data from LevelItem to MainMenu. We will
+
+00:05:14.230 --> 00:05:21.678
+understand which level is chosen. We name the signature FOnLevelSelectedSignature.
+
+00:05:23.228 --> 00:05:32.230
+The parameter will be of type FLevelData. Let's indicate it by a constant link. Moving on. Move
+
+00:05:32.230 --> 00:05:41.081
+to the GameInstance header file. Let's include the header file CoreTypes. We need the FLevelData type.
+
+00:05:43.871 --> 00:05:47.930
+We need a property in which we will set up all the data
+
+00:05:47.930 --> 00:05:54.507
+for the levels of our game. This will be an array of type FLevelData.
+
+00:05:56.250 --> 00:06:01.892
+Let's call it LevelsData. We will no longer configure StartupLevelName manually.
+
+00:06:02.390 --> 00:06:06.470
+This will happen automatically depending on which element of the
+
+00:06:06.470 --> 00:06:12.514
+array is selected. Therefore, it is reasonable to remove this variable in the private section.
+
+00:06:14.816 --> 00:06:19.450
+Let the variable type be FLevelData.
+
+00:06:21.510 --> 00:06:23.960
+Change the gettter function.
+
+00:06:26.350 --> 00:06:31.538
+We also need a setter function that will set the value of this variable.
+
+00:06:38.972 --> 00:06:46.730
+And also a function is needed that will return the LevelsData value. It is more correct to return a
+
+00:06:46.730 --> 00:06:53.570
+given value by a constant reference, so as not to copy the entire array. We will not use this optimization now
+
+00:06:53.570 --> 00:06:59.090
+, so as not to clutter up the code. So the lesson will be big enough.
+
+00:06:59.930 --> 00:07:06.320
+GameInstance has been sorted out as well. In the GameInstance blueprint, we will set up all the data for our levels.
+
+00:07:06.320 --> 00:07:11.060
+Property of the menu name has not changed, and the variable with the level data that we
+
+00:07:11.060 --> 00:07:16.550
+will load has private access. It will be installed automatically in our code.
+
+00:07:16.550 --> 00:07:21.802
+Copy the STUCoreTypes header file and go to LevelItemWidget.
+
+00:07:21.802 --> 00:07:29.812
+Add the heading STUCoreTypes. We need several forward declarations: a button, a
+
+00:07:30.999 --> 00:07:32.217
+text block,
+
+00:07:34.588 --> 00:07:43.816
+and an image class. In the protected section, we will create all the properties for the elements of our widget.
+
+00:07:46.310 --> 00:07:51.922
+The first property is of type UButton. We name it LevelSelectButton.
+
+00:07:54.441 --> 00:07:59.778
+The next property is LevelNameTextBlock.
+
+00:08:03.590 --> 00:08:08.501
+Next, we create a property for the level picture. We name it LevelImage.
+
+00:08:13.078 --> 00:08:18.469
+And the last property is a picture for the frame. We name it FrameImage.
+
+00:08:19.427 --> 00:08:23.484
+As usual, we need the NativeOnInitialized function.
+
+00:08:25.373 --> 00:08:32.220
+Next, we create a private section. We need a variable of the FLevelData type, which will refer
+
+00:08:32.220 --> 00:08:39.032
+directly to this LevelItem, that is, we will set the LevelData to this widget.
+
+00:08:40.848 --> 00:08:46.816
+A callback function is required, which will be called when the LevelSelectButton button is clicked.
+
+00:08:48.345 --> 00:08:54.338
+Let's call it OnLevelItemClicked. We create a public section.
+
+00:08:56.750 --> 00:09:01.585
+Let's add a delegate with the type we created in STUCoreTypes.
+
+00:09:04.440 --> 00:09:06.582
+Let's call it OnLevelSelected.
+
+00:09:08.992 --> 00:09:14.805
+And we also need public methods. The first one will be called SetLevelData.
+
+00:09:15.456 --> 00:09:20.060
+When creating this widget in the method, we will set the data corresponding to it.
+
+00:09:24.106 --> 00:09:30.289
+We also need a getter function that will return the stored data in the widget.
+
+00:09:35.450 --> 00:09:41.710
+And we also have a function that will be called SetSelected. It will have one parameter,
+
+00:09:41.710 --> 00:09:47.918
+with the help of which we will understand whether this widget is selected or not. And depending on the value of the parameter,
+
+00:09:47.918 --> 00:09:54.678
+make the FrameImage visible or invisible. Let's create a body for each function in a .cpp file.
+
+00:10:02.422 --> 00:10:05.334
+Let's include the header files that we need,
+
+00:10:05.334 --> 00:10:10.703
+and we need the header files for the UI elements that we use in this widget: a button, a
+
+00:10:10.703 --> 00:10:18.120
+text block and a picture. In the initialization function, add a callback for the LevelSelectButton button.
+
+00:10:23.470 --> 00:10:29.807
+When we click on the button, the OnLevelItemClicked function is called. The function code is quite simple.
+
+00:10:29.807 --> 00:10:36.929
+In it, we will call the OnLevelSelected delegate. Broadcast and transmit LevelData.
+
+00:10:41.254 --> 00:10:44.660
+In the SetLevelData function, at the very beginning, we need
+
+00:10:44.660 --> 00:10:49.340
+to assign the LevelData variable the value of the Data parameter of the function.
+
+00:10:50.960 --> 00:10:54.384
+Then we update the value in the text block.
+
+00:10:58.970 --> 00:11:05.696
+We call the function text of the SetText block. The parameter type of the FText function,
+
+00:11:05.696 --> 00:11:10.533
+therefore, we need to convert a variable of the FName type to FText.
+
+00:11:10.533 --> 00:11:14.260
+This can be done using the FText static function
+
+00:11:14.260 --> 00:11:20.738
+called FromName. We pass the LevelDisplayName field of the object of our structure to the function.
+
+00:11:24.038 --> 00:11:27.239
+And also set the image of the level.
+
+00:11:30.283 --> 00:11:36.636
+We need a function of the UImage class called SetBrushFromTexture.
+
+00:11:41.246 --> 00:11:48.831
+We pass into it the field of the object of our LevelThumb structure, which contains the pointer to the texture.
+
+00:11:50.395 --> 00:11:56.485
+And the last function that we need to implement in this class is the SetSelected function.
+
+00:11:58.050 --> 00:12:06.225
+Everything is simple here. We need to set the Visibility for the FrameImage depending on the IsSelected parameter.
+
+00:12:11.440 --> 00:12:17.215
+It remains to write the code for creating the LevelItem in the menu widget. In the header file of the
+
+00:12:17.215 --> 00:12:23.777
+widget menu, we also need STUCoreTypes. Copy the header file. We insert.
+
+00:12:25.579 --> 00:12:29.779
+We need a forward declaration of the UHorizontalBox class.
+
+00:12:29.779 --> 00:12:34.263
+We will add the created LevelItem widgets to the horizontal box.
+
+00:12:35.469 --> 00:12:39.038
+A forward declaration of the USTUGameInstance class will be required.
+
+00:12:40.680 --> 00:12:44.278
+And also a forward declaration for USTULevelItemWidget.
+
+00:12:46.096 --> 00:12:49.177
+Add a property for the horizontal box.
+
+00:12:50.481 --> 00:12:52.925
+Let's call it LevelItemsBox.
+
+00:12:56.114 --> 00:13:01.105
+We also need a property that will store the class of the created widget.
+
+00:13:01.891 --> 00:13:04.612
+Let's call it LevelItemWidgetClass.
+
+00:13:10.460 --> 00:13:16.622
+Next, we need an array that will store pointers to the created widget objects.
+
+00:13:18.702 --> 00:13:23.216
+The array item type will be USTULevelItemWidget.
+
+00:13:25.461 --> 00:13:28.184
+Let's call the array LevelItemWidgets.
+
+00:13:32.170 --> 00:13:39.410
+Also, in the private section, add a helper function called InitLevelItems. This function will be the main
+
+00:13:39.410 --> 00:13:46.481
+logic for creating buttons-tiles of our levels. The next function is OnLevelSelected.
+
+00:13:46.481 --> 00:13:52.111
+This function will be a callback function for the delegate that we created in the LevelItemWidget.
+
+00:13:52.111 --> 00:13:56.489
+In fact, it will be called when we clicked on one of the level selection buttons.
+
+00:13:59.340 --> 00:14:01.591
+Let's declare the last helper function.
+
+00:14:01.591 --> 00:14:05.500
+It will return a pointer to our concrete USTUGameInstance class.
+
+00:14:08.585 --> 00:14:11.673
+We create functions in a .cpp file.
+
+00:14:16.321 --> 00:14:20.717
+The GetSTUGameInstance function can be placed at the very end of the file.
+
+00:14:22.373 --> 00:14:25.772
+Let's start with her.
+
+00:14:27.490 --> 00:14:32.002
+If the pointer to the world is null, then we return nullptr.
+
+00:14:32.860 --> 00:14:37.840
+If not, then we return the pointer using the GetGameInstance template function.
+
+00:14:43.730 --> 00:14:46.517
+Let's move on to the InitLevelItems function.
+
+00:14:47.004 --> 00:14:55.174
+We will call it once in the NativeOnInitialized function. We can add this call right away.
+
+00:14:57.460 --> 00:15:03.677
+Create a local variable that will hold a pointer to STUGameInstance.
+
+00:15:06.223 --> 00:15:09.165
+If the pointer is null, then we immediately exit the function.
+
+00:15:11.660 --> 00:15:15.000
+Next, let's check the assertion using the checkf macro.
+
+00:15:16.895 --> 00:15:21.540
+Let me remind you that the first parameter is the condition that we want to check. Let's check
+
+00:15:21.540 --> 00:15:26.801
+that the size of the level array is not 0. That is, we have data for at least one level.
+
+00:15:26.801 --> 00:15:29.838
+Otherwise, our game is meaningless.
+
+00:15:31.901 --> 00:15:35.990
+And the second parameter is a text message that is printed
+
+00:15:35.990 --> 00:15:41.614
+if the condition is violated. We will display a message that the level array must not be empty.
+
+00:15:45.226 --> 00:15:52.447
+We also forgot to include the header files. Let's include the header file HorizontalBox.
+
+00:15:54.077 --> 00:15:57.679
+And the header file STULevelItemWidget.
+
+00:16:01.645 --> 00:16:05.314
+Checking the LevelItemsBox pointer to nullptr.
+
+00:16:06.352 --> 00:16:08.072
+If it is zero, then exit the function.
+
+00:16:11.560 --> 00:16:17.590
+If everything is OK, then we call the ClearChildren function for clearing the child elements, otherwise,
+
+00:16:17.590 --> 00:16:23.511
+suddenly, in the editor, someone added test tiles, as we actually did with you.
+
+00:16:25.150 --> 00:16:32.915
+After that, we create a main loop in which we will iterate over all the elements of the LevelsData array.
+
+00:16:36.253 --> 00:16:42.596
+We create a local variable, call it LevelItemWidget and assign the value to
+
+00:16:42.596 --> 00:16:49.760
+this pointer, which is returned by the CreateWidget function and create a USTULevelItemWidget.
+
+00:16:52.274 --> 00:16:55.555
+We pass the widget class as the second parameter.
+
+00:17:00.030 --> 00:17:04.064
+If the pointer is null, then we call the continue operator.
+
+00:17:06.240 --> 00:17:11.709
+If not, then we call the LevelItemWidget function, which is called SetLevelData
+
+00:17:11.709 --> 00:17:17.977
+and pass the current element of the LevelData array. After that, subscribe to the OnLevelSelected delegate.
+
+00:17:22.994 --> 00:17:31.329
+Next, the current LevelItemWidget must be added to the LevelItemsBox. We call the horizontal boxing function AddChild.
+
+00:17:32.400 --> 00:17:42.775
+And we pass a pointer to the widget into it. We also add this pointer to the LevelItemWidgets widget array.
+
+00:17:46.239 --> 00:17:50.730
+The logic for creating LevelItem widgets is ready. Let's now deal
+
+00:17:50.730 --> 00:17:58.022
+with the OnLevelSelected function. We get into it when the user clicks on one of the tiles.
+
+00:17:59.090 --> 00:18:03.828
+Let's create a local variable for STUGameInstance right away.
+
+00:18:05.700 --> 00:18:13.634
+After we clicked on one of the LevelItem buttons, we must immediately change the value of the StartupLevel variable.
+
+00:18:13.634 --> 00:18:19.710
+Therefore, we set the value of the start level in accordance with the data that came
+
+00:18:19.710 --> 00:18:25.890
+when the delegate was called. After that, you can go through the entire array of widgets and determine which one has
+
+00:18:25.890 --> 00:18:31.728
+now been selected. This is necessary in order to make visible or invisible the frame around the
+
+00:18:31.728 --> 00:18:39.428
+picture with the image of the level. We will define this by the name of the level. In our case, this approach
+
+00:18:39.428 --> 00:18:45.170
+will work, but in general it is possible to admit the situation that in any project a list is possible
+
+00:18:45.170 --> 00:18:52.040
+in which several levels will have the same name. In this case, you need to create an additional variable,
+
+00:18:52.040 --> 00:18:59.090
+for example, of type int32, which will unambiguously determine the level ID, and make a comparison using
+
+00:18:59.090 --> 00:19:04.889
+this variable. Create local variable IsSelected. This variable will take on the
+
+00:19:04.889 --> 00:19:13.225
+value true if the name of the level that came in the parameter is equal to the name of the level of the current element of the
+
+00:19:13.225 --> 00:19:20.644
+array of our widgets. To get the level data, we created a special function GetLevelData.
+
+00:19:25.000 --> 00:19:32.275
+And we call the SetSelected function, into which we pass this IsSelected variable.
+
+00:19:33.085 --> 00:19:38.434
+Thus, the frame will be displayed only if we clicked on the button of this LevelItem.
+
+00:19:40.795 --> 00:19:48.985
+Let's adjust the OnStartGame function according to our changes. We will also create a local variable STUGameInstance.
+
+00:19:50.683 --> 00:19:57.857
+And pass the name of the Startup level to the OpenLevel function. We removed the check for None here.
+
+00:19:57.857 --> 00:20:04.120
+In a couple of seconds we will understand why we did this. Go to the InitLevelItems function
+
+00:20:04.120 --> 00:20:10.876
+and write the following code: if the Startup level is not set for us,
+
+00:20:13.385 --> 00:20:16.496
+that is, the LevelName field is None,
+
+00:20:20.680 --> 00:20:27.448
+then we can directly call the OnLevelSelected function and pass the first element of our levels array there.
+
+00:20:27.448 --> 00:20:33.190
+This is safe because at this point in the code we are already sure that our array is not empty.
+
+00:20:35.751 --> 00:20:42.801
+And if the name of the level is not None - this situation is possible, when we selected the level,
+
+00:20:42.801 --> 00:20:47.820
+played the game and returned to the main menu, the initialization function was called
+
+00:20:47.820 --> 00:20:54.678
+again in this widget , but StartupLevel is no longer None, so we can call the OnLevelSelected function
+
+00:20:54.678 --> 00:20:59.070
+using StartupLevel. In fact, this is done in order to simply
+
+00:20:59.070 --> 00:21:05.642
+highlight the given tile. The code for this tutorial is ready. Let's check that it compiles.
+
+00:21:11.310 --> 00:21:15.374
+Let's start by replacing the parent class for LevelItemWidget.
+
+00:21:18.872 --> 00:21:24.445
+We need to rename all the elements according to how we named them in the code.
+
+00:21:29.370 --> 00:21:34.611
+Compile. All OK. Move to the blueprint menu.
+
+00:21:35.609 --> 00:21:39.400
+Let's rename the horizontal box to LevelItemsBox.
+
+00:21:41.794 --> 00:21:51.868
+Compile the widget. Let's create the simplest test levels to test the logic of our code. We add a new level.
+
+00:21:52.274 --> 00:21:57.455
+We will distinguish them by a geometric object, for example, add a cube to this level.
+
+00:21:58.280 --> 00:22:04.110
+Also, let's add some PlayerStarts to keep the characters from spawning at one point.
+
+00:22:07.262 --> 00:22:11.949
+And in WorldSettings we set our game mode - BP_STUGameModeBase.
+
+00:22:14.620 --> 00:22:17.807
+Save the level and name it CubeLevel.
+
+00:22:19.902 --> 00:22:25.662
+Press Ctrl + W. We name the second level SphereLevel.
+
+00:22:28.532 --> 00:22:33.157
+We open it and change the cube to a sphere.
+
+00:22:37.250 --> 00:22:39.034
+We also save this level.
+
+00:22:40.200 --> 00:22:45.560
+Go to GameInstance and let's populate our LevelsData array.
+
+00:22:46.436 --> 00:22:50.422
+The name of the first level is TestLevel. This is our main level.
+
+00:22:51.800 --> 00:22:54.818
+Write DeathMatch in DisplayName.
+
+00:22:58.327 --> 00:23:01.278
+Add a texture named Level1.
+
+00:23:03.233 --> 00:23:05.707
+The second level name will be SphereLevel.
+
+00:23:11.100 --> 00:23:13.624
+In DisplayName, write Sphere.
+
+00:23:15.389 --> 00:23:17.782
+Add a texture named Level2.
+
+00:23:20.538 --> 00:23:23.867
+And the last level is CubeLevel.
+
+00:23:24.502 --> 00:23:29.543
+In DisplayName, write Cube. Texture - Level3.
+
+00:23:32.479 --> 00:23:34.784
+We compile the GameInstance blueprint.
+
+00:23:36.317 --> 00:23:42.393
+Let's see what we've got. Open the menu level. Click play.
+
+00:23:43.720 --> 00:23:45.999
+So we did not display anything.
+
+00:23:47.742 --> 00:23:54.270
+We forgot to specify the LevelItemWidget class whose objects we want to create, so we go
+
+00:23:54.270 --> 00:24:02.905
+to the blueprint of the menu. Specify WBP_LevelItem on the Graph tab and in the details panel.
+
+00:24:06.901 --> 00:24:08.317
+Run it again.
+
+00:24:09.042 --> 00:24:14.089
+We have created tiles as we specified in the array in GameInstance.
+
+00:24:14.816 --> 00:24:20.608
+Open TestLevel. We open the level with the sphere.
+
+00:24:21.770 --> 00:24:28.264
+We return to the main menu. We check that the level with the cube also opens. Everything works and note that
+
+00:24:28.264 --> 00:24:32.900
+when we go to the main menu, the StartupLevel we have highlighted the very last
+
+00:24:32.900 --> 00:24:38.390
+one we have selected. There are no navigation meshes on the test levels and therefore the characters
+
+00:24:38.390 --> 00:24:43.820
+do not move, but we do not need this now. Let's also see how it works with the same
+
+00:24:43.820 --> 00:24:50.400
+names, for example, rename CubeLevel to SphereLevel, that is, we have two levels with the same name.
+
+00:24:51.370 --> 00:24:58.110
+And then the frame does not work correctly. We will not handle this situation, but let
+
+00:24:58.110 --> 00:25:03.270
+me show additional meta information for a property that can display a hint in editor.
+
+00:25:05.171 --> 00:25:13.685
+Add meta information to the property of the LevelsData array. The meta information is called a tooltip.
+
+00:25:14.390 --> 00:25:21.618
+And assign it a string literal with a message that the names of the levels in the mass must be unique.
+
+00:25:24.768 --> 00:25:26.990
+Let's see how it looks in editor.
+
+00:25:28.221 --> 00:25:35.280
+When we hover over the property LevelsData, our message is shown to us, that is, it can be a hint for the
+
+00:25:35.280 --> 00:25:41.917
+person who sets up this array, but ideally, of course, handle such situations using code.
+

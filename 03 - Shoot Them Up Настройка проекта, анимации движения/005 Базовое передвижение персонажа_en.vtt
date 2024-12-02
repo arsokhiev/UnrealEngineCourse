@@ -1,0 +1,232 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.684 --> 00:00:10.811
+Hello everyone! In this tutorial we will add minimal input to our character from the keyboard.
+
+00:00:10.811 --> 00:00:14.812
+We will teach him to move around the stage: forward, backward, right, left.
+
+00:00:14.812 --> 00:00:19.632
+First, let's set the mapping to the keys that we will control our character with.
+
+00:00:19.632 --> 00:00:24.510
+To do this, open the project settings and go to the input category.
+
+00:00:28.915 --> 00:00:34.510
+Mapping takes place in the bindings tab. For those who have not looked at the previous section, let me remind you that binding in unreal
+
+00:00:34.510 --> 00:00:40.482
+can be of two types: action and axis mapping. Action mapping is a discrete mapping,
+
+00:00:40.482 --> 00:00:46.290
+that is, we receive an event one-time: a button is pressed or released. This type of mapping is
+
+00:00:46.290 --> 00:00:52.908
+great for character actions such as jumping, reloading weapons, changing weapons, and so on.
+
+00:00:54.980 --> 00:00:59.750
+And with axis mapping, the values ​​from the control come constantly, so each frame
+
+00:00:59.750 --> 00:01:06.082
+we have the value of the control we are interested in. For example, if this is a button, then 0 or 1.
+
+00:01:06.082 --> 00:01:10.351
+And in the callback axis mapping, we can continuously process this value.
+
+00:01:10.892 --> 00:01:15.544
+We want our character to keep moving when the corresponding keys are held down.
+
+00:01:15.544 --> 00:01:20.810
+Therefore, we will use axis mapping to handle the motion. Press the + button.
+
+00:01:23.044 --> 00:01:28.740
+Let's name our first mapping - it will move forward, so let's call it MoveForward.
+
+00:01:33.600 --> 00:01:39.090
+We add keys that will be associated with this mapping - this will be an up arrow - up
+
+00:01:41.104 --> 00:01:47.796
+Several controls can correspond to one mapping, so we can add an additional key - w
+
+00:01:47.796 --> 00:01:51.670
+and a function that we will bind to this mapping - MoveForward
+
+00:01:51.670 --> 00:01:56.393
+will be called as when clicking on up key and pressing the w key
+
+00:01:56.930 --> 00:02:01.730
+To handle backward movement, we can also use MoveForward. An
+
+00:02:01.730 --> 00:02:06.347
+additional parameter, which is on the right, will help us with this , it is called scale.
+
+00:02:06.347 --> 00:02:11.682
+This variable scale will be multiplied by the final value of the key state.
+
+00:02:12.740 --> 00:02:20.161
+Therefore, we also add the down button - the down arrow to the mapping MoveForward and change the scale to -1
+
+00:02:22.277 --> 00:02:25.997
+And, similarly to the down button, add the s
+
+00:02:28.257 --> 00:02:29.847
+scale = -1 button .
+
+00:02:33.054 --> 00:02:37.914
+The next mapping is responsible for moving to the right and to the left. We call it MoveRight.
+
+00:02:39.020 --> 00:02:42.869
+Add a right button to it - an arrow to the right.
+
+00:02:45.000 --> 00:02:49.536
+Left button - the left arrow will go with scale = -1
+
+00:02:52.836 --> 00:02:59.406
+And duplicate the input to the right-left using the letter keys: D - move to the right
+
+00:03:02.599 --> 00:03:06.240
+and A - move to the left, scale = -1
+
+00:03:07.328 --> 00:03:12.903
+We are done with mapping, go to visual studio. Let's program all this now.
+
+00:03:16.960 --> 00:03:21.730
+Controlling the behavior of the character depending on the input can be configured both in the controller
+
+00:03:21.730 --> 00:03:27.880
+and in the character. The controller has a pointer to the pawn that it controls, so in general the input
+
+00:03:27.880 --> 00:03:33.671
+can be passed to the pawn through the controller. We'll start with character, set up a basic input in it.
+
+00:03:33.671 --> 00:03:38.179
+But in the future, we will also use the controller for various non-game events.
+
+00:03:39.000 --> 00:03:47.855
+For example, for such as calling a pause in the game, or exiting the game. We create a private section in the header file of our actor.
+
+00:03:48.491 --> 00:03:52.293
+and declare two functions that will be called when our keys are pressed.
+
+00:03:53.220 --> 00:04:00.604
+The first function is MoveForward. The function will have one parameter. This parameter will transmit the state of the button.
+
+00:04:01.314 --> 00:04:09.698
+In our specific case, the value will be 0 if the keys are not pressed, 1 if the forward key is pressed, or w
+
+00:04:09.698 --> 00:04:13.949
+and -1 if S is pressed, or the back arrow.
+
+00:04:13.949 --> 00:04:20.003
+We declare the second function MoveRight - this function will be responsible for moving left and right.
+
+00:04:21.421 --> 00:04:24.181
+We create the body of each function in a .cpp file.
+
+00:04:29.647 --> 00:04:36.887
+To do this, right-click on the functions, select quick actions and refactoring, create declaration / definition
+
+00:04:38.563 --> 00:04:45.880
+Go to the BaseCharacter .cpp file. Our current task is to connect the MoveForward and MoveRight functions with the mapping that we set in editor
+
+00:04:45.880 --> 00:04:51.421
+through the player inpur component .
+
+00:04:54.207 --> 00:05:01.390
+First, let's include the header file "Components / InputComponent.h" otherwise Visual Studio
+
+00:05:01.390 --> 00:05:07.092
+may underline with a red wavy line, because it does not see the definition of the input component.
+
+00:05:12.490 --> 00:05:17.407
+The component input function, which is responsible for the bind we need, is called BindAxis.
+
+00:05:20.023 --> 00:05:27.099
+This function takes three arguments: the first argument is the name of our mapping - MoveForward, the
+
+00:05:28.210 --> 00:05:32.470
+second argument is a pointer to the object whose function will be called. We will call it
+
+00:05:32.470 --> 00:05:38.200
+on character, so we specify this, the last parameter is a link to the function that will be
+
+00:05:38.200 --> 00:05:44.894
+called every frame with the current state of our button - we pass MoveForward there.
+
+00:05:47.697 --> 00:05:55.431
+We copy this line. MoveRight will be handled the same way, so just change the mapping to MoveRight
+
+00:05:56.289 --> 00:05:59.050
+and the function to MoveRight too.
+
+00:06:01.660 --> 00:06:08.448
+Let's go inside the MoveForward function. To move the character, we will use the AddMovementInput function.
+
+00:06:08.448 --> 00:06:14.394
+This function exists for every pawn: the first function argument is the direction along which we
+
+00:06:14.394 --> 00:06:20.227
+want to move our character. The most commonly used unit vector is a unit vector.
+
+00:06:21.243 --> 00:06:25.810
+We want to move our character in the direction he is currently facing. To do this, we will
+
+00:06:25.810 --> 00:06:30.944
+use the function that each actor has, it is called GetForwardVector
+
+00:06:35.268 --> 00:06:39.500
+Moreover, the actor has its own local coordinate system. Besides the forward vector, it also
+
+00:06:39.500 --> 00:06:45.295
+has a right vector and an up vector. All these vectors can be obtained through the corresponding getters:
+
+00:06:45.295 --> 00:06:51.860
+GetActorRightVector, GetActorUpVactor. The next parameter is scale - the number by which our direction vector
+
+00:06:51.860 --> 00:06:57.484
+will be multiplied coordinatewise. We pass there the value of the button state - a
+
+00:06:57.484 --> 00:07:04.987
+parameter that comes to us in the callback Amount. In our case, this value will be either 0, or 1, or -1
+
+00:07:06.175 --> 00:07:13.119
+If we press f12 on AddMovementInput, fall inside, we will see that this function is a pawn function
+
+00:07:13.119 --> 00:07:17.960
+and is essentially a wrapper over the AddInputVector function, the movement component function.
+
+00:07:17.960 --> 00:07:24.000
+Our direction vector is multiplied by the scale value and passed as an argument to this function,
+
+00:07:24.000 --> 00:07:30.633
+in which the very logic of the character's movement is carried out, that is, changing the coordinate in the 3d scene.
+
+00:07:33.460 --> 00:07:41.015
+In the same way, we will shift our character to the right and left. We use the AddMovementInput function
+
+00:07:47.140 --> 00:07:54.230
+Only now we will pass the right vector with you as a direction - we will call the GetActorRightVector function
+
+00:07:59.400 --> 00:08:07.526
+And as the scale parameter we also pass Amount, that is, if we move to the right, then the vector is multiplied by 1,
+
+00:08:07.526 --> 00:08:12.509
+if to the left, then by -1, and if the keys then released to 0
+
+00:08:13.272 --> 00:08:15.812
+Run editor. Checking what we have done.
+
+00:08:18.147 --> 00:08:19.092
+Click Play.
+
+00:08:20.009 --> 00:08:24.299
+We check the arrows: back, right, left, forward. Everything works.
+
+00:08:24.543 --> 00:08:29.338
+We also check that the w, a, s, d keys work for us.
+
+00:08:29.730 --> 00:08:33.656
+The character also moves correctly in our 3d space.
+

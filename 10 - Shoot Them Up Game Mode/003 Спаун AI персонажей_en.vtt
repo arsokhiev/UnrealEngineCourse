@@ -1,0 +1,265 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.190 --> 00:00:10.637
+In this tutorial, we will learn how to dynamically create NPC characters in Game Mode.
+
+00:00:11.400 --> 00:00:16.352
+Let's start by creating a data structure that will store all of the game's settings.
+
+00:00:16.352 --> 00:00:20.128
+As we move through this section, we will supplement it.
+
+00:00:21.282 --> 00:00:28.709
+Copy the body of the structure. Let's call it FGameData.
+
+00:00:30.424 --> 00:00:34.674
+The first parameter we need is the number of players.
+
+00:00:36.600 --> 00:00:38.972
+The property category will be Game.
+
+00:00:40.645 --> 00:00:46.299
+The variable type will be an integer - int32. Let's call the variable PlayersNum.
+
+00:00:46.299 --> 00:00:52.299
+By default, let there be two players: the character we control, and also one NPC.
+
+00:00:52.299 --> 00:00:59.788
+Let's add some meta information. Let's limit this parameter from 1 to 100. That is, you can also play without bots
+
+00:00:59.788 --> 00:01:08.085
+and we definitely won't need more than 100 characters. Go to the header file game mode. We connect STUCoreTypes.
+
+00:01:08.085 --> 00:01:15.421
+We will not spawn the characters themselves, but their controllers. We make a forward declaration of the AIController class.
+
+00:01:15.421 --> 00:01:21.510
+The character calls destroy if the character dies. The controllers are not removed from the scene
+
+00:01:21.510 --> 00:01:27.210
+and, as we will see later, they will be responsible for character respawning, so the controller spawning approach
+
+00:01:27.210 --> 00:01:33.674
+is preferable. We declare a property that will store our controller class.
+
+00:01:34.780 --> 00:01:44.523
+Let's use the TSubclassOf &lt;&gt; template. The template parameter will be AIController and named property AIControllerClass.
+
+00:01:46.093 --> 00:01:50.300
+The next property will hold our GameData structure.
+
+00:01:54.570 --> 00:02:00.627
+Let's go to GameModeBase and search for a function called StartPlay.
+
+00:02:01.420 --> 00:02:06.065
+This function is called before the BeginPlay of the game mode class and all other actors.
+
+00:02:06.065 --> 00:02:12.676
+In this function, we will initialize all the necessary data for our game and also spawn NPC characters.
+
+00:02:13.127 --> 00:02:15.874
+We override this function in our game mode class.
+
+00:02:16.790 --> 00:02:22.512
+And additionally, in the private section, create a function called SpawnBots.
+
+00:02:22.512 --> 00:02:29.051
+The name speaks for itself. The spawn of our controllers will take place in it.
+
+00:02:30.416 --> 00:02:36.714
+Go to the .cpp file and create a body for each of the functions.
+
+00:02:40.730 --> 00:02:49.488
+Don't forget about calling the base class function using the Super keyword.
+
+00:02:51.200 --> 00:02:59.180
+And here we will also call the SpawnBots function. Let's spawn the bots, we need a pointer to the world,
+
+00:02:59.180 --> 00:03:06.540
+so let's check right away that GetWorld returns a non-null pointer. It is necessary to spawn as many
+
+00:03:06.540 --> 00:03:17.864
+bots as we specified in the GameData structure. Create a for loop from 0 to GameData.PlayersNum - 1
+
+00:03:18.398 --> 00:03:23.224
+We add -1 because besides the bots we have our own character.
+
+00:03:25.812 --> 00:03:31.158
+We need an additional variable of the FActorSpawnParameters type.
+
+00:03:31.158 --> 00:03:38.540
+In it, we will define how collisions should be handled when our players spawn. For this purpose,
+
+00:03:38.540 --> 00:03:45.358
+there is a field in the structure called SpawnCollisionHandlingOverride.
+
+00:03:46.777 --> 00:03:56.570
+The field is an enum, the elements of which determine how collisions will be handled. Let's choose the AlwaysSpawn option,
+
+00:03:56.570 --> 00:04:06.034
+that is, always spawn and spawn the controller directly. We use the SpawnActor function.
+
+00:04:06.660 --> 00:04:09.913
+Pass AIController as a template parameter.
+
+00:04:09.913 --> 00:04:18.564
+The first argument is the controller class in our property, and the second argument is the SpawnInfo structure.
+
+00:04:21.019 --> 00:04:30.000
+We compile the project. We have a compilation error. I forgot to include the AIController header file. We connect it.
+
+00:04:31.620 --> 00:04:36.181
+Run it again. Open the game mode blueprint class.
+
+00:04:37.840 --> 00:04:47.263
+Install AIController. Also, let's change the number of players let it be 4.
+
+00:04:48.248 --> 00:04:54.817
+Compile. Let's remove from the scene all the AICharacters that we added in the last section.
+
+00:04:55.550 --> 00:05:04.009
+We start. We are alone on stage. Go to the object tree on the right and search for controllers.
+
+00:05:04.009 --> 00:05:10.380
+There are four controllers on the scene, three of which we spawned in our loop, and the character's controller was
+
+00:05:10.380 --> 00:05:18.122
+spawned in game mode on its own. Now let's see how we spawn the characters for each of the AI ​​controllers.
+
+00:05:18.122 --> 00:05:24.510
+The SpawnActor function returns a pointer to the spawned actor. Therefore, we can create a
+
+00:05:24.510 --> 00:05:31.316
+local variable called STUAIController and assign this pointer to it.
+
+00:05:31.316 --> 00:05:38.959
+The function in game mode that creates the pawn is called restart player, it takes one parameter, the base controller class.
+
+00:05:38.959 --> 00:05:42.983
+We transfer to it the controller that was spawned. Let's move on to this function.
+
+00:05:42.983 --> 00:05:49.364
+Let's take a quick look at what's going on. In this function, there is a point in space where you want to spawn the pawn.
+
+00:05:49.364 --> 00:05:54.121
+This is done using the FindPlayerStart function. We will return to this a little later.
+
+00:05:54.839 --> 00:06:02.848
+After that, the RestartPlayerAtPlayerStart function is called. It is checked whether the pawn exists on the controller,
+
+00:06:03.283 --> 00:06:12.036
+if it does not exist, then the GetDefaultPawnClassForController function is called. This function returns the pawn class.
+
+00:06:12.036 --> 00:06:16.070
+And after that, the pawn is set to the controller, which is returned by
+
+00:06:16.070 --> 00:06:24.137
+the SpawnDefaultPawnFor function. It defines the transformation with which to spawn the pawn.
+
+00:06:24.137 --> 00:06:31.424
+and calls the SpawnDefaultPawnAtTransform function. Here, the SpawnActor function is already specifically called
+
+00:06:31.424 --> 00:06:38.680
+with class parameters, transformation and also SpawnInfo. Briefly ran through some of the functions of the GameModeBase class.
+
+00:06:38.680 --> 00:06:43.700
+Doing this is useful for a deeper understanding of the engine. We compile the project.
+
+00:06:44.607 --> 00:06:50.127
+We start the game. Let's see what happens. Our camera ended up somewhere inside the character.
+
+00:06:51.140 --> 00:06:58.085
+Click eject. We fly off with the camera and see that all four characters are on the stage,
+
+00:06:58.085 --> 00:07:04.350
+but they spawned at one point. All this time on stage we had a special actor
+
+00:07:04.350 --> 00:07:10.380
+called PlayerStart. With the help of actors of this type in game mode, the starting point for the
+
+00:07:10.380 --> 00:07:17.135
+new pawn is calculated. We can duplicate PlayerStart and let's create, for example, 5 pieces. We start the game.
+
+00:07:17.135 --> 00:07:23.757
+Game mode chose the appropriate PlayerStart for each character and spawned them with the desired transformations.
+
+00:07:23.757 --> 00:07:31.694
+Let's go to the object tree. Let's enter character and see that it was not AICharacter but BaseCharacter
+
+00:07:31.694 --> 00:07:38.000
+that was actually spawned. Let's see why this happened and how to fix it.
+
+00:07:38.852 --> 00:07:46.546
+Let's go once again to the base game mode class in the restart player function. Next, RestartPlayerAtPlayerStart is called.
+
+00:07:46.546 --> 00:07:54.213
+The function that returns the pawn class to be spawned is called GetDefaultPawnClassForController.
+
+00:07:54.780 --> 00:08:01.892
+Let's find this function in the file. So what's going on here? We are not interested in the code under the macro.
+
+00:08:01.892 --> 00:08:06.292
+Only one thing happens here - the DefaultPawnClass is returned,
+
+00:08:06.292 --> 00:08:13.475
+that is, the class of our BaseSTUCharacter. This explains why AI Character was not spawned.
+
+00:08:13.809 --> 00:08:20.510
+This function can be overridden. Let's see how to do this and also noticed that it has
+
+00:08:20.510 --> 00:08:26.572
+an implementation added to its name through underscores. Go to the header file game mode.
+
+00:08:26.572 --> 00:08:35.114
+We find this function in the .h file. We pay attention to the UFUNCTION specifier called BlueprintNativeEvent.
+
+00:08:35.114 --> 00:08:41.470
+If you open the function specifiers section of the documentation, you can see what this specifier means.
+
+00:08:41.470 --> 00:08:44.740
+Functions of this type can be overridden in blueprint.
+
+00:08:44.740 --> 00:08:49.145
+It can also be done in C ++, you need to add the end implementation.
+
+00:08:49.145 --> 00:08:55.480
+And (thanks to automatic code generation in the UE) if there is no blueprint function, then this
+
+00:08:55.480 --> 00:09:01.431
+function will be called with implementation. Let's override this function in our game mode class.
+
+00:09:03.570 --> 00:09:15.475
+Add override. Add implementation and also virtual. We create the body of the function.
+
+00:09:20.140 --> 00:09:26.575
+Add a property in the header file, in which we will specify the AICharacter class for the spawn.
+
+00:09:26.575 --> 00:09:35.741
+As a parameter for TSubclassOf, we pass the base class APawn and name the property AIPawnClass.
+
+00:09:37.240 --> 00:09:43.266
+The function has a controller parameter and we can check whether this controller is an
+
+00:09:43.266 --> 00:09:50.276
+AI controller or a Player controller. And depending on this, issue the required class for pawn.
+
+00:09:50.276 --> 00:09:56.416
+We check that the pointer is non-zero and call the IsA &lt;&gt; template function.
+
+00:09:56.416 --> 00:10:03.907
+We pass the AI ​​controller into it. If this class is an AI controller, then return AIPawnClass.
+
+00:10:06.768 --> 00:10:13.489
+Otherwise, we can return DefaultPawnClass, or just call the parent function.
+
+00:10:18.344 --> 00:10:19.751
+We compile the project.
+
+00:10:20.814 --> 00:10:33.201
+Open the game mode blueprint. Set the AIPawnClass property, select BP_STUAICharacter. Compile. We start the game.
+
+00:10:33.805 --> 00:10:40.821
+Shooting started, it was immediately clear that the AICharacter spawned. This concludes this lesson.
+

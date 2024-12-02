@@ -1,0 +1,178 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.346 --> 00:00:09.524
+Let's add some checks to our code. Let's start with the BaseWeapon class.
+
+00:00:10.267 --> 00:00:15.935
+We will use the checkf macro. This macro behaves exactly like a regular check.
+
+00:00:16.500 --> 00:00:21.913
+The only difference is that it allows you to add a custom message about what happened in our code.
+
+00:00:21.913 --> 00:00:27.592
+Let's check for the number of bullets, so that it cannot be less than or equal to 0.
+
+00:00:27.592 --> 00:00:31.290
+In the blueprint, you can set an incorrect number. We can of course
+
+00:00:31.290 --> 00:00:36.720
+also do this by adding meta information: ClampMin, ClampMax. But I don't really want to
+
+00:00:36.720 --> 00:00:42.900
+limit the input to any constant from above. And add a similar check for the number of clips.
+
+00:00:44.768 --> 00:00:50.588
+Go to the weapon component class. Here we need to add a check for the number of weapons.
+
+00:00:50.588 --> 00:00:55.125
+Our current code only supports two weapons. They must be installed.
+
+00:00:56.082 --> 00:00:58.842
+Therefore, we add this check to BeginPlay.
+
+00:01:04.250 --> 00:01:09.570
+You can also create a constant for the number 2 so that we don't have magic numbers in the code.
+
+00:01:09.570 --> 00:01:13.675
+We can declare it at the top in the .cpp file. Let's call it WeaponNum.
+
+00:01:16.720 --> 00:01:23.481
+Replace 2 with WeaponNum. And in the message we can also display this number as a parameter.
+
+00:01:26.292 --> 00:01:33.390
+AnimNotify is also very important in our code. If the animations with them are not installed, then our logic of reloading
+
+00:01:33.390 --> 00:01:38.496
+and changing weapons simply will not work, because our animations will always be in progress.
+
+00:01:38.496 --> 00:01:43.771
+Therefore, it is logical to check whether AnimNotify was found with us or not, if notify is not found,
+
+00:01:43.771 --> 00:01:48.930
+then we can send an error message to the console and call a special macro that
+
+00:01:48.930 --> 00:01:55.770
+is in unreal. It's called checkNoEntry. It is equivalent to calling the check macro with an argument false.
+
+00:01:55.770 --> 00:01:59.660
+That is, at this point in the program, assertion will always be called for us.
+
+00:02:02.367 --> 00:02:11.216
+The same can be done for reload. Instead of continue, we print a message and call the checkNoEntry macro.
+
+00:02:17.475 --> 00:02:25.800
+The next moment. Let's remove the FindNotifyByClass function from the weapon component into a specialized .h file.
+
+00:02:25.800 --> 00:02:33.241
+Click on the animation folder, which is located in the public directory, right-click, click add new item.
+
+00:02:34.461 --> 00:02:47.158
+Select the header file, name it AnimUtil.h and create it in source / shootthemup / public / animations.
+
+00:02:47.158 --> 00:02:51.834
+This function is purely auxiliary, it has nothing to do with the weapon component,
+
+00:02:51.834 --> 00:02:57.700
+so it is logical to separate it into a utility class. In addition, this function can be used by
+
+00:02:57.700 --> 00:03:03.000
+some other class that works with animations. We call the class AnimUtils,
+
+00:03:03.000 --> 00:03:10.216
+create a public section and transfer the FindNotifyByClass template function to AnimUtils.
+
+00:03:15.612 --> 00:03:21.230
+We also make this function static - it does not depend on a specific instance of the class.
+
+00:03:22.417 --> 00:03:28.194
+Go to the weapon component class. Add the AnimUtils header file
+
+00:03:30.430 --> 00:03:34.840
+And add the AnimUtils class name in two places where we call this function.
+
+00:03:40.963 --> 00:03:45.283
+Add another additional header file, put it in the root of the public folder
+
+00:03:50.431 --> 00:03:58.829
+and name this file STUCoreTypes. We have declared a lot of structures and delegates in different parts.
+
+00:03:58.829 --> 00:04:04.340
+They can all be put in one place, in our STUCoreTypes. All auxiliary declarations
+
+00:04:04.340 --> 00:04:10.867
+will be located in this file. This will greatly increase the readability of the program. We transfer AmmoData we
+
+00:04:12.425 --> 00:04:18.204
+transfer the declaration of the signature OnEmptyClip from the BaseWeapon file
+
+00:04:21.630 --> 00:04:25.155
+Further in the weapon component we have WeaponData
+
+00:04:28.725 --> 00:04:30.490
+Also we transfer it to CoreTypes
+
+00:04:33.600 --> 00:04:40.830
+You can add a comment that this refers to the weapon. Depending on the complexity of the program, you can also split this
+
+00:04:40.830 --> 00:04:45.930
+header file into several, for example, WeaponTypes, HealthTypes, and so on.
+
+00:04:48.000 --> 00:04:53.490
+Add this header file to the weapon component We
+
+00:04:59.323 --> 00:05:09.717
+also add it to BaseWeapon. Also, do not forget that the last file is generated.h - so all includes must go before it.
+
+00:05:09.717 --> 00:05:15.000
+We will also add this header file to the health component and move the delegates that
+
+00:05:15.000 --> 00:05:21.184
+are related to health also in CoreTypes and add the comment health.
+
+00:05:22.092 --> 00:05:28.865
+Also in WeaponData we use the BaseWeapon class, so we must add a forward declaration of this class
+
+00:05:28.865 --> 00:05:35.539
+and for the unreal header tool to correctly generate all the code related to macros of structures
+
+00:05:35.539 --> 00:05:43.367
+and delegates, we need to manually add the header file "filename .generated.h"
+
+00:05:45.964 --> 00:05:47.006
+Compile.
+
+00:05:47.736 --> 00:05:56.950
+So let's check out how our checks work. Let's say in RifleWeapon someone set the number of cartridges negative = -1
+
+00:05:58.271 --> 00:06:05.626
+Start the game. An assertion is immediately generated that the number of cartridges cannot be less than or equal to 0.
+
+00:06:07.572 --> 00:06:11.816
+Let's undo this change, set it as we had 15
+
+00:06:13.645 --> 00:06:23.166
+And check the check with animation. We go into equip animation and let's say someone didn't put AnimNotify
+
+00:06:25.211 --> 00:06:25.931
+. Run.
+
+00:06:27.334 --> 00:06:31.696
+We get into checkNoEntry
+
+00:06:33.345 --> 00:06:38.868
+That is, in this way we protect ourselves from ridiculous mistakes during the development of our game.
+
+00:06:41.151 --> 00:06:43.041
+We return our notify to its place.
+
+00:06:46.482 --> 00:06:52.774
+Let's package the project. We will do this in the debug game or development configuration
+
+00:06:52.774 --> 00:06:58.407
+, so that our debug trace is visible and we build the project under windows.
+
+00:07:02.400 --> 00:07:06.643
+The game has been successfully assembled and we have finished one more section.
+

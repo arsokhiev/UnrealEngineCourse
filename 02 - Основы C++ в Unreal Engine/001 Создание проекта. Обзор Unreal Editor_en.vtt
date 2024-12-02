@@ -1,0 +1,358 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.684 --> 00:00:08.250
+Hello everyone! Let's create a basic project. We have an
+
+00:00:08.250 --> 00:00:11.760
+epic game launcher open . Go to the unreal engine category on the left.
+
+00:00:12.560 --> 00:00:18.883
+Next, go to the library tab and launch the version of the engine that interests us.
+
+00:00:21.410 --> 00:00:27.080
+The project creation assistant has opened. On the first screen, we need to select a project category.
+
+00:00:27.080 --> 00:00:32.240
+Unreal can be used for more than just game development. We choose the games category.
+
+00:00:33.020 --> 00:00:39.050
+On the next screen, we can select a template for the project. Templates are mini projects with ready-made
+
+00:00:39.050 --> 00:00:43.940
+mechanics. They are very useful for teaching. You can see how some things
+
+00:00:43.940 --> 00:00:51.030
+are implemented . We create an empty project - blank. The third screen contains the project settings. In the first
+
+00:00:51.030 --> 00:00:57.870
+setup, we define whether the project will be blueprint or code-behind. We select the C ++ option. Next, we determine
+
+00:00:57.870 --> 00:01:04.470
+whether we are developing for the desktop or for mobile platforms. We leave desktop. The next option
+
+00:01:04.470 --> 00:01:10.530
+is responsible for performance optimization. We also do not change it. Next, you can add some
+
+00:01:10.530 --> 00:01:16.170
+initial content. These are different geometries and materials. We will not add content, if you
+
+00:01:16.170 --> 00:01:21.510
+wish, you can do this later. The last option activates ray tracing, we do not touch it either, we
+
+00:01:21.510 --> 00:01:28.540
+leave it off by default. At the bottom, select the directory where we want to create the project and the
+
+00:01:28.540 --> 00:01:34.965
+name of the project. We name our project GeometrySandbox and click on the create project button.
+
+00:01:36.409 --> 00:01:42.000
+The Unreal Editor has opened. In this lesson, we will take a very brief look at its main functionality.
+
+00:01:42.830 --> 00:01:47.510
+For those who are absolute beginners, I recommend watching the basics tutorials from the official
+
+00:01:47.510 --> 00:01:55.280
+Unreal Engine youtube channel. So, we have editor. Centered in the viewport - the 3d scene of our
+
+00:01:55.280 --> 00:02:01.850
+current level. We can move around the scene using the arrows on the keyboard and also rotate the
+
+00:02:01.850 --> 00:02:07.130
+camera using the mouse. This level was created automatically when the project was loaded
+
+00:02:07.130 --> 00:02:13.310
+and there are already some objects on the scene. We can watch them in the world outliner - a window that
+
+00:02:13.310 --> 00:02:18.650
+contains a list of all objects from the scene. By clicking on objects in the scene, we can
+
+00:02:18.650 --> 00:02:22.010
+select them. Additional elements are drawn at the selected object,
+
+00:02:22.010 --> 00:02:29.390
+which are called gizmo. These are the arrows of the coordinate system, when we press the wer keys on the keyboard,
+
+00:02:29.390 --> 00:02:36.020
+we can change the editing mode. There are three of them: this is the position in space, rotation along the
+
+00:02:36.020 --> 00:02:43.560
+axes and also scale - changing the size of the object. Move on. When we select an object on the stage,
+
+00:02:43.560 --> 00:02:51.270
+the properties of this object are shown in a window called details. Objects of different classes
+
+00:02:51.270 --> 00:02:58.320
+have different properties and with the help of this details panel we can edit the properties of the object,
+
+00:02:58.320 --> 00:03:04.560
+for example, the same transformation, position in the world can be set using input fields. Next
+
+00:03:04.560 --> 00:03:10.410
+to the details panel there is another window called world settings, with the help of this window
+
+00:03:10.410 --> 00:03:14.379
+you can configure the main classes of the current level
+
+00:03:14.379 --> 00:03:17.910
+(we will get acquainted with all the classes of the engine in this course)
+
+00:03:18.340 --> 00:03:24.150
+and also other settings that are not of interest to us now. At the bottom we have a window
+
+00:03:24.150 --> 00:03:29.263
+called the content browser. The content browser contains the assets available to us.
+
+00:03:29.263 --> 00:03:35.550
+These can be blueprints, materials, sounds, character models, and so on. That is, the bricks
+
+00:03:35.550 --> 00:03:41.280
+from which we will create our game. Right-click in the content browser. A special menu
+
+00:03:41.280 --> 00:03:48.200
+opens , with which you can create the type of asset we are interested in. Drag &amp; drop we can
+
+00:03:48.200 --> 00:03:54.320
+add the asset we created to our scene, or later create it dynamically.
+
+00:03:55.622 --> 00:04:03.500
+In the content browser, in the lower right corner there is a button called view options. Here we can,
+
+00:04:03.500 --> 00:04:10.079
+for example, change the size of the thumbnails, make different folders with the engine content available,
+
+00:04:13.160 --> 00:04:17.240
+and, for example, customize the appearance of the browser content. You can change the viewtype.
+
+00:04:18.370 --> 00:04:25.720
+Try list or columns. I prefer to use tiles type. On the left there is a window
+
+00:04:25.720 --> 00:04:33.236
+called place actors - this is a quick access panel to the most frequently used objects.
+
+00:04:33.236 --> 00:04:38.030
+The base Unreal type that can be added to the scene is called ACTOR.
+
+00:04:38.700 --> 00:04:43.391
+For example, we can add geometry: cube, sphere.
+
+00:04:44.586 --> 00:04:49.940
+Change their position in space, change scale. There is a lights tab,
+
+00:04:49.940 --> 00:04:55.970
+which contains the main lights. We can change some properties in the details
+
+00:04:55.970 --> 00:05:04.230
+panel , for example, brightness, color. All objects in place actors are grouped into categories
+
+00:05:04.230 --> 00:05:11.310
+depending on their functionality. If suddenly you have any window closed, or you closed it
+
+00:05:11.310 --> 00:05:16.155
+by negligence. Let's close all windows, for example.
+
+00:05:17.636 --> 00:05:28.405
+In the main menu there is a window item, in which we can find all the windows we closed. Details windows, for example, can have multiple openings.
+
+00:05:29.730 --> 00:05:34.070
+The same can be done with content browsers. Sometimes this is convenient when
+
+00:05:34.070 --> 00:05:40.430
+assets are grouped into directories and you need to work in different directories, especially
+
+00:05:40.430 --> 00:05:46.110
+when you have multiple monitors. At the top is a panel called the toolbar,
+
+00:05:46.110 --> 00:05:52.324
+which also contains various controls: saving, source code management.
+
+00:05:52.970 --> 00:05:57.110
+There is a menu called modes, with the help of it, for example, you can edit
+
+00:05:57.110 --> 00:06:02.360
+landscapes and vegetation. There is also a link to the marketplace - an asset store,
+
+00:06:02.360 --> 00:06:08.120
+additional settings, a compile button that allows you to compile the source code of our game
+
+00:06:08.120 --> 00:06:13.440
+without restarting the editor, the play button - it starts the current game level.You
+
+00:06:13.440 --> 00:06:19.320
+can exit the game mode by pressing escape, or by pressing the stop button.
+
+00:06:20.330 --> 00:06:23.201
+We can also launch the game in a separate window.
+
+00:06:25.305 --> 00:06:28.457
+There are also some controls on top of the viewport.
+
+00:06:29.480 --> 00:06:33.640
+On the right, the first are the buttons that allow you to switch the types of transformation:
+
+00:06:34.644 --> 00:06:37.227
+movement, rotation and scale.
+
+00:06:37.563 --> 00:06:41.520
+The unit of 3d space in an unreal engine is one unit.
+
+00:06:42.180 --> 00:06:44.550
+One physical unit is equal to one centimeter.
+
+00:06:44.550 --> 00:06:49.980
+When you move the cube, you will notice that its coordinates change by 10 units. We
+
+00:06:49.980 --> 00:06:52.860
+can change this value. Click on the triangle
+
+00:06:52.860 --> 00:06:57.431
+next to the mesh and set the snap size to one.
+
+00:06:57.431 --> 00:07:02.667
+Now, when we drag the arrows, our cube moves one unit. The same can be
+
+00:07:02.667 --> 00:07:09.550
+done with rotation and scale. The next button allows you to adjust the speed of the camera. If we
+
+00:07:09.550 --> 00:07:14.170
+work with large maps, then it is quite convenient to be able to quickly move
+
+00:07:14.170 --> 00:07:20.590
+through the level. Also, if you are lost at the level, you can select any of the objects in the world outliner
+
+00:07:20.590 --> 00:07:26.500
+and press F. This action will move you to the selected object, to remove
+
+00:07:26.500 --> 00:07:32.170
+all non-game elements from the scene, you can press the G key on the keyboard. The mode is called
+
+00:07:32.170 --> 00:07:38.140
+game mode and to return the items back, just press G again. There are a lot of hot keys
+
+00:07:38.140 --> 00:07:43.360
+, not all of them will be useful to you. If you press the End key on the keyboard with the selected object
+
+00:07:43.360 --> 00:07:49.270
+, then the position of the object in the world will change, as if it fell on the object below it.
+
+00:07:51.000 --> 00:07:57.548
+On the left side of the viewport there are other settings. A button labeled perspective allows us to change the
+
+00:07:57.548 --> 00:08:05.000
+projections in which we see the world, for example, we can select a projection from the top by clicking on top in the menu -
+
+00:08:05.000 --> 00:08:10.400
+this is useful when we need to somehow align objects relative to each other.
+
+00:08:10.400 --> 00:08:18.155
+This can be done fairly accurately on the grid. We can switch to the left view and so on.
+
+00:08:20.480 --> 00:08:25.490
+The next setting is view mode. You can see how the scene is rendered without light,
+
+00:08:25.490 --> 00:08:30.860
+turn on the geometry separately, or, for example, just light.
+
+00:08:34.170 --> 00:08:36.810
+Clicking on the triangle opens an additional menu.
+
+00:08:36.810 --> 00:08:39.360
+For example, we can select show fps in it.
+
+00:08:40.210 --> 00:08:44.922
+This setting allows you to display the number of frames per second.
+
+00:08:47.735 --> 00:08:53.344
+There will be practically no code in blueprints in this course. If you're unfamiliar with blueprints, that's
+
+00:08:53.344 --> 00:08:56.670
+okay. We will use them rather in terms of
+
+00:08:56.670 --> 00:08:59.820
+setting the various parameters that we will create in C ++.
+
+00:09:03.417 --> 00:09:07.245
+In the course we will also use two preferences windows: the
+
+00:09:07.245 --> 00:09:12.248
+first of them is located in the menu-&gt; edit -&gt; editor preferences.
+
+00:09:12.248 --> 00:09:17.141
+This is where editor settings are located. We can change the colors of the interface.
+
+00:09:18.960 --> 00:09:24.160
+View and configure hotkeys for various actions in the editor.
+
+00:09:24.160 --> 00:09:28.609
+As we can see, the list for hot keys is very long.
+
+00:09:30.202 --> 00:09:34.471
+The second settings window is called project settings.
+
+00:09:34.471 --> 00:09:38.860
+These settings relate to our project, to the game.
+
+00:09:38.860 --> 00:09:44.410
+They are also grouped by category. Let's make our first setting. The scene, the
+
+00:09:44.410 --> 00:09:50.290
+level that opened when the project was created, is not saved. Click on the save current button.
+
+00:09:51.330 --> 00:09:59.860
+We name our level sandbox map. Click the save button on the right. An asset with a level was created. There can be as many
+
+00:09:59.860 --> 00:10:04.690
+levels in our game as we want. So that next time the unreal
+
+00:10:04.690 --> 00:10:10.150
+editor opens with this particular level, we need to specify this in the settings. Go to
+
+00:10:10.150 --> 00:10:18.700
+the maps &amp; modes category and select sanboxmap in the editor startup map field in the combobox. Now our
+
+00:10:18.700 --> 00:10:23.910
+map will open when we run editor. The second field is called the game default map.
+
+00:10:23.910 --> 00:10:30.000
+It is not necessary for us to change this setting in this section. Game default map defines the map
+
+00:10:30.000 --> 00:10:35.460
+that will be launched in the standalone game. In general, that's all. This is a very quick overview of
+
+00:10:35.460 --> 00:10:40.440
+editor. We will consider the rest as necessary, in any incomprehensible situation, I
+
+00:10:40.440 --> 00:10:45.780
+recommend opening the documentation from the Unreal website. All the details are described in sufficient detail there.
+
+00:10:49.730 --> 00:10:54.740
+When the project was created, a Visual Studio solution was generated, and editor was
+
+00:10:54.740 --> 00:11:01.224
+launched separately. Debugger visual studio is not attached to the Unreal Engine editor.
+
+00:11:02.018 --> 00:11:06.182
+One way to fix this is to simply close the editor.
+
+00:11:07.551 --> 00:11:14.099
+and click on the local windows debugger button. But there is also another way. From the debug menu, select the
+
+00:11:14.099 --> 00:11:18.902
+attach to process option. Search for editor.
+
+00:11:18.902 --> 00:11:23.687
+The process is called UE4Editor.exe and click on attach.
+
+00:11:24.683 --> 00:11:29.570
+As a result, the debugger visualstudio will connect to the Unreal Editor.
+
+00:11:32.023 --> 00:11:35.908
+Or, when using the first method, just close editor
+
+00:11:37.277 --> 00:11:39.719
+and click on local windows debugger.
+
+00:11:42.258 --> 00:11:44.939
+Unreal Editor starts launching.
+

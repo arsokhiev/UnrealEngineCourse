@@ -1,0 +1,295 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.910 --> 00:00:11.852
+In this lesson, we will look at how to damage our character.
+
+00:00:11.852 --> 00:00:18.125
+UE has a special set of functions with which you can carry out damage to actors.
+
+00:00:18.125 --> 00:00:21.277
+We will start with you with a function called TakeDamage.
+
+00:00:21.277 --> 00:00:28.418
+Let's test this function and call it on Tick. Our character will do damage to himself.
+
+00:00:30.153 --> 00:00:35.430
+Let's see what arguments this function has. The first is a quantitative
+
+00:00:35.430 --> 00:00:43.014
+measure of how much damage we want to convey. Let's put some small value - 0.1
+
+00:00:43.014 --> 00:00:49.461
+The next parameter is of type DamageEvent. Let's pass an object with a default constructor.
+
+00:00:49.461 --> 00:00:57.000
+DamageEvent has a default constructor. Click on f12. We get inside
+
+00:00:57.000 --> 00:01:03.530
+the EngineTypes file, where DamageEvent is declared. This structure is responsible for additional
+
+00:01:03.530 --> 00:01:09.725
+information that can be passed from damage. It has a special property called DamageType.
+
+00:01:09.725 --> 00:01:14.878
+With the help of DamageType, we can determine what type of damage was done to the character.
+
+00:01:14.878 --> 00:01:19.580
+It can be an explosion, fire, lava. Depending on this information, the character
+
+00:01:19.580 --> 00:01:25.458
+can emit appropriate sound effects or a special animation can be played.
+
+00:01:25.458 --> 00:01:31.945
+For example, a character burning animation. It all depends on the imagination and on the design of your games.
+
+00:01:34.030 --> 00:01:38.573
+We can naturally inherit from this DamageEvent and create our own.
+
+00:01:39.471 --> 00:01:44.899
+There are two more specific DamageEvent in the UE. The first one is PointDamageEvent.
+
+00:01:45.400 --> 00:01:51.250
+With the help of this event, we can describe the point damage to the character: be it a bullet
+
+00:01:51.250 --> 00:01:55.660
+or a cutting weapon. That is, we can transmit information about which part of the body
+
+00:01:55.660 --> 00:02:02.855
+this damage was inflicted , which direction was, and depending on these parameters, we can, for example, physically
+
+00:02:02.855 --> 00:02:12.592
+correctly play the animation of the character's skeleton. And the second type of event is called RadialDamageEvent.
+
+00:02:12.592 --> 00:02:17.947
+This event describes the damage that can come from, for example, a grenade explosion.
+
+00:02:19.480 --> 00:02:25.368
+In this event, we can pass the parameters of the sphere, that is, its position in space, radius
+
+00:02:25.368 --> 00:02:31.990
+and how the final damage to the character is calculated. If the mechanics in your game are trivial, then you
+
+00:02:31.990 --> 00:02:37.240
+may not need DamageEvent at all. Just a quantitative characteristic is enough - how much we
+
+00:02:37.240 --> 00:02:43.161
+want to take away the character's life. It's okay too. The next parameter is a pointer to the
+
+00:02:43.161 --> 00:02:50.307
+character's controller , or pawn, which is causing the damage. Later we will see that passing this parameter is
+
+00:02:50.307 --> 00:02:54.950
+also important, because using the pointer to the controller, we can determine whether the
+
+00:02:54.950 --> 00:03:00.020
+player is in the opposite team, or in our team, that is, we can get information
+
+00:03:00.020 --> 00:03:05.570
+about the character who caused us damage. We are now passing in our own controller, which is
+
+00:03:05.570 --> 00:03:11.950
+in the Controller variable. And the last parameter is a pointer to the actor who is responsible for the damage.
+
+00:03:11.950 --> 00:03:18.070
+It can be a grenade, a bullet, a knife, and so on. In our particular case,
+
+00:03:18.070 --> 00:03:26.140
+we are doing damage to ourselves, so we pass the this pointer to the current object. Next, we
+
+00:03:26.140 --> 00:03:32.007
+need to figure out how to get information that damage has been done to the current actor.
+
+00:03:32.007 --> 00:03:39.705
+Let's move on to the TakeDamage function. Press F12, we get into the TakeDamage function of the APawn class.
+
+00:03:39.705 --> 00:03:45.970
+We are not particularly interested in what is happening here. Let's dip a little below the TakeDamage function of the AActor class.
+
+00:03:48.510 --> 00:03:54.684
+We don't need to understand the code that is in this function. It is enough for us to consider a
+
+00:03:54.684 --> 00:04:00.774
+couple of key points that occur in this function. Depending on the event that comes to TakeDamage
+
+00:04:00.774 --> 00:04:06.865
+, a check is made to see if the given event is a PointDamageEvent.
+
+00:04:06.865 --> 00:04:13.380
+After that, the OnTakePointDamage delegate is called, which we can subscribe to. In our particular
+
+00:04:13.380 --> 00:04:19.942
+case, we just call the function with DamageEvent, so we don't get the code in this branch.
+
+00:04:21.470 --> 00:04:26.162
+Next, it is checked if the given event is a RadialDamageEvent.
+
+00:04:28.133 --> 00:04:34.990
+And if so, then the OnTakeRadialDamage delegate is called. We can subscribe to it and receive the corresponding
+
+00:04:34.990 --> 00:04:41.181
+callback when this event occurs. In our particular case, we also do not fall into this branch.
+
+00:04:42.271 --> 00:04:48.560
+And finally, at the very end of the function, the OnTakeAnyDamage delegate is called.
+
+00:04:48.560 --> 00:04:54.795
+This event is called in any scenario, that is, for any type of event, and we will subscribe
+
+00:04:54.795 --> 00:05:00.530
+to this delegate . Press f12 on OnTakeAnyDamage. We see that 3 events are declared in the
+
+00:05:00.530 --> 00:05:06.285
+actor's header file . Plus they are uproperty. We can subscribe to them in blueprint as well.
+
+00:05:06.960 --> 00:05:14.066
+Let's take a look at the signature of this delegate. We drive in the search FOnTakeAnyDamageSignature.
+
+00:05:16.196 --> 00:05:22.237
+We will have to copy the entire signature. It's big enough. We select. We copy.
+
+00:05:26.710 --> 00:05:31.463
+Let's go to the main class of our character. Into the header file.
+
+00:05:35.220 --> 00:05:39.421
+At the very bottom, in the private section, create a function.
+
+00:05:39.421 --> 00:05:50.795
+Do not forget to mark this function with the UFUNCTION macro. Let's call the function OnTakeAnyDamageHandle.
+
+00:05:53.498 --> 00:05:56.702
+And we insert the entire signature into this function.
+
+00:05:59.080 --> 00:06:03.232
+We remove unnecessary commas and look at the parameters in parallel.
+
+00:06:03.232 --> 00:06:09.978
+The first parameter is the actor that was damaged. The second parameter is a quantitative characteristic of damage.
+
+00:06:09.978 --> 00:06:16.033
+Next comes DamageType, that is, not the entire event comes to the callback, but only the damage type.
+
+00:06:16.033 --> 00:06:22.184
+Next comes the controller who is responsible for the damage and the actor who caused the damage.
+
+00:06:22.989 --> 00:06:28.356
+We create the body of the OnTakeAnyDamageHandle function.
+
+00:06:32.990 --> 00:06:39.781
+Let's subscribe to the OnTakeAnyDamage delegate. Let's subscribe to the BeginPlay function.
+
+00:06:41.720 --> 00:06:49.540
+We call the AddDynamic function. We pass the first parameter - a pointer
+
+00:06:49.540 --> 00:06:56.924
+to the current instance, that is, this and the second parameter - our OnTakeAnyDamage function.
+
+00:06:59.107 --> 00:07:05.867
+Let's check that this circuit works. To do this, log the damage value in the OnTakeAnyDamageHandle function.
+
+00:07:07.098 --> 00:07:10.611
+Create a local logging category in the character class.
+
+00:07:12.655 --> 00:07:24.068
+DEFINE_LOG_CATEGORY_STATIC. Let's call it BaseCharacterLog.
+
+00:07:27.860 --> 00:07:36.375
+We return to the OnTakeAnyDamageHandle function. We write UE_LOG, the name of the logging category.
+
+00:07:36.375 --> 00:07:45.643
+Display, macro TEXT and we will display the number damage.
+
+00:07:49.218 --> 00:07:59.542
+damage:% f and pass the variable that comes in the parameter.
+
+00:07:59.542 --> 00:08:04.044
+Thus, in the Tick function, that is, every frame
+
+00:08:04.044 --> 00:08:09.657
+we do ourselves a little damage. This is a bit absurd, but for testing it is what you need.
+
+00:08:09.657 --> 00:08:14.833
+And every time damage is done to the character, the OnTakeAnyDamageHandle function is called.
+
+00:08:16.678 --> 00:08:23.240
+Open the log, clear and run the game. The value damage = 0.1 is displayed
+
+00:08:23.240 --> 00:08:25.893
+in the log for each frame.
+
+00:08:25.893 --> 00:08:27.669
+That is, everything works correctly.
+
+00:08:29.135 --> 00:08:33.850
+Move on. We have not just created a health component for nothing. We can
+
+00:08:33.850 --> 00:08:41.676
+transfer this function to the health component and subscribe to OnTakeAnyDamage inside the health component.
+
+00:08:41.676 --> 00:08:45.960
+Thus, all the logic for handling the health of our character will be
+
+00:08:45.960 --> 00:08:52.377
+in one place - in our component. Remove the OnTakeAnyDamageHandle function from the character class.
+
+00:08:52.377 --> 00:08:59.879
+We transfer it to the health component. Replace the class and let's delete the log for now.
+
+00:09:01.654 --> 00:09:09.000
+Let's do the same in the .h files. We remove the function declaration.
+
+00:09:09.000 --> 00:09:14.950
+We transfer it to the health component.
+
+00:09:20.830 --> 00:09:29.072
+Go to the health component .cpp file. Let's subscribe to OnTakeAnyDamage on BeginPlay.
+
+00:09:29.072 --> 00:09:35.550
+We remember that each component has a GetOwner function that returns a pointer to the owner of
+
+00:09:35.550 --> 00:09:43.100
+this component. Therefore, we create a ComponentOwner pointer and assign the return
+
+00:09:43.100 --> 00:09:52.312
+value of the GetOwner function to it. If the given pointer is not null, then there is an owner of this component.
+
+00:09:56.400 --> 00:10:00.385
+Then we can subscribe to the delegate of this actor.
+
+00:10:03.000 --> 00:10:09.995
+So we have an incomplete type again. Let's include the actor header file.
+
+00:10:19.540 --> 00:10:23.544
+Now let's do the same as we did in the BaseCharacter class.
+
+00:10:25.505 --> 00:10:30.877
+Add our OnTakeAnyDamageHandle function to the delegate.
+
+00:10:35.630 --> 00:10:43.717
+Let's rename this function to simply OnTakeAnyDamage for beauty, and also do it in the .h file.
+
+00:10:49.897 --> 00:10:54.500
+Let's do this. Our health variable will be
+
+00:10:54.500 --> 00:11:00.000
+reduced by this damage. Again, this is not the final code, we are just
+
+00:11:00.000 --> 00:11:05.908
+testing how this API works to handle damage for actors. Launch editor.
+
+00:11:09.351 --> 00:11:11.374
+Compilation error.
+
+00:11:13.440 --> 00:11:19.773
+Forgot to remove the line with the delegate in the ABaseCharacter class. Let's compile one more time.
+
+00:11:21.448 --> 00:11:25.056
+We start the game. The life character ran down.
+
+00:11:26.727 --> 00:11:32.340
+We have not processed anything yet: the character died or not, so after a few frames the value of
+
+00:11:32.340 --> 00:11:38.690
+our character's life will be negative. We will gradually improve all this with you.
+

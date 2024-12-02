@@ -1,0 +1,508 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.683 --> 00:00:11.245
+In this lesson, we will update the interface design and do a little refactoring.
+
+00:00:11.245 --> 00:00:19.618
+I added new images to the Images folder. A little later we will see how they look directly in our widgets.
+
+00:00:19.618 --> 00:00:27.114
+Launcher, rifle - everything looks prettier.
+
+00:00:27.114 --> 00:00:33.890
+We will also be using other fonts. I added them to the font folder. Fonts are also added by dragging and dropping
+
+00:00:33.890 --> 00:00:40.895
+from windows explorer. All fonts are free, so it is legal to use them, there are no restrictions.
+
+00:00:41.460 --> 00:00:46.140
+Let's do a little refactoring for the PlayerHUD. We have visibility for each interface element
+
+00:00:46.140 --> 00:00:52.440
+supplied separately. Let's fix it. Let's group all the elements so that this visibility is set
+
+00:00:52.440 --> 00:01:02.318
+only once. Therefore, we remove the bind from the health progress bar, from the crosshair image, from the block with the weapon
+
+00:01:04.545 --> 00:01:07.358
+and also from the game data.
+
+00:01:10.320 --> 00:01:12.257
+Let's add a canvas element.
+
+00:01:13.637 --> 00:01:17.506
+Let's add all the UI elements to this Canvas.
+
+00:01:24.865 --> 00:01:33.675
+Set the SizeToContent parameter for the Canvas to true. Stretch it in width and height. We set the Offset to 0.
+
+00:01:36.000 --> 00:01:41.445
+Add the bind of our IsPlayerAlive function to the property visibility.
+
+00:01:41.445 --> 00:01:45.919
+If we need a new custom element, then we add it to the canvas and that's
+
+00:01:45.919 --> 00:01:50.942
+all we need to do. Next, open the GameData widget.
+
+00:01:50.942 --> 00:01:58.494
+Let's display the number of murders elsewhere. Press Ctrl + X, and delete spacer.
+
+00:01:59.571 --> 00:02:05.841
+We will display them above the health bar. We put the ProgressBar in the VerticalBox.
+
+00:02:07.429 --> 00:02:14.884
+Insert the number of kills into the given VerticalBox. We also set its SizeToContent to true.
+
+00:02:15.695 --> 00:02:20.444
+A little later, we will transfer the GetKillsNum function to the PlayerHUD.
+
+00:02:21.354 --> 00:02:27.294
+Plus let's add two colors for the progress bar, just like we did with the AICharacter lives.
+
+00:02:28.422 --> 00:02:36.605
+Move to the GameOver widget. Let's make the title of our table a separate widget. Let me explain why.
+
+00:02:38.203 --> 00:02:46.207
+Just copy the PlayerStatRow widget and name it StatRowTitle.
+
+00:02:47.090 --> 00:02:53.148
+We make it reparent to a regular UserWidget. The headline will essentially just be decorative.
+
+00:02:56.870 --> 00:03:04.442
+Replace the usual PlayerStatRow in the GameOver widget with a title.
+
+00:03:08.890 --> 00:03:14.428
+After that, go to WidgetStatRow. We have separated the title so that instead of
+
+00:03:14.428 --> 00:03:21.358
+the team number it will display a picture with the team color, so it will look nicer.
+
+00:03:23.023 --> 00:03:25.751
+Let's add image.
+
+00:03:27.427 --> 00:03:35.250
+Let's just add to the horizontal box for now. I have added an image called Ellipse. It's just a white circle.
+
+00:03:36.183 --> 00:03:43.482
+We will add the image in a clever way. We will be able to choose whether we want to show the image, or the team number.
+
+00:03:43.482 --> 00:03:48.942
+Let's frame the text block with a special UI element called WidgetSwitcher.
+
+00:03:48.942 --> 00:03:54.000
+WidgetSwitcher stores multiple children and only shows one of them.
+
+00:03:54.000 --> 00:04:00.458
+Add a picture to WidgetSwitcher. Set the alignment to the center and to the right.
+
+00:04:00.458 --> 00:04:05.200
+The main parameter for this control is called ActiveWidgetIndex.
+
+00:04:05.200 --> 00:04:11.174
+That is, if there is one, then the picture is shown, if there is 0, the text is shown.
+
+00:04:11.174 --> 00:04:17.031
+It will be necessary to add functionality to the widget code that sets the color for our circle.
+
+00:04:18.668 --> 00:04:26.096
+Let's add the necessary code in accordance with the changes we have made in the interface and start PlayerHUDWidget.
+
+00:04:26.096 --> 00:04:34.028
+We need a forward declaration for the UProgressBar. Let's create a property for the HealthProgressBar.
+
+00:04:36.690 --> 00:04:42.685
+From the HealthBarWidget that we are using for the AICharacter, we can copy the properties
+
+00:04:42.685 --> 00:04:46.644
+that are responsible for defining the color of the HealthBar.
+
+00:04:48.650 --> 00:04:51.568
+We insert these properties into the PlayerHUDWidget.
+
+00:04:52.805 --> 00:04:57.738
+In the private section, create a cosmetic function called UpdateHealthBar.
+
+00:04:58.900 --> 00:05:03.048
+And also in this widget we need the GetKillsNum function.
+
+00:05:03.048 --> 00:05:08.954
+Let's move it from GameDataWidget to our PlayerHUDWidget.
+
+00:05:12.000 --> 00:05:16.935
+Also, remove the body of the GetKillsNum function from the .cpp file GameDataWidget.
+
+00:05:21.420 --> 00:05:28.400
+Go to the .cpp file of the PlayerHUDWidget class. Let's include the header file ProgressBar.
+
+00:05:30.554 --> 00:05:33.155
+Let's start with the GetKillsNum function.
+
+00:05:35.519 --> 00:05:39.375
+We also need a header file for PlayerState.
+
+00:05:43.245 --> 00:05:47.334
+So, first we get the controller. You can copy the code.
+
+00:05:48.713 --> 00:05:52.507
+If the pointer to the controller is nullptr, then we return 0.
+
+00:05:57.531 --> 00:06:02.554
+If the controller is nonzero, then we create a local variable PlayerState.
+
+00:06:06.150 --> 00:06:14.780
+Let's use the ternary operator: if PlayerState is nonzero, then we call the PlayerState-&gt; GetKillsNum () function
+
+00:06:18.351 --> 00:06:20.795
+And if the pointer is nullptr, then we return 0.
+
+00:06:22.926 --> 00:06:31.385
+Let's move on. We create the body of the UpdateHealthBar function. If the HealthProgressBar pointer is nonzero,
+
+00:06:34.816 --> 00:06:40.048
+then we can update its color depending on the current percentage of life.
+
+00:06:41.843 --> 00:06:47.318
+Let me remind you that we have the GetHealthPercent function.
+
+00:06:49.913 --> 00:06:53.908
+We will call the UpdateHealthBar function in two places.
+
+00:06:56.191 --> 00:06:59.625
+The first place is directly when our health changes,
+
+00:07:00.517 --> 00:07:06.388
+in the OnHealthChanged function, and the second place is the OnNewPawn function.
+
+00:07:08.475 --> 00:07:14.474
+That's all for the PlayerHUDWidget class. Let's go to PlayerStatRowWidget.
+
+00:07:16.191 --> 00:07:18.681
+Create a property for the circle image.
+
+00:07:20.914 --> 00:07:22.861
+We call it TeamImage.
+
+00:07:25.288 --> 00:07:29.188
+And in the public section, add the function for setting the command color.
+
+00:07:33.060 --> 00:07:35.045
+We create the body of the function.
+
+00:07:37.500 --> 00:07:43.625
+If the TeamImage pointer is null, then we exit the function.
+
+00:07:46.140 --> 00:07:54.357
+If everything is OK, then call the SetColorAndOpacity function and pass the Color parameter there.
+
+00:07:55.016 --> 00:08:02.481
+The last thing we need to do is transfer the color of the team. In the GameOverWidget
+
+00:08:05.580 --> 00:08:09.298
+class, we call our SetTeamColor function.
+
+00:08:10.791 --> 00:08:18.498
+We transfer to it the color that is in the PlayerState. To do this, call the GetTeamColor function.
+
+00:08:20.603 --> 00:08:25.348
+We've added all the changes we need. We can compile the project.
+
+00:08:28.374 --> 00:08:32.825
+In PlayerStatRowWidget we need to change the name of the
+
+00:08:33.736 --> 00:08:39.648
+picture that contains our circle. We call it TeamImage. Compile.
+
+00:08:41.063 --> 00:08:46.679
+Let me remind you once again that ActiveWidgetIndex must be set to one.
+
+00:08:49.408 --> 00:08:56.025
+Next, in PlayerHUDWidget, we need to set bind for our text.
+
+00:08:57.931 --> 00:09:06.458
+Let's copy the auxiliary nodes from the GameData widget, which form the final line to be displayed.
+
+00:09:10.380 --> 00:09:12.762
+We call the GetKillsNum function.
+
+00:09:15.480 --> 00:09:19.830
+And also in GameData we completely remove the GetKills function.
+
+00:09:21.025 --> 00:09:28.690
+We have prepared everything. Let's set the number of seconds for a round to 3.
+
+00:09:29.130 --> 00:09:35.050
+Another thing that needs to be tweaked is the team colors. We now have an alpha channel for each
+
+00:09:35.050 --> 00:09:40.688
+of the colors at 0. With this value, our picture will simply not be displayed.
+
+00:09:40.688 --> 00:09:48.000
+In the material of the character, the alpha channel is not used, so we had no problems with the color of the character. We start the game.
+
+00:09:48.620 --> 00:09:55.152
+We are waiting for the end of the round. And in the statistics table, circles with the corresponding colors were displayed.
+
+00:09:56.272 --> 00:10:04.039
+One more thing: in the progress bar, we redefined the colors of the pictures. Let's undo these changes.
+
+00:10:04.039 --> 00:10:11.498
+Set the default Tint to white. To test it, set the GoodColor value to a shade of green.
+
+00:10:15.040 --> 00:10:25.382
+We launch. The progress bar is green. Lives become &lt;30 percent. The color turns red. Everything works now.
+
+00:10:26.318 --> 00:10:32.436
+I will update the interface now. I won't record a video, because it's essentially aligning elements
+
+00:10:32.436 --> 00:10:37.545
+and updating font sizes. We will just go over the main points.
+
+00:10:39.220 --> 00:10:43.300
+I have updated the design of all widgets. Let's quickly go over the changes.
+
+00:10:43.300 --> 00:10:50.057
+The fonts have been updated in the GameData widget at the top. The number of kills has also changed the font.
+
+00:10:50.655 --> 00:10:56.775
+I have added a shadow to almost all of the texts. This can be done in the details panel. The corresponding property.
+
+00:10:56.775 --> 00:11:03.332
+If you enter shadow in the search, you can find the shadow offset property and the shadow color property.
+
+00:11:03.332 --> 00:11:08.620
+For the health progress bar, I added a background image. I did the same
+
+00:11:08.620 --> 00:11:14.415
+in the block with weapons. Plus created text boxes separately for patrons and magazines.
+
+00:11:17.032 --> 00:11:23.652
+Next, go to the GamePause widget. I focused on the title. I also added a black shadow.
+
+00:11:25.418 --> 00:11:32.855
+I updated the buttons, set them pictures for different states: normal, hovered and press.
+
+00:11:34.910 --> 00:11:39.731
+The title style of the GameOver widget is the same as the title of the GamePause widget.
+
+00:11:39.731 --> 00:11:44.840
+I aligned the elements in the statistics field in the center and due to the fact that the
+
+00:11:44.840 --> 00:11:50.067
+title line is a separate widget, I made the font in it bold.
+
+00:11:51.784 --> 00:11:58.962
+In the menu, the widget made all the alignment from the left edge. Also changed the title to the name of our project.
+
+00:11:58.962 --> 00:12:06.700
+Added additional text and made the quit button with the picture - the button itself is transparent over the text and picture.
+
+00:12:07.430 --> 00:12:15.265
+Let's get it started. Our menu level is not completely ready. Now let's set up the scene. While we are looking at how everything looks.
+
+00:12:16.720 --> 00:12:21.528
+We start the game. The interface is as close as possible to the production version.
+
+00:12:23.321 --> 00:12:31.001
+Click on pause. Let's see how everything has been updated. And at the end we see the updated GameOver widget.
+
+00:12:32.996 --> 00:12:41.150
+Let's improve one point a little later. Our cartridges look a little strange. We can make it so that they do not jump and add the
+
+00:12:41.150 --> 00:12:50.530
+required number of zeros in front of the numbers. Let's customize the menu level. Let's remove the fog from the scene.
+
+00:12:50.530 --> 00:12:58.762
+Our background will be completely black and we will display our interface against the background of the niagara special effect.
+
+00:13:00.000 --> 00:13:06.315
+We have an emitter called smoke.
+
+00:13:07.200 --> 00:13:12.598
+Let's create a separate Niagara system based on this emitter.
+
+00:13:13.380 --> 00:13:22.010
+Let's adjust the smoke parameters a bit and put it on the stage. We call the carbon system MenuSmoke.
+
+00:13:24.754 --> 00:13:27.577
+Drag it to the menu folder.
+
+00:13:29.647 --> 00:13:34.592
+We open the asset. So we have smoke.
+
+00:13:35.365 --> 00:13:41.093
+The first thing we'll do is decrease the SpawnRate a bit. Let's put 10 points.
+
+00:13:44.663 --> 00:13:52.428
+Next, let us increase the particle lifetime. Let's put it from 10 to 20. There will be a movie smoke effect.
+
+00:13:54.379 --> 00:14:05.174
+Let's add some speed. To do this, add the AddVelocityFromPoint module and set the speed, for example, 12.
+
+00:14:07.322 --> 00:14:15.956
+The last module we will configure is ScaleColor. This module is responsible for the color of the particle throughout its life.
+
+00:14:15.956 --> 00:14:22.939
+At the initial moment of time, set all the components of the vector to one. This means
+
+00:14:22.939 --> 00:14:31.267
+that the particles will be white, and at the final time (time = 1) we will set the color to red.
+
+00:14:33.726 --> 00:14:39.240
+That is, we set the X component to 1, and Y and Z to 0.
+
+00:14:41.490 --> 00:14:47.798
+Thus, at the end of their life, the particles will have a red tint. You can still play with the parameters.
+
+00:14:47.798 --> 00:14:53.720
+You can customize them to your liking. Let's add PlayerStart to the scene
+
+00:14:53.720 --> 00:15:01.940
+so that we know exactly at what point the DefaultPawn was spawned. Set Location to 0.
+
+00:15:03.580 --> 00:15:06.801
+Add the Niagara system to the stage.
+
+00:15:07.400 --> 00:15:12.448
+I prepared the coordinate in which the system should be in advance, so I'll just enter it now.
+
+00:15:13.300 --> 00:15:21.199
+The smoke will come from below, so the coordinate is just below the PlayerStart. We start the game. The smoke went up.
+
+00:15:21.199 --> 00:15:27.430
+This is how the main menu will look like. Good enough. Let's go into the code again
+
+00:15:27.430 --> 00:15:35.715
+and update two things, the first is the alignment with the bullets, and the second is the hover over the tiles in the main menu.
+
+00:15:37.330 --> 00:15:46.093
+Let's start with the main menu. We declare two additional functions in the LevelItemWidget header file.
+
+00:15:46.093 --> 00:15:50.990
+One of them will be called OnLevelItemHovered. It will be called
+
+00:15:50.990 --> 00:15:57.485
+when you hover over the button, and the second one will be called OnLevelItemUnhovered.
+
+00:15:57.485 --> 00:16:04.549
+It will be called when we move the mouse cursor away from the button. We create a body for each of the functions.
+
+00:16:07.300 --> 00:16:12.898
+In the initialization function, add these functions to the delegates.
+
+00:16:13.681 --> 00:16:16.755
+The button's hover delegate is named OnHovered.
+
+00:16:18.588 --> 00:16:23.721
+The delegate that is called when we move the mouse away is called OnUnhovered.
+
+00:16:26.815 --> 00:16:33.900
+Let's change the design logic a little, when we hover the mouse over the button, we will show our picture
+
+00:16:33.900 --> 00:16:42.941
+with a red frame, so we remove the code from the SetSelected function. We insert it into each of the functions.
+
+00:16:43.804 --> 00:16:49.024
+On hover, set Visibility to Visible.
+
+00:16:53.102 --> 00:16:58.117
+And when we go away, we set Visibility to Hidden.
+
+00:17:00.000 --> 00:17:03.001
+In the SetSelected function, we will do the following:
+
+00:17:04.050 --> 00:17:09.534
+if LevelItem is selected, then we will shade the level picture in red.
+
+00:17:14.150 --> 00:17:20.570
+To do this, call the SetColorAndOpacity function and, depending on the IsSelected flag,
+
+00:17:22.347 --> 00:17:31.154
+set either red or white. We've sorted out the main menu. Go to the PlayerHUD widget.
+
+00:17:31.154 --> 00:17:35.760
+Let's create an additional function in it that will format the number of cartridges.
+
+00:17:38.057 --> 00:17:43.041
+The function will return type FString. Let's call it FormatBullets.
+
+00:17:46.390 --> 00:17:49.932
+And she will have one parameter - this is the number of cartridges.
+
+00:17:53.510 --> 00:17:58.964
+We add the const specifier, because the function will not change any data inside the class.
+
+00:18:00.670 --> 00:18:08.198
+We need two local constants. We will not put them into parameters. This feature is too cosmetic for that.
+
+00:18:08.894 --> 00:18:12.434
+The first constant will be named MaxLen. This parameter will be
+
+00:18:12.434 --> 00:18:18.281
+responsible for the maximum number of zeros that we can add before the cartridges.
+
+00:18:19.320 --> 00:18:27.524
+The next constant is a prefix character. It is of type TCHAR. That is, the type of one character. Let's assign it the value '0'.
+
+00:18:28.300 --> 00:18:36.420
+Next, convert the number of bullets from int32 to FString. For this we use the static
+
+00:18:36.420 --> 00:18:43.970
+function FString :: FromInt. Create another local variable that will
+
+00:18:43.970 --> 00:18:49.712
+store the number of zeros that we need to add before the number of cartridges.
+
+00:18:52.450 --> 00:18:55.979
+This variable will be calculated as the difference between the
+
+00:18:55.979 --> 00:19:00.358
+MaxLen variable and the number of BulletStr characters.
+
+00:19:04.733 --> 00:19:07.815
+If the value of this variable is greater than 0,
+
+00:19:09.021 --> 00:19:16.490
+then we need to add zeros. We use the BulletStr variable. The FString class has a special
+
+00:19:16.490 --> 00:19:23.741
+function that can create a string from identical characters. It is called ChrN.
+
+00:19:24.835 --> 00:19:29.531
+The function takes two parameters: the number of characters and the character itself.
+
+00:19:30.167 --> 00:19:33.707
+Now let's add the code and look at the internals of this function.
+
+00:19:34.780 --> 00:19:41.640
+We pass the SymbolsNumToAdd parameter and our prefix symbol to it. That is, we have generated a
+
+00:19:41.640 --> 00:19:48.392
+line of zeros and we add the BulletStr line to it using the Append function.
+
+00:19:51.206 --> 00:19:57.371
+And at the very end of the function, we return this variable. Let's go to the ChrN function.
+
+00:19:58.200 --> 00:20:04.473
+The code is pretty straightforward. A temporary line is created and, depending on the NumCharacters parameter
+
+00:20:04.473 --> 00:20:11.328
+, the number of times the Char character is added to the line. All is ready. We compile the project.
+
+00:20:12.910 --> 00:20:18.825
+Let's use the function of formatting cartridges. We call FormatBullets.
+
+00:20:22.310 --> 00:20:25.950
+And we pass the GetBulletsText function to the output.
+
+00:20:30.510 --> 00:20:32.141
+We launch the project.
+
+00:20:32.780 --> 00:20:40.484
+Let's see how the main menu works. On hover, we change the frame, and when clicked, when the tile is selected, the color changes.
+
+00:20:42.222 --> 00:20:50.016
+Bullet text no longer jumps. Aligning zeros are added here. This concludes this lesson.
+

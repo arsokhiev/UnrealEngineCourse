@@ -1,0 +1,193 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.870 --> 00:00:10.373
+In the current lesson, we will finalize the base class - we will make a respawn.
+
+00:00:10.373 --> 00:00:16.070
+And from the next lesson, let's start implementing specific pickup classes. We need a property that
+
+00:00:16.070 --> 00:00:21.152
+will store the respawn time, that is, the time after which the pickup will appear again on the scene
+
+00:00:21.152 --> 00:00:27.446
+after we took it. We name the variable RespawnTime. Let the default be five seconds.
+
+00:00:29.543 --> 00:00:34.608
+Let's create two helper functions. The first one will be called PickupWasTaken.
+
+00:00:34.608 --> 00:00:40.610
+It will be called when we pick up the pickup. The second function will be called Respawn.
+
+00:00:40.610 --> 00:00:44.382
+It will be called when the respawn timer is triggered.
+
+00:00:47.630 --> 00:00:50.216
+We create a body for each function.
+
+00:00:52.561 --> 00:00:57.000
+We will be using CollisionComponent, let's add check.
+
+00:00:59.540 --> 00:01:04.351
+Instead of calling the Destroy function, we will call the PickupWasTaken function.
+
+00:01:04.351 --> 00:01:08.617
+We will not remove the pickup from the scene, but we will make it invisible.
+
+00:01:10.730 --> 00:01:17.105
+Let's go to the PickupWasTaken function. Before making our actor invisible, we must turn off all collisions
+
+00:01:17.565 --> 00:01:20.396
+so that the BeginOverlap event does not fire.
+
+00:01:21.122 --> 00:01:24.959
+To do this, let's call the SetCollisionResponeToAllChannels function.
+
+00:01:28.820 --> 00:01:36.066
+And as a parameter, we pass the ECollisionResponse :: ECR_Ignore element.
+
+00:01:36.066 --> 00:01:42.190
+That is, the collision will stop interacting with the outside world. After that we can make
+
+00:01:42.190 --> 00:01:49.223
+our actor invisible. We get a pointer to the root component of the actor. We call the GetRootComponent function.
+
+00:01:50.305 --> 00:01:55.375
+To stop rendering the actor, we will call a function called SetVsibility.
+
+00:01:55.375 --> 00:02:02.091
+It has two parameters. The first boolean parameter is responsible for whether the current component will be rendered or not.
+
+00:02:02.091 --> 00:02:04.360
+And the second parameter is responsible for whether the new
+
+00:02:04.360 --> 00:02:09.354
+Visibility value will be applied to all child components, that is, in this way
+
+00:02:09.354 --> 00:02:15.250
+we stop rendering all the components of our actor. Let's add a check of the root component
+
+00:02:15.250 --> 00:02:21.000
+for nullptr, but in general the situation when the root component is nullptr in pickup is impossible.
+
+00:02:22.700 --> 00:02:27.441
+After we have disabled the collision and made our pickup invisible,
+
+00:02:27.441 --> 00:02:33.548
+we can start the respawn timer. The TimerHandle variable will be local to us.
+
+00:02:33.548 --> 00:02:38.072
+The timer will only fire once. We will not turn off the timer,
+
+00:02:38.072 --> 00:02:42.553
+so there is no need to create handle as a member-class variable.
+
+00:02:47.820 --> 00:02:52.470
+When the timer expires, the respawn function is called and in this function
+
+00:02:52.470 --> 00:03:02.741
+you need to return the collision settings and make the actor visible. Change the parameter to ECR_Overlap.
+
+00:03:03.543 --> 00:03:06.463
+And pass true to SetVsibility.
+
+00:03:08.289 --> 00:03:10.695
+We start the game. Let's open the console.
+
+00:03:11.724 --> 00:03:17.304
+Let's enter the ShowCollision command to see our collisions.
+
+00:03:18.400 --> 00:03:25.446
+Let's pick up some ammo. The Actor did not leave, became invisible. This can be observed by collision.
+
+00:03:25.446 --> 00:03:31.669
+When the actor is invisible and we cross the collision, the pickup was taken message is not displayed in the log.
+
+00:03:32.486 --> 00:03:37.643
+And every five seconds pickups appear again and we can take them.
+
+00:03:37.643 --> 00:03:45.261
+The respawn logic is working correctly. It remains to take the last step before starting the development of specific pickups -
+
+00:03:45.261 --> 00:03:51.918
+create a virtual function that we will override in the health pickup and in the weapon pickup.
+
+00:03:51.918 --> 00:03:57.374
+Let's call the function GivePickupTo. The function will return true if we managed to
+
+00:03:57.374 --> 00:04:05.159
+take pickup and false, if under some conditions it did not work. The function will have one parameter - a
+
+00:04:05.159 --> 00:04:11.799
+pointer to pawn. Through this pointer, we will access the health and weapon components,
+
+00:04:11.799 --> 00:04:18.254
+through which we will modify the character data, depending on the pickup. In the base class,
+
+00:04:18.254 --> 00:04:24.299
+this function will return false. Roughly speaking, pickup of the base class is simply impossible to take.
+
+00:04:24.299 --> 00:04:30.321
+Let's go to the NotifyActorBeginOverlap function. Create a local variable - a pointer to pawn.
+
+00:04:31.680 --> 00:04:37.354
+We cast the actor, which came to us as a function parameter to the pawn class.
+
+00:04:40.216 --> 00:04:45.331
+Next, we call the GivePickupTo function. We can call it immediately in the if statement.
+
+00:04:46.862 --> 00:04:49.416
+We pass as a parameter pawn.
+
+00:04:50.693 --> 00:04:56.833
+And if we managed to pick up the pickup, then we call the PickupWasTaken function.
+
+00:05:00.755 --> 00:05:04.783
+The log can be deleted. We will now add additional logs in specific classes.
+
+00:05:06.795 --> 00:05:11.596
+Let's override the GeviPickupTo function in the health pickup class.
+
+00:05:17.650 --> 00:05:22.004
+Add the override keyword to preserve the coding style.
+
+00:05:23.934 --> 00:05:28.020
+We also add this function to the ammp pickup header file.
+
+00:05:34.486 --> 00:05:36.796
+Let's create the body of the function in a .cpp file.
+
+00:05:38.803 --> 00:05:41.690
+The function is empty for now, let it return true.
+
+00:05:43.169 --> 00:05:47.616
+Add a log to ammo pickup. Copying from base pickup.
+
+00:05:49.689 --> 00:05:52.337
+Replace base with ammo.
+
+00:05:55.927 --> 00:05:58.177
+We will output to the log: ammo was taken.
+
+00:06:02.800 --> 00:06:08.647
+Copy the body of the function with the category of logging. We insert into the health pickup.
+
+00:06:12.456 --> 00:06:14.236
+Replace the class name.
+
+00:06:16.088 --> 00:06:19.158
+Change the logging category to LogHealthPickup.
+
+00:06:22.250 --> 00:06:24.054
+And we output health was taken.
+
+00:06:25.936 --> 00:06:27.140
+Checking what happened.
+
+00:06:29.110 --> 00:06:37.194
+We start the game. We take missiles. Reprinted: ammo was taken. We take lives. It is printed: health was taken.
+
+00:06:37.194 --> 00:06:42.700
+That is, our next task is to implement the GivePickupTo functions for specific pickup classes.
+

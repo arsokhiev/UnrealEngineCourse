@@ -1,0 +1,57 @@
+
+001 -youtube-
+https://www.youtube.com/c/LifeEXECode
+
+002 Visual-Studio
+https://visualstudio.microsoft.com/
+
+002 Unreal-Engine
+https://www.unrealengine.com/
+
+002 Setting-Up-Visual-Studio-for-Unreal-Engine
+https://docs.unrealengine.com/en-US/ProductionPipelines/DevelopmentSetup/VisualStudioSetup/index.html
+
+002 Smart-Git
+https://www.syntevo.com/smartgit/
+
+002 Sourcetree
+https://www.sourcetreeapp.com/
+
+002 7-zip
+https://www.7-zip.org/
+
+002 GitHub-Desktop
+https://desktop.github.com/
+
+003 ShootThemUp-GitHub
+https://github.com/life-exe/UnrealEngine
+
+003 GeometrySandbox-GitHub
+https://github.com/life-exe/GeometrySandbox
+
+003 -EpicGames-GitHub
+https://www.unrealengine.com/en-US/ue4-on-github?sessionInvalidated=true
+
+003 Sourcetree
+https://www.sourcetreeapp.com/
+
+003 Git-LFS-
+https://www.atlassian.com/git/tutorials/git-lfs
+
+003 -GeometrySandbox
+https://gist.github.com/life-exe/94ad833c2a7ae628fc7c7602137a1ffc
+
+003 -Shoot-Them-Up
+https://gist.github.com/life-exe/5b58ce13c0da00ba72cd1176dd96d99a
+
+004 Unreal-Engine-Documentation
+https://docs.unrealengine.com/en-US/index.html
+
+004 -youtube-
+https://www.youtube.com/c/LifeEXECode
+
+004 Course-Wiki
+https://lifeexe-art.gitbook.io/unreal-engine-c-course
+
+004 Course-Wiki-ENG-version
+https://lifeexe-art.gitbook.io/unreal-engine-c-course-eng

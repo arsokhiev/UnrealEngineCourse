@@ -1,0 +1,46 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.889 --> 00:00:12.058
+In this small lesson, we will replace the animation of the death of a character with a physical simulation of his body.
+
+00:00:12.058 --> 00:00:17.980
+This technique is also called ragdoll physics, which literally translates as ragdoll physics.
+
+00:00:17.980 --> 00:00:23.415
+In the OnDeath function of the character, comment on the line that plays the animation of death,
+
+00:00:23.415 --> 00:00:29.340
+and at the very bottom of the OnDeath function, write the following: GetMesh, that is, we get a
+
+00:00:29.340 --> 00:00:35.211
+pointer to the skeletal mesh component of the character. The function that enables component collisions
+
+00:00:35.211 --> 00:00:41.505
+is called SetCollisionEnabled. It takes enum as a parameter - ECollisionEnabled
+
+00:00:42.036 --> 00:00:46.811
+And we can set either QueryAndPhysics or just PhysicsOnly.
+
+00:00:47.249 --> 00:00:54.000
+The second function we need is called SetSimulatePhysics. This function activates the physical simulation of the body.
+
+00:00:54.536 --> 00:00:59.331
+The function has one boolean parameter. We naturally pass true there.
+
+00:00:59.802 --> 00:01:07.414
+You can add a GetMesh check for nullptr, or add, as we have done many times, a check on BeginPlay.
+
+00:01:11.322 --> 00:01:18.512
+Let's compile the game, let's see how it all looks. Click play. Let's kill our opponent.
+
+00:01:20.814 --> 00:01:26.780
+The character's skeleton fell under the force of gravity. Let's go into the damage sphere.
+
+00:01:27.190 --> 00:01:33.112
+It looks more impressive in motion. We can also test with running animation.
+
+00:01:33.720 --> 00:01:40.033
+We run away. The character at the time of death has speed, which also affects the final simulation.
+

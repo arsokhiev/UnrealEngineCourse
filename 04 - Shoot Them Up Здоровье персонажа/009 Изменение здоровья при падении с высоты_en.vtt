@@ -1,0 +1,202 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.684 --> 00:00:10.266
+Hello everyone! In this tutorial we will damage our character upon landing.
+
+00:00:10.266 --> 00:00:17.443
+Let's go to the character class, press f12 and search for the file, type landed.
+
+00:00:18.230 --> 00:00:23.420
+This function is called when the character contacts the surface after falling.
+
+00:00:23.420 --> 00:00:28.010
+In our Base Character class, we can handle this event in several ways. First, we can
+
+00:00:28.010 --> 00:00:33.582
+override the Landed virtual function, or subscribe to the LandedDelegate delegate.
+
+00:00:33.582 --> 00:00:41.296
+Let's go to the BaseCharacter class in the BeginPlay function. Let's subscribe to LandedDelegate.
+
+00:00:41.296 --> 00:00:51.467
+Add a function. The first argument is this as usual. Let's call the function in which we will handle
+
+00:00:52.381 --> 00:00:59.917
+this event OnGroundLanded. We simply cannot use OnLanded, because this name is taken
+
+00:00:59.917 --> 00:01:08.810
+in the base class of the character. Let's go back to the character file for a second and look at the signature of the delegate.
+
+00:01:10.114 --> 00:01:16.884
+The function must have one parameter of type FHitResult. Let's declare our function with the given signature.
+
+00:01:18.320 --> 00:01:23.330
+Go to the private section, don't forget about the UFUNCTION macro for dynamic delegates.
+
+00:01:26.125 --> 00:01:28.255
+We create the body of the function.
+
+00:01:30.045 --> 00:01:36.000
+FHitResult is a special structure in the UE that contains information about the contact of two objects.
+
+00:01:36.000 --> 00:01:38.932
+That is, the point of contact, the normal, and so on.
+
+00:01:38.932 --> 00:01:44.560
+We will look at this in detail in the next section when we deal with weapons. In our current
+
+00:01:44.560 --> 00:01:50.782
+task, we will not use this parameter at all. So we have an entry point when our character
+
+00:01:50.782 --> 00:01:57.960
+touches the surface. Let's log the Z component of the character's speed, since the final
+
+00:01:57.960 --> 00:02:04.699
+speed of the body is directly proportional to the height from which the body fell, we can calculate the
+
+00:02:04.699 --> 00:02:09.933
+damage that needs to be inflicted on our character depending on the given speed value.
+
+00:02:15.269 --> 00:02:16.815
+We write: "on landed".
+
+00:02:18.524 --> 00:02:22.585
+And we display the value of the FallVelocityZ variable.
+
+00:02:27.669 --> 00:02:28.592
+Run the project.
+
+00:02:32.950 --> 00:02:41.141
+Press the space bar. We jump into the console and we print -430. Let's go higher.
+
+00:02:42.352 --> 00:02:49.630
+The value is about -780, that is, the higher we fell from the higher, the higher the landing speed.
+
+00:02:52.565 --> 00:02:55.280
+Let's create two properties that will be responsible for the
+
+00:02:55.280 --> 00:03:03.000
+height of the fall and for the damage caused when falling. The category will be Movement.
+
+00:03:05.134 --> 00:03:10.800
+The variables will be of type FVector2D. The name of this type speaks for itself,
+
+00:03:10.800 --> 00:03:14.614
+in this structure it is convenient to store a point, or a vector in two-dimensional space.
+
+00:03:16.025 --> 00:03:19.409
+The first variable will be named LandedDamageVelocity.
+
+00:03:21.000 --> 00:03:26.910
+This property will be responsible for the speed limit at which damage will be done.
+
+00:03:27.984 --> 00:03:33.535
+Let the minimum value be 900, that is, for all values ​​that are less than this value, we
+
+00:03:33.535 --> 00:03:41.200
+will not inflict damage and let the maximum value be 1200, that is, for all values ​​greater than this
+
+00:03:41.200 --> 00:03:47.957
+number, we will take the maximum number of lives from the character, and with intermediate values ​​of
+
+00:03:47.957 --> 00:03:55.888
+speed we will calculate damage is proportional. The second variable will also be of type FVector2D.
+
+00:03:55.888 --> 00:04:02.960
+We call it LandedDamage. This property will store the damage value depending on
+
+00:04:02.960 --> 00:04:10.340
+the speed limit values. The minimum damage value will be 10, and the maximum will be 100, that is,
+
+00:04:10.340 --> 00:04:17.720
+at a speed of 900 we will have a minimum damage of 10 points, and at a speed of 1200 it will have a maximum damage of
+
+00:04:19.440 --> 00:04:24.000
+100. So, let's program the damage. The first thing we will do is
+
+00:04:24.000 --> 00:04:29.670
+check the extreme case: if the value of the final speed is less than the left value of
+
+00:04:29.670 --> 00:04:36.214
+the LandedDamageVelocity interval, then we immediately exit the function, because there is no point in calculating damage - our
+
+00:04:36.214 --> 00:04:42.570
+speed is small. You also need to multiply by -1, because when falling, the velocity vector is
+
+00:04:42.570 --> 00:04:51.000
+opposite to the up vector and directed downward. With this condition, we simply call the return statement.
+
+00:04:53.250 --> 00:04:59.896
+And if the speed value allows for damage, then let's calculate the damage value.
+
+00:05:01.652 --> 00:05:12.658
+Let's use a convenient FMath function called GetMappedRangeValueClamped. Such a long name.
+
+00:05:12.658 --> 00:05:18.080
+function and it works as follows. Firstly, this function is template, the template parameter is
+
+00:05:18.080 --> 00:05:24.585
+calculated automatically, or you can specify it explicitly. The first parameter is the input segment.
+
+00:05:24.585 --> 00:05:31.850
+We pass LandedDamageVelocity there. The second parameter is the output segment.
+
+00:05:31.850 --> 00:05:38.480
+We pass LandedDamage there and the third parameter is this value, in our case this is the speed with which we
+
+00:05:38.480 --> 00:05:45.341
+fell, and at the output we get a number from the LandedDamage segment, which in percentage terms
+
+00:05:45.900 --> 00:05:52.190
+coincides with the FallVelocityZ position on the LandedDamageVelocity segment. Let's
+
+00:05:52.190 --> 00:06:00.772
+multiply FallVelocityZ by -1 right away and remove the minus in other parts of the code. And we just need to call the TakeDamage function
+
+00:06:00.772 --> 00:06:07.625
+with the given FinalDamage parameter. We pass it in the first parameter.
+
+00:06:08.892 --> 00:06:14.679
+The second parameter is DamageEvent, we can pass an empty object with a default constructor.
+
+00:06:17.490 --> 00:06:25.577
+The third and fourth are the controller and actor. Let's specify nullptr because this is more about
+
+00:06:25.577 --> 00:06:32.900
+environmental damage , so we won't pass our own controller and this pointer. Press F12
+
+00:06:32.900 --> 00:06:39.650
+on FDamageEvent, find FPointDamageEvent in the header file and note that this
+
+00:06:39.650 --> 00:06:46.510
+class also has an FHitResult structure. Thus, we can create an FPointDamageEvent
+
+00:06:46.510 --> 00:06:52.597
+and pass this structure in this event. And handle damage based on FHitResult
+
+00:06:52.597 --> 00:06:58.964
+if we want to implement something less trivial. Let's also log the FinalDamage variable.
+
+00:07:07.091 --> 00:07:08.608
+Launch editor.
+
+00:07:11.495 --> 00:07:13.855
+We open the blueprint with our character.
+
+00:07:16.230 --> 00:07:23.705
+Our properties are displayed: damage velocity and landed damage. Let's change the
+
+00:07:24.425 --> 00:07:29.628
+minimum value to 600, so it will be more convenient to test. We start the game.
+
+00:07:31.187 --> 00:07:38.851
+Let's climb up our steps and jump down. So, we got
+
+00:07:38.851 --> 00:07:40.861
+FinalDamage = 55
+
+00:07:42.323 --> 00:07:51.740
+We had 900 speed, and if we go higher then speed = 1000, and damage = 70.
+

@@ -1,0 +1,160 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.260 --> 00:00:09.931
+In our first tutorial, we will create classes for the controller and the bot character.
+
+00:00:09.931 --> 00:00:15.842
+Let's get started. We create a new class. Click show all classes.
+
+00:00:15.842 --> 00:00:25.188
+The bot character will be inherited from the base character. We call this class STUAICharacter.
+
+00:00:26.750 --> 00:00:32.883
+And create an additional AI directory. Click create class.
+
+00:00:33.571 --> 00:00:38.570
+The second class we need is the controller class. There is a special subclass
+
+00:00:38.570 --> 00:00:44.094
+for artificial intelligence called AIController. We inherit from this class.
+
+00:00:47.122 --> 00:00:53.374
+We name our controller class STUAIController and also place it in the AI ​​folder.
+
+00:00:53.890 --> 00:00:59.426
+If you have problems with compilation, then in visual studio add a new directory in the build file.
+
+00:00:59.426 --> 00:01:01.864
+We return to editor.
+
+00:01:01.864 --> 00:01:10.876
+Let's create blueprint classes for the character and controller of our npc. Add a new folder to the root and call it AI.
+
+00:01:15.884 --> 00:01:18.014
+Create a blueprint character class.
+
+00:01:22.216 --> 00:01:24.176
+And the blueprint is the controller class.
+
+00:01:27.050 --> 00:01:32.241
+First, let's set up the character class. By analogy with the character that is controlled by the
+
+00:01:32.241 --> 00:01:36.879
+player, we need to copy all the elements and settings in the blueprint.
+
+00:01:38.404 --> 00:01:45.220
+So I'll open the BaseCharacter blueprint asset and just transfer all the data to AICharacter.
+
+00:01:50.030 --> 00:01:55.070
+Also in the details panel there is a button with an eye, in which there is an item - show only those properties that
+
+00:01:55.070 --> 00:01:59.907
+have been changed in the blueprint. In our situation, this is quite convenient.
+
+00:02:02.286 --> 00:02:06.905
+I transferred all the settings from the regular character to the AI ​​character.
+
+00:02:06.905 --> 00:02:12.000
+On stage, replace the blueprint of the regular character with the blueprint AI character.
+
+00:02:14.876 --> 00:02:22.567
+Also, in order for the AI ​​controller to spawn correctly, we need to check the character settings in the details panel,
+
+00:02:22.567 --> 00:02:28.000
+in the pawn category we look that the property AutoPossessAI is either in
+
+00:02:28.000 --> 00:02:32.872
+place in the world, or you can put place in the world or spawned,
+
+00:02:32.872 --> 00:02:40.965
+and in the property AI controller we specify the created class us a controller. Compile. We launch.
+
+00:02:42.319 --> 00:02:47.671
+Let's check that we can kill the NPC. Let's restart our game.
+
+00:02:48.723 --> 00:02:58.297
+Let's filter the tree of level objects by the AI ​​text and see that the character class has spawned and the controller class has also spawned.
+
+00:03:00.000 --> 00:03:08.572
+We have created all the necessary classes for the job. Let's animate our bot and make it move to some point.
+
+00:03:08.572 --> 00:03:17.894
+We can drag the EmptyActor onto the scene. Let's move it somewhere on the edge of our floor.
+
+00:03:20.020 --> 00:03:23.656
+This will be temporary logic, so we'll do it in blueprint.
+
+00:03:23.656 --> 00:03:26.826
+Open up the blueprint AI controller class.
+
+00:03:28.260 --> 00:03:35.392
+Call a function on BeginPlay called AIMoveTo.
+
+00:03:35.392 --> 00:03:43.624
+This function moves the pawn owned by this controller to the destination point, or to another actor,
+
+00:03:43.624 --> 00:03:52.264
+which can be specified in the Target Actor pin. Copy the coordinates of the EmptyActor to the destination pin.
+
+00:03:54.156 --> 00:03:58.471
+Copy the x coordinate and y coordinate.
+
+00:04:00.154 --> 00:04:02.311
+And the z coordinate is 10.
+
+00:04:04.115 --> 00:04:11.570
+We start the game and nothing happens. To make the bot move, you need an additional entity
+
+00:04:11.570 --> 00:04:19.187
+that needs to be added to the scene. On the left, we find an actor called NavMeshBoundsVolume.
+
+00:04:20.654 --> 00:04:25.160
+Drag it onto the stage. This volume determines the space
+
+00:04:25.677 --> 00:04:33.523
+in which the NPC will move. Let's increase the size of this box in the details panel.
+
+00:04:35.021 --> 00:04:43.318
+In brush settings, set x - 10 thousand, y - 10 thousand too.
+
+00:04:46.650 --> 00:04:54.230
+There is also a z coordinate. Our stage is flat. You can also add a second level: various
+
+00:04:54.230 --> 00:05:02.017
+stairs and increase the z-coordinate of the given volume so that the bot can get to the second floors.
+
+00:05:02.017 --> 00:05:09.482
+The green highlight of the navigation mesh is toggled on and off using the P key on your keyboard.
+
+00:05:09.482 --> 00:05:14.580
+The navigation mesh is also affected by other meshes in the scene.
+
+00:05:14.580 --> 00:05:22.510
+You can check this by dragging and dropping an object on our level. We launch the project. The bot ran. It moves
+
+00:05:22.510 --> 00:05:30.159
+to a point on the edge of the floor and stops when it reaches it. The last thing in this tutorial.
+
+00:05:30.159 --> 00:05:38.353
+I created a constructor in AICharacter and in this constructor set the settings that we
+
+00:05:38.660 --> 00:05:45.700
+defined earlier in the blueprint: AutoPossesseAI. You can also press f12.
+
+00:05:45.700 --> 00:05:49.886
+See what elements this enum has.
+
+00:05:49.886 --> 00:05:59.427
+And also pointed out AIControllerClass. This is a base C ++ class, although we are redefining it to blueprint in the blueprint.
+
+00:05:59.427 --> 00:06:04.750
+The constructor for AICharacter must also be used with a parameter,
+
+00:06:04.750 --> 00:06:09.760
+because we need to call the constructor of the BaseCharter class, and we have replaced it
+
+00:06:09.760 --> 00:06:15.250
+with a constructor with a parameter so that we can override the CharacterMovementComponent.
+

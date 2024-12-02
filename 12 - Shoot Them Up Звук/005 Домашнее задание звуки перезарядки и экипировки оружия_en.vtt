@@ -1,0 +1,145 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.864 --> 00:00:11.311
+In this lesson, we have an independent work. It is necessary to add reload sounds for each weapon
+
+00:00:11.311 --> 00:00:17.226
+and also the sound of equipping weapons. The equipment sound is the same for both weapons.
+
+00:00:21.445 --> 00:00:24.015
+Reload sound for each weapon is different.
+
+00:00:27.000 --> 00:00:33.839
+This is the sound of a rifle reloading. The reload sound of the grenade launcher is located in the GrenadeLauncher directory.
+
+00:00:37.341 --> 00:00:42.908
+This sound is divided into two: the beginning and the end. Both must be put on the timeline.
+
+00:00:44.847 --> 00:00:48.241
+It should look something like this. Let's get a look.
+
+00:01:02.425 --> 00:01:06.415
+I recommend that you pause the video and try to implement these sound effects.
+
+00:01:08.200 --> 00:01:12.942
+Let's get down to the task. Create a new directory and call it Weapon.
+
+00:01:15.233 --> 00:01:19.873
+The sound of changing weapons will be the same for both types. Therefore, we create a
+
+00:01:19.873 --> 00:01:23.870
+new SoundQue in the Weapon directory. We call it Equip.
+
+00:01:27.040 --> 00:01:32.797
+The reload sounds will be different, so create an additional Rifle directory
+
+00:01:33.877 --> 00:01:36.637
+for the rifle and the Launcher directory.
+
+00:01:40.900 --> 00:01:44.715
+Go to the Rifle directory and create a SoundQue.
+
+00:01:46.787 --> 00:01:51.392
+Called it SQ_RifleReload.
+
+00:01:54.370 --> 00:01:56.914
+Create two Sound Queues for the grenade launcher.
+
+00:01:58.441 --> 00:02:04.452
+The first will be responsible for the sound of the start of reloading.
+
+00:02:07.957 --> 00:02:12.161
+And the second for the end of the recharge.
+
+00:02:14.716 --> 00:02:17.533
+We open each asset.
+
+00:02:25.737 --> 00:02:32.433
+And let's add sound wave to our Sound Queues. Open the rifle sounds folder.
+
+00:02:34.885 --> 00:02:45.448
+Let's start with the sounds of changing weapons. We have three of them. We choose everything. Drag the Sound Que to the graph. Create a random node.
+
+00:02:48.142 --> 00:02:52.103
+We connect all the pins. We test the sound.
+
+00:02:57.666 --> 00:03:02.862
+The next sound is the rifle - reload sound.
+
+00:03:03.116 --> 00:03:10.729
+Drag soundwave to the appropriate Sound Que. We include. Checking.
+
+00:03:16.497 --> 00:03:24.467
+With the rifle sorted out. Next we have the sounds for the grenade launcher. Go to the GrenadeLauncher directory.
+
+00:03:26.374 --> 00:03:32.119
+Let's start with the sound of the start of reloading for the grenade launcher. Select the appropriate sound wave.
+
+00:03:34.355 --> 00:03:36.109
+Drag to Sound Que.
+
+00:03:38.720 --> 00:03:40.509
+We connect. Checking.
+
+00:03:44.883 --> 00:03:48.948
+And the last remaining asset is the reload completion sound.
+
+00:03:50.897 --> 00:03:53.007
+We connect. We are testing.
+
+00:03:56.146 --> 00:03:58.557
+All is ready. We can move on to animations.
+
+00:04:00.067 --> 00:04:08.408
+Let's start with the animation of changing weapons. Add Sound Anim Notify somewhere at the beginning of the timeline.
+
+00:04:12.434 --> 00:04:14.597
+We select SQ_Equip.
+
+00:04:22.651 --> 00:04:29.551
+We're done with this animation. Next, let's move on to the reload animation. Let's start by reloading the rifle.
+
+00:04:30.724 --> 00:04:32.344
+Open the corresponding asset.
+
+00:04:34.703 --> 00:04:38.234
+Let's find a suitable place on the timeline for this sound.
+
+00:04:39.355 --> 00:04:43.735
+This is roughly the animation pose in which the hand approaches the store.
+
+00:04:45.480 --> 00:04:47.500
+Add Anim Notify.
+
+00:04:50.072 --> 00:04:52.517
+We select SQ_RifleReload.
+
+00:04:55.450 --> 00:04:56.540
+And press the space bar.
+
+00:05:04.521 --> 00:05:09.511
+In general, it is normal. And in the middle, the animation is the reloading of the grenade launcher.
+
+00:05:12.000 --> 00:05:14.314
+Here we need to add two sounds.
+
+00:05:30.915 --> 00:05:37.341
+We can also add an additional track to separate the audio notify. Drag the reload sound.
+
+00:05:38.797 --> 00:05:43.551
+And at the very end we add a second sound - this is the end of the recharge.
+
+00:05:55.770 --> 00:05:59.614
+The accuracy of the sounds is generally normal. Let's see who looks like in the game.
+
+00:05:59.614 --> 00:06:03.390
+The only thing is to change the number of seconds in a round - put 30.
+
+00:06:06.155 --> 00:06:07.092
+Start the game.
+
+00:06:24.087 --> 00:06:27.645
+All sounds are played. This concludes this lesson.
+

@@ -1,0 +1,43 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.078 --> 00:00:09.152
+Before packing the project, let's set up the scene a bit.
+
+00:00:09.152 --> 00:00:14.246
+Let's remove such an EQS TestPawn. Place the pickups more evenly across the stage.
+
+00:00:17.142 --> 00:00:20.034
+Let's also add some additional AI Characters to the scene.
+
+00:00:26.418 --> 00:00:31.008
+And make sure that AI Character has a rifle weapon by default.
+
+00:00:31.394 --> 00:00:35.867
+Optionally, you can add randomization of the weapon array to the BeginPlay.
+
+00:00:40.040 --> 00:00:43.851
+Let's test a simulation with several NPCs. Click Play.
+
+00:00:44.299 --> 00:00:47.403
+Our map is not final, but in general it is already possible to play.
+
+00:00:49.328 --> 00:00:53.395
+Let's consider another such moment. If we have an open asset behavior tree.
+
+00:00:53.395 --> 00:00:59.521
+When there are several NPCs on the scene, the behavior tree has a special combobox,
+
+00:00:59.521 --> 00:01:04.161
+in which you can select the controller whose tree we want to observe.
+
+00:01:05.972 --> 00:01:12.625
+Everything is ready for packing, let's check that packaga is being created. Don't forget to save the map.
+
+00:01:12.625 --> 00:01:20.139
+Click on save current, open the file, package project, windows 64-bit and wait for the build of the game.
+
+00:01:23.034 --> 00:01:27.076
+The game packaged without errors. This concludes the current section.
+

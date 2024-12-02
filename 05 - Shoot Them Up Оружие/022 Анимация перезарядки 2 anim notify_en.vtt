@@ -1,0 +1,217 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.530 --> 00:00:09.000
+Continuing with the reload animation.
+
+00:00:09.670 --> 00:00:14.668
+Let's create an anim notify that will be used as a recharge end marker.
+
+00:00:15.505 --> 00:00:21.628
+But before that, let's create a base class for notify, from which all notify will inherit.
+
+00:00:22.091 --> 00:00:27.439
+We do this in order to move the notification logic to our base class notify.
+
+00:00:28.000 --> 00:00:33.530
+We call the class STUAnimNotify. It will be used as a base.
+
+00:00:35.970 --> 00:00:44.643
+And create anim notify when the recharge is finished. We can immediately inherit this class from STUAnimNotify.
+
+00:00:45.495 --> 00:00:50.527
+We call it STUReloadFinishedAnimNotify.
+
+00:00:53.250 --> 00:00:55.996
+Create and go to C ++
+
+00:00:55.996 --> 00:01:02.387
+Open the EquipFinishedAnimNotify class and let's move all the functionality to the base class.
+
+00:01:05.652 --> 00:01:08.236
+Go to STUAnimNotify. Paste in the code.
+
+00:01:10.502 --> 00:01:14.727
+We also transfer the macro with the delegate signature.
+
+00:01:18.630 --> 00:01:23.757
+We change the parent class. Let's replace it with the created STUAnimNotify.
+
+00:01:24.566 --> 00:01:26.687
+Let's also replace the header file.
+
+00:01:31.725 --> 00:01:40.646
+From the .cpp file, we also transfer the function to the base class. We made the base class for notify so as not to duplicate the
+
+00:01:40.646 --> 00:01:46.897
+functionality associated with the delegate and now both of our notify can notify clients who
+
+00:01:46.897 --> 00:01:51.637
+have subscribed to the OnNotified delegate. Go to the weapon component class.
+
+00:01:51.637 --> 00:01:58.491
+And in a similar way, as we did when changing weapons, we need to lock all actions when reloading.
+
+00:01:59.390 --> 00:02:06.226
+Add a new flag, call it ReloadAnimInProgress. Add a callback function OnReloadFinished.
+
+00:02:08.280 --> 00:02:11.075
+And also add the CanReload function.
+
+00:02:12.935 --> 00:02:19.005
+Let's copy the header file of our new notify. Let's add it to the weapon component.
+
+00:02:23.760 --> 00:02:29.037
+Let's start with the OnReloadFinished function. We can just copy the OnEquipFinished function.
+
+00:02:29.600 --> 00:02:35.896
+Later we will subscribe this function to ReloadAnimNotify. Replace EquipAnimInProgress
+
+00:02:35.896 --> 00:02:43.073
+in the copied function with ReloadAnimInProgress. When calling the reload function, when we start the animation,
+
+00:02:43.073 --> 00:02:49.300
+we must set the reload flag to true and also before that we can check:
+
+00:02:49.300 --> 00:02:57.810
+if we cannot reload, then we exit the function. We will create CanRelaod in a minute. Add additional conditions
+
+00:02:57.810 --> 00:03:04.110
+to the CanFire and CanEquip functions . We cannot shoot, we cannot change weapons
+
+00:03:04.110 --> 00:03:11.250
+when we are reloading. The CanReload function will be the same as the CanFire function, so we can
+
+00:03:11.250 --> 00:03:18.648
+just copy it and rename it. We also need to check that CurrentWeapon is not a null pointer.
+
+00:03:18.648 --> 00:03:23.607
+We will see this in the next lesson when we add clip changers to weapons.
+
+00:03:23.607 --> 00:03:30.400
+In fact, the functions of CanFire, CanEquip, CanReload are almost the same. In general, we can combine them into one
+
+00:03:30.955 --> 00:03:37.446
+and call them something unified: CanDoAction. But this does not bother us in general, so let's leave it that way for now.
+
+00:03:38.113 --> 00:03:47.159
+Let's go to the InitAnimations function and we just need to add callbacks to all notify that are in the reload animations.
+
+00:03:47.159 --> 00:03:51.457
+The code for finding the anim notify we need will be exactly the same,
+
+00:03:51.457 --> 00:03:57.242
+so in order not to duplicate it, we can wrap this code in our own template function.
+
+00:03:57.242 --> 00:04:03.780
+Let's see how you can do this. Let's assume we already have such a function and let's get a
+
+00:04:03.780 --> 00:04:12.000
+pointer to EquipFinishedAnimNotify using this function. We pass in it a pointer to EquipAnimMontage,
+
+00:04:13.395 --> 00:04:17.865
+and as a template parameter we specify the class of interest to us anim notify.
+
+00:04:19.967 --> 00:04:26.913
+And if we find anim notify, then we subscribe the necessary function to it.
+
+00:04:28.310 --> 00:04:34.536
+Let's go to the weapon component header file and create a templated function.
+
+00:04:34.536 --> 00:04:38.377
+If you don't remember what templates in C ++ are, I recommend you brush up on it.
+
+00:04:38.377 --> 00:04:45.800
+But we use them throughout the course. For example: SpawnActor, TArray, TSubclassOf.
+
+00:04:47.730 --> 00:04:52.125
+We will have a template with one parameter. This will be the anim notify class type.
+
+00:04:52.125 --> 00:05:02.898
+It will return a pointer to this type. We call it FindNotifyByClass and we can specify UAnimSequenceBase as a parameter.
+
+00:05:03.391 --> 00:05:07.254
+It is in this animation class that the anim notifies array is defined.
+
+00:05:11.500 --> 00:05:14.506
+Copy the search code for the anim notify we need.
+
+00:05:16.877 --> 00:05:21.237
+Paste it into the template and edit it in the places we need.
+
+00:05:23.495 --> 00:05:26.488
+Replace EquipANimMontage with Animation.
+
+00:05:29.135 --> 00:05:30.169
+We do this in two places.
+
+00:05:32.174 --> 00:05:37.272
+Next, let's rename EquipFinishedAnimNotify to simply AnimNotify.
+
+00:05:37.272 --> 00:05:41.113
+Cast should be done to the type T of interest to us.
+
+00:05:43.870 --> 00:05:49.020
+If Cast was successful, then we return AnimNotify.
+
+00:05:50.415 --> 00:05:57.208
+And if, after going through the entire array, we did not find the notify we need, then we return nullptr.
+
+00:05:59.523 --> 00:06:05.540
+Our template is ready, go back to the .cpp file. In the case of the anim notify of changing weapons
+
+00:06:05.540 --> 00:06:10.550
+, nothing has changed for us. We are now using this templated function.
+
+00:06:11.150 --> 00:06:17.477
+And to animate the reload, we need to go through the WeaponData array.
+
+00:06:22.136 --> 00:06:26.884
+We can copy the EquipFinishedAnimNotify code and paste it into the loop body.
+
+00:06:26.884 --> 00:06:31.788
+Change EquipFinishedAnimNotify to ReloadFinishedAnimNotify.
+
+00:06:33.531 --> 00:06:39.892
+We change the template parameter, we want to find notify of type STUReloadFinishedAnimNotify.
+
+00:06:41.400 --> 00:06:45.810
+And as a parameter, we pass the animation from the current OneWeaponData structure.
+
+00:06:48.340 --> 00:06:52.784
+If we did not find ReloadFinishedAnimNotify for the current animation,
+
+00:06:52.784 --> 00:06:56.858
+then we will continue and continue to search other animations.
+
+00:06:58.454 --> 00:07:08.265
+and if found, then add the OnReloadFinished function, in theory, you can rename FindNotifyByClass to FindFirstNotifyByClass,
+
+00:07:08.265 --> 00:07:15.161
+because we return the very first anim notify, and there may be several of the same type for this animation.
+
+00:07:15.161 --> 00:07:18.933
+So we have a compilation error. Let's see what happened.
+
+00:07:19.981 --> 00:07:25.980
+We forgot to add return nullptr if the animation pointer is nullptr.
+
+00:07:27.152 --> 00:07:31.533
+Let's add notify to the recharge montage anim.
+
+00:07:33.336 --> 00:07:39.072
+Right-click on the track and add ReloadFinishedAnimNotify
+
+00:07:39.072 --> 00:07:43.931
+for the launcher and do the same for the rifle.
+
+00:07:48.319 --> 00:07:49.220
+We launch the project.
+
+00:07:51.630 --> 00:07:59.507
+We reload the weapon. If we try to shoot or change weapons, then we will not succeed while the animation is running.
+
+00:07:59.507 --> 00:08:04.861
+That's all in this lesson. In the next, we will finalize the changes in ammunition when reloading.
+

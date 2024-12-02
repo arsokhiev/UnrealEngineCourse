@@ -1,0 +1,148 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.860 --> 00:00:10.240
+Hello everyone! Welcome to the course! The course is exclusively dedicated
+
+00:00:10.240 --> 00:00:15.160
+to C ++ development under the Unreal Engine. We will only use Blueprints for setting
+
+00:00:15.160 --> 00:00:19.480
+class parameters and for some subsystems where their use is justified:
+
+00:00:19.480 --> 00:00:24.867
+animation state machine, behavior tree and user interface design.
+
+00:00:24.867 --> 00:00:28.402
+In this case, however, all the internal logic will be in C ++.
+
+00:00:28.402 --> 00:00:34.210
+The course is divided into sections, in each of which we will focus on one of the Unreal Engine subsystems or deal with the
+
+00:00:34.210 --> 00:00:39.576
+specific functionality of the game, thus gradually and consistently developing it.
+
+00:00:40.071 --> 00:00:45.849
+This course assumes that you know at least one object-oriented programming language (ideally C ++).
+
+00:00:46.462 --> 00:00:50.140
+That is, we will not consider the basic syntax of what operators, classes, inheritance,
+
+00:00:50.140 --> 00:00:57.199
+virtual functions are. This is the basics of programming and the course is not devoted to this.
+
+00:00:57.706 --> 00:01:01.425
+At the very beginning there will be a special section in which we will analyze the main types,
+
+00:01:01.425 --> 00:01:08.432
+macros, the concepts of what delegates are, the architecture of Unreal classes, the spawn of actors, how the project is built.
+
+00:01:08.892 --> 00:01:14.300
+Let's talk about the garbage collector and so on. For those who already have experience with C ++ in the
+
+00:01:14.300 --> 00:01:19.983
+Unreal Engine, you can skip this section and go straight to the main project of the course.
+
+00:01:20.940 --> 00:01:24.253
+Let's take a quick look at what we'll be learning.
+
+00:01:25.255 --> 00:01:33.173
+Let's start by creating a character, taking a look at the input system in the Unreal Engine. Let's work on animations of movement, running, jumping.
+
+00:01:33.715 --> 00:01:39.101
+Let's look at various animation assets, learn what an animation graph is and how to customize it.
+
+00:01:40.775 --> 00:01:46.171
+Next, we will develop a character's health component, learn how to inflict damage on our hero,
+
+00:01:46.171 --> 00:01:53.219
+create an automatic health recovery, consider how to inflict damage on a character when falling from a height.
+
+00:01:54.000 --> 00:01:59.068
+Let's add a death animation to the character and create an observer mode.
+
+00:02:00.000 --> 00:02:08.350
+Let's create a weapon component, set up aiming, weapon change, and reload animations. Let's look at how collisions work,
+
+00:02:08.350 --> 00:02:14.660
+line trace, create two classes of weapons: a grenade launcher and a rifle, set up
+
+00:02:14.660 --> 00:02:21.453
+damage to the character and also deal with the data structure for storing cartridges and magazines.
+
+00:02:22.019 --> 00:02:26.780
+Next, we work with the user interface. Let's create different types of scopes.
+
+00:02:26.780 --> 00:02:33.920
+We will display information about the weapon in the interface, also create a life widget and an additional widget
+
+00:02:33.920 --> 00:02:36.765
+when we are in the spectator state.
+
+00:02:37.154 --> 00:02:45.460
+In the next section, we will create pickups: health and ammo. Let's see how and under what conditions we will select them.
+
+00:02:46.872 --> 00:02:53.894
+Next, we are dealing with special effects. Niagara system. Let's create the effect of bullet marks, trace
+
+00:02:53.894 --> 00:02:59.590
+effects, flash effects from the muzzle of a weapon. Consider physical materials. The special effects will
+
+00:02:59.590 --> 00:03:05.780
+differ depending on the surface we get into. Let's replace the death animation with the physical
+
+00:03:05.780 --> 00:03:11.570
+relaxation of the model. For the grenade launcher, we will also have our own effects: the explosion effect and the trace effect of the projectile.
+
+00:03:13.519 --> 00:03:19.430
+Let's add effects when damaging the character: red screen and camera shake.
+
+00:03:19.430 --> 00:03:24.528
+When the character dies, we'll add black and white post-processing to the spectator camera.
+
+00:03:25.306 --> 00:03:30.820
+Next, we will study artificial intelligence in the Unreal Engine: behavior trees, create services that
+
+00:03:30.820 --> 00:03:38.767
+will find the enemy automatically, shoot, change weapons. Let's consider what decorators and tasks are.
+
+00:03:38.767 --> 00:03:45.580
+Also consider a special subsystem EQS, which allows you to analyze the space
+
+00:03:45.580 --> 00:03:51.630
+around the character. At the end of the section, we will get a completely playable version. Plus, let's see
+
+00:03:51.630 --> 00:03:56.396
+how to display specific debug information related to artificial intelligence.
+
+00:03:57.292 --> 00:04:03.378
+Next, let's set the rules for our game. Consider the GameMode class. Let's divide all the players into two teams.
+
+00:04:03.378 --> 00:04:10.181
+Let's give each team their own unique color. Let's learn how to make respawns. Count statistics,
+
+00:04:10.181 --> 00:04:16.458
+number of murders, number of deaths. Let's limit the playing time, create several rounds.
+
+00:04:17.154 --> 00:04:21.849
+In the next topic, we will deal with advanced user interface programming.
+
+00:04:21.849 --> 00:04:28.120
+Let's pause by pressing the "P" key. Let's make the main menu. Let's consider how to programmatically
+
+00:04:28.120 --> 00:04:37.515
+close the game. Let's make a choice of levels. Let's create a static preloader and also, at the very end of the game,
+
+00:04:39.454 --> 00:04:42.172
+create a statistics widget for all players.
+
+00:04:43.110 --> 00:04:49.767
+Next, let's start programming the sound. Let's take a look at various sound assets and settings.
+
+00:05:10.521 --> 00:05:15.000
+At the very end of the course, we will see how you can effectively design game levels
+
+00:05:16.465 --> 00:05:22.106
+and also consider a couple of additional effects: optical zoom and headshot.
+

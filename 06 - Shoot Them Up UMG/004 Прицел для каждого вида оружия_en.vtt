@@ -1,0 +1,389 @@
+WEBVTT
+
+0
+00:05.990 --> 00:10.895
+In this tutorial, we will set up the crosshair icons for each of the weapons.
+
+1
+00:10.895 --> 00:17.234
+I have prepared several .png files. They are taken from shooter game content. I modified them a little.
+
+2
+00:17.795 --> 00:24.541
+In order to import images into the content of our game, just drag the images
+
+3
+00:24.541 --> 00:31.180
+into the content browser, or you can drag the whole folder. The UE will automatically create assets for
+
+4
+00:31.180 --> 00:37.260
+each of the images. All external resources: images, audio files Unreal automatically
+
+5
+00:37.260 --> 00:42.859
+converts to native * uasset format. This is done for cross-platform reasons.
+
+6
+00:43.213 --> 00:48.930
+That is, for the convenience of packaging resources when publishing for various platforms. I also added icons for the
+
+7
+00:48.930 --> 00:56.604
+rifle and launcher. We will configure them in the next lesson, and now we open our PlayerHUD widget.
+
+8
+00:57.434 --> 01:05.585
+And let's add an image for the crosshair. To do this, in the search on the left, enter the name of the Image UI element.
+
+9
+01:05.585 --> 01:12.479
+We can immediately customize the preview of the sight. To do this, in details appearance, select
+
+10
+01:12.479 --> 01:19.328
+any picture in the property Image . Let's put rifle crosshair. We can freely adjust the size of the
+
+11
+01:19.328 --> 01:23.838
+image we are interested in. We can also click on the checkbox property SizeToContent.
+
+12
+01:24.240 --> 01:30.353
+This property will fix the original image size. Next, we need to fix
+
+13
+01:30.353 --> 01:36.130
+this image in the center of our screen. For this, the elements have a special property
+
+14
+01:36.130 --> 01:41.333
+called Anchors and in the window that opens, select the central element.
+
+15
+01:41.333 --> 01:47.235
+That is, the origin for our picture will be in the center. We set PositionX = 0, PositionY = 0.
+
+16
+01:47.235 --> 01:52.660
+This is also not enough for us, because the counting starts from the upper left corner, and we need to
+
+17
+01:52.660 --> 01:58.269
+move the image to the center. There is a property Alignment for this purpose.
+
+18
+01:58.269 --> 02:05.798
+It varies from zero to one. If we put (0.5, 0.5), then the origin point will move to the center of the picture.
+
+19
+02:06.670 --> 02:13.461
+We compile the widget and we can already see how it looks. Click play. The crosshair is displayed.
+
+20
+02:13.461 --> 02:18.520
+We also see our green debug scope, which we will remove soon. Let's make it so
+
+21
+02:18.520 --> 02:24.384
+that when changing weapons, a sight picture will be displayed that corresponds to the current weapon.
+
+22
+02:25.510 --> 02:30.631
+First, we need to create a new data structure. Go to CoreTypes.
+
+23
+02:31.791 --> 02:38.800
+Let's name the data structure WeaponUIData. This structure will store images that correspond to the
+
+24
+02:38.800 --> 02:47.886
+sight of the weapon and its icon. The data type for textures in the UE is called UTexture2D.
+
+25
+02:49.436 --> 02:56.385
+Create the first field in the structure, call it MainIcon. This field will store the main weapon icon.
+
+26
+02:58.923 --> 03:08.035
+Copy the property and name the second field CrosshairIcon. This field will store the crosshair icon.
+
+27
+03:09.000 --> 03:17.667
+Go to the BaseWeapon header file. Create a new property in the protected section of the FWeaponUIData type.
+
+28
+03:18.530 --> 03:21.000
+Let's call it UIData.
+
+29
+03:22.961 --> 03:30.230
+And add an uproperty macro on top, that is, for each type of weapon, we will need to initialize this structure
+
+30
+03:30.230 --> 03:34.710
+in the blueprint . In the user widget, we will need to
+
+31
+03:34.710 --> 03:39.660
+access this structure. Property is in the protected section, so we need to create a
+
+32
+03:39.660 --> 03:48.383
+getter function for this variable. We call it GetUIData. Add the const specifier.
+
+33
+03:49.991 --> 03:51.981
+And it returns UIData.
+
+34
+03:56.970 --> 04:02.525
+Go to the weapon component class. Here you also need to create a wrapper function
+
+35
+04:02.525 --> 04:08.536
+that returns the UIData of the current weapon. Let's see how you can do this.
+
+36
+04:08.536 --> 04:17.790
+Let's create a function called GetWeaponUIData. The main problem with this
+
+37
+04:17.790 --> 04:23.263
+function is that we need to check if the CurrentWeapon pointer is not null.
+
+38
+04:24.680 --> 04:29.735
+If it is nonzero, then we can call its GetUIData function.
+
+39
+04:29.735 --> 04:37.284
+And if it is zero, then we need to return an empty structure. This is not a very good design, you can do it a little differently.
+
+40
+04:38.250 --> 04:41.208
+You can make the return type boolean.
+
+41
+04:43.425 --> 04:48.000
+And if we have a non-null pointer CurrentWeapon, then we will return true.
+
+42
+04:49.103 --> 04:52.715
+If CurrentWeapon is null, then we will return false.
+
+43
+04:54.944 --> 05:00.169
+And we will pass the structure we need by reference as a parameter to our function.
+
+44
+05:02.150 --> 05:13.583
+Let's write this down. And, if the weapon pointer is non-zero,
+
+45
+05:13.926 --> 05:20.420
+then we assign our link to CurrentWeapon-&gt; GetUIData. Thus, to use
+
+46
+05:20.420 --> 05:25.190
+this function, clients first need to check whether this function returns
+
+47
+05:25.190 --> 05:31.266
+true and only then access the data. Let's move the body of the function to a .cpp file.
+
+48
+05:37.510 --> 05:42.996
+We can also add const, because this function does not change the internal state of the class.
+
+49
+05:43.680 --> 05:50.802
+It remains to add the getter function to the widget class. It will have the same signature as the weapon component.
+
+50
+05:51.876 --> 05:56.483
+Add an uproperty on top so that we can access it in blueprints.
+
+51
+05:56.483 --> 06:02.319
+And also add a header file with our STUCoreTypes.h types.
+
+52
+06:04.264 --> 06:05.643
+Go to the .cpp file.
+
+53
+06:07.390 --> 06:11.888
+To speed up the process, let's completely copy the body of the GetHealthPercent function,
+
+54
+06:11.888 --> 06:19.637
+because our new function will look approximately the same. We include the header file with the weapon component.
+
+55
+06:20.736 --> 06:28.957
+And we will change the necessary lines of code. So the first thing. If we do not have an owner, then the function must return false.
+
+56
+06:30.468 --> 06:35.725
+Second: we change the class that needs to be obtained from the player to the weapon component.
+
+57
+06:36.098 --> 06:41.893
+We will also change the name of the variable. Cast to the weapon component.
+
+58
+06:43.257 --> 06:50.942
+And if the pointer to the weapon component is zero, then we return false, and if we have reached the end,
+
+59
+06:52.580 --> 07:00.319
+then we call the GetWeaponUIData function and pass the UIData parameter there.
+
+60
+07:00.319 --> 07:06.410
+In fact, in the widget, we make a wrapper function over the weapon component function so as not to do this
+
+61
+07:06.410 --> 07:12.707
+transformation in the blueprint. Let's go over what we have done. We have declared a structure
+
+62
+07:12.707 --> 07:21.491
+for the weapon data UI. Created a property with the given type in the base weapon class. We also created a getter function
+
+63
+07:21.491 --> 07:29.172
+for this object. In the weapon component, we get the UIData for the current weapon if it is valid.
+
+64
+07:29.172 --> 07:35.380
+And in the widget, we access the weapon component and call its function. Thus, in the blueprint,
+
+65
+07:35.380 --> 07:42.898
+we will get the data for the current weapon. In the GameHUD class, comment out the call to the DrawCrosshair function.
+
+66
+07:42.898 --> 07:45.427
+We no longer need the debug sight.
+
+67
+07:46.487 --> 07:52.030
+So, in the details panel of our image, opposite the property Brush,
+
+68
+07:52.916 --> 08:03.332
+select bind and create a new function. Let's call it GetCrosshairImage. You cannot simply bind the image
+
+69
+08:03.332 --> 08:09.198
+because it is part of the SlateBrush structure. Let's figure it out now.
+
+70
+08:10.731 --> 08:17.638
+So, we call our GetWeaponUIData function. The node that returns data by reference
+
+71
+08:17.638 --> 08:23.346
+has an additional pin on the right. Let's split our structure.
+
+72
+08:23.346 --> 08:28.110
+To call the branch node, you can click anywhere in the blueprint
+
+73
+08:28.110 --> 08:33.426
+while holding down the b key. We connect the return value of our function to it.
+
+74
+08:35.230 --> 08:41.147
+We connect true to the return node. If the data is valid, then we can set the picture.
+
+75
+08:41.147 --> 08:48.067
+We take out the thread from the return value. Selecting make slate brush. We open this node completely.
+
+76
+08:48.067 --> 08:55.015
+And connect the crosshair icon pin to the Image pin. We want the size to be the same as the original image.
+
+77
+08:55.015 --> 09:01.060
+Select the MakeVector2D node. You can get the size of the original texture image
+
+78
+09:01.060 --> 09:09.530
+using the GetSizeX and GetSizeY methods. The width and height are integer so an int to float conversion
+
+79
+09:09.530 --> 09:16.342
+occurs. A transformation node is automatically created on the graph.
+
+80
+09:17.843 --> 09:26.174
+Duplicate the return node and if our getter returned false, then we will simply return
+
+81
+09:26.174 --> 09:30.944
+the default structure. We still had to do some logic in blueprints,
+
+82
+09:30.944 --> 09:40.168
+but this is more likely related to the design: what image to display in the interface, how it will be resized.
+
+83
+09:40.168 --> 09:47.175
+So let's leave that in the blueprints. It remains to set pictures for each type of weapon.
+
+84
+09:47.175 --> 09:53.902
+Open launcher. Find our property UIData.
+
+85
+09:54.946 --> 09:57.478
+And we set the picture for the sight.
+
+86
+10:00.310 --> 10:05.552
+You can immediately install the weapon icon. We will use it in the next lesson.
+
+87
+10:07.645 --> 10:19.400
+Select LauncherMainIcon and open up the rifle. You can find UIData in the search, so as not to scroll.
+
+88
+10:21.883 --> 10:25.251
+Install the icon for the rifle
+
+89
+10:27.000 --> 10:28.954
+and the image of the sight.
+
+90
+10:33.780 --> 10:35.090
+We launch the project.
+
+91
+10:36.810 --> 10:45.440
+A sight for a rifle has appeared, we are changing weapons. The sight has changed to a launcher. Our scene is bright enough
+
+92
+10:45.440 --> 10:51.777
+, so the scope is not particularly noticeable. This can be solved by shading the interface later.
+
+93
+10:51.777 --> 11:00.680
+Now let's remove the direct light in SkySphere. Press clear and set sun height = -1,
+
+94
+11:00.680 --> 11:06.430
+that is, the sky has become night. This is such a quick fix. The sight has become more noticeable.
+
+95
+11:07.360 --> 11:15.676
+Let's kill the character. Let's run into the volume and the crosshair turned into a white square, that is, this is the default SlateBrush structure.
+
+96
+11:15.920 --> 11:20.254
+Our UIData get function returns false when the character is dead.

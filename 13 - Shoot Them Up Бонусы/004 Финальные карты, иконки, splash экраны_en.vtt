@@ -1,0 +1,244 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.557 --> 00:00:11.270
+Our course is completely devoted to programming, but in this lesson, let's see how you can
+
+00:00:11.270 --> 00:00:15.930
+quickly design and customize your own level, and at the end of the lesson I will show
+
+00:00:15.930 --> 00:00:22.920
+new maps that were essentially made using this method. Create an empty new level. In the scene
+
+00:00:22.920 --> 00:00:28.440
+we have the default static mesh of the floor. Let's remove the level that can be designed with BSP
+
+00:00:28.440 --> 00:00:34.410
+geometry - this is a powerful and simple mechanism for prototyping maps. Drag the
+
+00:00:34.410 --> 00:00:41.873
+box to the viewport and slightly resize it. Let's also add a cone to the scene additionally.
+
+00:00:42.724 --> 00:00:48.680
+Each geometry has its own set of settings that can be edited. Materials can also
+
+00:00:48.680 --> 00:00:54.930
+be added to the BSP geometry . Drag and drop any material. Moreover, you can add your own material
+
+00:00:54.930 --> 00:01:01.625
+to each of the sides of the box . In the details panel, for example, we can move the texture, change the UV coordinates.
+
+00:01:01.625 --> 00:01:08.639
+This is done in the Pan section. We can also change the rotation, for example, 45 degrees.
+
+00:01:10.860 --> 00:01:17.759
+We can change the scale of the texture, change the U and V values ​​in the corresponding property. Click on apply.
+
+00:01:17.759 --> 00:01:23.109
+Thus, with the help of elementary BSP blocks, we will be able to design our level.
+
+00:01:23.109 --> 00:01:28.530
+Before packing, we will need to convert all BSP geometries to static mesh.
+
+00:01:28.530 --> 00:01:35.260
+The BSP is resource intensive enough for the final build to convert the BSP to a static mesh
+
+00:01:36.540 --> 00:01:41.269
+in the details panel there is a corresponding button called creates static mesh.
+
+00:01:41.269 --> 00:01:46.767
+Select the directory where we want to save the static mesh and click on the create static mesh button.
+
+00:01:46.767 --> 00:01:50.880
+BSP geometry was automatically replaced with static mesh actor.
+
+00:01:50.880 --> 00:01:56.730
+Also, we have grouped materials. We changed only two faces with you, and all the rest
+
+00:01:56.730 --> 00:02:02.658
+will be with the world grid material by default. In world settings, we will indicate our main game mode.
+
+00:02:05.172 --> 00:02:11.661
+Let's add some PlayerStart to the scene.
+
+00:02:12.154 --> 00:02:16.082
+We have four players by default. Let's add 4 PlayerStart.
+
+00:02:21.160 --> 00:02:26.910
+Click play. All players fail because the created static mesh has no collision.
+
+00:02:26.910 --> 00:02:32.497
+At the same time, the BSP geometry has a collision by default. Let's see how to fix this.
+
+00:02:33.676 --> 00:02:41.410
+Open the static mesh we created. There is a collision item in the main menu, with which we can automatically
+
+00:02:41.410 --> 00:02:49.119
+create one of the presented collisions. The box simplified collision suits us. A green box has appeared
+
+00:02:49.119 --> 00:02:54.370
+around our mesh, which represents a collision and if we press play, the characters
+
+00:02:54.370 --> 00:03:00.099
+do not fall through. A collision has been added. By default, it is blocking for all channels.
+
+00:03:00.099 --> 00:03:06.911
+After we have converted all the geometry to static mesh, we need to calculate all the light in the scene.
+
+00:03:07.500 --> 00:03:12.913
+It is necessary to add a special volume to the scene, which is called the light mass inportance volume.
+
+00:03:12.913 --> 00:03:18.340
+It defines the boundaries within which static light will be read. We will not go into details,
+
+00:03:18.340 --> 00:03:25.287
+we can imagine that this is necessary for us to calculate all the shadows on the scene from static light sources.
+
+00:03:25.287 --> 00:03:30.900
+All such shadows will be baked into the texture. We will see how it looks in just a couple of minutes.
+
+00:03:30.900 --> 00:03:37.800
+We increase the boundaries of this volume. Approximately so that all objects in the scene hit it.
+
+00:03:38.671 --> 00:03:45.599
+The static mesh has a parameter that affects the resolution of the baked textures.
+
+00:03:46.448 --> 00:03:52.061
+It is called light map resolution. The lower this value, the lower the resolution of the baked textures.
+
+00:03:52.579 --> 00:03:57.520
+Let's put 16 for the test and, in order to calculate the final light on the scene,
+
+00:03:57.520 --> 00:04:03.250
+in the toolbar, in the build category, select light quality - the quality of the light rendering
+
+00:04:03.250 --> 00:04:09.711
+and click on build light only in the menu. The UE launches a separate process to render the light.
+
+00:04:09.711 --> 00:04:15.292
+In the windows firewall, click allow access and wait until the whole world is counted.
+
+00:04:16.870 --> 00:04:22.550
+A warning has been added to the message log. Object has overlapping UVs. Our auto-generated static mesh
+
+00:04:22.550 --> 00:04:29.615
+has two UV channels. Through the menu, we can see how they look. In the zero channel there are intersections, but in the first channel there are
+
+00:04:29.615 --> 00:04:33.290
+no intersections. For the correct rendering of the light, it is necessary
+
+00:04:33.290 --> 00:04:40.285
+that the UVs have no intersections. The default is UV channel with index zero.
+
+00:04:40.285 --> 00:04:47.782
+In the details panel, we can change the corresponding property and set it to one. Build the light again.
+
+00:04:52.745 --> 00:04:54.465
+So, the light was counted.
+
+00:04:54.717 --> 00:05:00.680
+Now we can see the shadow of the cone. It doesn't look very neat. It has this quality because of
+
+00:05:00.680 --> 00:05:07.894
+our light map resolution setting. Let's set the property to 1024 and count the light again.
+
+00:05:10.776 --> 00:05:15.000
+The light was counted, the shadow looked much better.
+
+00:05:16.644 --> 00:05:21.000
+Also in the UE there are global light settings. They are located in world settings.
+
+00:05:23.472 --> 00:05:29.710
+The category is called ight mass. When you hover over the parameters, you can read the tooltips.
+
+00:05:29.710 --> 00:05:36.392
+You need to be careful with these parameters. If you change some of them, the rendering time of the light can increase significantly.
+
+00:05:36.392 --> 00:05:41.873
+For our new cards, I have set values ​​different from the default. Let's keep the current level.
+
+00:05:45.989 --> 00:05:50.007
+Let's open one of the new maps, which we will look at a little later.
+
+00:05:53.342 --> 00:05:57.310
+Copy completely the light mass settings values ​​from this level.
+
+00:06:02.184 --> 00:06:05.214
+We paste them into the light settings in our level.
+
+00:06:06.681 --> 00:06:13.742
+And after that we start the final rendering of the light. Thus, using BSP geometry,
+
+00:06:13.742 --> 00:06:19.197
+we can quickly make level prototypes and now we will see this with you.
+
+00:06:21.941 --> 00:06:28.502
+I have created 3 levels. The first one is called DeathLevel. Let's open it up.
+
+00:06:28.502 --> 00:06:35.550
+It looks like this. The geometry is simple enough. The next level is the labyrinth.
+
+00:06:36.550 --> 00:06:43.823
+This level is slightly larger than the previous and final level called Sanctury.
+
+00:06:43.823 --> 00:06:50.611
+I made this level based on the shooter game map. This is the largest level in terms of size of all three.
+
+00:06:55.340 --> 00:07:00.459
+For each of the three levels, I have created a corresponding game mode.
+
+00:07:00.459 --> 00:07:08.840
+Each of them has different game settings. Game data parameters: different number of players,
+
+00:07:08.840 --> 00:07:14.088
+round time and also in each level the colors of the teams will differ.
+
+00:07:14.088 --> 00:07:23.760
+I also updated the preview of the images that we see in the level menu and on the level menu scene I added a static mesh of the
+
+00:07:23.760 --> 00:07:32.410
+character with Idle animation. Let's get it started. It will look like this. We are playing
+
+00:07:32.410 --> 00:07:42.222
+3d animation of the character, the pictures have been updated. We can start any of the levels and start playing.
+
+00:07:43.096 --> 00:07:49.650
+Also, when creating levels, do not forget that you need to add a navigation mesh so that our NPCs can
+
+00:07:49.650 --> 00:07:56.700
+move and also the Player Start actors should be no less than the players on our map.
+
+00:07:56.700 --> 00:08:01.376
+We do not programmatically check this with you, so you need to keep this in mind.
+
+00:08:01.376 --> 00:08:08.540
+Thus, our final project has three maps. Pickups and Player Starts can be placed more neatly, but in a
+
+00:08:08.540 --> 00:08:16.095
+tutorial project this looks quite acceptable. This concludes with the design of the cards,
+
+00:08:18.660 --> 00:08:28.121
+but we will add a couple more settings. Go to project settings. On the left in the menu, find the platforms -&gt; windows category.
+
+00:08:28.121 --> 00:08:33.140
+This category contains platform-specific settings.
+
+00:08:33.140 --> 00:08:40.380
+We will change the pictures that are used when loading the editor and the actual game. I added a
+
+00:08:40.380 --> 00:08:47.470
+picture called splash to my images folder . It will be shown when the editor and our game are started.
+
+00:08:48.964 --> 00:08:55.039
+And also replace the game icon. This image will be displayed in windows in our .exe file.
+
+00:08:55.936 --> 00:09:03.207
+The picture has the resolution .ico, to convert .jpeg or .png images
+
+00:09:03.207 --> 00:09:07.120
+to the .ico format, you can use any free service on the Internet.
+
+00:09:07.120 --> 00:09:13.977
+In the search, just enter "convert jpeg to ico". This concludes this lesson with you.
+

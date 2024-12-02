@@ -1,0 +1,247 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.930 --> 00:00:10.975
+In this lesson, we have one more independent work. It is necessary to make the sounds of pick-ups.
+
+00:00:10.975 --> 00:00:16.762
+There is a separate sound for ammo, separate for health. And also need to program the logic of the impact sound.
+
+00:00:16.762 --> 00:00:20.240
+You can group them at your own discretion. There are sounds of
+
+00:00:20.240 --> 00:00:26.571
+default impacts, sounds of hitting the human body, sounds of hitting metal, and so on.
+
+00:00:26.571 --> 00:00:32.682
+Let me remind you that we have an ImpactData structure and also a WeaponFXComponent.
+
+00:00:52.461 --> 00:00:58.518
+The task is generally simple. The only thing: don't forget about sound classes and attenuation settings.
+
+00:00:59.517 --> 00:01:05.307
+Let's get down to execution. Create an additional directory in the folder with sounds, call it pickups.
+
+00:01:07.356 --> 00:01:15.816
+Create the first SoundQue for health, call it SQue_HealthPickupTaken.
+
+00:01:20.699 --> 00:01:25.999
+And the second SoundQue for ammo, call it SQue_AmmoPickupTaken.
+
+00:01:30.218 --> 00:01:31.208
+We open assets.
+
+00:01:35.408 --> 00:01:38.739
+Create an additional directory called Impacts.
+
+00:01:42.000 --> 00:01:44.895
+Create SoundQue for projectile impact.
+
+00:01:48.548 --> 00:01:51.936
+The next SoundQue is the default impact for the rifle.
+
+00:01:57.460 --> 00:02:00.050
+Next, we create a SoundQue for the ground impact.
+
+00:02:03.240 --> 00:02:07.744
+And a separate SoundQue to play when it enters the character's body.
+
+00:02:07.744 --> 00:02:15.941
+For headshots, we will use the same Sound Que, call it SQ_RifleFleshImpact. We open all the assets.
+
+00:02:19.731 --> 00:02:24.371
+Move to the ExternalContent / Sounds directory.
+
+00:02:26.900 --> 00:02:33.342
+Into the pickups directory. Let's add the first sound for the ammo pickup.
+
+00:02:36.263 --> 00:02:38.230
+Let's test it.
+
+00:02:41.910 --> 00:02:46.133
+Let's immediately create sound classes for our new SoundQue.
+
+00:02:53.036 --> 00:02:55.316
+Let's call the new sound class SC_Pickup.
+
+00:02:57.814 --> 00:03:00.140
+And so does SC_Impact.
+
+00:03:03.470 --> 00:03:06.621
+For ammo pickup, we set the sound pickup class.
+
+00:03:08.604 --> 00:03:13.060
+And also find attenuation settings called pickups.
+
+00:03:15.493 --> 00:03:20.630
+Moving on. Add the sound of taking health.
+
+00:03:24.860 --> 00:03:29.150
+We set the sound class and attenuation settings.
+
+00:03:34.800 --> 00:03:42.630
+The next SoundQue is projectile impact. Find the Impacts directory.
+
+00:03:44.551 --> 00:03:49.208
+Soun waves for projectile are called LauncherImpactClose.
+
+00:03:50.020 --> 00:03:55.316
+There are five of them. Select everything. We drop it into the appropriate SoundCue.
+
+00:03:56.569 --> 00:04:01.132
+We connect through the random node. Checking.
+
+00:04:10.044 --> 00:04:12.751
+For this asset, set the sound impact class.
+
+00:04:16.068 --> 00:04:18.427
+Attenuation settings is called Explosion.
+
+00:04:20.930 --> 00:04:33.276
+Moving on to the impacts of the rifle. Find assets that have default in their names. Select everything. Transferring to SoundCue.
+
+00:04:35.185 --> 00:04:37.854
+We connect using random nodes.
+
+00:04:44.446 --> 00:04:46.256
+Change the Sound class to impact.
+
+00:04:47.338 --> 00:04:52.529
+Attenuation settings are called BulletImpacts. It sounds like this.
+
+00:04:57.630 --> 00:05:02.341
+Next, let's move on to the impacts, which are played when they hit the character's body.
+
+00:05:02.669 --> 00:05:11.024
+Select all impacts with flеsh text in the title. We insert it into SoundQue, we also connect it via random.
+
+00:05:13.895 --> 00:05:15.355
+Set the impact class.
+
+00:05:16.095 --> 00:05:20.025
+Attenuation settings set BulletImpacts. Let's listen.
+
+00:05:24.450 --> 00:05:30.352
+And the last SoundQue is ground impact. Let's use
+
+00:05:30.352 --> 00:05:38.873
+metal sounds for this impact. They contain the text mtl in their titles. We transfer them to the blueprint.
+
+00:05:39.716 --> 00:05:43.661
+And we do the procedure similar to other SoundCue.
+
+00:05:52.682 --> 00:05:54.675
+Click play.
+
+00:05:59.327 --> 00:06:02.581
+All sound effects are customized. Let's move on to the code.
+
+00:06:03.376 --> 00:06:09.914
+Let's start with the pickup sound. The logic for playing the sound will be in the BasePickup class.
+
+00:06:09.914 --> 00:06:14.288
+Add a property that will store a pointer to the sound que.
+
+00:06:15.857 --> 00:06:18.081
+We call it PickupTakenSound.
+
+00:06:19.588 --> 00:06:21.549
+Add forward declaration.
+
+00:06:24.920 --> 00:06:26.180
+And go to the .cpp file.
+
+00:06:27.633 --> 00:06:32.237
+We need to add the GameplayStatics and SoundQue headers.
+
+00:06:34.131 --> 00:06:42.783
+And remember, we have a function called PickupWasTaken. It is called the moment the character picks up the pickup.
+
+00:06:42.783 --> 00:06:49.795
+In it we will play the sound. We call the PlaySoundAtLocation function.
+
+00:06:51.378 --> 00:06:53.492
+Passing a pointer to the world.
+
+00:06:56.490 --> 00:06:59.017
+We pass a pointer to our SoundQue
+
+00:07:00.945 --> 00:07:02.887
+and the current position of the actor.
+
+00:07:06.945 --> 00:07:11.355
+With pickups sorted out. Go to the header file STUCoreTypes.h
+
+00:07:12.400 --> 00:07:17.694
+Find our VFX types. We make a forward declaration for SoundQue.
+
+00:07:19.440 --> 00:07:26.810
+And add a new property to the ImpactData structure - this will be a pointer to SoundQue.
+
+00:07:29.806 --> 00:07:31.496
+Let's just call it Sound.
+
+00:07:32.886 --> 00:07:36.143
+Next, we move to the WeaponFXComponent.
+
+00:07:38.291 --> 00:07:41.891
+We have GameplayStatics. You need to connect SoundQue.
+
+00:07:45.994 --> 00:07:51.313
+And at the bottom of the PlayImpactFX function, add a sound comment
+
+00:07:54.590 --> 00:07:57.670
+and call the PlaySoundAtLocation function
+
+00:08:00.574 --> 00:08:02.340
+Pointer to the world.
+
+00:08:05.929 --> 00:08:08.053
+The Sound field of the ImpactData structure.
+
+00:08:11.302 --> 00:08:18.252
+We will play the sound at the point of impact. To do this, we pass the ImpactPoint field of the Hit structure.
+
+00:08:22.190 --> 00:08:24.190
+All the code is ready. Let's compile.
+
+00:08:25.091 --> 00:08:33.353
+It remains to install all the sounds. Let's start with projectile. For it, we specify only the default impact in the FX component.
+
+00:08:35.146 --> 00:08:39.338
+Next, we move on to the rifle. We indicate the default hit sound.
+
+00:08:41.412 --> 00:08:45.735
+And for each physical material, we indicate the corresponding sounds.
+
+00:08:54.368 --> 00:08:56.362
+Next up is the ammo pickup.
+
+00:09:00.460 --> 00:09:02.781
+And the last asset is the health pickup.
+
+00:09:05.765 --> 00:09:12.497
+All assets are configured. Let's also add our dev damage actor to the scene
+
+00:09:13.270 --> 00:09:17.176
+so that we can reduce our lives and take a health pickup.
+
+00:09:21.364 --> 00:09:23.934
+And in property I will set damage to one.
+
+00:09:26.262 --> 00:09:27.840
+We start the game.
+
+00:09:29.970 --> 00:09:35.435
+So, because of the shooting, the sounds of pickups will be hard to hear, so let's
+
+00:09:36.191 --> 00:09:38.651
+set the sound of the weapon class in the settings to 0.
+
+00:09:43.789 --> 00:09:45.137
+Start the game.
+
+00:10:25.280 --> 00:10:26.536
+All sounds are in place.
+

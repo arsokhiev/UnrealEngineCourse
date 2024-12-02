@@ -1,0 +1,124 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.236 --> 00:00:10.890
+In this tutorial, we will run the behavior tree using C ++ and also look at how to make
+
+00:00:10.890 --> 00:00:17.212
+smooth turns of our NPC character when his motion vector changes.
+
+00:00:17.212 --> 00:00:25.724
+In the AICharacter class, add a forward declaration for the behavior tree. The C ++ class is called UBehaviorTree.
+
+00:00:25.724 --> 00:00:33.413
+And in the public section, we will create a property in which we will set the asset for the behavior tree in the editor.
+
+00:00:33.413 --> 00:00:39.750
+This property can be done both in the controller and in the character. From an architectural point of view, it is more logical
+
+00:00:39.750 --> 00:00:45.270
+to do it in a character, because the controller can take possession of another character, which has its own
+
+00:00:45.270 --> 00:00:49.860
+logic of behavior. Specifically, in our case, there is no difference, because the behavior of
+
+00:00:49.860 --> 00:00:56.610
+all NPCs will be the same. Let's go to the controller class. We will launch the behavior tree
+
+00:00:56.610 --> 00:01:02.940
+not on the BeginPlay as we did in the blueprint, but when the OnPossess function is called.
+
+00:01:02.940 --> 00:01:07.500
+That is, when we got control of the pawn. This function can be called several
+
+00:01:07.500 --> 00:01:13.140
+times during the game. The controller can change the pawn. We covered this feature in the very
+
+00:01:13.140 --> 00:01:19.250
+first chapter of our course. We create the body of the OnPossess function in the controller's .cpp file.
+
+00:01:22.333 --> 00:01:25.073
+We include the AICharacter header file.
+
+00:01:26.413 --> 00:01:32.832
+We need to get the behavior of the tree asset, so we create a local variable STUCharacter
+
+00:01:32.832 --> 00:01:39.323
+and cast the pawn, which is passed in the OnPossess function to the AICharacter class.
+
+00:01:46.598 --> 00:01:48.413
+If the pointer is not nullptr
+
+00:01:51.122 --> 00:01:57.650
+we can start the behavior tree. We have already used this AI controller feature in blueprints.
+
+00:01:58.175 --> 00:02:04.705
+The function is called RunBehaviorTree and takes a pointer to a behavior tree as a parameter.
+
+00:02:06.561 --> 00:02:09.332
+We transfer our property and AICharacter there.
+
+00:02:12.779 --> 00:02:17.011
+Let's run editor. We have a compilation error.
+
+00:02:18.000 --> 00:02:22.095
+I forgot one letter s in the name of the OnPossess function.
+
+00:02:26.029 --> 00:02:27.316
+Let's compile again.
+
+00:02:28.573 --> 00:02:40.625
+Open up the blueprint of the controller. Let's remove the launch of the behavior tree in the blueprint. Compile. Open the asset AI of the character.
+
+00:02:42.658 --> 00:02:46.158
+And in the property behavior tree, we indicate our tree.
+
+00:02:48.551 --> 00:02:49.391
+We launch the project.
+
+00:02:51.156 --> 00:02:57.547
+The AI ​​character moves randomly around the scene. If you look closely at how the rotation
+
+00:02:57.547 --> 00:03:01.420
+changes depending on the motion vector, it looks quite
+
+00:03:01.420 --> 00:03:07.997
+unpleasant, because the character instantly changes orientation in space. This can be tweaked.
+
+00:03:08.227 --> 00:03:12.971
+Open up the character's blueprint and select the character movement component.
+
+00:03:15.193 --> 00:03:23.870
+Find the category rotation settings. Property - use controller desire rotation will interpolate on tick the rotation of the
+
+00:03:23.870 --> 00:03:31.128
+character to the rotation of the controller. Also in the description it says that use controller rotation yaw needs
+
+00:03:31.128 --> 00:03:38.517
+to be removed from the character settings. Let's set this property to true - click on the checkbox.
+
+00:03:39.510 --> 00:03:45.680
+The rotation rate property is responsible for the rate of interpolation. I have selected in advance the value at which this
+
+00:03:45.680 --> 00:03:52.418
+interpolation looks quite adequate. The value is 200. And in the main character settings,
+
+00:03:52.418 --> 00:04:04.779
+you must set the property use controller rotation yaw to false. We launch the project and see how our character is now moving.
+
+00:04:05.282 --> 00:04:10.653
+The rotation does not occur instantly, but takes some time, which looks more natural.
+
+00:04:11.440 --> 00:04:14.250
+And the last thing in this tutorial: I transferred the settings that we
+
+00:04:14.250 --> 00:04:21.080
+just set in C ++, that is, use controller rotation yaw is false.
+
+00:04:21.739 --> 00:04:27.662
+And two settings for the character movement component: use controller desire rotation = true
+
+00:04:28.111 --> 00:04:37.060
+and RoatationRate assign the vector (0, 200, 0). Don't forget about the header file for the character movement component.
+

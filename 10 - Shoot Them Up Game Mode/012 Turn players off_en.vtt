@@ -1,0 +1,91 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.283 --> 00:00:10.133
+In this lesson, we will completely stop the characters at the end of all rounds
+
+00:00:10.133 --> 00:00:13.680
+and also turn off the custom input system.
+
+00:00:13.680 --> 00:00:19.493
+For convenience, let's add an additional function to the private section, let's call it GameOver.
+
+00:00:21.988 --> 00:00:24.198
+We create the body of the function.
+
+00:00:25.392 --> 00:00:30.536
+We will also now consider another convenient way to get all actors of a certain type.
+
+00:00:30.967 --> 00:00:36.762
+To do this, you need to include an additional header file called EngineUtils.h You
+
+00:00:39.972 --> 00:00:44.514
+can immediately add a call to the GameOver function. It's not hard to guess where he will be.
+
+00:00:46.012 --> 00:00:52.279
+Add a function. It will also be possible to transfer our logs to it. Let's do it.
+
+00:00:54.520 --> 00:00:58.829
+So, we need to loop through all the pawn that are available in the world.
+
+00:01:00.051 --> 00:01:02.565
+Let's use the range version of the for loop.
+
+00:01:03.570 --> 00:01:11.199
+Let's create a loop variable called pawn and use a special template called TActorRange.
+
+00:01:11.594 --> 00:01:15.608
+This is a template designed for ease of use in range loops.
+
+00:01:15.930 --> 00:01:22.394
+In fact, it is a wrapper over an iterator actor. As a template parameter, we pass the base class pawn.
+
+00:01:22.807 --> 00:01:26.580
+And also a pointer to UWorld must be passed to the constructor.
+
+00:01:28.056 --> 00:01:34.560
+In the loop, we go through all the pawns that exist in the world. You can also check that the pointer is not nullptr.
+
+00:01:36.000 --> 00:01:43.699
+And first, let's call the pawn function called TurnOff. Let's go inside the function and see what happens there.
+
+00:01:44.756 --> 00:01:51.370
+In the beginning, the code is related to network programming. The next line is to turn off collision.
+
+00:01:52.840 --> 00:01:59.592
+After that, disabling movement in the movement component and the last line is to stop the physics simulations.
+
+00:02:00.364 --> 00:02:03.923
+The second function we'll call is called DisableInput.
+
+00:02:06.798 --> 00:02:12.599
+Let's also go inside and see what's going on there. You can pass playercontroller as a parameter.
+
+00:02:12.599 --> 00:02:21.790
+If this is the current playercontroller, or playercontroller is nullptr, then the InputEnabled flag is set to false
+
+00:02:21.790 --> 00:02:28.590
+and the input component stops working. It is possible not to receive playercontroller from pawn, but simply pass nullptr.
+
+00:02:29.454 --> 00:02:30.701
+We compile the project.
+
+00:02:32.109 --> 00:02:37.058
+Let's reduce the number of rounds for the test, let it be 2.
+
+00:02:38.320 --> 00:02:44.642
+And for the number of seconds of a round we will set the minimum value - we will set it to three seconds. We start the game.
+
+00:02:46.817 --> 00:02:54.595
+The first round is over, the second round is over. The character has stopped: neither the keyboard nor the mouse works.
+
+00:02:54.595 --> 00:03:03.862
+If we press eject, we will see that the enemy character also froze. Turn off worked and also disable input.
+
+00:03:03.862 --> 00:03:08.015
+There is a mini problem that we will not fix now.
+
+00:03:08.015 --> 00:03:15.880
+If the mouse is held down when we shoot the rifle, then when the pawn stops, the shooting will continue until it needs reloading.
+

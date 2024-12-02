@@ -1,0 +1,229 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.305 --> 00:00:12.389
+In this tutorial, we will create a main menu. I added two paths to PublicIncludePaths beforehand.
+
+00:00:12.389 --> 00:00:19.119
+We will have to create some C ++ classes for the game mode, controller, HUD and main menu widget.
+
+00:00:19.119 --> 00:00:23.768
+For the main menu, we will create a separate level that will be loaded when the project starts.
+
+00:00:23.768 --> 00:00:27.530
+In the main menu, you can create settings, make a choice of level.
+
+00:00:27.530 --> 00:00:32.700
+Plus, the game maps can take a long time to load. Depends on the complexity of the level, so it is logical that
+
+00:00:32.700 --> 00:00:37.418
+when you start our game, a level will open, which loads quickly enough.
+
+00:00:37.418 --> 00:00:42.810
+Let's create a menu folder that will store all the assets that are directly related to the main menu,
+
+00:00:42.810 --> 00:00:49.597
+so as not to interfere with the game assets. I created a completely empty level. I called it MenuLevel.
+
+00:00:49.597 --> 00:00:54.671
+We will work with the menu level in several lessons, so I recommend changing the map
+
+00:00:54.671 --> 00:01:00.629
+in the project settings , which is loaded in the editor by default. Find the maps &amp; modes category
+
+00:01:01.479 --> 00:01:07.620
+and change the editor startupmap to menu level. Game Default Map also needs to be changed
+
+00:01:07.620 --> 00:01:13.440
+to MenuLevel - this map that is loaded in the packaged version of the game. I will talk about this
+
+00:01:13.440 --> 00:01:21.030
+at the very end of the section. The level classes are not configured, we will have to create them now. We will try to
+
+00:01:21.030 --> 00:01:27.895
+get by with the minimum amount. We will definitely need the game mode class - the main class of the level.
+
+00:01:30.424 --> 00:01:32.429
+Find game mode base.
+
+00:01:34.354 --> 00:01:37.081
+We name the class STUMenuGameModeBase.
+
+00:01:40.217 --> 00:01:45.443
+Additionally, we specify the menu directory. Click on create class.
+
+00:01:47.778 --> 00:01:50.628
+The next class we need is the controller class.
+
+00:01:51.240 --> 00:01:56.390
+We need to make the default input for the user interface, show the cursor,
+
+00:01:57.051 --> 00:02:03.905
+so we call our class STUMenuPlayerController in the menu directory.
+
+00:02:05.640 --> 00:02:07.096
+Click on create class.
+
+00:02:10.018 --> 00:02:15.128
+Next we need a HUD class. In it we will create the main widget for the menu.
+
+00:02:17.850 --> 00:02:20.611
+We call the class STUMenuHUD.
+
+00:02:24.060 --> 00:02:27.314
+Add to the Menu / UI directory.
+
+00:02:30.000 --> 00:02:37.230
+And the last class we need is the main widget class. We find UserWidget in the search.
+
+00:02:41.090 --> 00:02:43.267
+We call it STUMenuWidget.
+
+00:02:45.476 --> 00:02:48.319
+And create it in the Menu / UI directory.
+
+00:02:48.827 --> 00:02:54.449
+We start with the game mode class, there will be nothing super new in this lesson, we are already familiar with everything.
+
+00:02:54.886 --> 00:02:59.945
+I created a constructor in advance in game mode, connected our new controller and HUD,
+
+00:03:00.795 --> 00:03:04.186
+so in the constructor we simply specify these classes for game mode.
+
+00:03:07.168 --> 00:03:15.530
+Next, we move to playercontroller. I created the BeginPlay function beforehand and here we need to specify two things.
+
+00:03:16.585 --> 00:03:24.778
+First, let's call the SetupInputMode function and pass a parameter to it that is responsible for the UI input.
+
+00:03:25.151 --> 00:03:28.478
+At this level, we will only have input available for the interface.
+
+00:03:30.677 --> 00:03:37.532
+Let's make the mouse cursor visible by setting the bShowMouseCursor variable to true.
+
+00:03:38.590 --> 00:03:45.737
+All the controller is ready, then we move to the HUD menu. Here we will create a main menu widget,
+
+00:03:46.740 --> 00:03:50.888
+so we need a property to store the main menu class.
+
+00:03:54.523 --> 00:04:00.373
+I also created the BeginPlay function in advance and also added the include with the user widget.
+
+00:04:01.923 --> 00:04:06.990
+We check the validity of the menu widget class. In fact, you don't need to do this, because
+
+00:04:06.990 --> 00:04:10.567
+this check already exists inside the create widget function.
+
+00:04:10.567 --> 00:04:15.750
+Set the local variable menu widget to the value returned by the CreateWidget function.
+
+00:04:17.570 --> 00:04:23.700
+If the menu widget has been created, then add it to the viewport. In our level, there will be
+
+00:04:23.700 --> 00:04:29.015
+only one widget in the main menu , so we will not need any additional tricks with visibility.
+
+00:04:31.350 --> 00:04:39.900
+The code for the HUD menu is ready. Moving on to the menu widget. In this lesson, we will create just
+
+00:04:39.900 --> 00:04:45.485
+one button in the widget - start game, which will start the game level.
+
+00:04:45.485 --> 00:04:53.858
+We need a button. Add a forward declaration for the UButton. In the protected section, add the property of the button.
+
+00:04:58.362 --> 00:05:05.212
+Create a private section and add a function that will be called when the start game button is pressed.
+
+00:05:06.996 --> 00:05:12.043
+Move to the .cpp file. I have included all the header files we need in advance
+
+00:05:13.328 --> 00:05:16.268
+and also created the NativeOnInitialzied function.
+
+00:05:18.910 --> 00:05:26.372
+Add a callback for the OnClicked delegate of the StartGameButton.
+
+00:05:31.584 --> 00:05:35.950
+And in the OnStartGameButton function, we will simply load the level by name.
+
+00:05:35.950 --> 00:05:39.755
+Let's create a local variable StartupLevelName.
+
+00:05:41.660 --> 00:05:48.280
+Let's assign it the string literal TestLevel - the name of our game level. For now,
+
+00:05:48.280 --> 00:05:57.679
+let's leave the hardcode behind for this tutorial . We load the level using the already familiar OpenLevel function from the GameStatics library
+
+00:05:58.755 --> 00:06:04.506
+and pass the level name into it. We figured out the C ++ classes. Compile the code.
+
+00:06:06.368 --> 00:06:13.529
+First, let's create a blueprint class for game mode. Put in the menu folder.
+
+00:06:15.857 --> 00:06:20.567
+Let's create a UI folder.
+
+00:06:23.304 --> 00:06:24.723
+Next, we go into
+
+00:06:27.120 --> 00:06:33.957
+our C ++ classes and create a blueprint class for the HUD.
+
+00:06:35.330 --> 00:06:37.410
+Let's put it in the UI subdirectory.
+
+00:06:42.330 --> 00:06:48.513
+In world settings, set our new BP_STUGameModeBase.
+
+00:06:49.099 --> 00:06:52.097
+And also change the class for the HUD.
+
+00:06:55.546 --> 00:06:58.146
+We will create a blueprint widget for the menu based on the
+
+00:07:00.308 --> 00:07:05.960
+game pause widget, so just copy it and paste it into the UI directory.
+
+00:07:09.130 --> 00:07:11.266
+We call it WBP_Menu.
+
+00:07:14.586 --> 00:07:15.786
+Open asset.
+
+00:07:20.017 --> 00:07:22.543
+Change the title to main menu.
+
+00:07:25.506 --> 00:07:28.509
+Change the text on the button to start game.
+
+00:07:33.000 --> 00:07:39.210
+And also change the parent class for the given blueprint widget. We specify STU_MenuWidget.
+
+00:07:42.228 --> 00:07:45.221
+The button must be named StartGameButton.
+
+00:07:52.154 --> 00:07:59.756
+And in the HUD menu, you need to specify a class for the widget menu. We indicate WBP_Menu.
+
+00:08:04.490 --> 00:08:08.410
+Everything is ready for us. Let's test it. Click play.
+
+00:08:10.259 --> 00:08:17.083
+An empty level has opened with the main widget. Click start game. Our main level has started.
+
+00:08:17.083 --> 00:08:24.739
+Let's replace the black color, for this it is enough to add exponential fog to the scene and in the details settings
+
+00:08:25.728 --> 00:08:31.470
+set some color to the property default light color. Suitable for the initial version.
+
+00:08:32.709 --> 00:08:38.183
+Thus, in this lesson, we have created all the necessary classes for the main menu level.
+

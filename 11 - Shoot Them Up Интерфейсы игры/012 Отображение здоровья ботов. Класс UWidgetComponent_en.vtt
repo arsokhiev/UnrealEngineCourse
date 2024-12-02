@@ -1,0 +1,421 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.809 --> 00:00:11.512
+In this lesson, we will add a life bar for our opponents. Let's get started.
+
+00:00:12.534 --> 00:00:18.054
+Let's start by creating a blueprint widget called WBP_HealthBar.
+
+00:00:21.294 --> 00:00:22.484
+We open the asset.
+
+00:00:24.366 --> 00:00:30.600
+We need one element - ProgressBar, we already use it in the interface of our character.
+
+00:00:31.510 --> 00:00:38.242
+Let's adjust the dimensions. Let's put small ones (70, 10).
+
+00:00:39.131 --> 00:00:42.967
+Let's deal with colors.
+
+00:00:44.333 --> 00:00:53.125
+Find property Percent, filled with blue by default. This can be removed. At the bottom, set the FillColorAndOpacity to white.
+
+00:00:53.853 --> 00:00:59.220
+And also, if you pay attention, by default the pictures have a gradient, which
+
+00:00:59.220 --> 00:01:04.980
+looks honestly ugly. I have previously exported the texture, which is
+
+00:01:04.980 --> 00:01:12.440
+a white square. We can change the image in the ProgressBar. For BackgroundImage, set this
+
+00:01:12.440 --> 00:01:19.004
+texture to sample. Set the Tint to black and select this texture for the FillImage as well.
+
+00:01:19.764 --> 00:01:26.070
+Now the picture without gradients and the ProgressBar looks much nicer. Let's first see in blueprints
+
+00:01:26.070 --> 00:01:32.233
+how we will render the widget above the character. To do this, open the STU_AICharacter asset.
+
+00:01:32.880 --> 00:01:38.017
+And add a component called WidgetComponent. This is a special component that can
+
+00:01:38.017 --> 00:01:44.837
+render the UserWidget object. In the details panel, in the property WidgetClass, let's specify the HealthBar.
+
+00:01:45.461 --> 00:01:51.729
+Set property DrawAsDesiredSize to true and place it above the character.
+
+00:01:51.729 --> 00:01:58.471
+Let's change the Z coordinate, for example, put 120 units. So the widget is displayed.
+
+00:01:58.471 --> 00:02:03.145
+It is rendered in 3d space. Let's see how it looks in the game right away.
+
+00:02:04.090 --> 00:02:11.799
+Let's tweak GameMode a bit. Let's set the number of players = 10. Set the time of the round to 30 seconds.
+
+00:02:13.573 --> 00:02:19.072
+And completely disable the behavior tree so that the actions of our NPCs do not interfere with us.
+
+00:02:19.072 --> 00:02:23.834
+Just connect Root to some empty node.
+
+00:02:26.170 --> 00:02:33.002
+If we run around the enemy character, we will see that the widget is displayed above him. It is rendered in 3d space,
+
+00:02:33.002 --> 00:02:37.959
+but at certain angles it will be invisible. You can, of course, make the
+
+00:02:37.959 --> 00:02:44.475
+rotation of this component depending on the position of our camera, but you can do it differently.
+
+00:02:44.475 --> 00:02:49.196
+In the widget component settings, there is a property called Space.
+
+00:02:49.196 --> 00:02:57.058
+Change the world parameter to screen. We are testing. Now the widget is rendered in the interface layer,
+
+00:02:57.704 --> 00:03:03.480
+that is, not in 3d space, but in the character's HUD. This can be seen more clearly
+
+00:03:03.480 --> 00:03:09.532
+if an object is blocking the enemy. With this setting for displaying the widget, the
+
+00:03:09.532 --> 00:03:17.297
+life bar of the enemy character will always be visible to our hero. Let's remove this component from the blueprint.
+
+00:03:17.297 --> 00:03:23.316
+We will now configure everything in C ++. Let's start by creating a class for the HealthBar.
+
+00:03:25.719 --> 00:03:27.692
+We inherit the class from UserWidget.
+
+00:03:31.326 --> 00:03:34.483
+We name the class HealthBarWidget.
+
+00:03:37.070 --> 00:03:39.185
+We finish creating the class.
+
+00:03:39.616 --> 00:03:44.901
+Let's start with HealthBarWidget. We need a forward declaration for the ProgressBar.
+
+00:03:46.600 --> 00:03:50.973
+In the protected section, create a property for this UI element.
+
+00:03:52.530 --> 00:03:58.739
+Let's call it HealthProgressBar. Next, let's add a few parameters to the property
+
+00:03:59.784 --> 00:04:02.642
+that will visually improve our HealthBar.
+
+00:04:04.777 --> 00:04:10.885
+The first property will determine the percentage of life at which the enemy's HealthBar will be displayed,
+
+00:04:11.360 --> 00:04:16.796
+that is, if the percentage of life is greater than this value, then we simply will not show the HealthBar,
+
+00:04:16.796 --> 00:04:21.233
+we will not clog the screen. Let it be 80 percent by default.
+
+00:04:21.813 --> 00:04:26.763
+If anything, at any time, in the blueprints, we can edit this value.
+
+00:04:28.908 --> 00:04:35.821
+The next property will determine the percentage of life at which the color of our ProgressBar begins to change.
+
+00:04:36.252 --> 00:04:40.259
+That is, when the amount of life decreases to a critical value,
+
+00:04:40.580 --> 00:04:45.794
+we will set a different ProgressBar color, for example, some shade of red.
+
+00:04:46.196 --> 00:04:54.062
+Let it be 30 percent by default. And add 2 properties that will be responsible for the colors of the HealthBar.
+
+00:04:56.874 --> 00:05:02.930
+Let's call the first property GoodColor. Let it be white by default.
+
+00:05:09.082 --> 00:05:11.232
+And the second is called BadColor.
+
+00:05:11.994 --> 00:05:13.902
+Let's set the color to red by default.
+
+00:05:15.166 --> 00:05:21.413
+We need one public function that will transfer the current percentage of lives.
+
+00:05:24.577 --> 00:05:26.667
+We create the body of the function in a .cpp file.
+
+00:05:29.030 --> 00:05:35.091
+We need to include one header file that contains the ProgressBar class.
+
+00:05:36.830 --> 00:05:44.871
+First, we check the pointer to the HealthProgressBar for nullptr, if it is zero, then exit the function.
+
+00:05:46.090 --> 00:05:52.970
+Next, we create a local variable. It will be of type ESlateVisibility, which means it will be responsible
+
+00:05:52.970 --> 00:06:01.942
+for the visibility of our HealthProgressBar. We will set Hidden if at least one of the conditions is met: the
+
+00:06:02.997 --> 00:06:09.243
+current percentage of life is greater than our PercentVisibilityThreshold parameter,
+
+00:06:10.340 --> 00:06:12.947
+or the character's percentage of life is zero.
+
+00:06:15.244 --> 00:06:21.622
+Otherwise, HealthBarVisibility will be ESlateVisibility :: Visible.
+
+00:06:23.401 --> 00:06:29.560
+We call the SetVisibility function.
+
+00:06:30.681 --> 00:06:33.313
+Let's pass our local variable to the function.
+
+00:06:36.385 --> 00:06:45.152
+Additionally, we create a local variable HealthBarColor. It will also change its value depending on the percentage.
+
+00:06:45.810 --> 00:06:53.042
+If it is greater than PercentColorThreshold, then set GoodColor.
+
+00:06:54.802 --> 00:06:56.848
+If less then BadColor.
+
+00:07:00.180 --> 00:07:07.635
+The function that sets the fill color is called SetFillColorAndOpacity.
+
+00:07:10.115 --> 00:07:13.581
+We pass HealthBarColor to this function.
+
+00:07:15.397 --> 00:07:19.826
+The last thing to do is set the progress as a percentage.
+
+00:07:21.776 --> 00:07:26.768
+We call the SetPercent function and pass our percentage there.
+
+00:07:27.880 --> 00:07:34.919
+Let's go to the AICharacter class. Let's create a widget component in it, which we have now created in blueprints.
+
+00:07:34.919 --> 00:07:40.249
+We make a forward declaration. The component class is named UWidgetComponent.
+
+00:07:42.292 --> 00:07:49.192
+I will copy the property for the component from the BaseCharacter class. Paste into AICharacter.
+
+00:07:51.120 --> 00:07:54.808
+We name the property for the HealthWidgetComponent component.
+
+00:07:56.120 --> 00:08:01.215
+We will also add the BeginPlay function, in which we will check the check for our component.
+
+00:08:02.166 --> 00:08:11.051
+We need a function that is called when the health percentage changes. We have one in BaseCharacter. It's called OnHealthChanged.
+
+00:08:11.913 --> 00:08:19.030
+We can make it virtual with you. Also, let's move it to the protected section.
+
+00:08:19.030 --> 00:08:25.860
+In general, it is empty in BaseCharacter, but if some logic is added, the protected specifier
+
+00:08:25.860 --> 00:08:32.678
+will provide us with the opportunity to call the parent function. We override it in ASTUAICharacter.
+
+00:08:36.230 --> 00:08:40.000
+Create a body for BeginPlay.
+
+00:08:44.708 --> 00:08:47.448
+We create a body for OnHealthChanged.
+
+00:08:53.801 --> 00:08:58.565
+Let's start by including header files. We need a widget component.
+
+00:09:00.360 --> 00:09:08.718
+We need the STUHealthBarWidget header file. You will also need the STUHealthComponent header file.
+
+00:09:10.490 --> 00:09:15.813
+We create HealthWidgetComponent in the constructor of the class.
+
+00:09:20.020 --> 00:09:23.137
+We attach to the root component.
+
+00:09:24.672 --> 00:09:31.882
+We can also indicate in the code that we want to use Screen. To do this, call the SetWidgetSpace function
+
+00:09:31.882 --> 00:09:41.227
+and pass EWidgetSpace :: Screen there. The enum has two elements Screen and World.
+
+00:09:44.180 --> 00:09:45.550
+Add check to BeginPlay.
+
+00:09:51.647 --> 00:09:57.067
+In order to get the UserWidget object that we set in the blueprints,
+
+00:09:58.567 --> 00:10:07.172
+the widget component has a special function called GetUserWidgetObject. It returns a pointer to the UserWidget.
+
+00:10:07.172 --> 00:10:12.035
+We immediately cast this object to our USTUHealthBarWidget.
+
+00:10:14.723 --> 00:10:18.682
+if the pointer to HealthBarWidget is null, then exit the function.
+
+00:10:21.202 --> 00:10:29.722
+And if not, then we transfer the life of our character to the widget. We call the SetHealthPercent function.
+
+00:10:32.487 --> 00:10:39.901
+And to get the percentage of life, we will use the function of the health component called GetHealthPercent.
+
+00:10:41.220 --> 00:10:42.403
+We compile the project.
+
+00:10:43.823 --> 00:10:47.788
+So the HealthWidgetComponent has been created in the AICharacter blueprint.
+
+00:10:49.189 --> 00:10:57.344
+The class of the widget must be specified. We select WBP_HealthBar. Also, set the property DrawAtDesiredSize to true.
+
+00:10:59.149 --> 00:11:05.677
+Let's also move the component a little higher. Let's set the coordinate value by Z = 120.
+
+00:11:07.154 --> 00:11:15.828
+Next, we need to reparent the HealthBar blueprint. Selecting HealthBarWidget.
+
+00:11:17.586 --> 00:11:21.467
+And rename ProgressBar to HealthProgressBar.
+
+00:11:26.700 --> 00:11:34.716
+We launch the project. Lives are not displayed because the value is greater than 80 percent. We shoot at the character.
+
+00:11:35.000 --> 00:11:39.544
+Lives start to show up and disappear because AutoHeal has happened.
+
+00:11:40.020 --> 00:11:44.040
+If the value is less than 30 percent, then the ProgressBar turns red.
+
+00:11:44.950 --> 00:11:51.744
+In general, everything looks good. The only moment: when we move away, then this widget will be gigantic.
+
+00:11:52.500 --> 00:11:59.377
+Let's make it so that if we are far enough from the enemy, then the widget also becomes invisible.
+
+00:11:59.837 --> 00:12:05.268
+We have a single-player game with you, so the solution is quite simple.
+
+00:12:05.268 --> 00:12:13.264
+In the Tick function, we will determine the distance to the PlayerCharacter, and if this distance is
+
+00:12:13.264 --> 00:12:20.340
+greater than a certain parameter, then we will make the widget invisible. Create a property
+
+00:12:20.340 --> 00:12:25.571
+in which we will store the distance at which the widget becomes invisible.
+
+00:12:27.366 --> 00:12:29.385
+Let it be 1000 units by default.
+
+00:12:32.044 --> 00:12:39.445
+Override the actor's Tick function. For optimization purposes, this can be done using a separate timer
+
+00:12:39.445 --> 00:12:44.713
+to update the visibility not every frame, but after a certain time, for example, 1 second.
+
+00:12:45.454 --> 00:12:49.726
+But this is again information for thought. Now we do it in the easiest way.
+
+00:12:52.253 --> 00:12:56.904
+Also, in the private section, we will create a function to encapsulate this logic.
+
+00:13:01.591 --> 00:13:03.961
+We create the body of the Tick function.
+
+00:13:12.180 --> 00:13:16.341
+We create the body of the UpdateHealthWidgetVisibility function.
+
+00:13:18.008 --> 00:13:21.212
+We can immediately add its call to the Tick function.
+
+00:13:25.190 --> 00:13:34.476
+The function to get the playercontroller pointer is in the UWorld object. It's called GetFirstPlayerController.
+
+00:13:37.360 --> 00:13:43.686
+With a pointer to a controller, we can get a pointer to pawn. Let's use the GetPawn function.
+
+00:13:44.910 --> 00:13:48.788
+And then we will use the GetActorLocation function of the actor.
+
+00:13:49.911 --> 00:13:56.720
+That is, in this way, we wrote the current position of our PlayerCharacter to the PlayerLocation variable.
+
+00:13:57.861 --> 00:14:03.753
+Next, we determine the distance between the position of the PlayerCharacter and the position of the AICharacter.
+
+00:14:05.354 --> 00:14:11.607
+To do this, we will use the Distance function of the FVector class and pass the PlayerLocation there.
+
+00:14:12.144 --> 00:14:19.564
+and so is the value returned by the GetActorLocation function. That is, the position of the current AICharacter.
+
+00:14:20.070 --> 00:14:25.893
+Given a given distance value, we can change the Visibility of the widget component.
+
+00:14:26.943 --> 00:14:34.617
+That is, the component is visible if and only if distance is less than our HealthVisibilityDistance parameter.
+
+00:14:35.316 --> 00:14:42.554
+Let's set the second parameter to true, although it doesn't matter, we don't have any child components.
+
+00:14:43.059 --> 00:14:47.771
+At the beginning of the function, we need to check that all pointers are nonzero.
+
+00:14:56.033 --> 00:15:00.859
+Let's also set the DrawAtDesiredSize flag to true in the constructor.
+
+00:15:01.226 --> 00:15:06.020
+For this purpose, the widget component has a special function SetDrawAtDesiredSize.
+
+00:15:08.450 --> 00:15:13.825
+We pass true to it. We compile the project.
+
+00:15:15.081 --> 00:15:27.112
+Checking. We shoot at the character. Let's run away and the widget disappears. Let's check again. Now we are getting closer.
+
+00:15:27.112 --> 00:15:37.809
+The widget appears. So much better. The last point in this lesson. When we die and become an observer.
+
+00:15:37.809 --> 00:15:43.875
+The GetPawn function will return a null pointer, and therefore Visibiltiy will not be updated for us.
+
+00:15:43.875 --> 00:15:49.460
+Roughly speaking, the component widget will have the Visibiltiy that was installed
+
+00:15:49.460 --> 00:15:55.061
+at the last moment: that is, either we were close, next to the character, then it will be visible.
+
+00:15:55.061 --> 00:16:00.650
+Or, if it is far away, the widget will be invisible. The GetPawn function is a function
+
+00:16:00.650 --> 00:16:09.091
+of the AController base class that returns a Pawn. The PlayerController additionally has a SpectatorPawn
+
+00:16:09.091 --> 00:16:15.992
+that stores a pointer to the observer pawn. PlayerController has a special function
+
+00:16:16.649 --> 00:16:24.750
+called GetPawnOrSpectator. It returns a pointer to a Pawn, if it is non-zero,
+
+00:16:24.750 --> 00:16:30.642
+or returns a pointer to a SpectatorPawn, that is, we can use this function,
+
+00:16:31.953 --> 00:16:38.952
+and regardless of whether we died or not, the Visibility for the widget will be
+
+00:16:38.952 --> 00:16:43.615
+set either relative to our Pawn or relative to SpectatorPawn.
+

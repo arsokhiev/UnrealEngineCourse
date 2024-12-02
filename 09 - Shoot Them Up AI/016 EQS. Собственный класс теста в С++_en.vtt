@@ -1,0 +1,310 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.006 --> 00:00:11.940
+Let's consider the following situation: when we pick up a pickup, we set visibility to false for the
+
+00:00:11.940 --> 00:00:18.049
+root component and also for all child components. Let's do it through the blueprint
+
+00:00:18.049 --> 00:00:24.173
+for a custom pickup on stage. And also the collision stops responding, but this is not so important now.
+
+00:00:24.173 --> 00:00:27.710
+And until the respawn happened, the pickup is in its current state -
+
+00:00:27.710 --> 00:00:36.464
+it is invisible to us, but not to EQS. Let's check this one through our EQS_TestingPawn. Let's move it.
+
+00:00:36.464 --> 00:00:41.420
+The invisible pickup passes all EQS tests. This way the NPC can start moving
+
+00:00:41.420 --> 00:00:47.630
+towards the invisible pickup. This is, roughly speaking, wrong. This can be fixed in different ways.
+
+00:00:47.630 --> 00:00:53.023
+You can create your own generator that will produce only visible actors,
+
+00:00:53.023 --> 00:00:59.175
+or you can create your own test that will filter such actors. This is what we will do with you.
+
+00:00:59.175 --> 00:01:03.980
+The test, in turn, can be done in different ways. You can rely on the Visibility of components,
+
+00:01:03.980 --> 00:01:10.070
+but this is not a very reliable way, because various design solutions are possible, when the root component is
+
+00:01:10.070 --> 00:01:15.800
+invisible, but you can take the pickup, or vice versa. A more reliable solution is to create a special
+
+00:01:15.800 --> 00:01:20.870
+pickup function that will check if it is available for pickup or not. That is, our test
+
+00:01:20.870 --> 00:01:28.276
+will be done specifically for pickups. Let's get started. Go to the EQS directory. We create a new class.
+
+00:01:29.350 --> 00:01:37.816
+Let's enter Test. Find in the class tree EQS Test.
+
+00:01:37.816 --> 00:01:44.321
+The base class is called EnvQueryTest. We also see all the library tests of the engine.
+
+00:01:44.321 --> 00:01:50.786
+The class name must match the pattern: "EnvQueryTest underscore class name".
+
+00:01:50.786 --> 00:01:55.868
+The engine uses this pattern to determine the name of the test in the blueprint editor EQS.
+
+00:01:55.868 --> 00:02:04.168
+Click the next button. We call the test EnvQueryTest_PickupCouldBeTaken.
+
+00:02:06.910 --> 00:02:11.500
+We create a class. I added a constructor to the class beforehand so as not to retype it.
+
+00:02:11.500 --> 00:02:18.361
+A constructor with an initializer and also included the BasePickup header file.
+
+00:02:19.290 --> 00:02:26.480
+Let's go to the test header file and fall into the base class. Searching for a function
+
+00:02:26.480 --> 00:02:31.520
+called RunTest. This function is responsible for all the magic. It is called
+
+00:02:31.520 --> 00:02:38.660
+every time the EQS starts up. Copy the function signature.
+
+00:02:39.639 --> 00:02:44.738
+We override it in our class and create the body in the .cpp file.
+
+00:02:46.950 --> 00:02:53.543
+In this function, we need to go through all the pickup actors and filter out those that cannot be taken.
+
+00:02:53.543 --> 00:02:58.650
+Let's see how this is done in tests from the engine library and implement
+
+00:02:58.650 --> 00:03:05.643
+our own test in the same way. You can open a test that we have already used, for example, trace.
+
+00:03:06.309 --> 00:03:12.290
+Let's go to the .cpp file of the test and first take a look at the constructor. Some variables are
+
+00:03:12.290 --> 00:03:18.710
+initialized in the constructor . The first is called cost. She is responsible for the difficulty of the test. If we fail
+
+00:03:18.710 --> 00:03:25.460
+in enum, we can see that there are three kinds of difficulty: low, medium, and high. It all depends
+
+00:03:25.460 --> 00:03:31.250
+on the mathematical operations that we apply to the tested objects. Under the hood, this information is
+
+00:03:31.250 --> 00:03:38.120
+used for filtration. It is absolutely unimportant to us. The next variable is ValidItemType.
+
+00:03:38.120 --> 00:03:43.493
+She can be a vector, an actor. Depends on what type of data our test will work with.
+
+00:03:43.493 --> 00:03:50.533
+Next comes the call to the SetWorkOnFloatValues ​​function. FilterType is set depending on the parameter.
+
+00:03:50.533 --> 00:03:56.810
+We also observed this type in the blueprint editor. If we fail in enum, we can
+
+00:03:56.810 --> 00:04:03.890
+see what options we have. These are minimum, maximum, range and match. Our test is purely logical,
+
+00:04:03.890 --> 00:04:08.600
+so the variable must be set to match. This value is set if you pass
+
+00:04:08.600 --> 00:04:14.390
+false to the SetWorkOnFloatValues ​​function. Context is not important to us. TraceData is an internal variable of
+
+00:04:14.390 --> 00:04:20.879
+this class, so let's copy the first three lines and paste them into our constructor.
+
+00:04:20.879 --> 00:04:27.319
+Set Cost to low. We won't have any mathematics, so the test is absolutely elementary.
+
+00:04:27.319 --> 00:04:33.897
+Change the type to actor and also pass the value false to the function. As a result, the filter type will be Match.
+
+00:04:33.897 --> 00:04:40.851
+That is, logical. Let's copy the header file for the type. Let's replace vector with actor.
+
+00:04:41.780 --> 00:04:48.663
+So when I created the RunTest function, I accidentally deleted the const again. We return it. Let's go back to the trace test.
+
+00:04:48.663 --> 00:04:55.864
+Let's see how the iteration over the actors in the RunTest function happens. We move down.
+
+00:04:55.864 --> 00:05:02.870
+Find the for loop. EQS has a special type of iterator that iterates over all
+
+00:05:02.870 --> 00:05:09.673
+generated entities. Let's copy this cycle completely. We insert it into our RunTest function.
+
+00:05:12.183 --> 00:05:16.119
+Let's clean up this code. We don't need an inner for loop.
+
+00:05:17.607 --> 00:05:23.093
+We also don't need the ItemLocation variable. We only need the getter code for the actor.
+
+00:05:23.093 --> 00:05:28.410
+We will not go into details of the implementation. This is not so important. Let's try converting
+
+00:05:28.410 --> 00:05:36.861
+this pointer to a pickup class right away . Making Cast. If the pointer is null,
+
+00:05:36.861 --> 00:05:40.806
+then go to the next element. We call the operator continue.
+
+00:05:41.760 --> 00:05:47.721
+If the pointer is not null, then create a local variable called CouldBeTaken.
+
+00:05:49.380 --> 00:05:56.030
+And assign it the value of a function that does not yet exist. Let's also call it CouldBeTaken.
+
+00:05:56.030 --> 00:05:59.493
+The function will return true if the pickup can be picked up.
+
+00:05:59.493 --> 00:06:05.976
+Next, depending on this flag, we need to mark the current item: whether it passes our test or not.
+
+00:06:06.570 --> 00:06:14.840
+If the condition is met, then we need to call the ItemIterator function called SetScore.
+
+00:06:14.840 --> 00:06:20.600
+It has several parameters: the first one is this TestPurpose. It is also a member of the
+
+00:06:20.600 --> 00:06:27.063
+class, so we can write TestPurpose. This enum is also exposed in editor.
+
+00:06:27.063 --> 00:06:32.909
+We can see what values ​​it has: Filter, Score and FilterAndScore.
+
+00:06:33.990 --> 00:06:40.820
+The next variable is FilterType. Our FilterType is set to Match. We set it up
+
+00:06:40.820 --> 00:06:48.105
+using the SetWorkOnFloatValues ​​function. The next argument is score. We pass the value true to it,
+
+00:06:48.105 --> 00:06:54.626
+because we can understand the pickup. The fourth argument is the expected value. We also pass true there.
+
+00:06:54.626 --> 00:07:00.450
+If our condition is not met - the pickup cannot be taken, then we can call the iterator function
+
+00:07:00.450 --> 00:07:06.051
+called ForceItemState. The first argument is a special enum,
+
+00:07:06.051 --> 00:07:14.888
+which is responsible for whether this test passed or not. It has two elements: Failed or Passed. In our case, we transmit Failed.
+
+00:07:14.888 --> 00:07:22.470
+The pickup filter test is ready. You need to create a CouldBeTaken function. Let's do this
+
+00:07:22.470 --> 00:07:29.798
+in a base pickup class. Let's go to the header file. In the public section, we declare a function.
+
+00:07:29.798 --> 00:07:38.456
+It will return a boolean value. We also put the const specifier. We create the body of the function in a .cpp file.
+
+00:07:40.960 --> 00:07:47.581
+The function should return true when the pickup can be taken and false when it is impossible. This condition can be defined in different ways.
+
+00:07:47.581 --> 00:07:52.676
+In our particular case, we can do this using a respawn timer.
+
+00:07:53.160 --> 00:07:58.636
+The timer manager has a special function called IsTimerActive.
+
+00:07:58.636 --> 00:08:04.598
+It takes a timer handle as an argument and returns true if the timer is ticking.
+
+00:08:04.598 --> 00:08:11.534
+That is, we need to invert this condition: if the respawn timer does not work, then the pickup can be taken.
+
+00:08:11.534 --> 00:08:18.589
+We also need to make TimerHandle a member of the class. Let's move it to the private section.
+
+00:08:18.589 --> 00:08:25.420
+In order to test our test in EQS, let's create an additional property that will
+
+00:08:25.420 --> 00:08:33.514
+be of type boolean. Let's call this property CouldBeTakenTest. Let's set the default value to true.
+
+00:08:34.751 --> 00:08:41.940
+And temporarily, let the CouldBeTaken function return this property, that is, we will
+
+00:08:41.940 --> 00:08:49.864
+switch this property in the blueprint and see if our pickup passes the test or not. We can compile the project.
+
+00:08:50.978 --> 00:09:00.276
+Open EQS AmmoPickup. Add the test we created. It should appear as PickupCouldBeTaken.
+
+00:09:01.280 --> 00:09:10.098
+Save asset. Go to viewport. Select EQSTestingPawn. All pickups are tested.
+
+00:09:10.098 --> 00:09:15.509
+Let's set the property of one of them to false.
+
+00:09:16.450 --> 00:09:22.328
+Let's regenerate the EQS. The CouldBeTaken function returns false and the pickup test fails.
+
+00:09:22.810 --> 00:09:28.576
+We can verify that this is really our test: turn it on, turn it off, or turn off other tests.
+
+00:09:30.900 --> 00:09:37.980
+If you open the details panel of the test and change the property BoolMatch of our filter, we will see that it does
+
+00:09:37.980 --> 00:09:44.346
+not affect the test in any way , but the test architecture assumes that this flag should invert our conditions,
+
+00:09:44.346 --> 00:09:48.543
+so let's add this functionality in the code, although this is optional.
+
+00:09:49.369 --> 00:09:57.005
+So, our next task is to figure out how to get a given boolean value. Go to the .cpp file of the trace test.
+
+00:09:57.005 --> 00:10:02.956
+At the very top of the function, we see the code for getting a boolean value. Let's copy these two lines.
+
+00:10:05.690 --> 00:10:11.467
+Let's move them into our RunTest function. The BoolValue variable is of a special type,
+
+00:10:11.467 --> 00:10:16.980
+that is, it is not a pure boolean. This variable subscribes to property changes and, in order to get a
+
+00:10:16.980 --> 00:10:24.691
+raw boolean value, you need to use the GetValue function. Let's call our variable WantsBeTakable.
+
+00:10:24.691 --> 00:10:29.417
+It will take on the value true or false, depending on what we set in the editor.
+
+00:10:29.417 --> 00:10:36.046
+We can now simplify all our filtering code and only use the SetScore function.
+
+00:10:36.595 --> 00:10:44.053
+We copy it. Remove the entire conditional statement and replace the last two parameters of the SetScore function.
+
+00:10:44.053 --> 00:10:50.562
+In the first of them, we will pass the value of the CouldBeTaken variable, that is, in fact, true or false - the result of our test.
+
+00:10:50.562 --> 00:10:57.292
+And in the second parameter, which determines the desired test result, we pass the WantsBeTakable variable.
+
+00:10:57.292 --> 00:11:05.197
+Launch the editor. First, let's check that our new code doesn't break anything. Everything works exactly the same.
+
+00:11:05.197 --> 00:11:12.217
+Now let's change BoolMatch to false. We see that the condition is now inverted.
+
+00:11:12.217 --> 00:11:20.000
+Our test has been successfully created. Let's put some order in the classroom. Add const auto everywhere where possible.
+
+00:11:23.150 --> 00:11:33.835
+Next, in BasePickup, uncomment our production code that depends on the timer and remove the CouldBeTakenTest property.
+
+00:11:35.000 --> 00:11:40.715
+The very last moment - we will also add this test to the EQS FindHealthPickup.
+

@@ -1,0 +1,202 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.080 --> 00:00:10.550
+In this lesson, we'll look at enum. Let's make our enum class available in the editor.
+
+00:00:10.550 --> 00:00:19.080
+And let's also talk about structures. Let's start with enum. We create an enum class. Let's call our type MovementType.
+
+00:00:20.044 --> 00:00:23.305
+This enum will be responsible for the type of movement of our actor.
+
+00:00:24.470 --> 00:00:30.210
+The first element will be moving along a sine wave, as we have now, and the second static.
+
+00:00:32.492 --> 00:00:36.036
+With this value, the actor will be at rest.
+
+00:00:37.197 --> 00:00:42.856
+Create a variable of type MovementType. Let's call it MoveType
+
+00:00:45.182 --> 00:00:49.322
+and set the default to MovementType :: Static.
+
+00:00:50.583 --> 00:00:58.097
+Go to the .cpp file. In the Tick function, let's make a switch according to our enum MovementType.
+
+00:01:01.580 --> 00:01:05.874
+Add the code that we wrote in the last lesson to the sine block.
+
+00:01:07.451 --> 00:01:11.379
+We remove it from the bottom of the Tick and insert it into the case block.
+
+00:01:16.926 --> 00:01:23.234
+We leave the block with MovementType :: Static empty, because we don't want our actor to move and we
+
+00:01:23.234 --> 00:01:29.880
+also leave default empty. So, we have already created a working example. If we compile now,
+
+00:01:29.880 --> 00:01:35.570
+then everything will work for us. We can change the default value to sine and then our actor
+
+00:01:35.570 --> 00:01:41.570
+will move along a sinusoid, or leave the default as it is static and then the actor
+
+00:01:41.570 --> 00:01:47.590
+will not change its position. We return to the .h file. Now we will make sure that this type of
+
+00:01:47.590 --> 00:01:52.589
+enum is displayed correctly in the editor. To do this, we need to take a few steps.
+
+00:01:53.330 --> 00:01:58.712
+The first one is adding a body kit from the UENUM macro on top of our enum class.
+
+00:02:01.537 --> 00:02:06.000
+This macro will generate additional meta-code that extends the functionality of the
+
+00:02:06.000 --> 00:02:13.760
+classic enum classes. We specify the UENUM BlueprintType argument. This parameter means
+
+00:02:13.760 --> 00:02:19.940
+that our class will become available in the editor, in blueprints, and we can directly
+
+00:02:19.940 --> 00:02:25.690
+change the values ​​of our MoveType variable in the editor. The next moment. All enum types in Unreal Engine
+
+00:02:25.690 --> 00:02:33.396
+must start with a capital E and all enum types are strongly typed. They are of type uint8
+
+00:02:33.396 --> 00:02:39.660
+uint8 is an alias, typedef unsigned char. Essentially, this means that the maximum number of
+
+00:02:39.660 --> 00:02:47.357
+elements for an enum can be 255. Let's change the MovementType everywhere to EMovementType.
+
+00:02:49.214 --> 00:02:52.508
+In the .h file and also in the .cpp file.
+
+00:02:57.530 --> 00:03:00.110
+We make our MoveType variable available in the
+
+00:03:00.110 --> 00:03:05.791
+editor. To do this, copy the property and paste it above the MoveType variable.
+
+00:03:08.816 --> 00:03:10.177
+We launch the editor.
+
+00:03:12.825 --> 00:03:13.887
+Click play.
+
+00:03:14.531 --> 00:03:20.236
+Our actors don't move - that's okay, because we have MoveType = static by default.
+
+00:03:22.310 --> 00:03:27.146
+Click on actor, go to the details panel, find our MoveType
+
+00:03:28.114 --> 00:03:34.558
+and we see that the enum is displayed as a combobox. We can change static to sin.
+
+00:03:36.720 --> 00:03:41.823
+We launch. One actor is moving. The other is at rest.
+
+00:03:43.293 --> 00:03:49.396
+Let's move on to creating structures in the unreal engine. Structures in classic C ++ are
+
+00:03:49.396 --> 00:03:53.110
+virtually indistinguishable from classes. The only difference is the
+
+00:03:53.110 --> 00:03:59.216
+default access modifier . For members and functions, it is public for structures and private for classes.
+
+00:04:00.000 --> 00:04:04.310
+In unreal, structures are mainly used to organize data, that is, to combine
+
+00:04:04.310 --> 00:04:09.950
+variables into some kind of related objects. We will now create with you a structure that
+
+00:04:09.950 --> 00:04:16.606
+combines the variables from the Movement category of our actor, that is, the amplitude, frequency and type of movement.
+
+00:04:17.450 --> 00:04:21.848
+We type a struct, call our structure GeometryData
+
+00:04:26.061 --> 00:04:31.301
+By analogy with enum, we need to add a special macro at the top called USTRUCT.
+
+00:04:32.150 --> 00:04:37.100
+We also declare that our structure will be available in blueprints. We specify a parameter to the
+
+00:04:37.100 --> 00:04:43.666
+BlueprintType macro. All struct types in unreal start with a capital F.
+
+00:04:45.270 --> 00:04:52.555
+And the last macro we need to add is called GENERATED_USTRUCT_BODY.
+
+00:04:53.096 --> 00:04:57.354
+This macro is very similar to GENERATED_BODY - an actor macro.
+
+00:04:58.190 --> 00:05:01.790
+We will talk about these macros at the end of this section of the lectures.
+
+00:05:02.843 --> 00:05:11.043
+We remove our variable from the BaseGeometryActor body and insert them into the body of our GeometryData structure.
+
+00:05:13.432 --> 00:05:16.743
+In the actor, create a variable of type FGeometryData.
+
+00:05:18.281 --> 00:05:20.295
+Let's call it GeometryData.
+
+00:05:24.460 --> 00:05:30.101
+We make the variable available in the editor, for this we add our macro with uproperty on top.
+
+00:05:32.916 --> 00:05:36.674
+Let's change the category from Movement to GeometryData.
+
+00:05:43.081 --> 00:05:46.201
+We have created with you an object of type FGeometryData.
+
+00:05:47.371 --> 00:05:52.221
+We move to the .cpp file and in the main code we need to change all our variables
+
+00:05:52.221 --> 00:05:56.982
+that we moved to our object to the variables of this object.
+
+00:06:02.853 --> 00:06:05.680
+So, everything is ready for us. Launch editor.
+
+00:06:08.150 --> 00:06:14.520
+Select any of our actors, find the GeometryData category in the details panel and see
+
+00:06:14.520 --> 00:06:20.430
+how the data structure is displayed in the editor. From the point of view of logic, nothing has changed in our code
+
+00:06:20.430 --> 00:06:26.380
+, and from the point of view of data organization, now all our variables are combined into a structure.
+
+00:06:28.092 --> 00:06:31.615
+Now, for example, we can pass all our variables not individually,
+
+00:06:31.615 --> 00:06:34.245
+but as a whole GeometryData object.
+
+00:06:35.802 --> 00:06:39.322
+And the last moment in this lecture. I refactored our code a little,
+
+00:06:39.322 --> 00:06:45.000
+created the HandleMovement function, removed all the logic of the movement of our actor,
+
+00:06:45.000 --> 00:06:49.095
+renamed the Time variable. It now starts with a capital letter.
+
+00:06:49.095 --> 00:06:55.621
+Also, all our Print functions now start with a capital letter. This is related to coding standards.
+
+00:06:55.621 --> 00:07:01.617
+We will use the Unreal standard. All variables, all functions will start with a capital letter.
+
+00:07:01.617 --> 00:07:07.814
+We will talk about this in more detail in the following sections, but from now on, let's try to comply with it.
+

@@ -1,0 +1,169 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.471 --> 00:00:09.962
+In this tutorial, we will look at the work of the Garbage Collector - the garbage collector in the Unreal Engine.
+
+00:00:10.261 --> 00:00:16.111
+This is a special process that periodically cleans up memory. When an actor or component is destroyed,
+
+00:00:16.410 --> 00:00:22.620
+all pointers that point to the object to be deleted and are visible in the Reflection System Unreal, that is, that
+
+00:00:22.620 --> 00:00:29.761
+are UPROPERTY, will automatically be nullified. Let's check the work of the Garbage Collector. Let's create two pointers
+
+00:00:30.132 --> 00:00:36.165
+in the private section of the GeometryHubActor class. One of them will be UPROPERTY, and the other will not
+
+00:00:42.220 --> 00:00:46.670
+. Also, UPROPERTY will not have any additional qualifier parameters.
+
+00:00:49.048 --> 00:00:54.774
+Let's declare an additional function for spawning and create its body in a .cpp file.
+
+00:00:57.290 --> 00:01:00.563
+Let's immediately add a call to this function to BeginPlay.
+
+00:01:04.084 --> 00:01:07.780
+Inside the function, we will create two actors and set our pointers to them.
+
+00:01:18.850 --> 00:01:22.950
+And each frame will display information about our pointers.
+
+00:01:25.589 --> 00:01:30.449
+The first log will refer to the pointer, which is UPROPERTY.
+
+00:01:33.842 --> 00:01:36.750
+We will display information whether it is null or not.
+
+00:01:38.297 --> 00:01:44.658
+And in addition, we will consider another function that is in the UObject - it is called IsValid.
+
+00:01:46.213 --> 00:01:52.162
+In the first parameter, we pass the condition whether the PropertyActor pointer is null or not.
+
+00:01:54.801 --> 00:01:59.940
+The second parameter is also boolean. Let's pass the return value of the IsValid
+
+00:01:59.940 --> 00:02:07.960
+function into it. This function takes a UObject as a parameter. The function also checks the object pointer for nullptr
+
+00:02:08.584 --> 00:02:14.243
+AND also calls the IsPendingKill function. This function returns true if and only if the
+
+00:02:14.243 --> 00:02:20.096
+PendingKill flag is set. This flag is set to the object when we call
+
+00:02:20.096 --> 00:02:26.283
+the Destroy function. As we will see very soon, after calling the Destroy function, the object from memory will
+
+00:02:26.283 --> 00:02:32.820
+not be immediately deleted. Add a similar log for the second pointer, which is not a property.
+
+00:02:35.854 --> 00:02:36.694
+Launch the editor.
+
+00:02:38.420 --> 00:02:46.676
+Drag the GeometryHubActor class onto the stage. Set the property GeometryClass - BP_CubeGeometryActor
+
+00:02:46.676 --> 00:02:52.320
+We will spawn the cubes. Consider an additional blueprint class called the Level Blueprint.
+
+00:02:52.320 --> 00:02:58.050
+Each level has it. Choose Menu-&gt; Open Level Blueprint
+
+00:02:58.448 --> 00:03:04.320
+We are considering it purely for educational purposes, to see what it actually is. I highly do not recommend writing
+
+00:03:04.320 --> 00:03:10.605
+code here, because many do not know about this class at all. And sometimes it can be difficult to trace
+
+00:03:10.605 --> 00:03:17.325
+where the logic is being executed. Let's do the following thing: by pressing the enter key, we will remove all the
+
+00:03:17.325 --> 00:03:24.375
+BaseGeometryActor type actors from the scene, for this we will use the GetAllActorsOfClass function. Specify BaseGeometryActor
+
+00:03:25.680 --> 00:03:31.849
+in the drop-down list. The function will return an array of pointers to all found
+
+00:03:32.184 --> 00:03:37.542
+objects of this class, so we can loop through all the elements of the array and delete each object.
+
+00:03:38.157 --> 00:03:43.305
+That is, call the DestroyActor function. The garbage collector of the unreal engine is triggered at a specified
+
+00:03:43.305 --> 00:03:48.845
+interval. In the code, we have the ability to force the Garbage Collector to be called.
+
+00:03:48.845 --> 00:03:54.980
+We do this by pressing the tab key. The function is called CollectGarbage, which is a rather
+
+00:03:54.980 --> 00:04:00.000
+time-consuming call. It is better to do this only in extreme situations when you are sure that
+
+00:04:00.000 --> 00:04:05.740
+you need to manually invoke the garbage collector. Let's see what happens with our pointers.
+
+00:04:07.006 --> 00:04:14.958
+We compile the blueprint, go to the stage, open the log, clear and start the game.
+
+00:04:16.179 --> 00:04:22.393
+Two actors spawned. The console displays information that the two pointers are nonzero
+
+00:04:22.393 --> 00:04:28.719
+and the objects are fully valid. Let's remove the actors. Click on enter. The console displays that the
+
+00:04:28.719 --> 00:04:36.856
+pointers are nonzero, but the objects are not valid. When the Destroy function was called, the PendingToKill = true flag was set.
+
+00:04:37.118 --> 00:04:42.326
+Therefore, the objects are not valid, but the garbage collector has not yet triggered, so the pointers are not null
+
+00:04:42.326 --> 00:04:48.942
+. We press tab and what we see .. The pointer that we marked UPROPERTY has been reset.
+
+00:04:48.942 --> 00:04:54.260
+This is correct behavior, and a pointer that has not been marked with UPROPERTY still points
+
+00:04:54.260 --> 00:05:02.038
+to some area of ​​memory that is no longer valid. We are dealing with the so-called dangling pointer.
+
+00:05:02.038 --> 00:05:05.843
+The Garbage collector did not know anything about this pointer because it was not
+
+00:05:05.843 --> 00:05:10.280
+marked UPROPERTY. Therefore, you need to work with pointers very carefully.
+
+00:05:11.483 --> 00:05:19.530
+We can also look at the garbage collector settings. They are located in the project settings under the garbage collector.
+
+00:05:21.670 --> 00:05:26.710
+For example, you can change the interval for calling the garbage collector and by default it costs 1 minute.
+
+00:05:28.495 --> 00:05:33.510
+This concludes the first section. From the next one, we begin to work with you on the
+
+00:05:33.510 --> 00:05:39.148
+main project of the course directly . At this point I would like to make a small remark regarding the logs. In the future
+
+00:05:39.148 --> 00:05:45.000
+, we will use the Error or Warning logging level only in those situations when we really
+
+00:05:45.000 --> 00:05:51.048
+have some problems in our program, that is, we will not use them in terms of highlighting in the console.
+
+00:05:51.220 --> 00:05:55.810
+This approach can be used during debugging. In production code, the logs must be
+
+00:05:55.810 --> 00:06:00.693
+semantically correct. It also affects the automated tests of our program.
+
+00:06:00.911 --> 00:06:07.238
+Even if the function works correctly from the point of view of logic, but, for example, there is a code with the Error log in the body,
+
+00:06:07.582 --> 00:06:14.402
+then the unit test will be marked as not passed, because our code displayed an error log when executing the unit test.
+

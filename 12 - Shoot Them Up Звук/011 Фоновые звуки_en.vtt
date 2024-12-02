@@ -1,0 +1,106 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.937 --> 00:00:08.630
+In this tutorial, we'll add some background sounds.
+
+00:00:10.694 --> 00:00:16.514
+Create a new folder in the sound directory. Let's call it ambient.
+
+00:00:20.817 --> 00:00:27.175
+The first SoundCue will be responsible for the background sound of the game, let's call it SC_GameAmbient.
+
+00:00:31.160 --> 00:00:36.766
+The second SoundCue will play in the background in the main menu. We call it SC_MenuAmbient.
+
+00:00:39.574 --> 00:00:40.794
+We open assets.
+
+00:00:42.960 --> 00:00:48.288
+Also note that our default sound class is now set by default.
+
+00:00:48.729 --> 00:00:53.283
+Let's create an additional sound class for background sounds.
+
+00:00:55.332 --> 00:00:57.239
+Let's call it SC_Ambient.
+
+00:01:02.181 --> 00:01:07.835
+Let's make it a child class of the master. Add it to the child classes array.
+
+00:01:11.240 --> 00:01:14.504
+And also set this sound class to our sound cue.
+
+00:01:17.741 --> 00:01:28.503
+Go to the external content / sounds / ambient sounds / ambient bed directory. Select the sanctuary sound - it will play in the level menu.
+
+00:01:29.826 --> 00:01:35.463
+We connect to output. It should play in a loop, so we set property looping to true.
+
+00:01:36.051 --> 00:01:36.863
+Checking.
+
+00:01:41.727 --> 00:01:47.494
+The background sound for the game is called high rise room - we also connect it.
+
+00:01:48.229 --> 00:01:52.000
+Set property looping to true and check.
+
+00:01:57.223 --> 00:02:02.681
+We can simply drag &amp; drop the sound cue data into each of the levels
+
+00:02:02.681 --> 00:02:07.419
+and everything will work for us, but we will do it a little differently.
+
+00:02:07.419 --> 00:02:17.797
+Let's create an additional actor, add a new directory, call it world and create a blueprint class in this directory.
+
+00:02:18.176 --> 00:02:27.645
+Let's inherit from the actor, let's name it BP_AmbientSound. With this blueprint, we will be able to control the SoundCue.
+
+00:02:28.705 --> 00:02:35.540
+Opening the asset, we need a single component called the audio component.
+
+00:02:36.352 --> 00:02:41.935
+By default, we do not specify the property sound, we will install it in specific instances.
+
+00:02:42.415 --> 00:02:50.063
+Drag the blueprint onto the test level scene and set the property sound to SC_GameAmbient.
+
+00:02:52.876 --> 00:02:59.556
+We need to do the same for the menu level. We open it. We save the test level.
+
+00:03:01.346 --> 00:03:10.382
+Drag our blueprint BP_AmbientSound to the viewport and specify SC_MenuAmbient in the property sound.
+
+00:03:11.151 --> 00:03:16.375
+I also did not pay attention: we do not specify attenuation settings in our sound cue.
+
+00:03:16.375 --> 00:03:21.677
+We have a background sound, so the volume should be the same at any point of the game level.
+
+00:03:22.149 --> 00:03:24.241
+Let's hear how everything sounds in the game.
+
+00:03:40.105 --> 00:03:45.817
+Everything works. We can improve the behavior of the sound a bit. Open up the ambient blueprint.
+
+00:03:46.064 --> 00:03:50.900
+On BeginPlay, we will make the volume of the background sound smoothly increase at startup.
+
+00:03:51.511 --> 00:03:56.373
+The audio component's function that allows you to do this is called FadeIn.
+
+00:03:56.373 --> 00:04:01.672
+This function smoothly increases the volume from zero to the volume level we need.
+
+00:04:02.185 --> 00:04:08.487
+For the test, let's set the value to 10 seconds to feel that the volume really increases smoothly.
+
+00:04:25.679 --> 00:04:33.099
+Let's set the value less than two seconds. This blueprint is cosmetic. We will not create a c ++ class for it.
+
+00:04:33.447 --> 00:04:35.431
+If you want, you can do it yourself.
+

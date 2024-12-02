@@ -1,0 +1,16 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.550 --> 00:00:11.490
+In this section, we work with the interface. Let's completely update the character's HUD, pause when pressing
+
+00:00:11.490 --> 00:00:18.898
+the P key, make the main menu, consider how to programmatically close the game. Let's make a choice of levels.
+
+00:00:20.973 --> 00:00:25.441
+Let's create a static preloader and also, at the very end of the game,
+
+00:00:27.663 --> 00:00:34.000
+create a statistics widget for all players. There is a lot of work in this section - so let's get started!
+

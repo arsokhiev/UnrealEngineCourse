@@ -1,0 +1,277 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.190 --> 00:00:10.042
+In this lesson, we have homework, in which it is necessary to implement
+
+00:00:10.042 --> 00:00:15.731
+automatic renewal of life, that is, we received damage and after a while our
+
+00:00:15.731 --> 00:00:21.000
+life begins to increase. All logic should be in the health component.
+
+00:00:22.050 --> 00:00:25.944
+Try to parameterize the problem as much as possible. I added several parameters:
+
+00:00:25.944 --> 00:00:32.850
+1 - AutoHeal enabled or not; 2 - the frequency with which life will be added; 3 - parameter
+
+00:00:32.850 --> 00:00:38.867
+is the delay before calling the update timer; 4 - how much health is added at a time.
+
+00:00:38.867 --> 00:00:42.181
+Pause here, then a solution will follow.
+
+00:00:43.789 --> 00:00:50.566
+First, let's create all the necessary variables and functions in the .h file, and then move on to the .cpp file.
+
+00:00:51.875 --> 00:00:56.048
+Let's start by creating property. The category will be called Heal.
+
+00:00:57.918 --> 00:01:06.218
+The first property is of type boolean - AutoHeal. Whether or not our add life logic is enabled or not.
+
+00:01:08.090 --> 00:01:14.004
+The next property is the refresh rate.
+
+00:01:17.070 --> 00:01:20.568
+The variable is of type float. Let's call it HealUpdateTime.
+
+00:01:23.053 --> 00:01:25.628
+And let the default be 1 second.
+
+00:01:27.212 --> 00:01:34.925
+The next property will be responsible for the delay before the start of the update timer. It will also be of type float.
+
+00:01:34.925 --> 00:01:42.418
+Let's call it HealDelay. It will also be measured in seconds and let it be 3 seconds by default.
+
+00:01:42.418 --> 00:01:48.220
+And the last variable. She will be responsible for the number of lives that we add with one
+
+00:01:48.220 --> 00:01:56.178
+update of our timer. The variable will be of floating point type. Let's call it HealModifier.
+
+00:01:57.970 --> 00:02:04.968
+And by default, let it be five health points. Next, we need a timer descriptor.
+
+00:02:04.968 --> 00:02:13.242
+Add a variable of type FTimerHandle. Let's call it HealTimerHandle.
+
+00:02:17.480 --> 00:02:20.624
+And we declare the HealUpdate function,
+
+00:02:20.624 --> 00:02:24.806
+which will be called every time our timer fires.
+
+00:02:31.546 --> 00:02:34.576
+Let's create a body for it right away.
+
+00:02:39.060 --> 00:02:41.749
+We've created everything we need in a .h file.
+
+00:02:42.643 --> 00:02:48.930
+We can move to the .cpp file and start by including the header files we need.
+
+00:02:51.060 --> 00:02:54.280
+First - Engine / World.h
+
+00:02:56.970 --> 00:02:59.950
+Second - TimerManager.h
+
+00:03:04.340 --> 00:03:10.711
+Let's go to the OnTakeAnyDamage function. First, we check whether we are dead or not, and if not,
+
+00:03:11.828 --> 00:03:20.540
+then we check whether our auto heal feature is enabled or not and additionally check the pointer to the global
+
+00:03:20.540 --> 00:03:27.539
+world object GetWorld (), because the manager timer is located in the UWorld object.
+
+00:03:29.232 --> 00:03:39.949
+We get a reference to the timer manager via the GetTimerManger () function and set the timer using the SetTimer function.
+
+00:03:40.717 --> 00:03:46.314
+Visual Studio hints that there are several overloaded functions here. We need this one.
+
+00:03:47.492 --> 00:03:53.426
+The first parameter is the timer descriptor that we created.
+
+00:03:54.832 --> 00:03:57.646
+The second parameter is a pointer to the object on which
+
+00:03:57.646 --> 00:04:05.764
+the callback function will be called, the third parameter is a link to the function - HealUpdate, the
+
+00:04:09.380 --> 00:04:16.180
+next parameter is the timer refresh rate. We insert our variable HealUpdateTime here.
+
+00:04:19.350 --> 00:04:25.410
+The next parameter is whether the timer is called again or not. We put true and the last one is the
+
+00:04:25.410 --> 00:04:31.731
+timer delay before the very first call. We insert our parameter HealDelay.
+
+00:04:34.190 --> 00:04:38.450
+Thus, after we have received damage, a timer is set for us
+
+00:04:38.450 --> 00:04:41.723
+and the HealUpdate function starts to be called cyclically,
+
+00:04:42.911 --> 00:04:51.164
+in which we will increase our health by the HealModifier value. After the change in health, we do not forget to notify all
+
+00:04:51.164 --> 00:04:57.140
+clients that our health has changed. Therefore, we call the delegate OnHealthChanged.
+
+00:04:59.290 --> 00:05:02.908
+Let's change addition to a more correct operation,
+
+00:05:02.908 --> 00:05:08.890
+because we may have a situation where health = 99, and HealModifier, for example, equals 10.
+
+00:05:10.806 --> 00:05:18.518
+Let's use a function from the FMath class called Min and choose at least two values: the
+
+00:05:18.518 --> 00:05:28.743
+first is Health + Heal Modifier and the second is MaxHealth. Therefore, the value will never be greater than MaxHealth.
+
+00:05:28.743 --> 00:05:32.288
+Now let's figure out when we need to stop the timer.
+
+00:05:32.288 --> 00:05:38.168
+We have to stop the timer when the health value has reached the maximum value of MaxHealth.
+
+00:05:39.000 --> 00:05:43.560
+After the lives are fully restored, there is no point in calling the HealUpdate function.
+
+00:05:44.096 --> 00:05:52.872
+Therefore, we check if Health equals MaxHealth and the pointer to the world is valid,
+
+00:05:57.750 --> 00:06:02.674
+then in a similar way, we get a reference to the timer manager
+
+00:06:07.860 --> 00:06:16.879
+and call its ClearTimer function, which takes one argument - the descriptor of our HealTimerHandle timer.
+
+00:06:16.879 --> 00:06:19.956
+This is not the only place where we should stop our timer.
+
+00:06:19.956 --> 00:06:26.712
+We must also stop it at the very beginning of the OnTakeAnyDamage function. As soon as they hit us,
+
+00:06:26.712 --> 00:06:33.750
+we immediately stop restoring our lives. Let's move the check for a null world pointer to the very top of
+
+00:06:33.750 --> 00:06:45.312
+the OnTakeAnyDamage function. Let's add to the very first condition. If the world is zero, then we exit.
+
+00:06:46.220 --> 00:06:52.946
+Let's do a little refactoring. If you pay attention, our life is established in three different places.
+
+00:06:52.946 --> 00:06:59.040
+Therefore, it begs to create a function. Go to the .h file, into the private category.
+
+00:07:00.541 --> 00:07:07.808
+We call the function SetHealth. She will have one parameter, the amount of life. Function with private access,
+
+00:07:07.808 --> 00:07:15.274
+so only the health component can supply the value of life. We create its body in a .cpp file.
+
+00:07:24.020 --> 00:07:28.412
+In all three cases of updating life, the clamp function suits us.
+
+00:07:29.010 --> 00:07:33.000
+In the first case, it is obvious. In the second, we already
+
+00:07:33.000 --> 00:07:39.070
+have clamp, and in the third, which we just wrote in HealUpdate, the clamp function has stricter restrictions than Min.
+
+00:07:39.070 --> 00:07:43.390
+Because it also constrains the lower bound. It suits us.
+
+00:07:44.734 --> 00:07:51.370
+We copy our delegate. We have a bug in the clamp function. This function is template, so the compiler
+
+00:07:51.370 --> 00:07:57.616
+needs to explicitly specify that all arguments are of type float. We insert the delegate after updating lives.
+
+00:07:57.616 --> 00:08:03.000
+Let's update our lives in all places with the new SetHealth function.
+
+00:08:03.000 --> 00:08:11.362
+On BeginPlay, we just pass in the MaxHealth function and remove the delegate. It will be called in our function.
+
+00:08:13.022 --> 00:08:14.582
+In the OnTakeAnyDamage function
+
+00:08:15.920 --> 00:08:22.712
+We must call the SetHealth function with the Health - Damage parameter. We delete everything else.
+
+00:08:25.514 --> 00:08:35.451
+In the HealUpdate function, call the SetHealth function with the Health + HealModifier parameter. We also clear the rest.
+
+00:08:35.451 --> 00:08:43.088
+All is ready. The code now looks much more concise. Let's improve one more point. We test for equality between
+
+00:08:43.088 --> 00:08:48.710
+Health and MaxHealth. Floating point data. Testing for equality of non-integers is
+
+00:08:48.710 --> 00:08:55.977
+fraught with errors, so let's use a function from the FMath class called IsNearlyEqual.
+
+00:08:55.977 --> 00:09:02.420
+This function checks for equality two numbers of type double or float with some epsilon,
+
+00:09:02.420 --> 00:09:08.240
+which we can specify as the third argument, or we can leave it by default. This is a very small number.
+
+00:09:09.700 --> 00:09:13.736
+And we will do the same in our IsDead function.
+
+00:09:16.005 --> 00:09:21.885
+Health we really cannot be less than zero, so it is enough to check Health for equality to zero.
+
+00:09:21.885 --> 00:09:28.900
+We can use the previous function, or we can use an additional one called IsNearlyZero.
+
+00:09:28.900 --> 00:09:37.610
+It is essentially a call to the IsNearlyEqual function with one of the 0 arguments specified. Compile the project.
+
+00:09:40.622 --> 00:09:48.313
+Open the blueprint of our character. Select the health component, check that all variables have been created
+
+00:09:48.313 --> 00:09:53.647
+in the Heal category . You can balance these parameters in different ways.
+
+00:09:54.499 --> 00:10:03.920
+Click on play. We run into the red sphere. We receive damage and after three seconds of life they begin to recover.
+
+00:10:06.940 --> 00:10:12.700
+Let's make a slight cosmetic improvement. In fact, all our parameters: Heal Update,
+
+00:10:12.700 --> 00:10:20.051
+HealDelay, HalModifier are available if and only if the value of the AutoHeal variable = true.
+
+00:10:20.519 --> 00:10:25.529
+The property has a specifier, which is responsible for whether the given property is active or not.
+
+00:10:25.529 --> 00:10:30.274
+The qualifier is specified in the meta information. It is called EditCondition.
+
+00:10:30.902 --> 00:10:35.162
+And it is assigned the value of the boolean variable. We point to AutoHeal.
+
+00:10:37.320 --> 00:10:42.715
+We copy this information to all properties that are related to updating lives.
+
+00:10:43.003 --> 00:10:46.302
+Launch editor. Let's see how it looks in the editor.
+
+00:10:47.644 --> 00:10:53.629
+Select the health component. If we set the AutoHeal value to false,
+
+00:10:54.108 --> 00:10:57.714
+then all our properties become unavailable for editing.
+

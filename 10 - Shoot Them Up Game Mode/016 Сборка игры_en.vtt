@@ -1,0 +1,37 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.863 --> 00:00:10.131
+Before packaging the game, I recommend that you set adequate values ​​in GameData.
+
+00:00:10.925 --> 00:00:18.213
+The number of players is 4, the number of rounds is 4, the round time is 30, respawn can be left at the default 5 seconds.
+
+00:00:18.213 --> 00:00:25.258
+Also during testing, we changed the health component of the NPC character, so we check that the number of lives is 100
+
+00:00:25.258 --> 00:00:32.737
+and auto heal is on. I changed the position of the PlayerStart actors, set them at the edges of the scene.
+
+00:00:33.287 --> 00:00:38.250
+In fact, if you wish, you can create your own PlayerStart class, add a
+
+00:00:38.250 --> 00:00:45.030
+property - TeamId to it and in game mode select the point for the player to spawn, depending on which
+
+00:00:45.030 --> 00:00:50.460
+team he is on. This can actually be useful for game balance to know exactly
+
+00:00:50.460 --> 00:00:56.844
+where which players are spawning. Also, to improve the quality of the code, you can add a check to the game mode,
+
+00:00:56.844 --> 00:01:01.933
+which will check that the number of PlayerStart is not less than the number of players.
+
+00:01:02.772 --> 00:01:04.000
+We pack the game.
+
+00:01:06.965 --> 00:01:11.130
+The game has been successfully assembled, this is where the current section ends.
+

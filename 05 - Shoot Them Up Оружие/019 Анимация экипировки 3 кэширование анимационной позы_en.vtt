@@ -1,0 +1,94 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.380 --> 00:00:13.164
+We have a minor issue with the weapon change animation. If we change the weapon while running,
+
+00:00:13.164 --> 00:00:20.191
+then the running animation breaks down a bit. This happens because we insert this animation into the last slot,
+
+00:00:20.191 --> 00:00:27.023
+which erases all information about the current animation pose. In fact, this is what happens
+
+00:00:27.023 --> 00:00:32.702
+with the death animation. Let's play our animation of changing weapons in a different slot.
+
+00:00:32.702 --> 00:00:43.230
+We are looking for the slot node in the search, add, connect it to our flow. In the details panel, replace the slot name with uppper body.
+
+00:00:44.940 --> 00:00:47.834
+Next, go to the animation montage AM_Equip.
+
+00:00:49.147 --> 00:00:55.253
+And in the montage default group category, also change the slot name to uppper body.
+
+00:00:56.000 --> 00:01:02.090
+With this setting, AM_Equip will be played in the slot we created. If we check, the
+
+00:01:02.090 --> 00:01:09.450
+weapon change animation works as before. The new slot works. This was our first step. Further in the anim graph it
+
+00:01:09.450 --> 00:01:15.471
+is possible at any time to save the current pose in the so-called animation cache.
+
+00:01:17.540 --> 00:01:19.220
+Enter cache in the search.
+
+00:01:22.086 --> 00:01:29.130
+And an additional node appears on the scene. Let's rename it to locomotion cache. This node can be treated
+
+00:01:29.130 --> 00:01:35.640
+as a variable that stores the current pose and now we can use this node anywhere
+
+00:01:35.640 --> 00:01:43.530
+in our graph. If you search for locomotion, then you can get a node with our cache. In fact, now
+
+00:01:43.530 --> 00:01:49.603
+we have not changed anything either, we just saved the pose of movement and passed it on to our flow,
+
+00:01:49.603 --> 00:01:56.750
+that is, everything works as before: aiming, fabrik, slot for changing weapons and slot for animation of death.
+
+00:01:56.750 --> 00:02:02.940
+When the weapon change animation is playing, we can blend this pose with our saved
+
+00:02:02.940 --> 00:02:09.671
+animation cache. For this there is a special node called blend per bone.
+
+00:02:14.610 --> 00:02:21.912
+This node mixes animation poses for a given skeleton bone. We need to mix 2 poses: the
+
+00:02:21.912 --> 00:02:28.473
+first is the locomotion cache and the second is the pose that is issued after the upper body slot.
+
+00:02:29.214 --> 00:02:33.737
+That is, we set up the animation graph in such a way that the upper body will
+
+00:02:33.737 --> 00:02:38.810
+not destroy our running animation anymore, because it will always be added
+
+00:02:38.810 --> 00:02:47.809
+to the final pose, thanks to our blend per bone node. Go to the details panel of this node
+
+00:02:47.809 --> 00:02:56.150
+and add an array element to branch filters. We need to specify the name of the bone, by which
+
+00:02:56.150 --> 00:03:05.677
+we will blend these two animations. Go to the skeleton and we can blend our poses on the bSpine bone.
+
+00:03:05.677 --> 00:03:11.150
+It actually separates the top and bottom of the character, so we insert the
+
+00:03:11.150 --> 00:03:18.698
+bone name bSpine into the bone name and let's check what we get. Compile blueprint.
+
+00:03:20.980 --> 00:03:21.820
+We launch the project.
+
+00:03:23.797 --> 00:03:29.443
+We run, change weapons and this does not affect the running animation in any way.
+
+00:03:31.338 --> 00:03:35.558
+We can also change the weapon while jumping, everything also works correctly.
+

@@ -1,0 +1,271 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.229 --> 00:00:12.420
+In this lesson, we continue developing the launcher and we have 2 tasks. The first one is to calculate the
+
+00:00:12.420 --> 00:00:17.430
+direction along which we want to launch the cartridge. And the second is to directly force the cartridge
+
+00:00:17.430 --> 00:00:23.214
+to move along this direction. In fact, we already have most of the code.
+
+00:00:23.214 --> 00:00:29.740
+Let's go to the rifle class and copy the code related to trace data and make hit.
+
+00:00:29.740 --> 00:00:38.746
+We insert them into the make shot function of the launcher class. Let me remind you that we get two points in the trace start and trace end space,
+
+00:00:38.746 --> 00:00:45.490
+depending on the position of our camera. After that, we make a logical trace and
+
+00:00:45.490 --> 00:00:51.820
+all the information about whether we got somewhere or not gets into the HitResult variable . Let's calculate the vector
+
+00:00:51.820 --> 00:00:57.281
+along which we need to launch the projectile. To do this, we will create two additional local variables.
+
+00:00:57.281 --> 00:01:03.384
+The first one will be called EndPoint. We will determine this point depending on whether
+
+00:01:03.384 --> 00:01:09.460
+we got somewhere or not. Let's write the value of this variable through the ternary operator.
+
+00:01:10.897 --> 00:01:15.094
+If the HitResult.bBlockingHit variable is true,
+
+00:01:17.020 --> 00:01:22.865
+then EndPoint will take the HitResult.ImpactPoint value.
+
+00:01:26.590 --> 00:01:30.501
+If HitResult.bBlockingHit = false, that is, for example, we shot somewhere
+
+00:01:30.501 --> 00:01:33.976
+in the sky, then we can just take the TraceEnd point.
+
+00:01:40.250 --> 00:01:47.293
+We know the end point. We know the starting point. The starting point is the position of the socket in space.
+
+00:01:47.990 --> 00:01:53.692
+Therefore, we can define a vector that is calculated as the end point minus the start point.
+
+00:01:55.063 --> 00:02:03.524
+Let's write this EndPoint - GetMuzzleWorldLocation ().
+
+00:02:06.840 --> 00:02:13.294
+We only need to know the direction. Let's make this vector a unit. Let's normalize it using
+
+00:02:13.294 --> 00:02:20.689
+the GetSafeNormal function. Now we need to pass this vector to our projectile class
+
+00:02:20.689 --> 00:02:26.593
+so that it knows which direction it needs to move along. In the previous lesson, we deferred the
+
+00:02:26.593 --> 00:02:32.833
+actor spawning through the UGameplayStatics class, and in the first section we actually used
+
+00:02:32.833 --> 00:02:38.390
+GetWorld for this purpose. In general, there is no difference. These functions do exactly
+
+00:02:38.390 --> 00:02:44.860
+the same thing, but let's rewrite it through the UWorld function, because it returns a pointer to a
+
+00:02:44.860 --> 00:02:51.260
+specific class, and the UGameplayStatics function returns a pointer to an actor, so we would do one
+
+00:02:51.260 --> 00:02:58.040
+more additional cast. We call the template function SpawnActorDeffered. We specify our STUProjectile class
+
+00:02:58.040 --> 00:03:05.746
+as a template parameter and this function has only two parameters: this is the class and the spawn transform.
+
+00:03:05.746 --> 00:03:10.816
+We don't need a pointer to world. Let's also change the second function,
+
+00:03:10.816 --> 00:03:18.597
+which ends spawn. Before that, we check: if the pointer to the created actor is non-zero,
+
+00:03:19.819 --> 00:03:25.047
+then we complete the spawning of the actor. We call the FinishSpawning function
+
+00:03:28.830 --> 00:03:36.950
+and pass the spawn transform into it. Remove the UGameplayStatics function and remove the
+
+00:03:36.950 --> 00:03:43.157
+header file. We rewrote the deferred spawn as a pointer to the game world.
+
+00:03:43.157 --> 00:03:51.293
+The meaning has not changed in any way. Let's pass the direction vector to the projectile actor. For this we
+
+00:03:51.293 --> 00:03:58.720
+need an additional function. It does not exist yet. Let's call it SetShotDirection
+
+00:03:59.580 --> 00:04:06.594
+and pass direction to it. This is where the logic in the launcher class ends for today.
+
+00:04:06.594 --> 00:04:12.821
+Let's go to the projectile class and start by adding this SetShotDirection function.
+
+00:04:13.399 --> 00:04:19.620
+It will have one parameter - this is the direction vector. We have to write this
+
+00:04:19.620 --> 00:04:27.446
+vector to a local variable. We'll name it ShotDirection and assign a function parameter to it.
+
+00:04:29.404 --> 00:04:32.157
+Create a variable in the private section.
+
+00:04:34.659 --> 00:04:37.278
+Only the projectile class will have access to it.
+
+00:04:38.808 --> 00:04:42.721
+We have transmitted the direction of movement along which our projectile will move.
+
+00:04:42.721 --> 00:04:48.606
+It remains to figure out how, in fact, he will move. It is quite simple to implement movement
+
+00:04:48.606 --> 00:04:54.603
+along a vector. In the Tick function, you can change the position of the actor by some delta.
+
+00:04:55.310 --> 00:05:00.659
+We could do it on our own and even within the framework of this course, but since we
+
+00:05:00.659 --> 00:05:05.236
+are using UE for development, let's take full advantage of it.
+
+00:05:06.476 --> 00:05:12.965
+We will introduce you to the new component. It's called UProjectileMovementComponent.
+
+00:05:13.410 --> 00:05:19.637
+This component changes the position of the actor to Tick, depending on the parameters configured in it.
+
+00:05:20.106 --> 00:05:25.170
+We have already considered one component of movement, this UCharacterMovementComponent. We can say
+
+00:05:25.170 --> 00:05:31.027
+that they are from the same family, because they are able to change the position in space of other actors.
+
+00:05:31.933 --> 00:05:40.178
+We name our component MovementComponent and add it to the top of the forward declaration of the component class.
+
+00:05:40.714 --> 00:05:44.451
+This component has many different capabilities. You can make, for example, a
+
+00:05:44.451 --> 00:05:49.440
+homing missile or, for example, specify the number of bounces when colliding with
+
+00:05:49.440 --> 00:05:55.100
+other objects. We will consider the simplest movement with a constant speed.
+
+00:05:55.100 --> 00:06:01.270
+Go to the .cpp file projectile. Add the header file for this component
+
+00:06:02.611 --> 00:06:05.341
+and create the component in the class constructor.
+
+00:06:08.390 --> 00:06:14.394
+The component is purely logical and therefore we don't need to attach it. All that remains for us to do is
+
+00:06:14.394 --> 00:06:22.692
+specify the velocity vector for this component. Move to the BeginPla function. Add check.
+
+00:06:23.812 --> 00:06:27.587
+The variable that is responsible for the velocity is called velocity
+
+00:06:29.020 --> 00:06:35.263
+and the velocity of our component of motion will be calculated as, the unit vector of the direction of motion
+
+00:06:35.263 --> 00:06:43.146
+multiplied by some number, the norm - by the velocity value itself. So we take the ShotDirection vector
+
+00:06:43.146 --> 00:06:49.104
+and multiply it by the value of the motion component variable called InitialSpeed.
+
+00:06:49.940 --> 00:06:55.600
+All in all, we could create a new property. Calling it InitialSpeed, but that would be a little inconsistent
+
+00:06:55.600 --> 00:07:01.761
+because it is assumed that all motion information should be stored
+
+00:07:01.761 --> 00:07:07.411
+in the motion component. If the developers see the motion component, then they may not be
+
+00:07:07.411 --> 00:07:11.686
+aware that you have some additional variable to determine the speed.
+
+00:07:12.086 --> 00:07:16.393
+Initially, they will try to change the speed in this particular component.
+
+00:07:18.064 --> 00:07:25.578
+Open up blueprint projectile. A motion component has been created. The details panel contains all its properties.
+
+00:07:26.710 --> 00:07:31.884
+The InitialSpeed ​​variable is zero by default. Let's check how it works.
+
+00:07:31.884 --> 00:07:39.091
+We start shooting and our cartridge just falls out of the barrel. This is logical, because the speed is 0.
+
+00:07:39.091 --> 00:07:45.777
+Let's change it to some value, for example, 2000. Compile. Click play.
+
+00:07:46.670 --> 00:07:53.770
+And the cartridge flew. If anyone remembers physics lessons at school, then it is like throwing a body at
+
+00:07:53.770 --> 00:08:00.970
+an angle to the horizon: along the X and Y coordinates, the body moves uniformly in a straight line, and along the Z axis it moves with the
+
+00:08:00.970 --> 00:08:07.450
+acceleration of free fall. We can change this property in the motion component.
+
+00:08:07.960 --> 00:08:14.340
+Go to the details panel and look for the projectile gravity scale variable in the search.
+
+00:08:14.717 --> 00:08:19.570
+This variable is multiplied by the standard value of the acceleration due to gravity, so we
+
+00:08:19.570 --> 00:08:27.121
+can put 0 and our car will move without gravity to the ground. We launch. We shoot.
+
+00:08:28.153 --> 00:08:34.543
+And if our trace determines that we hit some object, then the bullet flies to this point.
+
+00:08:36.569 --> 00:08:41.278
+And if we don't hit anywhere, then the bullet just flies to the end point of trace.
+
+00:08:42.000 --> 00:08:47.420
+We also have one drawback. Our actors are not removed. If we look at the world outlier,
+
+00:08:47.420 --> 00:08:53.031
+the number of actors is growing. Because of this behavior, we may have problems with memory in the future,
+
+00:08:54.083 --> 00:08:59.083
+Therefore, we add a call to the SetLifeSpan function on BeginPlay.
+
+00:08:59.804 --> 00:09:04.973
+It will remove this actor by timer. Let's do this in five seconds.
+
+00:09:05.938 --> 00:09:13.364
+Also, the parameters that we set in the blueprint can be written in C ++ code. In this case, this is not so important,
+
+00:09:13.364 --> 00:09:19.230
+but on the other hand, it can be useful if you work through git, to your comrades instantly
+
+00:09:19.230 --> 00:09:25.140
+in version control will see what parameters you expect for this component, and to see
+
+00:09:25.140 --> 00:09:36.322
+who configured it as a blueprint, we will have to open editor ... Set the InitialSpeed ​​and ProjectileGravityScale variables.
+
+00:09:36.322 --> 00:09:40.924
+Also, if you want to increase the reliability of your code, then on BeginPlay you can
+
+00:09:40.924 --> 00:09:45.751
+check these parameters. On InitialSpeed, for example, that it is not zero,
+
+00:09:45.751 --> 00:09:51.433
+and on ProjectileGravityScale that it is zero. Thus, if someone changes the values ​​in the blueprint,
+
+00:09:51.856 --> 00:09:56.539
+then you will notify this person that such values ​​of these parameters were not assumed.
+

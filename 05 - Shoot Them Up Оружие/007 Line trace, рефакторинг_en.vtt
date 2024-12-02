@@ -1,0 +1,172 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:04.702 --> 00:00:08.949
+Hello everyone! In this tutorial, we will refactor our MakeShot function.
+
+00:00:08.949 --> 00:00:13.950
+After this lesson, the logic will not change in our program, so you can view it on
+
+00:00:13.950 --> 00:00:20.661
+fast forward, or skip this lesson altogether. The kind of refactoring is called the extract method.
+
+00:00:20.661 --> 00:00:26.148
+We will essentially split our function into several functions to make the code more readable.
+
+00:00:26.589 --> 00:00:32.656
+Let's start by creating the GetPlayerController function. It will return a pointer to the player controller.
+
+00:00:34.029 --> 00:00:44.401
+Moving the code related to getting the controller into our function. Forgot to add the class name before the function.
+
+00:00:48.830 --> 00:00:56.952
+Add the function declaration to the .h file. If the pointer to Player = nullptr, then the function returns nullptr,
+
+00:00:56.952 --> 00:01:03.551
+that is, the controller does not exist any more. If the pointer to the player is valid,
+
+00:01:04.230 --> 00:01:08.879
+then we return the pointer that the GetController &lt;&gt; function returns.
+
+00:01:08.879 --> 00:01:19.368
+Now we can use this function. Let's create a local variable Controller.
+
+00:01:19.368 --> 00:01:30.631
+And assign it the value that our function returns. And if the pointer is nullptr, then we exit the function.
+
+00:01:31.941 --> 00:01:40.821
+Next, let's select the player's viewpoint as a separate method. We create an additional function.
+
+00:01:40.821 --> 00:01:50.321
+It will return boolean for us. We call it GetPlayerViewPoint and it has two output parameters:
+
+00:01:50.321 --> 00:01:57.831
+view location and view rotation, which are passed by reference. Add the function declaration to the .h file We
+
+00:02:03.351 --> 00:02:11.682
+transfer all the code related to GetPlayerViewPoint to this function and also transfer the controller.
+
+00:02:11.682 --> 00:02:17.941
+If the pointer to the controller is nullptr, then we must return false, because our function
+
+00:02:17.941 --> 00:02:27.000
+returns a boolean. Remove local view location and view rotation. They are passed to our function by reference.
+
+00:02:27.000 --> 00:02:35.802
+And add at the bottom return true; We replace the code with a call to our function.
+
+00:02:37.665 --> 00:02:42.181
+Next step: let's highlight the GetSocketLocation method.
+
+00:02:43.740 --> 00:02:51.150
+We only need its 3d coordinate. Therefore, we will create a function that will return FVector
+
+00:02:52.570 --> 00:02:59.870
+and call it GetMuzzleWorldLocation. The function will return the position of the socket.
+
+00:03:03.000 --> 00:03:06.222
+We can use the GetSocketLocation function
+
+00:03:06.222 --> 00:03:11.990
+and get the socket position directly, without using the GetSocketTransform function.
+
+00:03:16.350 --> 00:03:22.440
+Pass the socket name as a parameter and add it to the .h file.
+
+00:03:28.070 --> 00:03:36.800
+And we replace the code by calling this function. We do this in two places.
+
+00:03:38.808 --> 00:03:44.479
+And the local variable SocketTansform can be removed. We no longer use it.
+
+00:03:44.479 --> 00:03:52.034
+And also delete the comment. Next, we create a function to get the trace start and tace end vectors.
+
+00:03:52.034 --> 00:03:57.621
+It will also return boolean, let's call the function GetTraceData.
+
+00:03:57.621 --> 00:04:04.141
+and the reference will return the start and end vectors. Add the function to the header file.
+
+00:04:10.850 --> 00:04:19.463
+Let's move the code related to trace start and trace end into a new function. We also grab the GetPlayerViewpoint function.
+
+00:04:19.463 --> 00:04:26.211
+We also forgot to check: if the GetPlayerViewpoint function returns false,
+
+00:04:28.410 --> 00:04:31.481
+then we also pass false to the output.
+
+00:04:34.610 --> 00:04:37.610
+And if everything is fine and the data from GetPlayerViewpoint has returned,
+
+00:04:38.570 --> 00:04:44.461
+then we need to change the TraceStart and TraceEnd parameters. They are no longer local variables,
+
+00:04:44.461 --> 00:04:55.182
+but variables by reference in our function. And at the end we add return true, call our function.
+
+00:04:57.416 --> 00:05:03.380
+We need to create the variables that we want to get from this function: TraceStart and TraceEnd.
+
+00:05:09.290 --> 00:05:14.059
+We pass these variables to the GetTraceData function and check:
+
+00:05:14.059 --> 00:05:20.380
+if something went wrong in this function, that is, it returned false, we exit MakeShot.
+
+00:05:22.360 --> 00:05:28.001
+It remains to create the last function for the block of code that directly does trace.
+
+00:05:32.371 --> 00:05:35.401
+Let's call the function MakeHit.
+
+00:05:40.340 --> 00:05:46.454
+And we pass the HitResult link and the constant link TraceStart and TraceEnd.
+
+00:05:47.887 --> 00:05:49.722
+Don't forget to add it to the header file.
+
+00:05:53.619 --> 00:05:58.350
+Let's move all the trace code into a new function.
+
+00:06:04.910 --> 00:06:05.690
+We insert.
+
+00:06:08.248 --> 00:06:14.821
+Accidentally grabbed GetTraceData. It should be in the main MakeShot function.
+
+00:06:16.889 --> 00:06:27.442
+We call the MakeHit function. The first parameter is the HitResult that we want to get from this function.
+
+00:06:32.220 --> 00:06:35.871
+and the second and third are TraceStart and TraceEnd.
+
+00:06:41.530 --> 00:06:48.937
+A inside the MakeHit function we remove the local variable HitResult, because it is passed by reference.
+
+00:06:49.619 --> 00:06:54.799
+Well, let's check the world pointer,
+
+00:06:54.799 --> 00:07:01.261
+because our function is now in the protected section, purely theoretically, someone can call it from the heirs of the class,
+
+00:07:01.261 --> 00:07:06.800
+if it were in the private section and called only from MakeShot, then it would be possible not to check the world
+
+00:07:06.800 --> 00:07:14.264
+because MakeShot already checked. All. Thus, we have broken down our complex MakeShot function
+
+00:07:14.264 --> 00:07:18.879
+into small functions and our code has become more readable.
+
+00:07:18.879 --> 00:07:26.470
+Let's also clean up the logs. There is no more need for them and we will check that nothing is broken.
+
+00:07:28.830 --> 00:07:34.001
+We start the game. We shoot. All traces are on target.
+
+00:07:34.001 --> 00:07:39.841
+The spheres are displayed and we also hit the enemy. The refactoring was successful.
+

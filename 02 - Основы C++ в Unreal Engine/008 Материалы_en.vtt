@@ -1,0 +1,265 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.761 --> 00:00:13.070
+In this tutorial we will create our first material. Let's set a color parameter to it and learn how to
+
+00:00:13.070 --> 00:00:18.920
+change this parameter dynamically in C ++ . In order to create a new material in Unreal Engine,
+
+00:00:18.920 --> 00:00:26.640
+in the content browser, right-click and select the material from the menu. Let's name our
+
+00:00:26.640 --> 00:00:32.310
+material M underscore BaseColor. It will be responsible for the color of our mesh.
+
+00:00:33.210 --> 00:00:38.370
+We double-click on our material, the material editor opens - this is a specialized editor
+
+00:00:38.370 --> 00:00:41.640
+in the Unreal Engine, which is responsible for processing the parameters of the material.
+
+00:00:43.620 --> 00:00:49.110
+A material is a special kind of asset in an unreal engine, which is responsible for the visual part:
+
+00:00:49.110 --> 00:00:54.300
+how static mesh, skeletal mesh, particle system and other objects will look like.
+
+00:00:56.060 --> 00:01:02.810
+To be more precise, the material is a shader - a mini subroutine that runs on the GPU and calculates the
+
+00:01:02.810 --> 00:01:09.260
+colors and position of pixels in our scene. Let's add a color parameter to our material. To do this,
+
+00:01:09.260 --> 00:01:14.840
+in an arbitrary area of ​​the blueprint, right-click and enter vector in the search.
+
+00:01:16.180 --> 00:01:17.167
+Scroll up the list. In the constant category, select a vector with four components.
+
+00:01:20.890 --> 00:01:27.250
+This node is responsible for color. The first 3 components are rgb and the fourth is alpha.
+
+00:01:27.940 --> 00:01:33.850
+Connect the blueprint thread to the Base Color. In the details panel, we can adjust the color by
+
+00:01:33.850 --> 00:01:38.440
+clicking on constant. The color picker opens. And let's pick a shade of
+
+00:01:38.440 --> 00:01:43.530
+red. Or we can edit the components of the vector through the input fields.
+
+00:01:47.930 --> 00:01:53.090
+To quickly add constant or vector nodes to the scene, we can use the keyboard.
+
+00:01:54.740 --> 00:01:59.000
+Press and hold one on the keyboard and click in an arbitrary area of ​​the blueprint.
+
+00:01:59.890 --> 00:02:03.790
+A constant node is added. For example, we can connect it in metallic.
+
+00:02:04.400 --> 00:02:08.750
+If we click with the two pressed, then a vector with two components, with a three with three
+
+00:02:09.900 --> 00:02:12.720
+and with a four, our 4-component node appears.
+
+00:02:12.720 --> 00:02:22.880
+Press aplly, save and return to the map. We can already use our material. To do this,
+
+00:02:22.880 --> 00:02:27.830
+just drag &amp; drop and drag it onto some object on the scene, for example, on our static mesh.
+
+00:02:29.140 --> 00:02:34.270
+Or by clicking on the actor, select our material in the materials category.
+
+00:02:38.404 --> 00:02:42.180
+Let's turn our color into a parameter. To do this,
+
+00:02:42.180 --> 00:02:46.971
+right-click on the node and select convert to parametr from the menu.
+
+00:02:47.704 --> 00:02:55.843
+We name our parameter color, click apply, save and return to the map.
+
+00:02:56.565 --> 00:03:01.990
+Let's create another kind of aset called material instance. To do this, right-click
+
+00:03:01.990 --> 00:03:08.330
+on our material and select create material instance. We double click on this asset.
+
+00:03:08.330 --> 00:03:13.260
+The instance material editor opens. This kind of asset is an instance of the
+
+00:03:13.260 --> 00:03:17.100
+material. It was created in order to be able to adjust the parameters of the material that
+
+00:03:17.100 --> 00:03:21.960
+are brought out. In this case, in the details panel, we have only one parameter
+
+00:03:21.960 --> 00:03:27.620
+that we created - color. Click on it and change the color to green.
+
+00:03:29.740 --> 00:03:34.230
+We save the instance. We can duplicate this asset by
+
+00:03:35.410 --> 00:03:42.780
+clicking on it and pressing Ctrl-W. This combination works with all blueprints. Open our
+
+00:03:42.780 --> 00:03:50.200
+next instance and change its color to blue. With this method, we can create a set of colors
+
+00:03:50.200 --> 00:03:55.360
+using only one material. But of course, we will not use this approach.
+
+00:03:56.440 --> 00:04:02.980
+We will learn how to access the material in C ++ and set the color that we want.
+
+00:04:06.460 --> 00:04:10.020
+Back to the code. Let's get access to our material,
+
+00:04:10.020 --> 00:04:14.310
+which we put in the editor and change the value of its color parameter.
+
+00:04:15.260 --> 00:04:21.040
+This is done very simply. We only need two lines of code. We will use a function
+
+00:04:21.040 --> 00:04:27.270
+that each primitive component has from which our static mesh component inherits. It's
+
+00:04:27.270 --> 00:04:33.870
+called CreateAndSetMaterialInstanceDynamic. The function takes one argument - the index of the
+
+00:04:33.870 --> 00:04:39.780
+material. We have one material for the static mesh, so we specify 0. Based on the
+
+00:04:39.780 --> 00:04:44.880
+usual material, it creates an instance material, sets it to the component and returns to it
+
+00:04:44.880 --> 00:04:50.820
+. In fact, an analogue of what we did in the editor. Create a pointer to an object that
+
+00:04:50.820 --> 00:04:59.944
+this function returns. The pointer is of type UMaterialnstanceDynamic. Let's call it DynMaterial.
+
+00:05:02.834 --> 00:05:08.509
+We also include the header file, where this type is declared #include
+
+00:05:09.610 --> 00:05:15.397
+"Materials / MaterialInstanceDynamic.h"
+
+00:05:15.597 --> 00:05:18.630
+Next, we need to check the validity of our pointer,
+
+00:05:18.630 --> 00:05:23.650
+whether the object was created or not. We check for null, write if (DynMaterial)
+
+00:05:23.650 --> 00:05:31.802
+And if the pointer is null, then we use the function of the UMaterialInstanceDynamic class
+
+00:05:32.057 --> 00:05:35.394
+called SetVectorParameterValue.
+
+00:05:38.500 --> 00:05:42.960
+This function has two arguments. The first argument is the name of the parameter in the material. We
+
+00:05:44.610 --> 00:05:50.670
+named it color and the second parameter is this structure FLinearColor. This structure is
+
+00:05:50.670 --> 00:05:55.380
+also responsible for color definition. You and I have already used FColor
+
+00:05:56.290 --> 00:06:04.060
+when we printed a message on the screen. The difference between these types is that FLinearColor is a 32-bit color,
+
+00:06:04.060 --> 00:06:13.210
+and FColor is 8-bit. FLinearColor also has predefined colors. If we press f12 with you,
+
+00:06:13.210 --> 00:06:21.120
+we will see the given list. Let's use yellow. Save and run editor.
+
+00:06:23.409 --> 00:06:25.039
+Click play.
+
+00:06:25.152 --> 00:06:30.350
+Each material has a yellow color, regardless of the dynamic materials
+
+00:06:30.350 --> 00:06:37.503
+that are currently on them. We put down the value of the parameter color = yellow in the code.
+
+00:06:37.503 --> 00:06:40.160
+Let's refine the code a bit. Let's create a property
+
+00:06:40.160 --> 00:06:45.563
+that will be responsible for the default color of our static mesh.
+
+00:06:48.046 --> 00:06:52.949
+We create a new variable in our structure of type FLinearColor.
+
+00:06:53.466 --> 00:07:02.640
+Let's call it color. And give it the default value FLInearColor :: Black. We make the color property
+
+00:07:02.640 --> 00:07:11.580
+variable . Copy the UPROPERTY macro on top of the variable and change the category name to design.
+
+00:07:14.403 --> 00:07:16.528
+Go to the .cpp file.
+
+00:07:17.073 --> 00:07:21.090
+And in SetVectorParameterValue we change the second parameter from yellow
+
+00:07:22.410 --> 00:07:28.147
+to the value of the variable from our BaseGeometryData structure.
+
+00:07:31.063 --> 00:07:40.374
+Let's turn all our code into a function. To do this, create the SetColor function in the .h file.
+
+00:07:42.380 --> 00:07:43.820
+It will have one
+
+00:07:43.820 --> 00:07:48.710
+FLinearColor parameter by a constant reference.
+
+00:07:49.049 --> 00:07:53.827
+We will pass the color of our material through this parameter.
+
+00:07:56.150 --> 00:08:00.890
+Right-click on the function. Choose quick actions and refactoring,
+
+00:08:00.890 --> 00:08:04.277
+create declaration / definition.
+
+00:08:08.184 --> 00:08:16.512
+The body of the function was created in the .cpp file. We transfer the code that we wrote in BeginPlay to this function.
+
+00:08:18.780 --> 00:08:23.690
+Let's replace the second parameter of the SetVectorParameterValue function with just
+
+00:08:23.690 --> 00:08:26.120
+color - the parameter of our SetColor function.
+
+00:08:28.560 --> 00:08:35.433
+And call the SetColor function on BeginPlay with the GeometryData.Color parameter.
+
+00:08:38.100 --> 00:08:42.069
+Run build, compile our project.
+
+00:08:46.120 --> 00:08:47.684
+Click play.
+
+00:08:49.030 --> 00:08:55.560
+Our static meshes are black by default, because the value of the color parameter is black. But now we
+
+00:08:55.560 --> 00:09:00.900
+can control this parameter. Let's move to the GeometryData category of our actor.
+
+00:09:02.600 --> 00:09:07.040
+The color variable is displayed as in the material. We can edit
+
+00:09:07.040 --> 00:09:15.080
+this vector component-wise , or by clicking on it, call the color picker and assign colors to our actors.
+
+00:09:18.370 --> 00:09:24.296
+We start. The colors of the static meshes have changed to those that we specified in the property.
+

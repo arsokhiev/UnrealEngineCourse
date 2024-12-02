@@ -1,0 +1,451 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.731 --> 00:00:10.262
+Hello everyone! In this lesson, we have an independent work - it is necessary to program the running animation.
+
+00:00:10.976 --> 00:00:15.938
+The character should run while holding down the shift key and holding down the forward key.
+
+00:00:15.938 --> 00:00:22.101
+If any of the keys are released, then it must either move calmly or stand still.
+
+00:00:22.101 --> 00:00:28.951
+I will give you a quick introduction before you start. In the project settings, in the input, we have to create a new action mapping - Run.
+
+00:00:29.780 --> 00:00:34.827
+And assign a value to the Left Shift key, or whatever key you want.
+
+00:00:37.494 --> 00:00:41.412
+Next, in AnimGraph, we need to add a new state called Run.
+
+00:00:41.412 --> 00:00:48.133
+And make the transitions from the state walk to run and back. And you can also jump from the Run state.
+
+00:00:48.500 --> 00:00:54.760
+The animation for running is called RoadieRun_Fwd. And the last thing you have to
+
+00:00:54.760 --> 00:01:00.040
+deal with is the dynamic change in the character's movement speed. In the character movement component, the
+
+00:01:00.040 --> 00:01:05.772
+MaxWalkSpeed ​​variable is responsible for this. When running, the character should naturally move faster.
+
+00:01:06.673 --> 00:01:10.833
+You can pause here. In the continuation of the video, there will be a solution to this problem.
+
+00:01:16.470 --> 00:01:20.687
+Well, let's check how our implementations will differ from each other.
+
+00:01:23.020 --> 00:01:26.518
+Let's create a new action mapping and call it Run.
+
+00:01:29.440 --> 00:01:32.698
+And add the left shift key.
+
+00:01:34.210 --> 00:01:37.767
+With the left shift key held down, our character will run.
+
+00:01:39.046 --> 00:01:40.777
+And go to visual studio.
+
+00:01:43.419 --> 00:01:48.867
+We start by creating the function that we need to handle the left shift key press.
+
+00:01:51.430 --> 00:01:55.172
+We call the first function OnStartRunning.
+
+00:01:57.900 --> 00:02:00.732
+The second function is called OnStopRunning.
+
+00:02:02.948 --> 00:02:10.436
+The first function will be called when the left shift key is pressed and the second when it is released.
+
+00:02:11.820 --> 00:02:16.338
+We create a body for each function.
+
+00:02:18.864 --> 00:02:22.612
+We do bind for these functions.
+
+00:02:24.510 --> 00:02:34.546
+If the key is pressed, then the OnStartRunning function is called, and if the key is released, then OnStopRunning.
+
+00:02:34.908 --> 00:02:41.977
+The enum element that is responsible for releasing the key is called IE_Released.
+
+00:02:43.208 --> 00:02:49.090
+We need to understand whether our key is pressed, which is responsible for running or not. To do this, we
+
+00:02:49.090 --> 00:02:53.158
+will create an additional variable in the .h file that will be responsible for this.
+
+00:02:55.507 --> 00:03:02.990
+Move to the private section, create a boolean variable. We call it WantsToRun. Roughly speaking, holding
+
+00:03:02.990 --> 00:03:08.647
+down the shift key is only a necessary condition for running, because perhaps we have not pressed the forward key
+
+00:03:09.551 --> 00:03:14.044
+and then our character should not run, so we call the variable WantsToRun.
+
+00:03:14.044 --> 00:03:20.426
+And we assign in the OnStartRunning function the value true for this variable, and in OnStopRunning, respectively, false.
+
+00:03:21.140 --> 00:03:25.010
+Next, you and I must determine that our character is running forward. This can be done in
+
+00:03:25.010 --> 00:03:31.669
+several ways. In the most general case, you can calculate the angle between the velocity vector and the vector
+
+00:03:31.669 --> 00:03:36.495
+where our character is looking. And by the value of this angle, determine the direction of running.
+
+00:03:37.052 --> 00:03:43.357
+We only have one running animation - the forward running animation, so our implementation will be a little simpler.
+
+00:03:44.310 --> 00:03:52.645
+Let's create an additional flag in the .h file that will be responsible for whether our character is running forward or not.
+
+00:03:52.645 --> 00:03:58.422
+Let's name it IsMovingForward and set it to false by default.
+
+00:04:01.400 --> 00:04:03.488
+We return to the .cpp file.
+
+00:04:04.529 --> 00:04:11.123
+We pass into the MoveForward function and the value of our variable will be equal to true if and only if the
+
+00:04:11.123 --> 00:04:17.136
+Amount value is greater than zero, that is, the key is pressed, which is responsible for moving forward.
+
+00:04:17.820 --> 00:04:24.519
+And the last thing left for us to do is add a function that we will call from our
+
+00:04:24.519 --> 00:04:30.000
+animation blueprint. The function will return true when our character is running and false when not running.
+
+00:04:30.633 --> 00:04:35.381
+Therefore, we define the UFUNCTION macro. The first specifier will be BlueprintCallable.
+
+00:04:36.044 --> 00:04:43.097
+Because we want it to be available in blueprints. Next, let's create a category for this function, let it be Movement.
+
+00:04:45.475 --> 00:04:50.088
+Our function returns a boolean value, let's call it IsRunning.
+
+00:04:53.210 --> 00:04:58.851
+We add the const specifier - our function will not change any data inside.
+
+00:05:01.070 --> 00:05:04.453
+We create the body of our function.
+
+00:05:06.625 --> 00:05:12.800
+So, we calculate the value at which our function returns true. Firstly, the condition
+
+00:05:12.800 --> 00:05:18.576
+that the shift key is pressed and, secondly, our character must move forward.
+
+00:05:20.950 --> 00:05:29.220
+Additionally, let us check that the actor's velocity vector is not zero. To do this, we take the velocity vector of the GetVelocity actor
+
+00:05:29.220 --> 00:05:35.250
+and check it against 0. It is better to add this check. A situation is possible when we press
+
+00:05:35.250 --> 00:05:43.797
+the forward key, and the vector is not added to AddMovementInput. And yet our IsMovingForward variable is true.
+
+00:05:43.797 --> 00:05:48.862
+For example, this can happen when our character is trapped or stuck somewhere.
+
+00:05:48.862 --> 00:05:54.137
+And by checking the speed, we are 100 percent convinced that he is in motion.
+
+00:05:55.094 --> 00:05:59.582
+Go to the animated blueprint of the character in EventGraph.
+
+00:06:00.830 --> 00:06:06.550
+Let's start by changing Cast to ACharacter to Cast
+
+00:06:06.550 --> 00:06:12.387
+to our specific character class, because the IsRunning function is in our class.
+
+00:06:14.620 --> 00:06:19.060
+With Ctrl held down, we can drag the strings in the blueprints. This is quite convenient.
+
+00:06:19.060 --> 00:06:25.613
+So we will definitely not forget anything. We call our IsRunning function.
+
+00:06:29.770 --> 00:06:32.529
+We create a variable that will store a boolean value: is
+
+00:06:32.529 --> 00:06:36.928
+our character running or not. We also call it IsRunning.
+
+00:06:39.430 --> 00:06:47.147
+We're done with EventGraph. Let's go back to the animation graph. Into our state machine.
+
+00:06:48.139 --> 00:06:53.512
+So, from the walk state we can get into our new state, which we will call Run,
+
+00:06:54.040 --> 00:06:59.308
+provided that the IsRunning variable becomes true.
+
+00:07:02.550 --> 00:07:11.710
+Create a reverse transition from run to walk. Jump conditions - IsRunning becomes false. We use NOT.
+
+00:07:11.710 --> 00:07:16.731
+And the last transition. When we run, we can press the jump key.
+
+00:07:16.731 --> 00:07:23.420
+Therefore, we make the transition from run to JumpStart and the transition condition coincides
+
+00:07:23.420 --> 00:07:30.040
+with the condition of the transition from the walk state to the JumpStart state. We can duplicate this condition
+
+00:07:30.040 --> 00:07:37.650
+in our new TransitionRule. But we'll do it a little trickier. Click on IsFalling.
+
+00:07:37.650 --> 00:07:42.971
+Go to the details panel, to the property TransitionRuleSharing. Click on PromoteToShared.
+
+00:07:43.860 --> 00:07:50.764
+And in the field we enter IsFalling. In fact, we made a function from TransitionRule that can be reused.
+
+00:07:50.764 --> 00:07:56.130
+We also notice that the transition arrow and the circle are colored red. This is an indicator
+
+00:07:56.130 --> 00:08:03.140
+that the TransitionRule is shared and we change the TransitionRule from Run to JumpStart in the same property
+
+00:08:03.140 --> 00:08:09.092
+Click on UsedShared. We choose IsFalling. Click on it. The condition is exactly the same.
+
+00:08:12.138 --> 00:08:16.537
+We just need to substitute the animation in the Run state.
+
+00:08:18.212 --> 00:08:25.482
+We go to the content browser. Let's rename our BlendSpace Locomotion to LocomotionWalk.
+
+00:08:28.435 --> 00:08:34.925
+Press Ctrl + W. Copy the BlendSpace and name the new asset BlendSpaceRun.
+
+00:08:35.640 --> 00:08:42.910
+Open up our BlendSpaceRun and all we need to do is replace the 600 speed animation with
+
+00:08:42.910 --> 00:08:50.745
+the RoadieRun_Fwd asset. The speed of course we will have more than 600, but in general it does not matter to us,
+
+00:08:50.745 --> 00:08:56.372
+because the speed value in the asset will not exceed 600. The animation at large values ​​will be played with a value of 600.
+
+00:08:56.372 --> 00:09:04.048
+Save the asset. Go back to our animation graph and drag the BlendSpaceRun.
+
+00:09:04.048 --> 00:09:09.702
+We connect the node to OutputAnimationPose and also connect the speed.
+
+00:09:12.193 --> 00:09:20.391
+Compile. Checking what we have done. We start to run. Hold shift. The animation has changed.
+
+00:09:21.763 --> 00:09:29.220
+We run, we jump, we continue to run. Everything is working. Now let's make it so that the speed of our character
+
+00:09:29.220 --> 00:09:35.675
+changes as we run . Now it is the same for normal movement and for running. It doesn't look great.
+
+00:09:35.675 --> 00:09:40.772
+In our implementation, this will be done using the character's own motion component.
+
+00:09:44.369 --> 00:09:47.358
+Let's create a class for our component.
+
+00:09:49.620 --> 00:09:57.771
+Click on the show all classes checkbox and enter the CharacterMovementComponent in the search. We create an inheritor of this class.
+
+00:09:57.771 --> 00:10:04.367
+Click the next button. Let's call it STUCharacterMovementComponent.
+
+00:10:05.350 --> 00:10:09.146
+Let's create it in the components directory.
+
+00:10:13.710 --> 00:10:15.902
+Click the create class button.
+
+00:10:17.570 --> 00:10:24.873
+Go to the build file. Add our path to the Components folder
+
+00:10:26.566 --> 00:10:29.587
+to PublicIncludePaths .
+
+00:10:33.581 --> 00:10:41.040
+Next, go to .h of the motion component we created. Press f12 on the base class.
+
+00:10:41.040 --> 00:10:48.162
+And we find the GetMaxSpeed ​​function. This function returns the maximum speed of the character.
+
+00:10:48.162 --> 00:10:56.910
+Let's redefine it in our component. Create a public section and copy
+
+00:10:56.910 --> 00:11:05.343
+the GetMaxSpeed ​​function declaration. Created in the .h file and go to the .cpp file. We create the body of the GetMaxSpeed ​​function.
+
+00:11:07.011 --> 00:11:15.636
+Create a variable MaxSpeed ​​and assign it the value of the parent function GetMaxSpeed.
+
+00:11:17.422 --> 00:11:24.748
+And just return that value. That is, so far, our function does not make any changes with MaxSpeed.
+
+00:11:24.748 --> 00:11:29.233
+So I forgot the float. We must somehow get a pointer to our character,
+
+00:11:29.233 --> 00:11:33.882
+check whether he is running or not. And depending on this value, change the MaxSpeed.
+
+00:11:35.103 --> 00:11:47.627
+First, let's include the header file of our STUBaseCharacter. Create a pointer to our character.
+
+00:11:49.918 --> 00:11:58.467
+Let's call it Player. We write Cast right away, because the component stores a pointer only to the pawn class.
+
+00:11:58.467 --> 00:12:03.540
+We will need to convert this pointer to ASTUBaseCharacter. The component class has a special
+
+00:12:03.540 --> 00:12:11.074
+function that returns a pointer to the owner of the given component. The function is called GetPawnOwner.
+
+00:12:11.572 --> 00:12:18.193
+It returns a pointer to pawn. First, let's check that the pointer is not nullptr.
+
+00:12:18.840 --> 00:12:24.647
+Next, we check that our character is running. To do this, we call the function that we created IsRunning.
+
+00:12:25.948 --> 00:12:32.960
+Let me remind you that in C ++ this construction is correct, because if the first condition is false, then the second condition is
+
+00:12:32.960 --> 00:12:40.142
+not evaluated by the &amp;&amp; operator. Next, we use the ternary operator?
+
+00:12:40.399 --> 00:12:51.504
+If the condition is to the left of? right, then we have to multiply MaxSpeed ​​by some RunModifier parameter,
+
+00:12:51.504 --> 00:13:00.572
+which we will create now. Next comes the colon. If the condition is not true, then we simply return the MaxSpeed ​​value.
+
+00:13:00.572 --> 00:13:05.410
+Changing the speed could be implemented in another way, for example, create two additional
+
+00:13:05.410 --> 00:13:11.317
+variables in the character class. One of them would be responsible for the speed when walking, and the other when running.
+
+00:13:11.664 --> 00:13:18.720
+And depending on whether our character is running or not, we could supply the MaxSpeed ​​value in the motion component.
+
+00:13:18.720 --> 00:13:25.199
+But in that case, we would have code duplication, because MaxSpeed ​​is already present in the CharacterMovementComponent.
+
+00:13:26.526 --> 00:13:33.437
+Let's create a property for the RunModifier. Go to the public section. We write UPROPERTY.
+
+00:13:34.480 --> 00:13:39.310
+We set the specifier EditDefaultsOnly. We will change this variable
+
+00:13:39.310 --> 00:13:46.137
+only in the default settings of our character. Next, we write BlueprintReadWrite.
+
+00:13:48.056 --> 00:13:53.442
+Let's also add a category for property - Movement.
+
+00:13:55.520 --> 00:14:00.847
+The variable will be of the float type and by default let it be 2, that is, the speed while running
+
+00:14:00.847 --> 00:14:06.170
+will double. Here we may have a small problem: if someone in the blueprint
+
+00:14:06.170 --> 00:14:11.180
+sets the value of this variable to zero, or to some negative value, then the speed of our
+
+00:14:11.180 --> 00:14:17.229
+character will change in a completely different way than we intended. Property has a mechanism that
+
+00:14:17.229 --> 00:14:26.372
+helps to get rid of these situations. We can specify two qualifiers in the meta information. One of them is ClampMin,
+
+00:14:26.372 --> 00:14:30.319
+which indicates the minimum allowable value for this variable in the blueprint.
+
+00:14:31.328 --> 00:14:41.316
+Let's put, for example, 1.5. And the second specifier is ClampMax, which sets the maximum assignment this variable
+
+00:14:41.316 --> 00:14:48.870
+can have . Let it be 10. The last thing to do is to change the UCharacterMovementComponent
+
+00:14:48.870 --> 00:14:55.000
+class in the character class to our USTUCharacterMovementComponent.
+
+00:14:56.177 --> 00:15:01.669
+We include the header file of our component in the .cpp file ASTUBaseCharacter.
+
+00:15:03.240 --> 00:15:07.788
+In order to explicitly specify the class for the UCharacterMovementComponent, we will use a
+
+00:15:08.316 --> 00:15:12.947
+special kind of constructor with a parameter, into which the initialization object is passed.
+
+00:15:13.666 --> 00:15:18.875
+This object is of type FObjectInitializer.
+
+00:15:20.711 --> 00:15:24.077
+Copy the constructor signature. Insert into the .cpp file.
+
+00:15:27.050 --> 00:15:34.600
+We must also call the parent class constructor. We use Super. We pass our
+
+00:15:34.600 --> 00:15:45.122
+initialization object ObjInit there and immediately call the function called SetDefaultSubobjectClass.
+
+00:15:45.594 --> 00:15:50.214
+This is a templated function. It takes as a template parameter the class of the subobject
+
+00:15:50.214 --> 00:15:54.561
+we want to replace. In this case, it is USTUCharacterMovementComponent.
+
+00:15:54.561 --> 00:15:58.104
+This function also has one argument. This is the name of the component.
+
+00:15:58.104 --> 00:16:05.000
+We need to provide a name for the component. The name is in a static variable of the character base class
+
+00:16:05.000 --> 00:16:10.949
+called CharacterMovementComponentName. Moreover, there are also similar variables with component names
+
+00:16:10.949 --> 00:16:18.579
+for the mesh component and for the capsule component. SetDefaultSubobjectClass returns the FObjectInitializer object,
+
+00:16:18.579 --> 00:16:24.371
+so the record we made takes place, that is, Super is essentially a modified ObjInit object.
+
+00:16:25.396 --> 00:16:32.500
+Click play. Checking. We hold shift and our character has a modified speed when running
+
+00:16:32.500 --> 00:16:40.000
+, that is, he moves faster. Opening up our blueprint. Select the motion component in the component tree.
+
+00:16:40.000 --> 00:16:43.910
+We see that the class has changed to USTUCharacterMovementComponent.
+
+00:16:43.910 --> 00:16:51.060
+Go to the details panel. Find RunModifier in the Movement category and see that our variable is limited to a
+
+00:16:51.060 --> 00:16:55.757
+minimum of 1.5 and a maximum of 10. Let's compile the blueprint at 10
+
+00:16:55.757 --> 00:17:00.840
+and see how much faster our character moves. Thus, we have implemented the
+
+00:17:00.840 --> 00:17:06.723
+running mechanics, set up the animations. At the same time, you can compare how your implementation differs from mine.
+
+00:17:06.723 --> 00:17:12.391
+Naturally, it is different. There are many options for implementation. This is normal. This concludes the lesson.
+

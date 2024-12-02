@@ -1,0 +1,16 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.247 --> 00:00:11.610
+Hello everyone! In this section, we will develop a weapon component, set up aiming animations,
+
+00:00:11.610 --> 00:00:20.168
+change weapons, and reload. Let's consider how collisions work, line trace and create 2 classes of weapons: a
+
+00:00:20.168 --> 00:00:26.770
+grenade launcher and a rifle. Let's set up the damage to the character and also deal with the data structure
+
+00:00:26.770 --> 00:00:33.686
+for storing cartridges and magazines. Let's get down to development. The section will be large enough.
+

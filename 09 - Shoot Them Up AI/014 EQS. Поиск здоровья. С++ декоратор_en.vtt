@@ -1,0 +1,283 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.748 --> 00:00:11.733
+In the current lesson, we will teach NPCs to find a health pickup. We will also do this using EQS.
+
+00:00:11.733 --> 00:00:16.197
+We will temporarily replace the material of our health pickup with black,
+
+00:00:16.197 --> 00:00:23.386
+so that the debug information of the EQS spheres is more visible. Go to the blueprint of the health pickup
+
+00:00:23.386 --> 00:00:29.545
+and change our light green glow material to the BaseColor material, which is black by default.
+
+00:00:29.545 --> 00:00:36.251
+Add additional health pickups to the scene. Let's hide one of them behind the wall.
+
+00:00:37.295 --> 00:00:42.716
+Go to the EQS directory in the content browser. We create a new asset.
+
+00:00:46.480 --> 00:00:49.812
+Let's call it EQS_FindHealthPickup.
+
+00:00:51.790 --> 00:00:57.580
+We open. To find a health pickup, we will use a special generator
+
+00:00:57.580 --> 00:01:05.000
+called ActorsOfClass. This generator allows you to find actors of a certain type in the game world.
+
+00:01:05.000 --> 00:01:11.047
+In the details panel, there is a special property called SearchedActorClass.
+
+00:01:11.047 --> 00:01:17.130
+Let's set the class of our pickup STU_HealthPickup to this property. The next setting is the
+
+00:01:17.130 --> 00:01:23.850
+search radius. Let's set it to 1500. This way EQS will find all the actors around our
+
+00:01:23.850 --> 00:01:32.709
+pawn within a radius of 1500 units. Also, the test pawn needs to change the template to EQS_FindHealthPickup.
+
+00:01:32.709 --> 00:01:39.800
+Debug spheres with centers in pickup actors are displayed on the stage. The search takes place in the radius, so if
+
+00:01:39.800 --> 00:01:47.420
+our pickups are further than 1500 units from the pawn, then the spheres are not drawn. Now, with the help of
+
+00:01:47.420 --> 00:01:53.750
+tests, we need to choose a suitable pickup. The first test that we add will be responsible for the visibility of the
+
+00:01:53.750 --> 00:01:59.536
+pickup, that is, if it is behind the wall and the character does not see it, then this pickup does not suit us.
+
+00:01:59.536 --> 00:02:04.550
+Add a test called Trace. This test runs a trace between all
+
+00:02:04.550 --> 00:02:10.446
+found actors and the pawn. Trace channels can be selected. The default is Visibility and
+
+00:02:10.446 --> 00:02:16.370
+you can also customize the trace type. Various offsets and so on. The test passes if the
+
+00:02:16.370 --> 00:02:23.540
+trace is successful, that is, along the Visibility channel, there are some objects between our
+
+00:02:23.540 --> 00:02:31.010
+pickup actors and the pawn. This can be seen from the debug information in the scene. We need to invert
+
+00:02:31.010 --> 00:02:37.970
+this condition. To do this, set the property BoolMatch to false in the details panel. Now this test
+
+00:02:37.970 --> 00:02:43.460
+will cut off all objects that are not visible to our pawn. An object behind the
+
+00:02:43.460 --> 00:02:49.490
+wall fails the test. If we move the pawn closer, then it becomes visible and the test
+
+00:02:49.490 --> 00:02:55.940
+passes, but the other two do not. Thus, thanks to this test, we implemented the search for the health pickup
+
+00:02:55.940 --> 00:03:02.340
+that we see for npc. Now we need to find the pickup closest to us. To do this, add the
+
+00:03:02.340 --> 00:03:10.492
+distance test. None of the pickups are available, because by default distance has FilterType - Range: from 0 to 0.
+
+00:03:10.492 --> 00:03:16.712
+Set it to minimum. We also need to invert the ScoringFactor. Set it to -1.
+
+00:03:16.712 --> 00:03:22.830
+After that, the weight will be the maximum for the actor closest in distance. We can test it on
+
+00:03:22.830 --> 00:03:31.250
+stage. Now the left-most pickup is coming to us. Now right. If we move behind the wall, then the maximum
+
+00:03:31.250 --> 00:03:37.130
+weight will be at the pickup truck, which is in cover. We have implemented an EQS that finds the most
+
+00:03:37.130 --> 00:03:45.280
+appropriate health pickup for our NPC. Let's move on to the behavior tree and see how
+
+00:03:45.280 --> 00:03:55.201
+it works in the game. Disable the main tree temporarily. With Alt pressed, click on the arrow. Let's implement the following logic:
+
+00:03:55.201 --> 00:04:01.680
+add a selector, if the character does not find the pickup, then he will just wait. Therefore, on the right we
+
+00:04:01.680 --> 00:04:08.490
+add task Wait. We put two seconds, and on the left side we will have a
+
+00:04:08.490 --> 00:04:19.566
+pickup search sequence . Add the Run_EqsQuery node. Install the corresponding FindHealthPickup template.
+
+00:04:20.234 --> 00:04:27.858
+And we move to the found point. It is necessary to check that the keys are in AimLocation.
+
+00:04:29.330 --> 00:04:35.540
+We start the game. The character ran to the nearest pickup truck. The next time the same
+
+00:04:35.540 --> 00:04:41.660
+pickup is found, that's why there is such a twitching of the tree. We can click on the eject button and play
+
+00:04:41.660 --> 00:04:49.650
+with the position of the pickups on the stage. Thus, the character finds the nearest pickup truck and moves towards it.
+
+00:04:50.450 --> 00:04:59.270
+Let's hit the Pause button and hide all the pickups behind the wall. In this situation, the EQS search task
+
+00:04:59.270 --> 00:05:07.120
+will return Fail and the entire sequence will stop. Click resume. The character
+
+00:05:07.120 --> 00:05:13.167
+does not see health pickups. The whole sequence fails and he is in standby mode.
+
+00:05:16.740 --> 00:05:23.920
+Thus, we can add this sequence to our behavior tree, but it is also necessary to check
+
+00:05:23.920 --> 00:05:29.980
+whether this pickup of NPC health is needed. To do this, we will create a special decorator that will
+
+00:05:29.980 --> 00:05:37.225
+evaluate this condition. Let's create our own C ++ decorator. Go to the classes folder,
+
+00:05:38.600 --> 00:05:48.322
+to the AI ​​directory. We need to inherit from the BT_Decorator class.
+
+00:05:48.322 --> 00:05:55.094
+Let's call this decorator STU_HealthPercentDecorator.
+
+00:05:56.190 --> 00:06:04.345
+Let's also create an additional Decorators directory and finish creating the class.
+
+00:06:04.345 --> 00:06:11.982
+Add a directory to PublicIncludePaths. Go to the header file of the created decorator.
+
+00:06:11.982 --> 00:06:19.436
+I have previously created a constructor for this class, in which we will have the name of the Health Percent node.
+
+00:06:19.436 --> 00:06:27.594
+Also added all the required header files. We return to the header file.
+
+00:06:27.594 --> 00:06:33.051
+Let's go to the base UBTDecorator class and find the function we need.
+
+00:06:33.051 --> 00:06:39.990
+It is located at the very bottom. CalculateRawConditionValue is called. In this function, we will calculate the
+
+00:06:39.990 --> 00:06:48.137
+condition we need. We copy the signature. We create a protected section and override this function
+
+00:06:48.137 --> 00:06:53.170
+in our class. We need an additional property, which will contain the allowed
+
+00:06:53.170 --> 00:06:59.470
+percentage of the character's health. If the current health percentage is less than this value, then our
+
+00:06:59.470 --> 00:07:07.592
+decorator will return true. The variable will be of type float. Let's call it HealthPercent.
+
+00:07:09.165 --> 00:07:14.067
+Let's set some value by default. Let it be 60 percent.
+
+00:07:16.917 --> 00:07:22.169
+We create the body of the CalculateRawConditionValue function.
+
+00:07:24.550 --> 00:07:30.435
+Get a pointer to the controller using UBehaviorTreeComponent.
+
+00:07:32.497 --> 00:07:41.960
+If the controller is null, then we return false. Next, we get a pointer to the health component.
+
+00:07:43.477 --> 00:07:49.291
+If the component is zero, or our character is dead,
+
+00:07:51.615 --> 00:07:53.951
+that is, the IsDead function returns true,
+
+00:07:55.304 --> 00:08:01.490
+then we return false. In this case, you shouldn't run the sequence under our decorator.
+
+00:08:02.750 --> 00:08:07.764
+If these checks are passed, then the decorator will return true
+
+00:08:07.764 --> 00:08:13.190
+when the current value of the character's health percentage is less than the value of our property.
+
+00:08:23.747 --> 00:08:30.513
+Compile the code. Forgot to add another test to EQS. Let's consider the following situation.
+
+00:08:30.750 --> 00:08:36.901
+Let's say, randomly while designing the scene, the pickup is outside our nav mesh.
+
+00:08:36.901 --> 00:08:43.927
+Let's move our test pawn closer to it. In this situation, all our tests still pass,
+
+00:08:43.927 --> 00:08:51.654
+but the NPC will not be able to get to this point. Let's fix it up. Let's open our FindHealthPickup.
+
+00:08:51.654 --> 00:08:57.013
+Let's add an additional test that will determine if a navigation path exists to the found point.
+
+00:08:58.170 --> 00:09:04.888
+The test is called PathFinding, that is, path finding. With default settings, it cuts off all points
+
+00:09:04.888 --> 00:09:12.359
+to which the path does not exist. TestMode is set to PathExists. Let's make sure of this.
+
+00:09:12.359 --> 00:09:18.600
+Let's add an extra pickup and move it to the nav mesh. Select our test pawn
+
+00:09:18.600 --> 00:09:25.500
+and see that the pickup, which is highlighted in green on the nav mesh, and behind the nav mesh, the
+
+00:09:25.500 --> 00:09:33.833
+test does not pass and the pickup is highlighted in blue. Let's go to the behavior tree. Let's add the created decorator to our selector.
+
+00:09:35.560 --> 00:09:44.670
+Set ObserverAborts to Self. If the percentage of health is more than 60,
+
+00:09:44.670 --> 00:09:50.878
+then the sequence will not be executed for us. Let's see what's going on. Click play.
+
+00:09:51.536 --> 00:09:56.239
+Pawn is waiting. We change the number of lives of the NPC - shoot at him.
+
+00:09:56.239 --> 00:10:03.410
+It is 60 percent and the sequence is running. The NPC finds the pickup. All logic works for us.
+
+00:10:04.070 --> 00:10:10.784
+Let's change our main tree. Let's add the created sequence for finding a health pickup to it.
+
+00:10:12.830 --> 00:10:17.510
+Move the sequence to the leftmost edge. It will have the highest priority of
+
+00:10:17.510 --> 00:10:25.545
+execution, that is, if health is low, then we immediately look for a health pickup. We connect with root.
+
+00:10:27.080 --> 00:10:34.590
+We delete unnecessary nodes. Let's move the Fire service to the topmost node. Thus, when the NPC
+
+00:10:34.590 --> 00:10:39.351
+runs to the health pickup, he will still shoot back from enemies.
+
+00:10:40.134 --> 00:10:43.998
+Save asset. Let's see how it looks in the game.
+
+00:10:46.052 --> 00:10:52.470
+For the test, you can change the percentage value to some large number so that one cartridge is enough.
+
+00:10:52.470 --> 00:10:57.874
+In the fire service, set the EnemyActor key to None so that we won't be accidentally killed.
+
+00:11:00.020 --> 00:11:07.345
+We save and launch the game. We shoot at the NPC. Health has decreased.
+
+00:11:07.345 --> 00:11:15.307
+EQS finds a health pickup and character picks it up. Everything is working. HealthPercent can be returned in 0.6
+
+00:11:15.307 --> 00:11:21.601
+Also return the key to FireService. Plus I'll roll out the changes with the black stuff of health pickups.
+

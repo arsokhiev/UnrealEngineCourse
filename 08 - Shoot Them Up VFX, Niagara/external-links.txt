@@ -1,0 +1,24 @@
+
+002 -Niagara
+https://docs.unrealengine.com/en-US/RenderingAndGraphics/Niagara/index.html
+
+004 -TMap
+https://docs.unrealengine.com/en-US/ProgrammingAndScripting/ProgrammingWithCPP/UnrealArchitecture/TMap/index.html
+
+004 -Weak-Pointers
+https://docs.unrealengine.com/en-US/ProgrammingAndScripting/ProgrammingWithCPP/UnrealArchitecture/SmartPointerLibrary/WeakPointer/index.html
+
+004 Physical-Materials
+https://docs.unrealengine.com/en-US/InteractiveExperiences/Physics/PhysicalMaterials/index.html
+
+005 Decals
+https://docs.unrealengine.com/en-US/Resources/ContentExamples/Decals/index.html
+
+009 Post-Process-Effects
+https://docs.unrealengine.com/en-US/RenderingAndGraphics/PostProcessEffects/index.html
+
+010 -
+https://lifeexe-art.gitbook.io/unreal-engine-c-course/dopolneniya-k-urokam/lekciya-089/niagarasystem-ne-attachitsya-k-dulu
+
+010 Important-info-when-attaching-sound-to-the-muzzle
+https://lifeexe-art.gitbook.io/unreal-engine-c-course-eng/lessons/lecture-089/niagarasystem-does-not-attach-to-muzzle

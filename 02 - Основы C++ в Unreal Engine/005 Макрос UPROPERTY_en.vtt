@@ -1,0 +1,241 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.620 --> 00:00:10.630
+In this lesson, we'll look at uproperty. Let's make our variables available in the editor and
+
+00:00:10.630 --> 00:00:15.458
+see what access specifiers and meta information are for property.
+
+00:00:15.458 --> 00:00:21.850
+Press Ctrl + X. We remove our variables from the printTypes function and add them to the protected section of
+
+00:00:21.850 --> 00:00:28.820
+our actor's header file. We make our variables class members, we can also
+
+00:00:28.820 --> 00:00:34.041
+remove them from printStringTypes, because they will now be available in any function of our class.
+
+00:00:35.290 --> 00:00:39.968
+Now we need to tell unreal that we want to see these variables in editor.
+
+00:00:39.968 --> 00:00:45.860
+There is a keyword for this and uproperty is a macro. We have to mark
+
+00:00:45.860 --> 00:00:51.395
+each variable with this macro at the top, so copy / paste the uproperty macro.
+
+00:00:57.510 --> 00:01:02.370
+We will now make a small replacement. We will not use the int type further - the standard
+
+00:01:02.370 --> 00:01:09.120
+C ++ integer type , we will use int32 - this is the built-in unreal type. This type guarantees
+
+00:01:09.120 --> 00:01:14.640
+safety when compiling for different types of platforms, the int type can have a different
+
+00:01:14.640 --> 00:01:20.350
+number of bytes on different platforms, the unreal engine is a cross-platform engine - so
+
+00:01:20.350 --> 00:01:27.440
+it takes care of us and we can use int32 as an integer type. Let's mark
+
+00:01:27.440 --> 00:01:32.924
+each uproperty with different access specifiers - these are parameters to the uproperty macro.
+
+00:01:33.592 --> 00:01:40.867
+Let's start editor and see how they differ in the editor. The first specifier is EditAnywhere.
+
+00:01:43.156 --> 00:01:48.270
+The second specifier is EditDefaultsOnly.
+
+00:01:51.610 --> 00:01:55.577
+The third specifier is EditInstanceOnly.
+
+00:01:58.280 --> 00:02:03.677
+Let's also mark the boolean variable IsDead with EditAnywhere.
+
+00:02:06.477 --> 00:02:10.615
+And for HasWeapon, let the access specifier be VisibleAnywhere.
+
+00:02:11.304 --> 00:02:17.318
+In fact, there are many different uproperty specifiers. I will attach a link to the document to the lecture,
+
+00:02:17.318 --> 00:02:24.270
+where you can see, read what other specifiers are. In the training process, we will
+
+00:02:24.270 --> 00:02:29.903
+touch on other specifiers, but to start, 4 data will be enough.
+
+00:02:31.717 --> 00:02:33.233
+Launch editor.
+
+00:02:35.724 --> 00:02:40.550
+Selecting our BaseGeometryActor in the object tree. Almost all of our variables
+
+00:02:40.550 --> 00:02:45.620
+appeared in the details of the actor panel . We can edit them, change the values. Some are not
+
+00:02:45.620 --> 00:02:50.680
+editable, but for a closer look, let's first remove our actor
+
+00:02:50.680 --> 00:02:57.040
+from the scene. Let's go to the daddy with C ++ classes and create a child blueprint class. To do this,
+
+00:02:57.040 --> 00:03:02.880
+right-click on our actor and select create blueprint class from the menu.
+
+00:03:05.426 --> 00:03:10.470
+Let's name it BP underscore BaseGeometryActor. Click create blueprint
+
+00:03:10.470 --> 00:03:18.670
+class and the blueprint editor opens. When adding a blueprint or our C ++
+
+00:03:18.670 --> 00:03:24.789
+actor to the scene, a so-called instance is created, that is, an object of this class.
+
+00:03:26.020 --> 00:03:33.127
+We can create as many instances as we want. Let's leave only one for now, delete the other two.
+
+00:03:33.456 --> 00:03:37.990
+Open editor in parallel with our C ++ file and see
+
+00:03:37.990 --> 00:03:44.175
+what the access specifiers mean. WeaponsNum has an EditAnywhere access specifier.
+
+00:03:45.649 --> 00:03:51.281
+This variable is available for editing, both in the archetype - in the class in the default parameters,
+
+00:03:51.281 --> 00:03:56.760
+and in the instance - the object on the scene. If we look in the detail panels we can see
+
+00:03:56.760 --> 00:04:03.710
+that WeaponsNum is also editable here. KillsNum has the EditDefaultsOnly access specifier, which
+
+00:04:03.710 --> 00:04:08.480
+means that we can edit this variable only in the default archetype settings.
+
+00:04:09.520 --> 00:04:14.650
+We cannot edit this variable in the actor instance. If we look in the details panel,
+
+00:04:14.650 --> 00:04:21.697
+then this variable is simply not there. Health has the EditInstanceOnly qualifier.
+
+00:04:22.526 --> 00:04:27.660
+This is an inverse specifier, that is, this variable is not available in the default archype settings,
+
+00:04:28.480 --> 00:04:34.211
+but it is available in the actor instance. In the details panel, we can edit this variable.
+
+00:04:36.438 --> 00:04:42.064
+IsDead has the same qualifier as WeaponsNum - EditAnywhere. The boolean variable matches
+
+00:04:42.064 --> 00:04:47.754
+in the editor checkbox. We can edit it both in the instance and in the default settings.
+
+00:04:48.711 --> 00:04:53.934
+And the last variable HasWeapon has a VisibleAnywhere access specifier.
+
+00:04:53.934 --> 00:04:59.333
+We observe it both in the archetype and in the object on the stage. The visible specifier
+
+00:04:59.333 --> 00:05:06.402
+has mirror specifiers with edit, that is, VisibleDefaultsOnly and VisibleInstanceOnly.
+
+00:05:08.449 --> 00:05:10.082
+The only difference is that these
+
+00:05:10.082 --> 00:05:15.683
+variables will not be available for editing, but will be available only for viewing.
+
+00:05:17.089 --> 00:05:20.866
+Let's finalize the uproperty. We can indicate the category to which
+
+00:05:20.866 --> 00:05:27.480
+this property belongs - this is some meta information, which will change in the editor in just
+
+00:05:27.480 --> 00:05:35.363
+a few minutes. We typed category. Let's name our category, for example, Weapon.
+
+00:05:38.099 --> 00:05:44.004
+Copy the category to the KillsNum variable. Let's call it Stat.
+
+00:05:46.507 --> 00:05:54.193
+Health will have a Health category. IsDead has Health too.
+
+00:05:54.680 --> 00:06:02.863
+And HasWeapon has a Weapon category. Go to .cpp file, let's uncomment printTypes.
+
+00:06:05.438 --> 00:06:11.027
+Let's remove from the function one log with Health, which is accurate. We won't need it anymore.
+
+00:06:11.913 --> 00:06:15.761
+Let's add another log at the top - LogTemp.
+
+00:06:18.234 --> 00:06:20.295
+The log level is display.
+
+00:06:22.939 --> 00:06:25.961
+Write actor name in the text.
+
+00:06:29.123 --> 00:06:31.257
+Format Specifier % s
+
+00:06:31.257 --> 00:06:37.747
+Each actor has a GetName function. This function returns the name of the current actor instance.
+
+00:06:39.000 --> 00:06:42.957
+If we find a function, we will see that it returns the FString type.
+
+00:06:42.957 --> 00:06:46.896
+Therefore, we must use the asterisk operator, which you and I already know.
+
+00:06:48.141 --> 00:06:54.245
+Let's change for beauty LogTemp to LogBaseGeometry (for our category)
+
+00:06:56.282 --> 00:07:00.600
+Display also with a capital letter, and let's change all display to warning.
+
+00:07:01.523 --> 00:07:04.927
+To make it easier for us to look at the output to the console.
+
+00:07:09.060 --> 00:07:10.621
+We launch the editor.
+
+00:07:13.681 --> 00:07:15.478
+Open the blueprint actor class.
+
+00:07:17.710 --> 00:07:23.910
+Our variables are grouped into categories: Weapon, Stat, Health - these are panels
+
+00:07:23.910 --> 00:07:27.860
+that you can open / close. This is great for organizing your data.
+
+00:07:28.815 --> 00:07:33.425
+Returning to the map, add another instance of our BaseGeometryActor to the scene.
+
+00:07:35.640 --> 00:07:41.760
+And we will change the set of parameters on each of these objects. Let the first actor have
+
+00:07:41.760 --> 00:07:50.785
+WeaponsNum = 100, Health also 100 and IsDead = false. The second actor has WeaponsNum = 1,
+
+00:07:50.785 --> 00:08:01.902
+Health = 0.01 and IsDead = true. We are saved. Open the log, clear it and press play.
+
+00:08:03.320 --> 00:08:09.263
+We see with you two conclusions. There are two objects on the scene and each of them has BeginPlay triggered.
+
+00:08:10.320 --> 00:08:13.120
+And each of them has its own set of variables.
+
+00:08:15.000 --> 00:08:20.297
+We can also see that the name of each of the two objects has been printed. She's a little weird.
+
+00:08:21.720 --> 00:08:27.319
+It is generated by the engine. If we hover over the actor in the object tree, we will see the IdName,
+
+00:08:28.194 --> 00:08:30.709
+which corresponds to what was printed.
+

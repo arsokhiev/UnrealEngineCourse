@@ -1,0 +1,106 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.854 --> 00:00:10.235
+In this lesson, we have an independent work. It is necessary to create a ChangeWeapon service
+
+00:00:10.235 --> 00:00:15.150
+that will automatically change weapons for our NPC, the service must have one
+
+00:00:15.150 --> 00:00:20.275
+parameter: the probability of changing weapons. The probability can be implemented using a random
+
+00:00:20.275 --> 00:00:25.927
+number generator and you can also adjust the interval so that this change does not occur so often.
+
+00:00:26.797 --> 00:00:31.914
+So, let's get down to solving the task. First, we need to create a service class.
+
+00:00:34.271 --> 00:00:40.321
+We inherit from BTService. We call the service STUChangeWeaponService.
+
+00:00:44.613 --> 00:00:46.203
+And we finish creating the class.
+
+00:00:47.692 --> 00:00:58.598
+I immediately created a constructor for a service named change weapon, a TickNode function and added the necessary header files ...
+
+00:00:59.492 --> 00:01:01.150
+Go to the header file.
+
+00:01:01.881 --> 00:01:09.670
+Let's start by adding property probabilities. I will paste the macro from the clipboard. The meta information
+
+00:01:09.670 --> 00:01:16.137
+contains clamp - the probability can vary from zero to one. Let's name the variable probability.
+
+00:01:18.609 --> 00:01:26.195
+Let the default probability be 0.5, that is, 50 to 50, that our character will change weapons. Go to the .cpp file.
+
+00:01:28.467 --> 00:01:33.385
+Let's write our code. If controller is not nullptr.
+
+00:01:35.487 --> 00:01:38.105
+Then we can get the weapon component from pawn.
+
+00:01:41.212 --> 00:01:43.914
+Next, we check that the weapon component is not nullptr.
+
+00:01:45.667 --> 00:01:52.303
+To calculate the probability, we will use a function from the FMath class called FRand.
+
+00:01:54.062 --> 00:02:03.564
+If we press f12 on a function, we will see that this function returns a random number between zero and one, inclusive.
+
+00:02:05.036 --> 00:02:10.100
+Therefore, to change weapons, we just need to check that this generated number is less than
+
+00:02:10.100 --> 00:02:15.380
+or equal to our probability variable. There is also a special case: if our probability
+
+00:02:15.380 --> 00:02:22.351
+equals zero, that is, we do not want to change the weapon, and FRand, according to the documentation, can generate the number 0.
+
+00:02:22.351 --> 00:02:28.370
+With such parameter values, our condition will be fulfilled, that is, 0 is less than or equal to 0, so
+
+00:02:28.370 --> 00:02:35.058
+let's explicitly we will indicate that the probability must be greater than 0 and when these three conditions are met,
+
+00:02:35.058 --> 00:02:41.607
+we will change the weapon. To do this, we need to call the NextWeapon function, which is located in the weapon component.
+
+00:02:43.323 --> 00:02:50.786
+We start. Let's add our service to the behavior tree. We'll do this first for the topmost selector node.
+
+00:02:50.786 --> 00:02:59.398
+This will be more convenient for checking. Add the change weapon service, make the probability high enough - 0.8, set the
+
+00:02:59.398 --> 00:03:07.796
+interval to one second. We launch. Let's look at our NPC
+
+00:03:09.810 --> 00:03:12.000
+and see that he is changing the weapon
+
+00:03:13.965 --> 00:03:20.439
+With our parameter values, this happens very often, but we made sure that the service works.
+
+00:03:21.282 --> 00:03:26.920
+Let's transfer the service to the attack node - the character will try to change the weapon only when attacking
+
+00:03:26.920 --> 00:03:33.000
+and slightly change the parameters. Let's set the interval - 3 seconds, the probability can be left.
+
+00:03:34.473 --> 00:03:41.220
+We launch. It is also possible in the code that the character wants to change weapons, but cannot,
+
+00:03:41.220 --> 00:03:47.582
+because, for example, he shoots or reloads. This logic can naturally be improved:
+
+00:03:47.958 --> 00:03:53.332
+make a delayed replacement of weapons, that is, if the NPC wanted to change weapons, but could not -
+
+00:03:53.332 --> 00:03:58.829
+complete this task, immediately when this opportunity is provided. But these are already details.
+

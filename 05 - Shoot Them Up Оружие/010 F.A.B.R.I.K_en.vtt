@@ -1,0 +1,139 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.200 --> 00:00:12.789
+In this tutorial, we will set up inverse kinematics for the character's arm bone that is at the barrel.
+
+00:00:12.789 --> 00:00:18.409
+First, let's see what our problem is. Go to the character's blueprint.
+
+00:00:18.965 --> 00:00:25.762
+For testing, let's turn the camera to the face of the character. To do this, change the socket offset of
+
+00:00:25.762 --> 00:00:34.550
+the spring arm component. Let's put 600 in x, 0 in y and also rotate the camera 180 degrees.
+
+00:00:35.840 --> 00:00:44.140
+Compile. We start the game. We look at the hand, which is at the barrel, its position is not fixed, it walks with us
+
+00:00:44.140 --> 00:00:49.698
+depending on the animation. We can fix this by fixing the position of the hand.
+
+00:00:51.290 --> 00:00:57.311
+Moving on to the animated blueprint. The node that is used in such cases is called FABRIK.
+
+00:00:57.785 --> 00:01:05.404
+We take it out to the blueprint graph. For convenience, we will test its work on the basis of just one animation.
+
+00:01:05.726 --> 00:01:13.748
+We pull out the death animation from the browser asset, turn off our main logic, connect the animation to the FABRIK node.
+
+00:01:13.748 --> 00:01:19.000
+Nodes for transforming coordinate systems are automatically created, called LocalToComponent.
+
+00:01:19.000 --> 00:01:29.350
+We will not focus on them now. So, select the FABRIK node. Let's remove the effector transform from the pin by
+
+00:01:29.350 --> 00:01:34.520
+clicking the details panel and unchecking the corresponding property.
+
+00:01:34.520 --> 00:01:40.649
+Compiled blueprint. We haven't set up anything yet and just the death animation is playing.
+
+00:01:40.649 --> 00:01:47.570
+Let's see what properties the FABRIK node has. The first effector target is the bone relative to
+
+00:01:47.570 --> 00:01:52.970
+which we want to fix the position of the other bone. Click on the combobox - the skeleton
+
+00:01:52.970 --> 00:01:59.870
+tree of our character opens . For the test, select the head bone - head. We will fix the other bone relative to it
+
+00:01:59.870 --> 00:02:06.398
+. Also in the description for the property it is said that you need to change the transform space to bone space.
+
+00:02:06.398 --> 00:02:12.620
+We do this. Let's go to the solver category. The first property is of type bone - this is the bone that we want to
+
+00:02:12.620 --> 00:02:20.362
+fix relative to the effector target. Let's select, for example, some finger on the left hand - [thumb]
+
+00:02:20.735 --> 00:02:27.530
+Next property - root bone. This is a different bone. In fact, this is the end of the chain in which our node will
+
+00:02:27.530 --> 00:02:33.832
+calculate all the transformations of the bones that are between the root bone and tip bone.
+
+00:02:33.832 --> 00:02:40.477
+Blueprint compiled. We can also slow down the animation speed in the viewport. Let's choose 0.25.
+
+00:02:41.190 --> 00:02:47.400
+Or even 0.1 and now the transformation of the toe bone matches the transformation of the head.
+
+00:02:47.400 --> 00:02:53.370
+We can also change the relative transformation, and the transformations of all bones in the chain between the finger
+
+00:02:53.370 --> 00:03:01.412
+and the left arm are calculated automatically. Let's also see these bones in the skeleton. If we open skeleton.
+
+00:03:01.412 --> 00:03:07.905
+In the tree, the left arm bone is next to the shoulder. We fixed the thumb bone on the head,
+
+00:03:07.905 --> 00:03:14.701
+and the transformations of the bones that are between them are calculated automatically by our node.
+
+00:03:14.701 --> 00:03:19.687
+Also note that the skeleton has a virtual bone called LeftWeapon.
+
+00:03:20.170 --> 00:03:27.314
+It is her that we will attach to the muzzle of our weapon. Let's go back to the blueprint
+
+00:03:27.314 --> 00:03:34.903
+and substitute the other bones to secure the material. Let the tip bone be the toe.
+
+00:03:36.030 --> 00:03:44.540
+Select the toe on the left leg. The root bone will be left up leg. Compiling the blueprint.
+
+00:03:45.192 --> 00:03:49.403
+And now we have fixed the sole of our foot to the character's head.
+
+00:03:50.983 --> 00:03:56.353
+We are ready to capture the transformation of the left hand at the muzzle of our rifle.
+
+00:03:59.370 --> 00:04:03.555
+We need to do this before the slot node, otherwise, when the death animation is played, the
+
+00:04:03.555 --> 00:04:07.809
+hand will also be fixed. We reconnect all the nodes.
+
+00:04:12.099 --> 00:04:15.751
+Let's reset the transformation, click on the yellow arrow.
+
+00:04:15.751 --> 00:04:22.226
+There are no weapons in the character's skeleton. What we see is just a preview of our rifle.
+
+00:04:22.226 --> 00:04:28.245
+Therefore, we will calculate the transformation of the left hand relative to the transformation of the right hand.
+
+00:04:32.436 --> 00:04:38.158
+Select tip bone - left weapon - our virtual bone, which we looked at in the skeleton.
+
+00:04:38.760 --> 00:04:46.110
+And the root of the chain will also be the left arm. Compile. So, the left weapon bone has shifted to the
+
+00:04:46.110 --> 00:04:53.060
+position of the right hand bone, as we intended, and it remains to change the relative transformation.
+
+00:04:53.483 --> 00:05:02.160
+I picked it up in advance: -50, -11 and 4. And now the hand is at gunpoint,
+
+00:05:02.160 --> 00:05:06.881
+but in fact its transformation is calculated relative to the transformation of the right hand.
+
+00:05:08.757 --> 00:05:19.666
+Compile blueprint. Let's test it. We launch. We look at the hand, now the palm does not walk - it is fixed relative to the
+
+00:05:19.666 --> 00:05:26.525
+right hand and is located approximately under the barrel of the weapon. That's all in this lesson.
+

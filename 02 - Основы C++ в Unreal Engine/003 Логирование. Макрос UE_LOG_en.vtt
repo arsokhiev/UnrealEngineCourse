@@ -1,0 +1,289 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.680 --> 00:00:12.387
+Hello everyone! In this lesson, we will look at the main way of logging in Unreal Engine - the UE_LOG macro.
+
+00:00:12.921 --> 00:00:17.373
+Let's display the main types in the console, let's see how this console is opened through editor.
+
+00:00:18.318 --> 00:00:22.350
+We are with you in the BaseGeometryActor .cpp file. Go to the
+
+00:00:22.350 --> 00:00:28.350
+BeginPlay function . As we remember, it is called once when the game starts and we print UE_LOG.
+
+00:00:29.520 --> 00:00:35.652
+This macro has several parameters. The first parameter is the name of the logging category.
+
+00:00:36.138 --> 00:00:39.810
+In the next lesson, we will create our own logging category, now we will use the
+
+00:00:39.810 --> 00:00:45.600
+temporary category, which is accessible from anywhere, it is reserved and called LogTemp.
+
+00:00:47.420 --> 00:00:51.980
+The logging category is some kind of meta information, in fact it is an additional line that
+
+00:00:51.980 --> 00:00:57.570
+is added to the output. Using it, we can filter the logs and understand from what place in the
+
+00:00:57.570 --> 00:01:03.850
+program the message is printed. The next parameter is Verbosity or logging level.
+
+00:01:03.850 --> 00:01:10.930
+There are several in Unreal, but the most common are display, warning, and error. Depending on
+
+00:01:10.930 --> 00:01:15.700
+what is happening in the program, we can display either a normal message, a warning,
+
+00:01:15.700 --> 00:01:21.880
+or an error. In the console also in the editor, this message will be highlighted in different colors.
+
+00:01:23.190 --> 00:01:27.600
+The third parameter is the output line itself - a string literal. Let's print
+
+00:01:27.600 --> 00:01:34.530
+Hello Unreal. We see that our macro is underlined with a red wavy line,
+
+00:01:34.530 --> 00:01:41.040
+somewhere we made a mistake. UE_LOG does not allow simply passing a string , a
+
+00:01:41.040 --> 00:01:46.260
+string literal. To do this, you need to use an additional macro called TEXT.
+
+00:01:47.670 --> 00:01:54.150
+This macro is essentially a wrapper over a string and it returns an extended string, that is, if
+
+00:01:54.150 --> 00:01:58.830
+we want to use unicode characters, write, for example, something in Cyrillic,
+
+00:01:58.830 --> 00:02:05.900
+or in Chinese characters, then it will be enough to wrap the required line in the TEXT macro and that's
+
+00:02:05.900 --> 00:02:12.930
+it. will be displayed correctly. If we fall into the TEXT macro by pressing F12, we will see
+
+00:02:12.930 --> 00:02:21.120
+that TEXT define TEXT_PASTE, and TEXT_PASTE is a macro that concatenates the character L with our
+
+00:02:21.120 --> 00:02:27.970
+string X. The double pound symbol in the preprocessor simply means concatenation of two arguments.
+
+00:02:29.155 --> 00:02:35.680
+And the L prefix in C ++ means that the given string will be considered by the compiler as a wide string.
+
+00:02:36.550 --> 00:02:45.980
+Copy our log by pressing Ctrl + D. Let's change the logging level. Let's print warning,
+
+00:02:47.090 --> 00:02:52.580
+and in the third line error, to see how it looks in editor. Save,
+
+00:02:53.760 --> 00:02:57.630
+click local windows degugger and wait for unreal to start.
+
+00:02:59.660 --> 00:03:08.420
+To open the log window, we go to the main menu -&gt; window -&gt; developer tools -&gt; output log.
+
+00:03:10.210 --> 00:03:15.940
+As we can see in the log window, there is already technical information - these are the logs when starting editor. We
+
+00:03:15.940 --> 00:03:22.630
+don't need them now. Let's clean them up. To do this, we right-click in the log window and select
+
+00:03:22.630 --> 00:03:29.060
+clear log. That is, we have completely cleared the output window. Next, we check that
+
+00:03:29.060 --> 00:03:38.150
+our actor exists in the object tree . If not, then drag &amp; drop it onto the stage. And press the play button.
+
+00:03:40.104 --> 00:03:48.720
+Scroll down and see that our logs are displayed in the console: display, warning and error. Also, at the beginning,
+
+00:03:48.720 --> 00:03:55.680
+the log category, the log level and our messages directly are printed. In the upper left
+
+00:03:55.680 --> 00:04:01.410
+corner we see the filters button. Click on it. We can sort everything by log level.
+
+00:04:02.260 --> 00:04:08.865
+We can remove the display level. We are left with only warning and error, or only error. By selecting
+
+00:04:08.865 --> 00:04:14.910
+categories from the menu, we can filter everything by category. We can remove the categories that we do not
+
+00:04:14.910 --> 00:04:20.446
+need, or by clicking on show all, select only our LogTemp category.
+
+00:04:21.265 --> 00:04:30.799
+We return with you to the code. Let's see how to log some of the basic types. Let's start with an integer.
+
+00:04:31.416 --> 00:04:38.572
+WeaponsNum - the number of weapons. Let it be 4. Let's create another integer.
+
+00:04:39.760 --> 00:04:48.000
+KillsNum - let it be seven. Further, the float type is a floating point number.
+
+00:04:48.520 --> 00:04:58.070
+Let there be Health - life. There is some number here, no matter what. Let's display the boolean variable IsDead,
+
+00:04:59.100 --> 00:05:08.613
+let it be false. Let's add another HasWeapon boolean variable. Let it be true.
+
+00:05:09.330 --> 00:05:15.993
+We will use our UE_LOG macro. The category is still temporary - LogTemp.
+
+00:05:16.870 --> 00:05:21.200
+Let the logging level be display, purely informative.
+
+00:05:21.817 --> 00:05:24.417
+We write our macro TEXT.
+
+00:05:27.560 --> 00:05:34.531
+We output here WeaponsNum, which equals .. which equals to something ..
+
+00:05:35.728 --> 00:05:42.629
+We can specify format specifiers to the log, much like the printf functions in C ++ work.
+
+00:05:43.340 --> 00:05:47.834
+For integers, this is% d or% i.
+
+00:05:49.542 --> 00:05:56.397
+Let's add KillsNum and specify the i specifier - we'll exit in two different ways. Further
+
+00:05:56.397 --> 00:06:00.696
+, the arguments are indicated, separated by commas, that is, our numbers, respectively.
+
+00:06:02.071 --> 00:06:08.377
+WeaponsNum and KillsNum.
+
+00:06:09.539 --> 00:06:17.560
+Copy the line of our macro (Ctrl + D). Change the output line
+
+00:06:17.560 --> 00:06:24.827
+to Health. To display floating point numbers, the format specifier must be specified% f.
+
+00:06:26.842 --> 00:06:30.089
+Change arguments to Health.
+
+00:06:31.915 --> 00:06:36.958
+Copy the line again. We need to output the boolean variable IsDead.
+
+00:06:36.958 --> 00:06:40.880
+This can be done in several ways. We will consider one of them later
+
+00:06:40.880 --> 00:06:48.401
+when we go through the lines of the unreal engine, and now we will display it simply as an integer.
+
+00:06:49.469 --> 00:06:56.387
+The compiler will automatically convert bool to int, that is, it will output either 0 or 1.
+
+00:06:56.860 --> 00:07:02.804
+Let's add one more line of log for HasWeapon. We can explicitly tell the compiler
+
+00:07:02.804 --> 00:07:08.895
+that we want to convert bool to int. Let's change the text .. HasWeapon ..
+
+00:07:09.357 --> 00:07:13.737
+and also change the IsDead variable to HasWeapon.
+
+00:07:16.780 --> 00:07:21.000
+And for explicit conversion to int we use static_cast
+
+00:07:22.590 --> 00:07:28.730
+Specify int parameter and HasWeapon in parentheses.
+
+00:07:30.950 --> 00:07:34.930
+Let's take a look at another floating point output. In the format specifier
+
+00:07:34.930 --> 00:07:38.320
+, you can specify the precision with which we want to output the number.
+
+00:07:39.850 --> 00:07:45.531
+For this, after% is indicated. and the number of decimal places.
+
+00:07:46.682 --> 00:07:51.968
+We are saved. And go to editor.
+
+00:07:54.530 --> 00:07:57.110
+Without closing the editor, we can compile everything on the fly
+
+00:07:57.110 --> 00:08:02.203
+by clicking on the compile button located in the toolbar at the top.
+
+00:08:03.994 --> 00:08:07.350
+Everything has been compiled for us. We open the log.
+
+00:08:07.743 --> 00:08:12.803
+We clear all information (right-click - clear log) and press play.
+
+00:08:13.680 --> 00:08:21.358
+Let's filter our log. Uncheck show all. Find our LogTemp.
+
+00:08:22.330 --> 00:08:26.880
+We see with you, respectively, our previous lines of Hello Unreal
+
+00:08:27.270 --> 00:08:31.057
+and also our entire output: WeaponsNum, KillsNum ..
+
+00:08:33.100 --> 00:08:37.349
+Health in full and Health with an accuracy of two characters.
+
+00:08:39.000 --> 00:08:46.020
+Also the boolean variable IsDead = 0, HasWeapon = 1, which corresponds to false and true. We press stop
+
+00:08:46.020 --> 00:08:53.440
+and return to the code. Let's create a function in which we put all the code with BeginPlay. Go
+
+00:08:53.440 --> 00:09:02.530
+to the .h file. We create a private section. Let's call our function printtypes and put all the code
+
+00:09:02.530 --> 00:09:07.620
+related to output to the console there. Right click on printtypes,
+
+00:09:07.620 --> 00:09:15.274
+select quick actions and refactoring. Click on create declaration / definition.
+
+00:09:16.567 --> 00:09:21.000
+And our function body is automatically added to the .cpp file.
+
+00:09:22.876 --> 00:09:25.205
+We remove all our output from BeginPlay.
+
+00:09:27.759 --> 00:09:30.019
+We insert it into the body of the printtypes function.
+
+00:09:30.980 --> 00:09:36.650
+These variables naturally do not make any sense, they are purely for training. We also remove
+
+00:09:36.650 --> 00:09:43.458
+the Hello Unreal pins - we don't need them. And let's add a call to the printtypes function below the comment.
+
+00:09:46.298 --> 00:09:51.573
+Let's take a look at the last point. Let's open the folder where our project is located.
+
+00:09:52.000 --> 00:09:56.760
+Go to the saved folder, then to the logs folder.
+
+00:09:59.453 --> 00:10:05.410
+This directory stores editor logs. A new log is created every time it starts.
+
+00:10:07.070 --> 00:10:09.884
+The current log is named the same as our project,
+
+00:10:10.940 --> 00:10:15.277
+and the previous one additionally has a timestamp when it was launched.
+
+00:10:17.518 --> 00:10:22.878
+Let's open the log. I open it in Visual Studio Code, but of course you can
+
+00:10:22.878 --> 00:10:29.370
+use any other text editor. If we open the search (Ctr + F) and enter LogTemp in the
+
+00:10:29.370 --> 00:10:37.007
+search field, we will see that all the information has also been output to this text file.
+
+00:10:37.007 --> 00:10:41.657
+This is very convenient because this file can be analyzed without opening editor.
+

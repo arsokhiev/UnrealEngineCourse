@@ -1,0 +1,472 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.017 --> 00:00:12.000
+Hello everyone! This tutorial will be the final one on motion tweens. We will add animation of
+
+00:00:12.000 --> 00:00:17.880
+running to the right, left and back. In further lessons, we will still work with animations. We will have
+
+00:00:17.880 --> 00:00:24.240
+animations for reloading, death, aiming, but this will already relate to the context of the next chapters.
+
+00:00:24.860 --> 00:00:29.376
+In this tutorial we will do some vector math. We will calculate the
+
+00:00:29.376 --> 00:00:34.100
+angle of the direction of movement of our character and, depending on this angle, set
+
+00:00:34.100 --> 00:00:40.010
+our remaining three animations. Well, let's get down to updating our state machine.
+
+00:00:40.010 --> 00:00:46.108
+Right-click in the content browser and select the
+
+00:00:46.108 --> 00:00:55.730
+BlendSpace asset type in the Animation section . Let's name our asset BS_LocomotionWalk2 and open it.
+
+00:00:57.490 --> 00:01:02.760
+The only difference between this asset and BlendSpace1D is that it is two-dimensional. It has two axes:
+
+00:01:02.760 --> 00:01:09.166
+horizontal and vertical. The horizontal axis will also be responsible for the speed. Let's call it Velocity.
+
+00:01:09.166 --> 00:01:15.478
+The minimum value will be 0, and the maximum will be the same as it was 600. We call the vertical axis Direction.
+
+00:01:15.478 --> 00:01:20.650
+It will be responsible for the direction where our character is running and the minimum value
+
+00:01:20.650 --> 00:01:26.590
+will be -180, and the maximum 180. That is, the direction vector will change in the right semicircle
+
+00:01:26.590 --> 00:01:33.496
+from 0 to 180, in the left semicircle from 0 to -180. We start throwing out our animations.
+
+00:01:33.496 --> 00:01:41.170
+Idle goes to 0 in speed and 0 in direction. RunForward goes to 0 in direction
+
+00:01:41.170 --> 00:01:49.490
+and 600 in speed. Find the RunBackward animation and throw it to direction -180 and 180, when the deflection
+
+00:01:49.490 --> 00:01:55.356
+angle is 180 or -180. This means that the character moves backward.
+
+00:01:57.674 --> 00:02:03.998
+Add two animation assets for left and right movement. The directions -90 and 90 correspond to them.
+
+00:02:05.664 --> 00:02:11.812
+We save our asset and go to the animation blueprint, to the state machine,
+
+00:02:12.839 --> 00:02:17.582
+to the Walk state and discard our BlendSpace.
+
+00:02:18.500 --> 00:02:25.610
+We plug the velocity variable into our new BlendSpace, pose in OutputPose. We create a variable for the
+
+00:02:25.610 --> 00:02:35.876
+direction, we also call it Direction and we will need to calculate it. The default Direction is 0.
+
+00:02:35.876 --> 00:02:43.350
+In this regard, nothing has changed so far, that is, our character is moving along the axis with direction = 0.
+
+00:02:46.120 --> 00:02:49.704
+Let's start calculating this direction variable.
+
+00:02:51.382 --> 00:02:58.990
+We open the animation blueprint, go to EventGraph and we will start by rendering the vectors,
+
+00:02:58.990 --> 00:03:04.840
+between which we will need to calculate the angles. Let's program a little in blueprints, and then
+
+00:03:04.840 --> 00:03:13.802
+rewrite everything in C ++. Copy the TryGetPawnOwner node. We will use a
+
+00:03:13.802 --> 00:03:20.860
+helper node called DrawDebugArrow. This node draws a vector in 3d space.
+
+00:03:20.860 --> 00:03:27.947
+This is what we need for rendering. Let's start by displaying the vector of the direction of our actor - Forward Vector.
+
+00:03:28.955 --> 00:03:36.390
+In LineStart, we have the position of the character. We pass GetActorLocation there.
+
+00:03:39.180 --> 00:03:47.544
+Next, we get the Forward Vector of our actor. We call the GetActorForwardVector function. This vector is single.
+
+00:03:47.544 --> 00:03:54.736
+It's normalized, so let's multiply it by some length. Let it be for example 500.
+
+00:03:59.620 --> 00:04:09.640
+And to get the LineEnd coordinate, we need to add this Forward Vector to the position of the actor.
+
+00:04:11.500 --> 00:04:15.070
+So only I added the number, and we need a vector plus a vector.
+
+00:04:17.010 --> 00:04:27.666
+We add the vectors, connect them to LineEnd. Let the ArrowSize be 2. Make the LineColor a shade of blue
+
+00:04:27.666 --> 00:04:33.520
+and let the thickness be 4. Duration = 0, because every frame will be drawn this way.
+
+00:04:34.602 --> 00:04:40.764
+We launch the project. Let's see that the arrow is displayed correctly in the direction the character is oriented.
+
+00:04:41.510 --> 00:04:47.788
+Let's correct one parameter in the settings. Go to project settings and enter AutoExposure.
+
+00:04:47.788 --> 00:04:53.174
+Now this effect is a bit of a nuisance because it automatically adjusts the exposure of the image.
+
+00:04:53.174 --> 00:04:58.550
+Let's take it out. In essence, this effect simulates how the human eye adapts
+
+00:04:58.550 --> 00:05:06.220
+to different lighting levels. Copy the nodes that display the arrow.
+
+00:05:07.150 --> 00:05:16.796
+Let's display the velocity vector. To do this, we need to replace the Forward Vector with GetVelocity.
+
+00:05:18.006 --> 00:05:24.300
+The velocity vector is not a unit vector. Let's normalize it. Let's use the Normilize function.
+
+00:05:30.770 --> 00:05:33.178
+Let's change the color to red.
+
+00:05:34.842 --> 00:05:42.746
+Compile. We launch the project and the velocity vector is displayed with a red arrow.
+
+00:05:42.746 --> 00:05:47.225
+We move in different directions, see how it looks.
+
+00:05:47.225 --> 00:05:54.348
+We need to calculate the angle between the direction vector and the velocity vector, and substitute this angle into the direction variable.
+
+00:05:55.562 --> 00:05:59.198
+Now let's do some vector math.
+
+00:06:00.400 --> 00:06:04.306
+Copy the nodes of the first vector - Forward vector.
+
+00:06:09.760 --> 00:06:12.810
+And the second vector is the velocity vector.
+
+00:06:16.670 --> 00:06:23.270
+The first thing we will calculate with you is the angle between these vectors. In vector mathematics, the angle between vectors is
+
+00:06:23.270 --> 00:06:29.786
+calculated using the dot product. The function in the FVector class is called DotProduct.
+
+00:06:30.740 --> 00:06:35.908
+DotProduct returns the cosine of the angle between vectors, if they are unity.
+
+00:06:37.016 --> 00:06:42.058
+Therefore, to get the value of the angle, we can take the inverse function of the cosine,
+
+00:06:42.058 --> 00:06:47.154
+which is called arccosine. This function is in the FMath class.
+
+00:06:47.610 --> 00:06:57.406
+Let's display the value of the angle between the vectors. We use the PrintString node. We start the game.
+
+00:06:58.520 --> 00:07:09.190
+We run straight - we have an angle of 0, we run to the left - an angle of 90, to the right - also 90 and back 180. That is, our angle is calculated correctly.
+
+00:07:09.190 --> 00:07:14.016
+But this value is positive, regardless of whether the velocity vector is to the
+
+00:07:14.016 --> 00:07:20.987
+right or to the left of the forward vector. Also, at zero speed, we have assignment = 90, therefore arccos (0) = 90.
+
+00:07:20.987 --> 00:07:25.620
+We will correct this with you in the future. To determine the sign of the angle, we need a
+
+00:07:25.620 --> 00:07:31.230
+function for calculating the cross product of two vectors. It's called CrossProduct.
+
+00:07:31.230 --> 00:07:34.710
+We will use the following property of this mathematical operation: the vector that
+
+00:07:34.710 --> 00:07:40.000
+is obtained as a result is orthogonal to the first and second vectors and also the fact
+
+00:07:40.000 --> 00:07:47.148
+that UnrealEngine has a left coordinate system. That is, you and I can take the z coordinate and look at its sign.
+
+00:07:47.148 --> 00:07:51.226
+Right-click on the pin, select SplitStructPin.
+
+00:07:51.226 --> 00:08:01.330
+This allows you to compactly expand the coordinates of the vector and display the z coordinate. We launch the project. We run straight -
+
+00:08:01.330 --> 00:08:08.590
+about 0, backward, too, and on the left we have a negative value for the z coordinate, and on the right, positive.
+
+00:08:15.340 --> 00:08:25.970
+So we have all the data to calculate the signed angle - for this we need to take the sign function from the z coordinate
+
+00:08:25.970 --> 00:08:34.190
+, which determines the sign of the number. That is, if the number is negative, then it returns -1,
+
+00:08:34.190 --> 00:08:44.694
+and if positive, then 1 and if 0, then 0. Multiply the degrees by this value. Let's print this number.
+
+00:08:44.694 --> 00:08:51.302
+So we check. If we run to the left, then the angle will be negative, to the right - positive.
+
+00:08:51.302 --> 00:08:55.640
+Also, when the velocity vector = 0, CrossProduct = 0, so this
+
+00:08:55.640 --> 00:09:00.140
+case is also handled correctly by us. In general, everything is ready. Let's plug
+
+00:09:00.140 --> 00:09:07.014
+this value into the direction variable and see how it works. We start the game.
+
+00:09:08.370 --> 00:09:21.610
+We run straight. We run back - the animation of running back turns on, we run to the right, to the left. At angles of 45, 15 degrees,
+
+00:09:21.610 --> 00:09:29.630
+animations are simply interpolated. Everything is working. The only caveat is that the 135-degree
+
+00:09:29.630 --> 00:09:36.190
+run animations don't look very nice. In general, we will not pay attention to this,
+
+00:09:36.190 --> 00:09:43.474
+those who want can set it up so that only the animation back is displayed if the angle value is greater than 90.
+
+00:09:44.480 --> 00:09:49.130
+So, we figured out the math, let's rewrite everything in C ++.
+
+00:09:49.130 --> 00:09:53.642
+We will call the function of our character and substitute the value in direction.
+
+00:09:57.570 --> 00:10:04.310
+Let's get started. Let's create a function that will return the angle value. Copy the macro
+
+00:10:04.310 --> 00:10:14.452
+from UFUNCTION, the category will also be Movement. The function will return float. Let's call it GetMovementDirection.
+
+00:10:17.260 --> 00:10:19.164
+Do not forget the const specifier - the
+
+00:10:19.164 --> 00:10:25.000
+function will not change any internal data and create the function body in a .cpp file.
+
+00:10:28.670 --> 00:10:35.446
+Now we are essentially going to program the formula that we have already calculated in the blueprints. First, let's
+
+00:10:36.405 --> 00:10:46.368
+create a VelocityNormal variable. The normalized velocity vector will be written into this variable.
+
+00:10:46.368 --> 00:10:53.414
+I also use auto to automatically compute the type. The function that returns the norm
+
+00:10:53.414 --> 00:11:02.038
+is called GetSafeNormal. Next, we create a variable for the angle between our Forward vector
+
+00:11:02.038 --> 00:11:09.428
+and the AngleBetween velocity vector. In this variable we will write arccosine from the
+
+00:11:09.428 --> 00:11:17.628
+dot product of two vectors. Arccosine is in the FMath class, and DotProduct is in the FVector class.
+
+00:11:18.846 --> 00:11:23.304
+We pass vectors to the DotProduct function, between which we want to calculate the
+
+00:11:23.304 --> 00:11:28.940
+cross product: directly the ForwardVector of the actor and VelocityNormal.
+
+00:11:34.040 --> 00:11:37.777
+Next, we calculate the cross product between the given vectors.
+
+00:11:38.625 --> 00:11:42.614
+The CrossProduct function is in the FVector class.
+
+00:11:49.082 --> 00:11:54.834
+We just need to calculate the final direction value and return this value.
+
+00:11:55.410 --> 00:12:02.256
+Arccosine returns the angle in radians, so we'll use the FMath :: RadiansToDegrees function
+
+00:12:02.256 --> 00:12:08.602
+to convert radians to degrees. We pass our AngleBetween variable there.
+
+00:12:09.930 --> 00:12:16.615
+Then we multiply the whole thing by the sign value of the CrossProduct.Z coordinate
+
+00:12:16.615 --> 00:12:24.420
+The Sign function is in FMath. Inserting CrossProduct.Z
+
+00:12:29.356 --> 00:12:35.480
+Let's take another look at what we've done. First, we calculate the rate of our velocity vector.
+
+00:12:35.480 --> 00:12:39.500
+Next, we calculate the dot product between the forward vector
+
+00:12:39.500 --> 00:12:46.490
+and the velocity vector. We take the arccosine from the given cross product.
+
+00:12:46.490 --> 00:12:53.210
+We get the angle between the vectors. Next, calculate the CrossProduct orthogonal vector.
+
+00:12:54.825 --> 00:13:03.517
+We convert AngleBetween to degrees and multiply by the sign of the z coordinate of the CrossProduct variable.
+
+00:13:05.150 --> 00:13:06.656
+We compile the project.
+
+00:13:09.630 --> 00:13:15.380
+Let's take a look at what the CrossProduct vector looks like before replacing all our blueprints with a C ++
+
+00:13:15.380 --> 00:13:20.126
+call. In words, it may not be entirely clear.
+
+00:13:21.410 --> 00:13:28.147
+We connect the position of our character to LineStart.
+
+00:13:28.147 --> 00:13:35.724
+In CrossProduct, fold all coordinates back. To do this, disconnect the thread from z. Right-click - RecombineStructPin.
+
+00:13:35.724 --> 00:13:41.942
+And we will use an additional node that breaks vectors by coordinates. We substitute z in sign, the
+
+00:13:41.942 --> 00:13:48.060
+site so that nothing breaks. Next, we normalize the vector that is the result of the cross
+
+00:13:48.060 --> 00:13:56.930
+product. We multiply it by some number. We make the length 200 and add the resulting value
+
+00:13:56.930 --> 00:14:06.299
+to the location of the actor. We insert all this into the LineEnd. Change the color to green and compile the blueprint.
+
+00:14:07.050 --> 00:14:13.706
+By default, we have a velocity vector of 0, so the cross product is also 0. We do not see our vector.
+
+00:14:17.952 --> 00:14:22.280
+If the velocity vector is to the right of our forward vector, then the cross
+
+00:14:22.280 --> 00:14:28.284
+product - the green vector is directed upwards, that is, its z coordinate is positive.
+
+00:14:30.832 --> 00:14:36.664
+If we change the direction and the velocity vector is to the left of the forward vector, then the cross product
+
+00:14:36.664 --> 00:14:42.780
+is directed downward and the z coordinate is negative. Also, if you noticed, we
+
+00:14:42.780 --> 00:14:50.971
+had a warning in our logs . Something about our animation blueprint was printed in yellow.
+
+00:14:51.947 --> 00:14:59.370
+We have not taken into account one point. If we look at the animation blueprint update function, we will see
+
+00:14:59.370 --> 00:15:05.244
+that this function is active at the moment. We can observe this along the thread with circles.
+
+00:15:05.244 --> 00:15:12.300
+The animation blueprint function is called not only in the game, but also in the editor. Also on the left we can see that
+
+00:15:12.300 --> 00:15:21.433
+our character's animation is updating correctly. Let's print the name of our pawn to the console using PrintString.
+
+00:15:22.425 --> 00:15:31.834
+And from the TryGetPawnOwner node we call the GetDisplayName function. We connect to PrintString. Compile.
+
+00:15:33.422 --> 00:15:41.740
+Let's clear the log and we see that nothing is found, because our blueprint window is now in the background. This is done from the point of
+
+00:15:41.740 --> 00:15:48.084
+view of optimization, but if we pull out this window, we will see that an empty line is printed to the log.
+
+00:15:48.084 --> 00:15:54.550
+Our pawn = nullptr, because the animation blueprint works as a standalone, and roughly speaking, if we referred
+
+00:15:54.550 --> 00:15:59.380
+to a pointer in C ++ like this, we would get undefined behavior. We would
+
+00:15:59.380 --> 00:16:05.692
+refer to a null pointer. I pulled out the auxiliary IsValid node, which will check our pawn object for nullptr,
+
+00:16:05.692 --> 00:16:10.720
+and it was displayed in the console that our object is null. Let's put a check for validity.
+
+00:16:10.720 --> 00:16:18.034
+To do this, we will use a macro called IsValid and connect our pawn to InputObject.
+
+00:16:18.034 --> 00:16:23.776
+If we double-click on this macro, we will see that inside there is just a check for validity.
+
+00:16:23.776 --> 00:16:29.500
+Compile. We look in the log - everything is clean, no warning. And also note
+
+00:16:29.500 --> 00:16:39.139
+that the stream does not go beyond IsValid. Our check does not allow this. Let's call our function from C ++.
+
+00:16:39.139 --> 00:16:44.762
+Let's delete all the blueprints that we used to render our vectors.
+
+00:16:49.960 --> 00:16:54.062
+We enter the name of our GetMovementDirection function in the search.
+
+00:16:57.750 --> 00:17:02.330
+And we connect the value that it returns to the Direction variable.
+
+00:17:06.080 --> 00:17:12.517
+Compile. We launch the project. Checking.
+
+00:17:14.157 --> 00:17:21.581
+We move to the right, left, back, forward. Everything works the same way as through blueprints.
+
+00:17:22.828 --> 00:17:31.048
+Let's delete our old one-dimensional BlendSpace LocomotionWalk. Rename the current LocomotionWalk2 to simply LocomotionWalk.
+
+00:17:32.210 --> 00:17:38.851
+We can optimize our code a little. All mathematical calculations in the GetMovementDirection function are optional,
+
+00:17:38.851 --> 00:17:43.634
+if the speed of our character is zero, that is, if the character does not move,
+
+00:17:43.634 --> 00:17:50.090
+his speed vector is zero, then we can immediately exit the functions and return the value 0.
+
+00:17:50.090 --> 00:17:57.858
+We can check the speed vector using the function IsZero of the FVector class. If it returns true,
+
+00:17:57.858 --> 00:18:06.744
+then we return 0. The next point: CrossProduct returns 0 when the two vectors
+
+00:18:06.744 --> 00:18:11.578
+for which we calculate it are either in the same direction or opposite direction.
+
+00:18:12.186 --> 00:18:18.600
+In our case, if the velocity vector is directed oppositely to the forward vector, this means
+
+00:18:18.600 --> 00:18:26.186
+that the character is running backward, the return value will be equal to zero and the animation of running backward will not be turned on.
+
+00:18:26.922 --> 00:18:30.842
+Let's fix that as well. Let's check CrossProduct for a zero vector.
+
+00:18:31.194 --> 00:18:37.880
+To begin with, we will create an additional constant, which we will call Degrees and write into it the value that we
+
+00:18:37.880 --> 00:18:47.044
+calculate using the RadiansToDegrees function, and if CrossProduct is a zero vector,
+
+00:18:47.044 --> 00:18:53.706
+then we will not multiply by it and will simply return the degrees values. Let's use the ternary operator.
+
+00:18:53.706 --> 00:18:59.229
+And if CrossProduct is not 0, then the return value will be calculated in the same way.
+
+00:19:00.108 --> 00:19:07.087
+Since we all started checking for zero values, let's also add our functions, which are responsible for movement, to
+
+00:19:08.530 --> 00:19:13.420
+check the Amount parameter to 0. We didn't have any errors here, because the
+
+00:19:13.420 --> 00:19:18.358
+zero vector will be simply added. We will do this purely for cosmetic purposes.
+

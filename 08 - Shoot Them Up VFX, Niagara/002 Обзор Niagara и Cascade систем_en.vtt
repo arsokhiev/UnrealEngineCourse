@@ -1,0 +1,178 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.684 --> 00:00:10.554
+We're getting started with visual effects. Let's start by creating a folder
+
+00:00:10.554 --> 00:00:16.850
+at the root of our project. Let's call it VFX: visual effects. We will consider the effects from a programming
+
+00:00:16.850 --> 00:00:21.770
+point of view. A detailed study of Niagara is not included in the course. UE
+
+00:00:21.770 --> 00:00:30.070
+currently has two special effects editors: the first is an outdated one called Cascade and a new one that has
+
+00:00:30.070 --> 00:00:34.870
+appeared quite recently. It's called Niagara. First, let's take a look at how to create
+
+00:00:34.870 --> 00:00:39.550
+a particle system using Cascade. In the content browser, right-
+
+00:00:39.550 --> 00:00:48.425
+click and select ParticleSystem from the menu. Let's call this asset PS_Test.
+
+00:00:48.425 --> 00:00:52.900
+We click twice. We open. This subsystem is called Cascade in the UE.
+
+00:00:52.900 --> 00:00:59.260
+On the left we have a viewport where the particle system is displayed. On the right are the emitters, which are essentially
+
+00:00:59.260 --> 00:01:06.010
+presets for the particle system. The settings are grouped by category, if we select
+
+00:01:06.010 --> 00:01:12.460
+spawn in the details panel, the settings for how a given particle system appears in the world will open, for example,
+
+00:01:12.460 --> 00:01:18.370
+we can adjust the number of particles that will appear each frame. We can change the
+
+00:01:18.370 --> 00:01:24.370
+parameters of lifetime - the lifetime of the particles. Set the upper border to 10 and in the viewport
+
+00:01:24.370 --> 00:01:30.790
+we observe how the particle system changes depending on the settings. Also, if we right-click
+
+00:01:30.790 --> 00:01:38.030
+on the emitter, we can add other parameters that are available in the proposed lists, for example,
+
+00:01:38.030 --> 00:01:44.152
+in the location category, you can select a cylinder. Our particles will be spawned randomly in the cylinder.
+
+00:01:45.860 --> 00:01:52.170
+We can adjust its radius, make it bigger. Thus, by adjusting
+
+00:01:52.170 --> 00:01:57.563
+various parameters, we get the desired particle system if we right-
+
+00:01:57.563 --> 00:02:03.893
+click on an empty area , then we can add another emitter and configure it in a different way.
+
+00:02:03.893 --> 00:02:09.928
+This way we can combine several particle systems. Let's change the material
+
+00:02:09.928 --> 00:02:17.717
+for the second particle system, in the required category . We save the asset. We take out the particle system onto the stage. Let's see how it looks.
+
+00:02:17.717 --> 00:02:22.816
+Also, of course, the particle system can be spawned from C ++ code.
+
+00:02:23.560 --> 00:02:29.980
+Our particle test system consists of 2 emitters. One is cylindrical and the other is standard with our
+
+00:02:29.980 --> 00:02:35.110
+red material. Cascade, I think, will be supported in UE for a long time, because a
+
+00:02:35.110 --> 00:02:40.269
+lot of special effects are made on Cascade, and Niagara has appeared quite recently.
+
+00:02:40.269 --> 00:02:48.906
+Let's open the effects folder in ExternalContent. I added special effects from the shooter game. We can also click on the filters button.
+
+00:02:48.906 --> 00:02:55.288
+Select ParticleSystem from the menu. All content in folders will be filtered by ParticleSystem type.
+
+00:02:55.288 --> 00:03:03.767
+We can open, see what special effects are in the shooter game. We can open the explosion from the launcher grenade.
+
+00:03:03.767 --> 00:03:09.636
+In fact, we have a set of tuned emitters that together create this explosion.
+
+00:03:09.636 --> 00:03:16.313
+If we click on the S button, which means solo, we can see what a separate emitter looks like.
+
+00:03:17.130 --> 00:03:23.467
+We have smoke, we have a flash, and so on. We will adapt these effects for Niagara a little later
+
+00:03:23.467 --> 00:03:28.560
+, but now let's see how to create a basic effect using this editor.
+
+00:03:29.340 --> 00:03:36.270
+Go to the vfx folder. Right-click. We find the fx category, this category contains
+
+00:03:36.270 --> 00:03:43.789
+all the assets that Niagara has. We will be looking at the Niagara Emmiter and the Niagara System.
+
+00:03:43.789 --> 00:03:50.890
+Choose Niagara Emmiter from the menu. A special helper window opens, which offers
+
+00:03:50.890 --> 00:03:58.540
+to choose how we want to create our new emitter. Let's create our first emitter from a template. We select the first
+
+00:03:58.540 --> 00:04:06.790
+category and in the list at the very end there is an emitter called Upward Mesh Burst.
+
+00:04:06.790 --> 00:04:13.518
+We select it. Click on the finish button. We name our new asset NE_BaseImpact.
+
+00:04:13.518 --> 00:04:21.403
+We'll start the next lesson with the impact effects that appear when a bullet hits a surface.
+
+00:04:21.403 --> 00:04:27.962
+We open our emitter. Niagara editor looks much more functional than Cascade. There is a viewport on the left.
+
+00:04:28.387 --> 00:04:37.016
+In the middle there are also settings for various parameters of the particle systems. There is a timeline at the bottom, which can also be edited.
+
+00:04:37.016 --> 00:04:42.341
+Let's change some parameters. Selecting Spawn Burst. Set the Spawn Count to 10.
+
+00:04:42.341 --> 00:04:51.536
+Reduce the number of particles that spawn at one time and in the Initial Particle you can adjust the color of the particles.
+
+00:04:51.536 --> 00:04:56.634
+Let's put some kind of red. Click the apply, save button.
+
+00:04:57.068 --> 00:05:05.016
+The emitter we just created cannot be pulled onto the stage. He is not an actor. Cascade emitters are in one asset,
+
+00:05:05.016 --> 00:05:10.572
+and in Niagara, in essence, separation is done, that is, each emitter is a separate asset.
+
+00:05:10.572 --> 00:05:16.795
+By combining emitter assets, we create a Niagara system that can already be spawned on stage.
+
+00:05:16.795 --> 00:05:24.961
+And thus, we can use one emitter in several Niagara systems. Select Niagara System from the context menu.
+
+00:05:25.594 --> 00:05:31.617
+The assistant window opens. You can create a system from the available emitters.
+
+00:05:33.272 --> 00:05:38.746
+You can also create a system from available templates. You can see for yourself how they look.
+
+00:05:39.966 --> 00:05:49.613
+Let's create an empty Niagara system. Click finish. We call our system NS_BaseImpact.
+
+00:05:50.454 --> 00:05:55.036
+We click twice. The editor looks almost the same as for a single emitter,
+
+00:05:55.036 --> 00:06:02.297
+but here with the right mouse button we can add emitters directly. We add our NE_BaseImpact
+
+00:06:02.297 --> 00:06:07.984
+and, thus, our Niagara system now consists of one emitter. We can also
+
+00:06:08.640 --> 00:06:14.029
+override various properties of our emitter in the Niagara system, for example, we are completely satisfied with
+
+00:06:14.029 --> 00:06:18.641
+how the particle system moves, and we would like to change the color of this system.
+
+00:06:18.937 --> 00:06:24.724
+The particle system can already be thrown onto the stage, created automatically by Niagara Actor.
+
+00:06:24.724 --> 00:06:30.757
+And in the next lesson we will spawn the Niagara system using C ++
+

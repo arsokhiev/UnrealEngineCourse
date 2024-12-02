@@ -1,0 +1,133 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.684 --> 00:00:11.256
+Before moving on to our second type of weapon, the grenade launcher, let's create two
+
+00:00:11.256 --> 00:00:17.030
+additional classes. They will inherit from BaseWeapon. One of the classes will be responsible for the logic of the
+
+00:00:17.030 --> 00:00:23.330
+rifle, and the second class for the logic of the launcher. In fact, we have completely implemented the
+
+00:00:23.330 --> 00:00:29.330
+logic of the rifle in the BaseWeapon class. Let's do a little refactoring to make BaseWeapon more
+
+00:00:29.330 --> 00:00:36.381
+abstract and the rifle class more concrete. Right-click on the BaseWeapon C ++ class
+
+00:00:36.381 --> 00:00:49.207
+and create an inheritor of this class. We name the first class STURifleWeapon. Click on the create class button.
+
+00:00:49.207 --> 00:01:03.118
+We are waiting for everything to compile. And we create the second class inherited from BaseWeapon. We call it STULauncherWeapon.
+
+00:01:06.927 --> 00:01:09.713
+Click create class and go to visual studio.
+
+00:01:11.435 --> 00:01:16.650
+We start with the STURifleWeapon class. The firing logic will be different in rifle and launcher,
+
+00:01:16.650 --> 00:01:22.375
+so we need to override the StartFire and StopFire functions in each class.
+
+00:01:23.980 --> 00:01:29.188
+And we also need to override our main shot function called MakeShot.
+
+00:01:29.778 --> 00:01:35.049
+We have it in the protected section. Let's make it virtual in the base class as well.
+
+00:01:38.203 --> 00:01:42.401
+Copy the function declaration into our STURifleWeapon class.
+
+00:01:45.638 --> 00:01:52.815
+We also add override everywhere. Next, go to the BaseWeapon .cpp file. Let's copy
+
+00:01:54.000 --> 00:02:01.449
+all these three functions. Open the .cpp file of the rifle class.
+
+00:02:06.041 --> 00:02:13.000
+Copy StartFire, StopFire, MakeShot. Replace the class name everywhere.
+
+00:02:21.678 --> 00:02:27.266
+We delete the contents of the StartFire, StopFire, MakeShot functions in the BaseWeapon class.
+
+00:02:27.837 --> 00:02:35.100
+That is, in fact, these functions become interface functions. If you and I were programming on what kind of our engine, then we could make
+
+00:02:35.100 --> 00:02:40.120
+them purely virtual, but in the actor class we cannot do this to the swami, because it is impossible to create an
+
+00:02:40.120 --> 00:02:47.098
+instance of an abstract class actor. Next, copy everything related to the timer.
+
+00:02:47.901 --> 00:02:56.449
+In the launcher class, we will not have timer firing likes, so we transfer the timer handle to rifle.
+
+00:03:01.948 --> 00:03:10.302
+Let's also make the GetTraceData function virtual. We only have a rifle deflection of cartridges. When firing rockets,
+
+00:03:10.302 --> 00:03:15.098
+let's not randomize the direction vector. Let it be accurate with us.
+
+00:03:19.200 --> 00:03:24.540
+In the GetTraceData function in the base class, let's return the logic before adding the cone.
+
+00:03:25.880 --> 00:03:29.620
+ShootDirection just matches the direction of the ViewRotation.
+
+00:03:31.454 --> 00:03:38.348
+In the BaseWeapon header file, we make the GetTraceData function virtual.
+
+00:03:42.130 --> 00:03:47.818
+And add the function declaration to rifle weapon as well.
+
+00:03:58.310 --> 00:04:06.514
+We also forgot to transfer BulletSpread and TimeBetweenShots - they will only apply to the rifle.
+
+00:04:13.049 --> 00:04:18.439
+Let's compile and check that we haven't broken the rifle firing logic.
+
+00:04:20.319 --> 00:04:22.254
+Compilation error ..
+
+00:04:23.738 --> 00:04:35.094
+Let's see what happened. We forgot to change the class name in the timer. Change to rifle.
+
+00:04:36.562 --> 00:04:46.866
+And also copy the headers for world and debug helper.
+
+00:04:53.482 --> 00:04:55.178
+Let's compile again.
+
+00:04:58.389 --> 00:05:06.750
+Everything compiled. Let's create a blueprint class for rifle. We inherit from the C ++ class.
+
+00:05:10.843 --> 00:05:17.932
+We'll also put it in the weapon folder and name it BP_STURifleWeapon.
+
+00:05:19.509 --> 00:05:26.384
+Let's set up a skeletal mesh for our rifle. We choose rifle. Compile.
+
+00:05:27.221 --> 00:05:33.491
+Go to the character class and set the BP_STURifleWeapon weapon in the weapon component.
+
+00:05:35.237 --> 00:05:43.493
+Checking. Nothing changed: shooting on a timer in a cone. Everything is as it was before.
+
+00:05:44.368 --> 00:05:55.552
+And let's create a blueprint class for the grenade launcher right away. To do this, we inherit from the launcher class.
+
+00:05:58.836 --> 00:06:08.194
+Create the BP_STULauncherWeapon class. Install skeletal mesh. Choose launcher.
+
+00:06:10.583 --> 00:06:17.860
+And in the character blueprint in the weapon component, we also change the class to BP_STULauncherWeapon.
+
+00:06:18.983 --> 00:06:25.090
+Checking. Launcher spawned successfully, but StartFire, StopFire do not work, because these
+
+00:06:25.090 --> 00:06:29.811
+functions are empty. We haven't redefined them yet. We will get down to this in the next lesson.
+

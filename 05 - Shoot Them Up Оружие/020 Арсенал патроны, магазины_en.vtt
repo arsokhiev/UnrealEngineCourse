@@ -1,0 +1,283 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.880 --> 00:00:12.810
+In this tutorial, let's move on to ammunition and start with an additional data type - a structure
+
+00:00:12.810 --> 00:00:20.559
+we'll call FAmmoData. We declare it in the BaseWeapon header file above the main weapon classes.
+
+00:00:20.559 --> 00:00:27.000
+And let's see what fields we need in this structure. Copy the property macro.
+
+00:00:28.960 --> 00:00:35.399
+The first field in the structure will be named Bullets. This field will be of the int32 integer type.
+
+00:00:35.399 --> 00:00:39.326
+And this field will be responsible for the number of cartridges in the store.
+
+00:00:41.370 --> 00:00:46.572
+The second field of the structure will be called Clips. It will also be of integer type.
+
+00:00:46.572 --> 00:00:52.166
+And it will be responsible for the number of magazines and clips for the current weapon.
+
+00:00:53.696 --> 00:01:03.111
+And the last 3 field of the structure will be of type boolean. Let's call this field Infinite.
+
+00:01:03.111 --> 00:01:12.343
+It will determine whether a given weapon has a finite arsenal or not. The arsenal of the rifle will be unlimited, we will be able to shoot endlessly from it.
+
+00:01:12.343 --> 00:01:16.944
+And the launcher will have a limited number of cartridges, that is, if the arsenal runs out,
+
+00:01:16.944 --> 00:01:22.859
+then we simply cannot shoot from it. We can add meta information to the property Clips:
+
+00:01:22.859 --> 00:01:29.440
+EditCondition we used when working in the health component with property AutoHeal.
+
+00:01:29.440 --> 00:01:34.979
+We can indicate that property Clips is available for editing if and only if we have a
+
+00:01:34.979 --> 00:01:41.284
+finite arsenal. When we can shoot from a given weapon endlessly, then this property simply
+
+00:01:41.284 --> 00:01:48.927
+will not make sense, as we will see later. So, the structure is ready. Let's go to the BaseWeapon class
+
+00:01:48.927 --> 00:01:59.303
+and in the protected section create a property with this FAmmoData type. Let's call it DefaultAmmo.
+
+00:01:59.729 --> 00:02:07.957
+This property will be responsible for the initial arsenal of weapons. We can initialize it.
+
+00:02:07.957 --> 00:02:15.000
+Let's indicate some value, for example, there can be 15 rounds in a clip,
+
+00:02:15.000 --> 00:02:22.943
+10 clips and the arsenal is finite. We set the last variable to false. And the second property of this type
+
+00:02:22.943 --> 00:02:28.225
+will be responsible for the current arsenal of weapons. Let's declare it in the private section.
+
+00:02:28.225 --> 00:02:35.787
+This variable is purely for internal use. It shouldn't be visible in blueprints. Let's call it CurrentAmmo.
+
+00:02:38.960 --> 00:02:44.447
+The first thing we will do with you is to initialize the CurrentAmmo variable on the BeginPlay,
+
+00:02:44.447 --> 00:02:50.222
+assigning it the DefaultAmmo value. We return to the .h file.
+
+00:02:51.133 --> 00:02:57.995
+Let's declare a few functions that we need to implement the logic of our arsenal.
+
+00:02:59.131 --> 00:03:05.250
+Let's create them in the protected section. The first function will be called DecreaseAmmo. This function will be
+
+00:03:05.250 --> 00:03:10.931
+called every time after a shot. In fact, it will reduce the number of rounds.
+
+00:03:12.000 --> 00:03:19.816
+The next helper function is IsAmmoEmpty. It will return true when our arsenal is completely empty.
+
+00:03:19.816 --> 00:03:24.135
+That is, the number of cartridges is zero and the number of clips is zero.
+
+00:03:24.135 --> 00:03:30.584
+The next function is called IsCLipEmpty. It returns true when the current clip is empty.
+
+00:03:30.584 --> 00:03:35.665
+That is, in fact, this function will check whether we need to reload the current clip.
+
+00:03:36.942 --> 00:03:44.537
+The next function is called ChangeClip. This function will contain the logic of replacing the current clip with a new one.
+
+00:03:46.352 --> 00:03:50.357
+And the last helper function. Let's call it LogAmmo.
+
+00:03:50.357 --> 00:03:57.222
+We don't have a user interface yet, so let's temporarily output all the information to the console.
+
+00:03:58.214 --> 00:04:02.518
+Let's create a body for each function.
+
+00:04:10.936 --> 00:04:16.162
+Let's take a look at the LogAmmo function right away. Let's create a local variable.
+
+00:04:16.162 --> 00:04:21.422
+The string to be printed to the console. Let's call the variable AmmoInfo.
+
+00:04:23.613 --> 00:04:26.947
+And we will display some text "Ammo:"
+
+00:04:28.334 --> 00:04:33.209
+Add the number of cartridges to the line. Let's use the FromInt function for this.
+
+00:04:37.085 --> 00:04:40.840
+And we pass the CurrentAmmo.Bullets parameter to this function.
+
+00:04:44.590 --> 00:04:47.376
+Next, add the separator "/"
+
+00:04:50.020 --> 00:04:59.905
+And on a new line, add to AmmoInfo either the number of clips if the arsenal is finite, or the text "inifinite" if the arsenal is infinite.
+
+00:04:59.905 --> 00:05:05.532
+To do this, we will use the ternary operator and we will check our infinite flag
+
+00:05:08.661 --> 00:05:11.157
+AND just output this line to the log.
+
+00:05:14.101 --> 00:05:20.380
+Next, let's implement the IsClipEmpty function. This is a fairly simple function, it returns true when
+
+00:05:20.380 --> 00:05:30.000
+our number of cartridges is zero, that is, our current magazine is empty. Next, go to the IsAmmoEmpty function.
+
+00:05:30.000 --> 00:05:35.650
+This function returns true when the arsenal is completely empty, that is, we cannot
+
+00:05:35.650 --> 00:05:42.181
+shoot any more from this weapon. For this, several conditions must be met: the arsenal must be finite, the
+
+00:05:43.890 --> 00:05:51.618
+next condition is that the number of clips is zero, that is, CurrentAmmo.Clips is zero
+
+00:05:52.060 --> 00:05:54.884
+and the number of cartridges must also be zero.
+
+00:05:54.884 --> 00:06:00.394
+We can call an already existing function with the given IsClipEmpty condition.
+
+00:06:02.465 --> 00:06:07.332
+Let's move on to the next function DecreaseAmmo, here we have a decrease in ammunition.
+
+00:06:08.344 --> 00:06:12.938
+The first thing we need to do when this function is called. This will reduce the number of rounds.
+
+00:06:14.290 --> 00:06:20.702
+After that, let's call the LogAmmo function to see how our ammunition has changed.
+
+00:06:21.637 --> 00:06:28.222
+After that, we can check if we need a recharge or not. To do this, we need two conditions:
+
+00:06:28.222 --> 00:06:37.483
+first - the clip must be empty, that is, the IsClipEmpty function must return true and the second condition - our arsenal is not empty.
+
+00:06:37.483 --> 00:06:46.050
+IsAmmoEmpty should return false. If these conditions are met, then you and I can change the clip.
+
+00:06:46.050 --> 00:06:51.102
+To do this, we call the ChangeClip function, which has not yet been implemented.
+
+00:06:53.013 --> 00:06:59.059
+Let's fix this. Go to the ChangeClip function and replenish our clipboard.
+
+00:06:59.804 --> 00:07:06.733
+We set the number of cartridges to the default value. For this we use the DefaultAmmo structure.
+
+00:07:08.870 --> 00:07:12.565
+And if the number of supplies is not infinite,
+
+00:07:15.000 --> 00:07:17.905
+then we must reduce the number of clips.
+
+00:07:21.310 --> 00:07:25.192
+We will also add a message that a recharge has occurred.
+
+00:07:26.872 --> 00:07:33.080
+The ammunition logic is ready and now we can call these functions when we are shooting,
+
+00:07:33.080 --> 00:07:41.492
+that is, in the MakeShot function. Go to the rifle class, to the MakeShot function and first add the condition:
+
+00:07:42.050 --> 00:07:49.550
+if IsAmmoEmpty, that is, the arsenal of weapons is empty, then we cannot shoot and exit the MakeShot function.
+
+00:07:50.330 --> 00:07:57.343
+And when we have fired, we must reduce the number of cartridges, so we call the DecreaseAmmo function.
+
+00:07:57.343 --> 00:08:02.191
+Go to the launcher class and add exactly the same logic.
+
+00:08:04.392 --> 00:08:05.831
+We compile the project.
+
+00:08:06.826 --> 00:08:11.279
+Let's set up the blueprint of the weapon class. Let's start with the rifle.
+
+00:08:15.800 --> 00:08:20.372
+We find in the weapon category, our property DefaultAmmo.
+
+00:08:20.372 --> 00:08:24.777
+We will not change the number of cartridges, but set property infinite = true,
+
+00:08:24.777 --> 00:08:30.677
+that is, the rifle will have unlimited ammunition. Go to the launcher class.
+
+00:08:32.669 --> 00:08:41.413
+We find the DefaultAmmo and set the number of cartridges in the clip equal to one, and set the number of clips equal to 5,
+
+00:08:41.413 --> 00:08:47.064
+that is, we will actually reload our grenade launcher every time after firing.
+
+00:08:47.064 --> 00:08:54.754
+We open the log. We start the game and start shooting. We look in the log. The rifle is shooting.
+
+00:08:54.754 --> 00:08:59.343
+The arsenal is not limited, so infinite is displayed. "Change clip" was also printed,
+
+00:08:59.343 --> 00:09:04.764
+that is, we reloaded. Let's change to a launcher. We start shooting.
+
+00:09:06.789 --> 00:09:14.029
+Each time "Change clip" is printed. After we have spent the last round, we can no longer shoot from this weapon.
+
+00:09:14.029 --> 00:09:20.682
+There were five clips, but we fired six shots, because our current clip is full by default.
+
+00:09:20.682 --> 00:09:24.831
+There is nothing wrong with that, but if you wish, it can also be corrected.
+
+00:09:26.440 --> 00:09:28.643
+We have one small bug.
+
+00:09:28.643 --> 00:09:34.210
+In the MakeShot function at the very top, let's print the message "Make shot". We will use the temporary
+
+00:09:34.210 --> 00:09:38.190
+logging category. We only need this log for one minute.
+
+00:09:40.636 --> 00:09:47.277
+We launch the project. Open the rifle's blueprint and temporarily remove the endless mode.
+
+00:09:47.277 --> 00:09:50.456
+Let's set the number of clips equal to one.
+
+00:09:52.320 --> 00:09:58.800
+We start the game. We look in the log. We shoot all our clips and if the mouse is not released,
+
+00:09:58.800 --> 00:10:03.360
+then "Make shot" will be printed in the log. Our arsenal has run out, but the timer
+
+00:10:03.360 --> 00:10:08.277
+continues to run. We return to the code. When the arsenal is empty,
+
+00:10:08.277 --> 00:10:12.372
+let's not just exit the function, but also stop firing.
+
+00:10:14.668 --> 00:10:16.862
+To do this, call the StopFire function.
+
+00:10:19.120 --> 00:10:25.819
+GetTraceData can return false as well. We also add a call to the StopFire function to this exit point.
+
+00:10:27.902 --> 00:10:33.513
+Launch the editor. Press the play button. We shoot all the ammunition.
+
+00:10:35.128 --> 00:10:38.550
+The timer was getting better. "Make shot" is no longer logged.
+

@@ -1,0 +1,273 @@
+WEBVTT
+
+0
+00:05.684 --> 00:11.382
+In this lesson, we will add animation offsets: up, down, right, left.
+
+1
+00:12.513 --> 00:16.053
+After that, aiming while shooting will look absolutely correct.
+
+2
+00:18.092 --> 00:23.277
+Let's start by debugging the output of the camera rotation vector, which we need to calculate the
+
+3
+00:23.277 --> 00:29.354
+deflection angles when aiming. Go to the animated blueprint of the character, to the event graph.
+
+4
+00:30.180 --> 00:35.526
+We will need a special function that has access to the rotation of the camera. This function exists
+
+5
+00:35.526 --> 00:45.000
+in the pawn class. GetBaseAimRotation is called. If the pawn has a controller, and we have it with you,
+
+6
+00:45.000 --> 00:49.970
+then this function returns the rotation of the player's camera. Let's check that this is indeed the case
+
+7
+00:49.970 --> 00:57.890
+and draw the forward vector of the given rotator. You can immediately save this rotator to a variable,
+
+8
+00:57.890 --> 01:05.651
+because in the future we will need it in the animation graph. We name the variable AimRotation.
+
+9
+01:07.805 --> 01:13.384
+We will display this vector using the blueprint function DrawDebugLIne.
+
+10
+01:17.758 --> 01:22.615
+We will postpone the vector from the character, that is, we will use its current position.
+
+11
+01:26.823 --> 01:29.310
+We use the GetActorLocation function.
+
+12
+01:31.620 --> 01:41.592
+This will be our starting point - line start. The end point will be calculated as the start point plus the forward rotation vector
+
+13
+01:42.010 --> 01:49.339
+multiplied by some constant, which will be the length of the vector. Calculate the forward vector for AImRotation.
+
+14
+01:50.938 --> 01:58.849
+GetForwardVector. It is a unit vector, so we multiply by some length.
+
+15
+02:01.636 --> 02:03.870
+Let it be 1200, for example.
+
+16
+02:06.000 --> 02:15.410
+Add to the position of our character and connect it to the line end. Let's set the thickness to 3.
+
+17
+02:15.823 --> 02:21.707
+The rest of the parameters can be left unchanged. Let's compile and let's check which vector will be displayed as a result.
+
+18
+02:24.765 --> 02:33.550
+Turn the camera up - the vector looks up, turn it down - the vector down. This vector is exactly what we need to calculate
+
+19
+02:33.550 --> 02:39.550
+the deflection angle when aiming. Let's get down to animation. Let's use an additional
+
+20
+02:39.550 --> 02:46.010
+type of aset, which is designed specifically for aiming. It's called AimOffset.
+
+21
+02:46.010 --> 02:56.504
+By analogy with BlendSpace, there are two types of AimOffset - regular AimOffset and AimOffset1D. We will create a regular AimOffset.
+
+22
+02:58.283 --> 03:04.925
+Select the skeleton of our character. We name the blueprint AO_BaseCharacter.
+
+23
+03:08.810 --> 03:10.340
+And go inside the asset.
+
+24
+03:11.667 --> 03:18.528
+It has the same appearance as BlendSpace. It has 2 axes: one of them will be responsible for aiming horizontally,
+
+25
+03:18.528 --> 03:24.926
+and the other vertically. So in details, let's name the horizontal axis Yaw.
+
+26
+03:25.818 --> 03:31.430
+The character can rotate horizontally from -90 degrees to 90, so we set the
+
+27
+03:31.430 --> 03:36.396
+appropriate value for the minimum and maximum. And we call the vertical axis pitch.
+
+28
+03:37.460 --> 03:43.760
+The limit values ​​are exactly the same. So, we have created a canvas, let's see what kind
+
+29
+03:43.760 --> 03:49.495
+of animations we have. We have several animations that are responsible for aiming.
+
+30
+03:50.130 --> 03:57.030
+For example, aiming down, aiming forward, aiming left. I would even call them not so much
+
+31
+03:57.030 --> 04:01.860
+animations as poses, because they consist of a minimum number of frames. Before
+
+32
+04:01.860 --> 04:07.551
+placing them on the AimOffset graph, we need to adjust a few parameters to make them
+
+33
+04:07.551 --> 04:12.870
+compatible with AimOffset. These animations are called additive, that is, in fact, we will add them
+
+34
+04:12.870 --> 04:19.830
+to an already existing pose. In the details panel we find the AdditiveSettings section and in the roperty
+
+35
+04:19.830 --> 04:25.992
+Additive Anim Type we need to specify Mesh Space. Aim Offset is only compatible with this type of animation.
+
+36
+04:27.350 --> 04:32.720
+In the base pose type, select Selected Animation. In the asset selector, you need to set the base pose,
+
+37
+04:32.720 --> 04:39.817
+relative to which the delta of our offset will be calculated. We choose our basic Idle pose.
+
+38
+04:40.887 --> 04:46.560
+I will also attach a link to the Aim Offset documentation for the lecture, where you can read more.
+
+39
+04:47.727 --> 04:53.607
+Let's set these settings for all shooting offsets. We have 9 assets.
+
+40
+04:59.645 --> 05:05.097
+All assets are ready, we are going to place them on our graph.
+
+41
+05:05.928 --> 05:14.165
+We start with the central one. It's called Aim Offset Forward. Drag it to the center of the graph.
+
+42
+05:14.165 --> 05:25.301
+Next, at the point (pitch = 90 yaw = 0), place the Aim Offset Up. By moving the green circle, you can check how the blending is going.
+
+43
+05:25.301 --> 05:33.520
+At the point (pitch = -90 yaw = 0) throw Aim Offset Down. In fact, for the character we control, this is already enough,
+
+44
+05:33.520 --> 05:38.578
+because our mesh rotates to the right, to the left along with the camera, and we will not have
+
+45
+05:38.578 --> 05:44.300
+lateral rotation for the custom hero. But when we deal with artificial intelligence, these rotations for
+
+46
+05:44.300 --> 05:52.282
+bots can be done realistically, so let's fill in the entire grid. Throw away the remaining animations: left,
+
+47
+05:53.777 --> 05:57.000
+left down, left up,
+
+48
+05:59.896 --> 06:03.092
+right, right down
+
+49
+06:03.800 --> 06:06.000
+and right up.
+
+50
+06:06.278 --> 06:13.309
+Our AimOffset is completely ready. We can move the green circle, see how everything blends at different angles.
+
+51
+06:15.935 --> 06:19.832
+We save. Let's see how to add all this to the animation graph.
+
+52
+06:20.640 --> 06:26.810
+Back in the animation blueprint, in the anim graph. We need to add our offset after the
+
+53
+06:26.810 --> 06:33.440
+pose of the movement has been calculated. We take out the AimOffset on the graph and input the
+
+54
+06:33.440 --> 06:39.933
+pose from locomotion to our AimOffset, and pass the AimOffset output to the default slot.
+
+55
+06:40.860 --> 06:46.620
+We can experiment with different angles right on our graph, for example, set the horizontal angle
+
+56
+06:46.620 --> 06:54.514
+yaw to 90. Compile. And to our idle pose, the offset of the rotation to the right has been added.
+
+57
+06:54.514 --> 07:02.400
+And we can also put some value vertically: 45. And the pose blends correctly at any combination of angles.
+
+58
+07:04.285 --> 07:13.721
+We can change the variable of speed, on which the running animation depends, set it to some value, for example 500.
+
+59
+07:13.721 --> 07:19.180
+Locomotion now gives us a running pose and an offset pose is
+
+60
+07:19.180 --> 07:23.863
+correctly applied to it when shooting. Let's also change some values.
+
+61
+07:24.850 --> 07:32.170
+Compile. Everything works correctly. And for all this to work on real parameters, we need to
+
+62
+07:32.170 --> 07:40.549
+substitute the angles from our AimRotation variable into AimOffset. Right-click on the pin.
+
+63
+07:40.549 --> 07:48.800
+Select the split struct pin and connect the pitch angle to the corresponding AimOffset slot. We will not include Yaw,
+
+64
+07:48.800 --> 07:53.021
+because the horizontal angle does not make sense when the user controls the character.
+
+65
+07:53.546 --> 08:00.010
+We check that when the mouse moves vertically, we correctly apply AimOffset and the shooting now
+
+66
+08:00.010 --> 08:05.216
+looks more natural, because the character deviates depending on the direction of shooting.
+
+67
+08:05.756 --> 08:12.800
+We can also check the deflection in the jump, that is, aiming at us regardless of the posture of movement.

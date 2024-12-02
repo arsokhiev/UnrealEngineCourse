@@ -1,0 +1,331 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.086 --> 00:00:12.000
+Before moving on, let's take a quick look at the engine classes that can be configured in world settings.
+
+00:00:12.312 --> 00:00:17.482
+These are the key gameplay classes that we will look at as we progress through our course.
+
+00:00:17.482 --> 00:00:20.025
+In this lecture, we will only talk about them superficially.
+
+00:00:20.500 --> 00:00:26.743
+So, all objects that are in our game world are of the AActor type.
+
+00:00:26.743 --> 00:00:34.210
+This is an Unreal base class that you can add to your scene. It can be arbitrary geometry, special effect, sound ..
+
+00:00:34.210 --> 00:00:40.765
+All characters are actors. We can place the actor manually, or dynamically spawn them in the world.
+
+00:00:40.765 --> 00:00:45.730
+Also, the actor may have no representation, appearance, be purely logical, like, for example,
+
+00:00:45.730 --> 00:00:52.477
+our GeometryHubActor. Actors are a composition of various components, which in
+
+00:00:52.477 --> 00:00:59.222
+turn determine its final appearance. There are also visual components such as a skinned mesh, a
+
+00:00:59.222 --> 00:01:04.900
+particle system component, a text display component, and so on. And there are purely logical
+
+00:01:04.900 --> 00:01:11.765
+components such as a motion component. This component does not have any representation, but it has
+
+00:01:11.765 --> 00:01:17.847
+parameters and settings that determine how the actor will move in space, according to which laws the
+
+00:01:18.577 --> 00:01:24.264
+Component model is quite convenient. Components are easy to reuse. We can create
+
+00:01:24.264 --> 00:01:30.152
+different actors with a different set of components and specify different settings in these components.
+
+00:01:30.926 --> 00:01:37.642
+Let's organize some information. So, we have a game world that consists of actors.
+
+00:01:38.415 --> 00:01:43.922
+Actors, in turn, are made up of components. There can be infinitely many components
+
+00:01:43.922 --> 00:01:50.527
+and with the help of these entities we will design the game. Actually, the actor is not the most basic
+
+00:01:50.527 --> 00:01:58.940
+type in the unreal engine. The archetype is the UObject type, but we will not be able to create an object of the UObject type on the stage
+
+00:01:58.940 --> 00:02:05.780
+, but we can create it dynamically in code and encapsulate some logic in it.
+
+00:02:05.780 --> 00:02:09.000
+We will not work with UObjects in this course.
+
+00:02:09.893 --> 00:02:16.814
+The first class that we will study already in this section is called APawn. Pawn is an Actor that can be controlled.
+
+00:02:17.060 --> 00:02:23.039
+That is, this class is inherited, extends the Actor class. And it has additional functionality.
+
+00:02:23.039 --> 00:02:30.329
+For example, it can accept input from various input devices and react to this input in some way.
+
+00:02:31.067 --> 00:02:36.836
+I created a default pawn using blueprints. As we can see, it has no components, has
+
+00:02:36.836 --> 00:02:44.311
+no idea, but we can control it. I prepared two paunas in advance. One is a flying saucer
+
+00:02:44.311 --> 00:02:50.490
+that hovers around the stage, and the second pawn is a car that drives around the stage. There is also a code
+
+00:02:50.490 --> 00:02:56.948
+for gaining control over a specific pawn. We'll cover that in this section as well. I press Enter
+
+00:02:56.948 --> 00:03:03.939
+and start controlling the flying saucer. It reacts to the mouse and to the arrows on the keyboard.
+
+00:03:05.050 --> 00:03:10.682
+Then I press Enter again, change the pawn and use the same input to
+
+00:03:10.682 --> 00:03:17.534
+drive the car. The class that allows us to control the pays is called APlayerController.
+
+00:03:17.534 --> 00:03:22.028
+This class has no visual representation - it is a logical class.
+
+00:03:22.028 --> 00:03:27.000
+In essence, this is the interface between us users and the spawn that we manage.
+
+00:03:27.000 --> 00:03:34.504
+APlayerController exists throughout the entire game level, while spawns can be destroyed, respawn.
+
+00:03:34.972 --> 00:03:41.489
+We can control different pounders, switch between them, or not control any pounders at all.
+
+00:03:41.859 --> 00:03:48.971
+APlayerController also has input. It is customary to handle events that are not related to a particular pawn.
+
+00:03:49.205 --> 00:03:54.190
+For example, exiting the menu, turning off the sound, or even closing the game.
+
+00:03:55.350 --> 00:04:01.161
+We get the following scheme: pawn and playercontroller inherit from the actor.
+
+00:04:01.592 --> 00:04:07.205
+They both exist in the game world, but the controller has no external representation.
+
+00:04:07.745 --> 00:04:13.866
+Also playercontroller owns a pawn, although it is possible that he does not own any of the pounders.
+
+00:04:14.371 --> 00:04:19.424
+We can specify a default spawn class. Then it will be created during the start of the game.
+
+00:04:19.424 --> 00:04:25.746
+Before that, we need to create our own GameModeBase class. We will talk about it a little later.
+
+00:04:26.325 --> 00:04:31.338
+Let's indicate the created class in the property Game Mode Override. After that, all other classes
+
+00:04:31.338 --> 00:04:36.839
+become available to us . And in the property Default Pawn Class, for example, we can specify a typewriter.
+
+00:04:37.920 --> 00:04:44.659
+At startup, a default pawn was created, and a controller was also created - we have not changed the class for it yet.
+
+00:04:45.053 --> 00:04:50.922
+We control the default pouncing, but we can also switch between other pounders.
+
+00:04:53.675 --> 00:05:00.174
+The next class we'll look at is called the ACharacter class. This class is inherited from the APawn class.
+
+00:05:00.457 --> 00:05:02.165
+That is, it can also be controlled.
+
+00:05:03.446 --> 00:05:06.234
+Additional functionality is added to this class.
+
+00:05:06.234 --> 00:05:11.443
+It has a capsule component, which is responsible for physical interactions with the outside world.
+
+00:05:11.886 --> 00:05:17.460
+there is a skeletal mesh component in which we set up the model and animation of the character.
+
+00:05:17.928 --> 00:05:23.664
+There is also a logical component called the character movement. This component is responsible for
+
+00:05:23.664 --> 00:05:30.377
+how our character moves in the environment. For its speed, jump height and other settings.
+
+00:05:31.607 --> 00:05:37.170
+Let's start the game. I also have additional code to capture the character. So, we control
+
+00:05:37.170 --> 00:05:42.480
+our character, which we will completely design with you in this course. He can
+
+00:05:42.480 --> 00:05:48.838
+run, jump and shoot. We can also access over another character.
+
+00:05:48.838 --> 00:05:53.822
+His set of actions is about the same. The only difference is animation.
+
+00:05:57.522 --> 00:06:05.176
+A character is a subclass of a pawn - so we can change the Default Pawn Class to a character class.
+
+00:06:05.176 --> 00:06:10.680
+I will indicate the character class that we will create in this course and also change the controller, although
+
+00:06:10.680 --> 00:06:18.197
+this does not matter now . We start the game and the character specified in the settings has been created. Once again,
+
+00:06:18.197 --> 00:06:23.970
+we are now looking at the top of the main classes of the game. We will create all these classes with you from scratch a little
+
+00:06:23.970 --> 00:06:27.843
+later and we will understand in detail what is happening in them.
+
+00:06:29.038 --> 00:06:31.991
+Now we know about the existence of the character.
+
+00:06:32.480 --> 00:06:38.000
+It is inherited from paun. The class diagram can be updated. Now it looks like this.
+
+00:06:39.050 --> 00:06:45.360
+In the course, I will sometimes call our character a spider, sometimes I will be called an actor. As we can see,
+
+00:06:45.360 --> 00:06:51.398
+this is true. The character is a spider, who in turn is an actor.
+
+00:06:51.915 --> 00:06:57.684
+Moving on. A pawn can be owned not only by the playercontroller, but also by another type of controller
+
+00:06:57.684 --> 00:07:02.599
+called AIController. This controller is responsible for artificial intelligence.
+
+00:07:02.599 --> 00:07:07.930
+One of its main tasks is to launch the tree of behavior that we see on the screen. It is the
+
+00:07:07.930 --> 00:07:13.840
+brain of the bot. In fact, the pawn can be controlled by both the player and the artificial intelligence.
+
+00:07:14.505 --> 00:07:20.634
+In the pawn settings, you can specify the AIController class of interest to us in the corresponding property.
+
+00:07:21.450 --> 00:07:27.517
+And when the game starts, we control one character, and the other by artificial intelligence.
+
+00:07:29.092 --> 00:07:34.480
+PlayerController is a subclass of the base class AController and AIController also
+
+00:07:34.480 --> 00:07:39.673
+inherits from it . Therefore, our schema is updated as follows.
+
+00:07:41.220 --> 00:07:48.709
+The main class of the level is the GameMode class. It specifies various settings for the game level
+
+00:07:48.709 --> 00:07:55.470
+and defines the general rules of the game. For example, the time of the game, how many players can participate,
+
+00:07:55.470 --> 00:08:03.953
+how many bots, how is the distribution by teams, whether the player can respawn, and so on.
+
+00:08:07.430 --> 00:08:10.520
+I will supply the GameMode that we will create in this course.
+
+00:08:12.770 --> 00:08:20.020
+We start the game. Several bots have been created. Everyone was assigned to teams and the game began.
+
+00:08:20.020 --> 00:08:26.700
+This all happened thanks to our GameMode. I'll set the number of players in GameMode to a smaller one, let it be 2.
+
+00:08:28.164 --> 00:08:34.654
+Let's look at the next class. It's called the HUD. The abbreviation stands for Head Up Display.
+
+00:08:34.654 --> 00:08:39.450
+This class is responsible for the user interface. This class is a bit outdated.
+
+00:08:39.450 --> 00:08:46.050
+It is hardly used directly. All interfaces in the unreal engine are done using widgets.
+
+00:08:46.050 --> 00:08:50.280
+We will also consider them, but at least HUD can be used as a
+
+00:08:50.280 --> 00:08:56.861
+manager class for all widgets. Let's go further. Spectator class is an observer class.
+
+00:08:56.861 --> 00:09:03.339
+This is a special pawn that our controller owns after our character dies.
+
+00:09:03.339 --> 00:09:09.174
+Usually it's just a flying camera. We will additionally have a black and white effect for this camera.
+
+00:09:10.380 --> 00:09:15.970
+The next class is PlayerState. He also has no idea. The class is usually used
+
+00:09:15.970 --> 00:09:22.190
+to store various statistics of the player: how many opponents he destroyed, how many times
+
+00:09:22.190 --> 00:09:27.140
+he himself died, and so on. This class also exists throughout the entire level.
+
+00:09:28.280 --> 00:09:33.650
+The next class is GameState. It is used in multiplayer logic, through it
+
+00:09:33.650 --> 00:09:39.803
+various information on the gameplay is transmitted to clients, which is located in GameMode.
+
+00:09:39.803 --> 00:09:43.711
+In a multiplayer game, the GameMode class is located only on the server.
+
+00:09:43.711 --> 00:09:50.267
+But we are not interested in this information now. We define all these classes for one level.
+
+00:09:51.000 --> 00:09:57.642
+There can be many levels in our game, so these classes may differ in another level.
+
+00:10:00.217 --> 00:10:06.650
+For another map, we can configure this set of classes in a different way, for example, at the start of one level,
+
+00:10:06.650 --> 00:10:15.140
+we control a flying saucer, at the start of another by a car, at the start of a third character. In this course, we will also
+
+00:10:15.140 --> 00:10:23.580
+learn how to open levels programmatically. When a new level is opened, all classes are recreated: GameMode,
+
+00:10:23.580 --> 00:10:29.100
+PlayerState, PlayerController, and so on. But unreal also has a class that exists
+
+00:10:29.100 --> 00:10:34.860
+throughout the game. It is called a game instance, in it you can store various global information
+
+00:10:34.860 --> 00:10:40.590
+that does not depend on a specific level: graphic settings, sound settings and also
+
+00:10:40.590 --> 00:10:46.825
+directly information on the loaded levels. This class is specified in project settings.
+
+00:10:46.825 --> 00:10:49.364
+But we'll talk about this later.
+
+00:10:50.226 --> 00:10:53.926
+Let's summarize. The game can consist of several levels.
+
+00:10:54.316 --> 00:11:00.614
+The base class of each level is GameMode. He is responsible for creating all the base classes:
+
+00:11:00.614 --> 00:11:06.000
+pawn, controller, spectator, player state, game state and hud.
+
+00:11:06.751 --> 00:11:14.237
+When you open a new level, the game mod specified in this level is created and all main classes are also recreated.
+
+00:11:14.237 --> 00:11:21.510
+And throughout the game, regardless of the current level, there is an object of the UGameInstance class.
+
+00:11:23.018 --> 00:11:25.921
+This concludes a brief overview of the game classes.
+
+00:11:25.921 --> 00:11:31.776
+In subsequent lessons, we will talk more about these classes as we progress through the course.
+

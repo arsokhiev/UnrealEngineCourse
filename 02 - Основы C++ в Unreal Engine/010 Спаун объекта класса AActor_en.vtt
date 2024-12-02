@@ -1,0 +1,544 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.990 --> 00:00:09.410
+In this lesson we will look at dynamic actor creation.
+
+00:00:09.410 --> 00:00:14.699
+The so called spawn. For this we need an additional actor. Let's call it hub.
+
+00:00:14.699 --> 00:00:20.245
+It will contain the logic for creating our BaseGeometry actors. Let's start with him.
+
+00:00:20.245 --> 00:00:28.701
+Add a new C ++ class. We inherit from the actor. We call our new class GeometryHubActor.
+
+00:00:30.414 --> 00:00:32.950
+And click on the create class button.
+
+00:00:34.070 --> 00:00:39.733
+So, our class is created, the class that will be responsible for creating BaseGeometry actors, our hub.
+
+00:00:39.733 --> 00:00:41.743
+Let's get down to writing some code.
+
+00:00:42.108 --> 00:00:45.945
+First, let's get a pointer to the game world - world.
+
+00:00:45.945 --> 00:00:51.600
+This object has a spawn function. Remember that every author has a GetWorld function
+
+00:00:51.600 --> 00:00:58.834
+that returns a pointer to the global game world object. We check that our pointer is not null.
+
+00:01:00.480 --> 00:01:03.894
+The spawn function of the actor is called SpawnActor.
+
+00:01:06.900 --> 00:01:11.736
+With a capital letter. World is underlined by a red squiggly line in Visual Studio.
+
+00:01:11.736 --> 00:01:17.806
+Visual Studio in this way tells us that we need to include a header file, where the UWorld type is declared.
+
+00:01:18.493 --> 00:01:26.263
+Add #include "Engine / World.h" to the top of the .cpp file and look at the actor's spawn function.
+
+00:01:26.993 --> 00:01:32.266
+This function is overloaded. There are several options for how we can spawn an actor.
+
+00:01:32.750 --> 00:01:39.009
+Some of these functions are boilerplate, some are not. But the meaning is more or less the same for all of them.
+
+00:01:39.009 --> 00:01:46.754
+First, we need to specify the class of the actor that we want to spawn. Next are the transformation parameters:
+
+00:01:46.754 --> 00:01:55.000
+position in the world, rotation and, at the very end, there is a special structure called FActorSpawnParameters.
+
+00:01:55.000 --> 00:01:59.355
+It specifies additional spawn settings. We will not consider it now.
+
+00:01:59.355 --> 00:02:03.044
+Leave it as default. We will return to it in further sections.
+
+00:02:03.044 --> 00:02:08.896
+We can call this function with just one parameter - the actor class that we need to spawn.
+
+00:02:09.490 --> 00:02:15.340
+In this case, the transformation matrix will be unit. The actor will spawn at the origin
+
+00:02:15.340 --> 00:02:18.118
+with zero rotations and with a unit scale.
+
+00:02:18.467 --> 00:02:22.726
+Let's create a property GeometryClass in the header file, in the protected section.
+
+00:02:26.205 --> 00:02:29.808
+Let's specify the EditAnywhere specifier in the property macro.
+
+00:02:33.180 --> 00:02:39.519
+To declare a pointer to a class in unreal, there is a special template called TSubclassOf
+
+00:02:40.150 --> 00:02:43.642
+The parameter of this template must be specified directly with the class.
+
+00:02:44.173 --> 00:02:49.301
+We will spawn a BaseGeometryActor, so we pass this type to the template
+
+00:02:51.050 --> 00:02:56.991
+and call it propertyGeometryClass. We will very soon see how something looks like in the editor, in the details panel.
+
+00:02:56.991 --> 00:03:00.765
+In fact, TSubclassOf will filter out all the available classes of the engine
+
+00:03:01.286 --> 00:03:06.146
+and in the property it will be possible to set only the BaseGeometryActor class itself
+
+00:03:06.670 --> 00:03:08.765
+or the class that inherits from it.
+
+00:03:09.314 --> 00:03:16.108
+For educational purposes, let's create an additional property. With the first one, we'll see how to set any available class.
+
+00:03:18.031 --> 00:03:25.655
+The base type of a class in unreal is called UClass. We create a pointer to it and call property simply Class.
+
+00:03:26.710 --> 00:03:32.485
+And with the help of the second property, let's see how to pass a pointer to an existing object on the stage.
+
+00:03:32.485 --> 00:03:38.054
+Let's call property GeometryObject and now we'll see in the editor how they all differ.
+
+00:03:38.054 --> 00:03:44.184
+We also need to specify the BaseGeometryActor header file. Let's do it.
+
+00:03:46.026 --> 00:03:47.340
+We compile the project.
+
+00:03:51.450 --> 00:03:59.520
+The editor started. Let's find our hub class in the C ++ classes directory. We throw it on the stage
+
+00:03:59.520 --> 00:04:05.926
+and go to the details panel. In the details panel, we can see that our three properties are displayed:
+
+00:04:05.926 --> 00:04:14.680
+GeometryClass, Class and GeometryObject. Let's first click on the property class, on the combobox. A list
+
+00:04:14.680 --> 00:04:21.554
+with all available classes of the engine opens . Using this property, we can create an object of absolutely any class.
+
+00:04:22.882 --> 00:04:31.316
+Next, if we click on the GeometryClass combobox. We have specified this property as TSubclassOf &lt;ABaseGeometryActor&gt;
+
+00:04:31.316 --> 00:04:34.490
+and we see that all classes are filtered and we can
+
+00:04:34.490 --> 00:04:41.250
+only select from the main class and its blueprint inheritor. And the third property allows you to set a
+
+00:04:41.250 --> 00:04:48.810
+pointer to an object of the BaseGeometryActor class, which is on the stage. We see that there is
+
+00:04:48.810 --> 00:04:55.290
+a BaseGeometryActor2 object on the scene . We can specify it through this property and
+
+00:04:55.290 --> 00:05:02.450
+then somehow use this object in the code. So, we figured out how our three properties differ.
+
+00:05:02.450 --> 00:05:10.360
+The main advantage of the TSubclassOf template is that it filters all classes available to us
+
+00:05:10.360 --> 00:05:15.315
+and we don't have to worry that someone will set the wrong class to a given property.
+
+00:05:16.822 --> 00:05:22.682
+Let's tweak our BP_BaseGeometryActor class a bit, which we'll spawn now.
+
+00:05:22.682 --> 00:05:28.980
+If you click on the property's magnifying glass button, the content browser will go to the directory where this class is located
+
+00:05:28.980 --> 00:05:36.279
+and highlight it. Let's set up our blueprint. In the previous lectures, we dragged the actor onto the stage
+
+00:05:36.279 --> 00:05:41.991
+and set up its property directly from the object: mesh, material.
+
+00:05:42.519 --> 00:05:48.470
+We can also do this directly in the blueprint class, that is, customize the default appearance.
+
+00:05:50.000 --> 00:05:53.564
+To do this, let's set up some static mesh.
+
+00:05:54.773 --> 00:06:01.501
+If the content is not visible, click on view options -&gt; show engine content and set, for example, a cube.
+
+00:06:06.120 --> 00:06:11.491
+Also let's assign some material, set BaseColor.
+
+00:06:14.560 --> 00:06:23.637
+We start the game. The cube has spawned. Its transformation is single. It is located at the point (0, 0, 0) of our scene.
+
+00:06:23.910 --> 00:06:26.169
+Let's go back to visual studio.
+
+00:06:28.186 --> 00:06:35.140
+Let's improve our code. The SpawnActor function besides accepting some parameters, it also returns a
+
+00:06:35.140 --> 00:06:40.000
+pointer to the actor. We can use the template version of this function.
+
+00:06:40.000 --> 00:06:45.940
+Pass ABaseGeometryActor as a template parameter. As a result, a function is created that returns a
+
+00:06:45.940 --> 00:06:52.404
+pointer to the ABaseGeometryActor type. Thanks to this, we will not need to do type conversion,
+
+00:06:52.404 --> 00:06:59.950
+that is, cast an object of the AActor class to an object of the ABaseGeometryActor class. We immediately have a pointer to
+
+00:06:59.950 --> 00:07:09.760
+an object of our type. Let's create a transformation object and set this transformation to the actor on spawn.
+
+00:07:11.430 --> 00:07:15.482
+The FTransform class has many different constructors.
+
+00:07:18.381 --> 00:07:24.808
+We will use a constructor that takes an FRotator object as the first parameter
+
+00:07:24.808 --> 00:07:31.142
+, which is responsible for the rotation angles. You can pass three 0s to the FRotator constructor,
+
+00:07:31.142 --> 00:07:36.645
+or you can use the ZeroRotator constant, in which, in fact, this has already been done for us.
+
+00:07:37.625 --> 00:07:44.409
+In the second parameter of the FTransform constructor, we pass the desired world position for the actor.
+
+00:07:44.409 --> 00:07:51.598
+To do this, we use an object of the FVector type and specify some coordinate in the constructor.
+
+00:07:51.598 --> 00:07:59.580
+Let it be (0, 300, 300). So, the transformation object is ready, and in order for the actor to have this transformation
+
+00:07:59.580 --> 00:08:04.860
+on spawn, we need to pass this object as the second argument to the SpawnActor function.
+
+00:08:10.090 --> 00:08:17.217
+Let's make our scene more fun, create more than one actor, but 10. To do this, use the for loop
+
+00:08:20.000 --> 00:08:26.090
+Move the actor creation code to the loop body and, so that all the actors do not poop at one point,
+
+00:08:26.090 --> 00:08:33.510
+we will change the Y coordinate depending on the loop index. Moreover, we now
+
+00:08:33.510 --> 00:08:39.805
+have a pointer to the object we created and we can change something in this object.
+
+00:08:42.480 --> 00:08:45.927
+Let's open the BaseGeometryActor header file.
+
+00:08:49.580 --> 00:08:55.600
+Let's change the settings that are in the GeometryData object. This class member is
+
+00:08:55.600 --> 00:09:02.107
+in the protected section, so we need to make a public setter function for this structure in
+
+00:09:02.107 --> 00:09:11.538
+order to change its value. We create the SetGeometryData function. The function will accept an object of type FGeometryData.
+
+00:09:15.199 --> 00:09:20.219
+We assign the value of the Data parameter to the member of the GeometryData class.
+
+00:09:21.270 --> 00:09:25.950
+I will leave the body of the function in the header file, we will not create it in .cpp
+
+00:09:25.950 --> 00:09:33.411
+In general, I admit that small functions, mainly setter / getter, are entirely in the .h file.
+
+00:09:33.411 --> 00:09:41.101
+Now we can modify the GeometryData object. Let's call the SetGeometryData function we created.
+
+00:09:43.435 --> 00:09:47.980
+Let's pass the Data object to this function and let's create it.
+
+00:09:52.710 --> 00:09:57.093
+Let's, for example, change the MoveType field.
+
+00:10:00.950 --> 00:10:04.323
+The type of movement will be set randomly each time.
+
+00:10:05.850 --> 00:10:13.491
+To do this, you can use a special function found in FMath. It's called RandBool.
+
+00:10:17.540 --> 00:10:21.359
+This function will randomly generate true or false.
+
+00:10:22.815 --> 00:10:27.593
+And for example, if this is generated, let's set MovementType :: Static
+
+00:10:28.108 --> 00:10:31.982
+For convenience, we'll use the ternary operator?
+
+00:10:35.760 --> 00:10:40.676
+And if the function returned false, then set MovementType :: Sin
+
+00:10:48.061 --> 00:10:49.701
+Compile the project.
+
+00:10:55.210 --> 00:11:01.669
+We start the game. According to our code, 10 BaseGeometry actors were generated.
+
+00:11:02.501 --> 00:11:07.962
+Some of them are moving, some are not. It depends on the RandBool function.
+
+00:11:10.394 --> 00:11:15.350
+Let's fix one thing. We forgot to check the Geometry pointer for nullptr.
+
+00:11:15.350 --> 00:11:19.114
+The object may not be created, for example, if you run out of memory.
+
+00:11:24.660 --> 00:11:32.666
+Let's now see how the SpawnActor function works. Let's open the .cpp file of the BaseGeometryActor class.
+
+00:11:38.060 --> 00:11:45.000
+When an object is created, the constructor of the BaseGeometryActor class is called and then immediately BeginPlay.
+
+00:11:45.000 --> 00:11:50.530
+As we remember, in our BeginPlay we initialize the InitialLocation variable.
+
+00:11:50.530 --> 00:11:55.936
+When an actor is created, a transformation is set, which we pass to the SpawnActor function.
+
+00:11:55.936 --> 00:12:03.210
+And when we call the GetActorLocation function on the BeginPlay, we get the coordinate that we passed with the
+
+00:12:03.210 --> 00:12:09.390
+FTransform object. We cannot change the default color, since we call SetGeometryData
+
+00:12:09.390 --> 00:12:15.060
+on the created object after calling the BeginPlay function. That is, by default, our color will be
+
+00:12:15.060 --> 00:12:22.517
+black for all actors. There is another way to spawn an actor with a deferred call to the BeginPlay function.
+
+00:12:22.517 --> 00:12:30.202
+Let's look at it. First, let's copy the entire cycle. And spawn 10 more actors.
+
+00:12:33.080 --> 00:12:37.962
+The only thing is, let's change the Z coordinate with it. Set it to 700.
+
+00:12:38.683 --> 00:12:45.872
+The function that allows the deferred call to BeginPlay is called SpawnActorDeffered. Let's call her.
+
+00:12:46.857 --> 00:12:53.850
+This function differs from the usual SpawnActor function in that when called, an object is created
+
+00:12:53.850 --> 00:12:59.539
+and only the class constructor is called, but the BeginPlay function will not be called.
+
+00:13:01.779 --> 00:13:04.740
+Thanks to this, we have the opportunity to configure some
+
+00:13:04.740 --> 00:13:09.657
+parameters of the actor and call the BeginPlay function manually.
+
+00:13:10.580 --> 00:13:16.835
+Let's also pass in the Data object the color that we want the actor to have by default.
+
+00:13:17.602 --> 00:13:21.900
+Generate a random color by calling the MakeRandomColor function.
+
+00:13:23.916 --> 00:13:30.970
+So, we created an object, the class constructor was called. Next, we have set up the GeometryData of our
+
+00:13:30.970 --> 00:13:35.000
+class, and now we need to manually call the BeginPlay function.
+
+00:13:35.510 --> 00:13:41.015
+This is done using an actor function called FinishSpawning.
+
+00:13:42.367 --> 00:13:48.485
+This function also needs to specify a transformation. It won't change for us, so we pass
+
+00:13:48.485 --> 00:13:52.781
+the GeometryTransform object. We compile the project.
+
+00:13:56.601 --> 00:14:02.475
+Press play and see that the top row of actors spawned immediately with colors.
+
+00:14:03.577 --> 00:14:09.341
+Thus, thanks to the SpawnActorDeffered function, we can defer the call to the BeginPlay function
+
+00:14:09.341 --> 00:14:14.023
+and change any parameters that need to be changed before the call to the BeginPlay function.
+
+00:14:16.370 --> 00:14:22.870
+Next, let's do the following. In the hub class, we will completely customize the GeometryData for the actors
+
+00:14:22.870 --> 00:14:31.056
+that we want to spawn. For this we need an additional structure in the GeometryHubActor class.
+
+00:14:32.107 --> 00:14:37.595
+Copy the structure code, transfer the GeometryHubActor header file.
+
+00:14:39.919 --> 00:14:43.172
+Let's call the structure GeometryPayload.
+
+00:14:46.940 --> 00:14:53.101
+The structure will have three fields. The first is the class we want to spawn.
+
+00:14:56.600 --> 00:15:01.215
+The second will be responsible for GeometryData.
+
+00:15:06.350 --> 00:15:12.632
+The third will be responsible for the initial transformation. Let's call the property InitialTransform.
+
+00:15:17.990 --> 00:15:24.189
+Let's create a property of type FGeometryPayload in the GeometryHubActor class.
+
+00:15:34.430 --> 00:15:37.198
+Name the property GeometryPayload.
+
+00:15:38.209 --> 00:15:43.734
+Let's make the property an array of objects. To do this, we will use an unreal engine type
+
+00:15:43.734 --> 00:15:48.366
+called TArray. This is a container class. It takes the type of the stored data
+
+00:15:48.366 --> 00:15:54.510
+as a template parameter . We are passing in the type FGeometryPayload. In our course, we will work with this
+
+00:15:54.510 --> 00:15:59.100
+container often. I will attach a link to the documentation for the lecture.
+
+00:15:59.100 --> 00:16:04.355
+It will be possible to read what operations we can perform with this container.
+
+00:16:07.560 --> 00:16:10.205
+Add the letter s to the end of the name.
+
+00:16:13.330 --> 00:16:18.677
+Let's spawn the actors based on the information in the GeometryPayloads array.
+
+00:16:19.159 --> 00:16:26.195
+We will use the range version of the for loop. Let's go through all the elements of the array and spawn the actors.
+
+00:16:31.789 --> 00:16:35.968
+We'll spawn the actors by calling the SpawnActorDeffered function.
+
+00:16:36.466 --> 00:16:39.571
+We can copy the line from the previous cycle.
+
+00:16:43.830 --> 00:16:48.077
+Change the function parameters to the variables of our Payload object.
+
+00:16:52.581 --> 00:16:55.684
+The second parameter is Payload.InitialTransform.
+
+00:16:56.266 --> 00:16:58.493
+Check the Geometry object for nullptr.
+
+00:17:01.060 --> 00:17:06.720
+If the object is not null, then we call the SetGeometryData function.
+
+00:17:08.597 --> 00:17:13.920
+Pass the Data variable of the Payload object as a parameter.
+
+00:17:18.866 --> 00:17:23.958
+Finish creating the actor by calling the FinishSpawning function.
+
+00:17:25.574 --> 00:17:27.818
+We pass InitialTransform into it.
+
+00:17:32.044 --> 00:17:35.588
+So, our code is ready. Let's run editor.
+
+00:17:39.585 --> 00:17:44.098
+The first thing we will do with you is rename the BaseGeometryActor blueprint
+
+00:17:44.708 --> 00:17:49.390
+to CubeGeometryActor, because we have set the default mesh for this blueprint - a cube.
+
+00:17:50.000 --> 00:17:55.750
+Press Ctrl + W, copy the blueprint. Let's call it SphereGeometryActor.
+
+00:17:59.449 --> 00:18:01.819
+Set the sphere as the mesh in this class.
+
+00:18:04.848 --> 00:18:07.009
+Compile, save, close.
+
+00:18:07.720 --> 00:18:13.907
+Go to GeometryHubActor. We see that the property has been created GeometryPayloads, which is an array.
+
+00:18:13.907 --> 00:18:20.112
+The property of the array in the editor has a plus button, which allows you to add elements to this array.
+
+00:18:20.448 --> 00:18:26.719
+The element in our array is GeometryPayload. We see all displayed properties of this structure.
+
+00:18:27.085 --> 00:18:37.170
+Set BP_Cube as a class. Also let's change the GeometryData. Let's set some green color.
+
+00:18:40.455 --> 00:18:44.639
+Let's set the timer that changes color to some high value. Let it be 20.
+
+00:18:44.888 --> 00:18:51.483
+And also let's set the location in the world where we want our actor to spawn.
+
+00:18:53.291 --> 00:19:00.888
+You can also change the rotation of our actor. Let it be 45 degrees on all axes. Click play.
+
+00:19:01.496 --> 00:19:06.915
+Our new actor has spawned in the world, all of its parameters correspond to what we indicated.
+
+00:19:09.730 --> 00:19:12.431
+Let's add one more element to our array.
+
+00:19:14.031 --> 00:19:16.358
+Press the plus button.
+
+00:19:18.210 --> 00:19:25.414
+Set the GeometryClass to a sphere. Let it move sine by default.
+
+00:19:25.414 --> 00:19:35.550
+Also change the color. Let it be white. Let's make the TimerRate large - 50 and change the initial position.
+
+00:19:41.480 --> 00:19:46.625
+We start the game. Our sphere has spawned and it is moving.
+
+00:19:52.249 --> 00:19:59.195
+For each of the spawns that we did in this tutorial, I created an additional function DoActorSpawn 1, 2 and 3.
+
+00:20:00.286 --> 00:20:06.312
+Let's also delete two properties in the GeometryHubActor: Class and GeometryObject.
+
+00:20:06.312 --> 00:20:13.505
+We won't need them. We created them purely for educational purposes, and in the BaseGeometryActor class, let's fix
+
+00:20:13.505 --> 00:20:19.389
+all the places where we do not check pointers to nullptr. The first is the HandleMovement function.
+
+00:20:19.721 --> 00:20:26.122
+Let's check if the object of the game world exists or not. In general, if the pointer to the global game object is null,
+
+00:20:26.122 --> 00:20:31.050
+then something is clearly going wrong in our game. And in general, it can no longer continue,
+
+00:20:31.050 --> 00:20:33.841
+but it is better to observe a uniform coding style.
+
+00:20:34.642 --> 00:20:37.403
+We do the same with the GEngine object.
+
+00:20:39.780 --> 00:20:44.620
+And the last place. We have not checked the pointer to BaseMesh.
+
+00:20:45.000 --> 00:20:48.422
+If the pointer to it is null, then immediately exit the function.
+
+00:20:49.419 --> 00:20:50.937
+That's all in this lesson.
+

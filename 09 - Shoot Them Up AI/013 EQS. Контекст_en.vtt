@@ -1,0 +1,331 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.305 --> 00:00:10.759
+In this lesson, we continue to work with EQS. Let's create a generator of points around the enemy.
+
+00:00:11.090 --> 00:00:16.813
+NPCs will move around with a new generator. Let's create a new EQS.
+
+00:00:19.174 --> 00:00:23.879
+Let's call the asset EQS_NextToEnemyLocation.
+
+00:00:27.520 --> 00:00:36.354
+For our EQSTestingPawn, change the template in the details panel. We expose our new asset. We open EQS.
+
+00:00:37.000 --> 00:00:43.795
+Let's select a generator called donut. The pattern of this generator is similar to a donut.
+
+00:00:45.537 --> 00:00:53.200
+Let's adjust the parameters of this generator a little. The first thing we start with is projection data.
+
+00:00:53.200 --> 00:00:59.705
+You need to set TraceMode to Navigation so that all points are projected onto the navigation mesh.
+
+00:01:00.670 --> 00:01:10.000
+The next parameter is InnerRadius. We put 450. Next - the outer radius. Let's make it a random number
+
+00:01:10.000 --> 00:01:17.208
+from 1000 to 1500. I selected these parameters in advance so that we would not guess now.
+
+00:01:17.940 --> 00:01:23.755
+The next parameter is the number of rings. Let's make it a random number from 3 to 8.
+
+00:01:26.180 --> 00:01:33.806
+Next comes the number of points in each ring. Also, a random number from 4 to 20.
+
+00:01:35.120 --> 00:01:41.471
+You can also adjust the angle so that this donut is a sector, but we will leave 360 ​​degrees.
+
+00:01:41.471 --> 00:01:46.490
+Also set the UseSpiralPatter property to true. The beams from the center will be slightly
+
+00:01:46.490 --> 00:01:52.296
+curled due to this setting. This concludes with the generation of points.
+
+00:01:53.419 --> 00:01:59.875
+Thus, each time we will have a certain random pattern.
+
+00:01:59.875 --> 00:02:08.352
+And our NPC will run to one of the generated points. Next, we need to get this point,
+
+00:02:09.840 --> 00:02:15.990
+so we add the distance test, which we used in the last lesson. With the default
+
+00:02:15.990 --> 00:02:21.780
+settings, none of the points is not suitable. In the details panel, in the filter category, set the minimum
+
+00:02:21.780 --> 00:02:26.610
+and maximum values. Let's put 400 and 800 respectively. Applying this filter,
+
+00:02:26.610 --> 00:02:32.257
+we discard all points, the distance to which is not within this segment.
+
+00:02:32.257 --> 00:02:38.582
+The point farthest from the center receives the maximum weight. If you change the ScoreFactor to -1,
+
+00:02:38.582 --> 00:02:43.230
+then you can invert this condition and the point that is closer to the pawn
+
+00:02:43.230 --> 00:02:49.920
+will receive the maximum weight . You can also make the score random. Set the minimum value to -1,
+
+00:02:49.920 --> 00:02:56.331
+and the maximum to 1, and thus the maximum weight will have completely random locations.
+
+00:02:57.022 --> 00:03:05.000
+In general, such a generator will suit us perfectly. Moving on, these points are generated around the current pawn,
+
+00:03:05.000 --> 00:03:11.110
+we would like to change this and generate them around our enemy. For this, EQS has a
+
+00:03:11.110 --> 00:03:17.110
+special class called Context. Click on the generator itself and find a property
+
+00:03:17.110 --> 00:03:24.529
+called Center. The context defaults to the pawn that owns the given EQS.
+
+00:03:25.120 --> 00:03:31.558
+We can change that. Create your own Context that will return the actor of our enemy.
+
+00:03:31.558 --> 00:03:36.771
+For a quick test, let's create a blueprint version of the Context and then switch to C ++.
+
+00:03:36.771 --> 00:03:42.522
+Selecting a new blueprint class. In the search, enter Context and inherit
+
+00:03:42.522 --> 00:03:49.360
+from EnvQueryContext. Let's call the asset EQS_ContextSTUCharacter.
+
+00:03:49.360 --> 00:03:55.471
+This context will return the very first character from the scene. We open the asset.
+
+00:03:56.237 --> 00:03:59.454
+Context can return both actors and locations.
+
+00:04:00.372 --> 00:04:06.789
+We need to override one of the proposed functions in the functions section. Click on override.
+
+00:04:06.789 --> 00:04:14.880
+We see that you can return an array of actors, one actor, an array of locations, or one location. Let's use the
+
+00:04:14.880 --> 00:04:24.160
+ProvideSingleActor function , which returns one actor. Let's call the blueprint function GetAllActorsOfClass.
+
+00:04:28.050 --> 00:04:31.095
+Let's pass the base class of our character into it.
+
+00:04:36.313 --> 00:04:41.562
+And just return the first element from the given array. We are not going to do a
+
+00:04:41.562 --> 00:04:47.108
+dimension check now . This is the most temporary solution, just to see how Context works.
+
+00:04:47.606 --> 00:04:55.105
+We return to EQS and specify a new Context in the property Center. Context is also available in the test.
+
+00:04:56.074 --> 00:04:59.750
+It is located in the property DistanceTo, which determines
+
+00:04:59.750 --> 00:05:04.896
+which actor the distance is calculated from in our test. Selecting our new Context.
+
+00:05:05.776 --> 00:05:10.617
+Now in the viewport all points are calculated relative to the character on the scene.
+
+00:05:10.617 --> 00:05:19.860
+If we move it in any direction. Click on pawn again. Move the pawn and the generator works around character.
+
+00:05:21.928 --> 00:05:27.427
+Let's see how it works now in the game. Open the behavior tree.
+
+00:05:29.140 --> 00:05:35.729
+Replace the template in the EQS node with the one we just created with you.
+
+00:05:37.690 --> 00:05:40.948
+We save. We launch.
+
+00:05:41.901 --> 00:05:49.662
+We include debug information. The NPC ran to the point that was generated around our character.
+
+00:05:50.660 --> 00:05:57.230
+Each time the pattern changes slightly. And also if we start moving,
+
+00:05:58.150 --> 00:06:02.260
+then the sequence of points will be calculated relative to our new location.
+
+00:06:02.260 --> 00:06:07.780
+Using the blueprint of the context, we checked how this works. Let's create a C ++
+
+00:06:07.780 --> 00:06:14.216
+context that will return a pointer to the enemy that is in our blackboard.
+
+00:06:16.252 --> 00:06:18.643
+Open the folder with C ++ classes.
+
+00:06:19.539 --> 00:06:31.525
+Create a new C ++ class in the AI ​​directory. In the search, we find Context. We need to inherit from EnvQueryContext.
+
+00:06:31.525 --> 00:06:37.353
+Click next. Let's call the class STUEnemyEnvQueryContext.
+
+00:06:39.847 --> 00:06:45.348
+We will also add it to the EQS directory.
+
+00:06:46.284 --> 00:06:53.400
+Added a new folder. Do not forget to specify this in PublicIncludePaths. Before moving on to the context
+
+00:06:53.400 --> 00:06:58.710
+class we created , let's see what the default context looks like in EQS
+
+00:06:58.710 --> 00:07:04.860
+. I opened a .cpp file with this class from the engine sources. The calculation of the required actor
+
+00:07:04.860 --> 00:07:10.177
+takes place in a function called ProvideContext. There is only one thing happening here - the
+
+00:07:10.177 --> 00:07:18.957
+actor calculates the owner of this EQS and a pointer to this actor is passed to the SetContextHelper function.
+
+00:07:18.957 --> 00:07:25.352
+In our context, we need to get a pointer to the enemy actor from the blackboard
+
+00:07:25.352 --> 00:07:33.511
+and also use the SetContextHelper function. Let's copy the function signature from the header file.
+
+00:07:34.839 --> 00:07:38.478
+Go to the context we created, create a public section.
+
+00:07:39.803 --> 00:07:43.848
+We copy the signature, also in the protected section we will create a
+
+00:07:43.848 --> 00:07:48.270
+property that will store the name of the key of the enemy actor,
+
+00:07:48.270 --> 00:07:54.168
+which we use in the blackboard. Let's copy the property macro from any header file.
+
+00:07:57.567 --> 00:08:03.857
+Property will be of type FName. Let's call it EnemyActorKeyName.
+
+00:08:07.099 --> 00:08:10.713
+And by default, assign the string literal EnemyActor.
+
+00:08:13.871 --> 00:08:18.932
+Go to the .cpp file. We create the body of the ProvideContext function there.
+
+00:08:20.501 --> 00:08:31.104
+Let's copy the header files from the engine class that we need: EnvQueryTypes.h and EnvQueryItemType_Actor.h
+
+00:08:31.104 --> 00:08:35.817
+We also need BlackboardComponent.h in addition And we will
+
+00:08:35.817 --> 00:08:39.990
+also include one header file, which contains a special
+
+00:08:39.990 --> 00:08:45.309
+function that we need to get a pointer to the BlackboardComponent.
+
+00:08:45.309 --> 00:08:55.471
+The header file is named "Blueprint / AIBlueprintHelperLibrary.h". Let's also copy the function code from the engine file.
+
+00:08:57.090 --> 00:08:59.668
+We insert functions into our body.
+
+00:09:01.030 --> 00:09:08.289
+The log line can be deleted. Change the pointer to actor to const auto.
+
+00:09:09.730 --> 00:09:17.830
+QueryOwner is a pawn, character that owns the given EQS through the given QueryOwner we can
+
+00:09:17.830 --> 00:09:26.961
+get a pointer to the BlackboardComponent. Create a new local variable, call it Blackboard.
+
+00:09:26.961 --> 00:09:30.810
+Upon receipt of the Blackboard, we will use the function found
+
+00:09:30.810 --> 00:09:37.027
+in the last header file that we included. The static function is called GetBlackboard.
+
+00:09:37.880 --> 00:09:44.490
+It takes one parameter - this is a pointer to actor. We pass QueryOwner there.
+
+00:09:44.490 --> 00:09:51.750
+We can also see what is happening inside. The function is quite simple. Cast to pawn occurs.
+
+00:09:51.750 --> 00:09:57.300
+Then, through pawn, we get a pointer to the controller and using the FindComponetnByClass function
+
+00:09:57.300 --> 00:10:05.192
+we get a pointer to the blackboard component. If you specify zero on Blackboard, then we immediately exit the function.
+
+00:10:07.158 --> 00:10:12.373
+If everything is in order, then we create a local variable, which we will call ContextActor.
+
+00:10:13.176 --> 00:10:18.751
+And then we will use the blackboard function of the component called GetValueAsObject.
+
+00:10:20.945 --> 00:10:26.458
+We pass the name of our key EnemyActorKeyName as a parameter to this function.
+
+00:10:27.640 --> 00:10:33.483
+After that, we need to pass this ContextActor to the SetContextHelper function.
+
+00:10:33.483 --> 00:10:42.095
+Also remember that GetValueAsObject returns a pointer to a UObject. Therefore, we need to add Cast to the actor.
+
+00:10:43.704 --> 00:10:46.505
+Let's check the work of our context.
+
+00:10:49.250 --> 00:10:53.041
+Compilation error. Let's see what happened.
+
+00:10:54.681 --> 00:11:01.468
+I accidentally removed the const specifier from the ProvideContext function. Launch the editor again.
+
+00:11:02.120 --> 00:11:12.664
+Let's replace the contexts everywhere at EQS. To do this, in the generator, change the center to STUEnemyEnvQueryContext.
+
+00:11:12.664 --> 00:11:21.700
+And also in distance, change the DistanceTo property to our new context. We save the asset.
+
+00:11:21.700 --> 00:11:27.811
+Let's go to the behavior tree. Let's update our behavior tree logic using EQS.
+
+00:11:28.942 --> 00:11:36.481
+We start with a sequence in which we have an opponent. We launch EQS, which generate points around the enemy.
+
+00:11:36.481 --> 00:11:42.820
+And we also change the sequence when we have no opponent. We will launch the EQS
+
+00:11:42.820 --> 00:11:51.688
+that we created in the previous lesson - EQS_RandomRoam. Let's delete unnecessary nodes and connect root.
+
+00:11:53.619 --> 00:12:01.887
+The tree is ready. We save. Let's run our game, let's see how everything looks.
+
+00:12:03.540 --> 00:12:13.574
+Place the behavior tree on the right. The only thing - let's temporarily remove the key in the fire service.
+
+00:12:13.574 --> 00:12:22.590
+We will do this so that we are not accidentally killed. We start the game. Displaying debug information. The NPC does not see us,
+
+00:12:22.590 --> 00:12:30.000
+moves with the random roam generator. He noticed us and started moving with the help of the new EQS.
+
+00:12:30.000 --> 00:12:35.970
+Also, to display the current EQS, you need to click on the asterisk. Thus, we redesigned
+
+00:12:35.970 --> 00:12:41.910
+the character's movement with the help of smarter random generators. We can create absolutely
+
+00:12:41.910 --> 00:12:49.087
+any movement pattern, or randomly combine them. In the next lesson, we'll see how else
+
+00:12:49.087 --> 00:12:54.750
+you can use this EQS system. I also forgot to note that I removed the steps from the scene
+
+00:12:54.750 --> 00:13:00.881
+so that dots would not be generated on them and also removed the damage sphere from the scene.
+

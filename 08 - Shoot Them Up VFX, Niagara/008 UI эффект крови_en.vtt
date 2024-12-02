@@ -1,0 +1,220 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.684 --> 00:00:10.361
+In the current lesson, we will add an effect on hitting our character to the user interface.
+
+00:00:10.361 --> 00:00:19.316
+Let's do this using the image element. Let's add an image to the widget tree. Let's call it DamageImage.
+
+00:00:19.974 --> 00:00:25.210
+Stretch the image to fill the entire viewport. It is located in our hierarchy in the very first
+
+00:00:25.210 --> 00:00:29.740
+layer, that is, all other custom elements will be on top of this image.
+
+00:00:29.740 --> 00:00:35.280
+Set some red color in property color and opacity and set alpha to 0.
+
+00:00:36.000 --> 00:00:42.913
+Add animation. We worked with UI animations when creating the spectator widget.
+
+00:00:42.913 --> 00:00:51.000
+We call the animation damage animation. Add our picture and add color and opacity track.
+
+00:00:51.000 --> 00:00:59.672
+Let's animate the ripple. I'll set the keyframe at 0.25 seconds and set the alpha to one.
+
+00:01:00.370 --> 00:01:08.640
+A for 0.5 seconds, set the alpha to zero, that is, we get such a blinking animation. For the test, I
+
+00:01:08.640 --> 00:01:16.004
+added a picture with blood splashes, I will not walk this picture into the repository so as not to violate
+
+00:01:16.004 --> 00:01:21.399
+copyright, but you can always find something similar on the Internet. So, let's go back to the widget
+
+00:01:21.856 --> 00:01:27.140
+and set the blood image in the property Image. For us, this animation will play only once
+
+00:01:27.140 --> 00:01:32.910
+upon hit, but you can also expand this concept and gradually completely fill the viewport
+
+00:01:32.910 --> 00:01:39.930
+with blood, depending on the number of lives. We finish with you in blueprints, in C ++ we
+
+00:01:39.930 --> 00:01:45.815
+will need to implement our own event, according to which we can play this animation in the widget.
+
+00:01:46.473 --> 00:01:57.660
+We also pull out the damage animation variable and call the play animation function. In a few minutes, we will add
+
+00:01:57.660 --> 00:02:03.000
+our own event and all we have to do is connect it to this play animation node.
+
+00:02:03.481 --> 00:02:09.990
+In our widget, we can subscribe to the OnHealthChanged health component delegate and, thanks to this, we
+
+00:02:09.990 --> 00:02:16.497
+will understand that the character's health has changed. We will subscribe to the delegate in the Initialize function.
+
+00:02:16.497 --> 00:02:22.680
+We have already considered it in the blueprints, when we made the spectator widget, and we also need
+
+00:02:22.680 --> 00:02:30.160
+the OnHealthChanged function, with which we will bind to the health component delegate. We create a body for each
+
+00:02:30.160 --> 00:02:38.385
+function. Initialize returns boolean, so we can immediately write return Super :: Initialize ();
+
+00:02:44.690 --> 00:02:52.132
+In the body of the Initialize function, we need to get the health component. We already have a similar code, we just copy it.
+
+00:02:53.427 --> 00:02:58.980
+If the pointer is not 0, then we add bind.
+
+00:03:02.733 --> 00:03:10.946
+Now we are subscribed to the change in the character's health and we need to somehow notify the blueprint about the occurrence of this event.
+
+00:03:11.392 --> 00:03:16.253
+In the UE, there is such a possibility. Let's say our event will be called OnTakeDamage.
+
+00:03:16.940 --> 00:03:22.630
+Let's see what specifier we need to specify in order for this event to be visible in blueprints.
+
+00:03:25.167 --> 00:03:27.017
+We create the OnTakeDamage function.
+
+00:03:28.952 --> 00:03:38.065
+Copy the UFUNCTION macro from above, remove the BlueprintCallable and write the BlueprintImplementableEvent.
+
+00:03:38.065 --> 00:03:44.431
+This UFUNCTION macro specifier will allow you to create an event in the blueprint based on this function.
+
+00:03:44.431 --> 00:03:50.766
+Please note that there is no need to create a body for this function in the .cpp file. We launch UE.
+
+00:03:51.678 --> 00:03:59.660
+We return to the widget on the event graph and find OnTakeDamage in the search, and when this
+
+00:03:59.660 --> 00:04:06.830
+event arrives in the blueprint, we start our animation. We start the game. The first bug appeared immediately at the start.
+
+00:04:07.550 --> 00:04:15.110
+We run into the sphere, it also works somehow strange: when auto heal occurs, this effect also appears,
+
+00:04:15.110 --> 00:04:21.364
+plus if we are in the sphere then the effect is not played. Let's start with the second bug.
+
+00:04:21.364 --> 00:04:28.033
+Our damage comes continuously when we are in the sphere, and each time we start the animation on a new one.
+
+00:04:28.033 --> 00:04:33.750
+We can check whether the animation is already playing or not. The widget class has a special function
+
+00:04:33.750 --> 00:04:40.921
+called IsAnimationPlaying. If the animation is in progress, then we will not launch our PlayAnimation node.
+
+00:04:40.921 --> 00:04:46.360
+Let's check. We run in the sphere. Now the effect will be played again only after
+
+00:04:46.360 --> 00:04:53.500
+the previous animation has finished playing . We've dealt with the first bug. The second bug is related to auto heal.
+
+00:04:54.220 --> 00:04:59.660
+We have subscribed to the OnHealthChanged event. This event occurs in any case of
+
+00:04:59.660 --> 00:05:06.000
+health changes , regardless of whether it decreases or increases. Let's fix it up.
+
+00:05:06.528 --> 00:05:12.882
+Open the health component. The delegate is called in our SetHealth function, and we use SetHealth
+
+00:05:12.882 --> 00:05:18.410
+when doing damage, and when taking a pickup, and when auto heal. That is, in any case, changes in
+
+00:05:18.410 --> 00:05:23.600
+health. There are two ways to remedy this situation. It is possible to create an additional delegate that
+
+00:05:23.600 --> 00:05:30.090
+will broadcast only when our character is damaged. Or the second option: add a
+
+00:05:30.897 --> 00:05:36.732
+special HealthDelta parameter to the OnHealthChanged delegate, which will indicate the amount of
+
+00:05:36.732 --> 00:05:42.928
+health change . I like the second option better. Let's implement it. To do this, create
+
+00:05:42.928 --> 00:05:49.774
+an additional local variable in SetHealth . We name it NextHealth and set clamp to it.
+
+00:05:51.913 --> 00:05:58.164
+We also create a second variable called HealthDelta.
+
+00:06:00.583 --> 00:06:09.412
+In this variable, we write the difference between the next health value and the current one, that is, subtract the current value from NexHealth.
+
+00:06:09.412 --> 00:06:15.307
+We have allocated the variable, so we can assign the value to the NextHealth variable in health.
+
+00:06:17.470 --> 00:06:21.705
+Let's change the signature of our delegate.
+
+00:06:22.590 --> 00:06:27.251
+The delegate now has two parameters. Therefore, we change the macro to TwoParams.
+
+00:06:27.920 --> 00:06:35.300
+Add a second argument to the macro, which will also be of the float type. Go to the header file of the widget.
+
+00:06:35.300 --> 00:06:42.143
+We change the signature OnHealthChanged. It has changed - a second HealthDelta parameter has been added.
+
+00:06:44.881 --> 00:06:55.674
+We go to the .cpp file, also change the function signature. Now we can check the value of this HealthDelta variable.
+
+00:06:55.674 --> 00:07:03.490
+If its value is less than 0, that is, damage was done to our character, then only then will we call
+
+00:07:03.490 --> 00:07:11.010
+event OnTakeDamage, otherwise we simply ignore this notification.
+
+00:07:12.020 --> 00:07:18.000
+Next, we need to correct the signature of the character class.
+
+00:07:20.103 --> 00:07:28.419
+We also replace the OnHealthChanged signature and add HealthDelta in the .cpp file.
+
+00:07:29.268 --> 00:07:34.242
+And we have a call to the OnHealthChanged function on the BeginPlay. Here you can pass 0,
+
+00:07:34.242 --> 00:07:39.958
+or also call the GetHealth function of the health component, that is, pass 100.
+
+00:07:39.958 --> 00:07:45.235
+It absolutely does not matter. Let's check. We run in the sphere
+
+00:07:48.882 --> 00:07:51.602
+And in the case of auto heal, the animation is not played.
+
+00:07:53.928 --> 00:07:56.444
+This is how we fixed the second bug.
+
+00:07:58.680 --> 00:08:03.953
+I will delete this image, as I said at the very beginning of the lesson.
+
+00:08:03.953 --> 00:08:08.706
+Let's just keep the color red, which will look pretty good overall.
+
+00:08:12.219 --> 00:08:13.582
+We launch.
+
+00:08:15.000 --> 00:08:20.590
+And a flash of red is played. One more thing, let's set the alpha
+
+00:08:20.590 --> 00:08:27.280
+at the peak of the animation not to one, but to some value of 0.6, for example, so
+
+00:08:27.280 --> 00:08:34.512
+that our viewport is visible in any case. Everything works. This concludes this lesson.
+

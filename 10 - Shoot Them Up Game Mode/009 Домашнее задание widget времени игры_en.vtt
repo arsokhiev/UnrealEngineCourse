@@ -1,0 +1,292 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.880 --> 00:00:11.215
+In the current lesson, we have an independent work. It is necessary to create a widget that displays
+
+00:00:11.215 --> 00:00:17.910
+information about the game: the time remaining until the end of the round, the number and total number of rounds and the
+
+00:00:17.910 --> 00:00:23.501
+number of kills. You can also display the number of deaths. It's up to you.
+
+00:00:25.000 --> 00:00:26.830
+Let's start solving the task.
+
+00:00:28.530 --> 00:00:36.107
+Let's start by creating a widget. Go to the UI folder. Find UserWidget in classes.
+
+00:00:38.232 --> 00:00:42.619
+We call our new widget STUGameDataWidget.
+
+00:00:45.210 --> 00:00:54.571
+Click create class. In game mode, I created 3 getters in advance: the first one returns GameData, the second one returns the current round,
+
+00:00:54.571 --> 00:01:01.467
+and the third one returns how much time is left until the end of the round. Move to GameDataWidget.
+
+00:01:02.396 --> 00:01:08.455
+Let's create public functions to get various values ​​that we need in the interface.
+
+00:01:10.384 --> 00:01:13.374
+The first function will be called GetKillsNum.
+
+00:01:13.374 --> 00:01:17.173
+It will return the number of kills made by the character.
+
+00:01:19.710 --> 00:01:25.619
+The second function is called GetCurrentRoundNum. It will return the current round number.
+
+00:01:28.170 --> 00:01:33.852
+Let's call the third function GetTotalRoundsNum. It will return the total number of rounds.
+
+00:01:35.000 --> 00:01:39.236
+The fourth function is called GetRoundSecondsRemaining.
+
+00:01:39.236 --> 00:01:43.776
+It will return the number of seconds left until the end of the round.
+
+00:01:45.230 --> 00:01:49.508
+And also in the private section, we will create two helper functions.
+
+00:01:49.508 --> 00:01:57.860
+One of them will return a pointer to the game mode, and the second to the player state. We do this to improve the
+
+00:01:57.860 --> 00:02:03.643
+readability of the code. In fact, in these functions, we will simply cast to the types we need.
+
+00:02:07.590 --> 00:02:13.172
+And we also need to add a forward declaration for our game mode type and for the player state.
+
+00:02:15.494 --> 00:02:18.414
+Let's create a body for each function.
+
+00:02:23.701 --> 00:02:26.897
+We do the same for our helper functions.
+
+00:02:31.539 --> 00:02:39.347
+Let's include the header files game mode and player state. Let's start with the game mode getter function.
+
+00:02:39.347 --> 00:02:44.889
+The pointer to the game mode is in an object of the UWorld type,
+
+00:02:44.889 --> 00:02:52.842
+so first we check if it is nonzero and if it is not zero, then we Cast to our game mode type.
+
+00:02:56.560 --> 00:03:05.516
+The function for getting the game mode is called GetAuthGameMode. If the pointer to the world is nullptr, then we return nulltpr.
+
+00:03:08.808 --> 00:03:17.835
+Let's move on to the second function. Recall that the controller of the owner of the widget can be obtained using the GetOwningPlayer method.
+
+00:03:18.648 --> 00:03:21.685
+We also check if this pointer is non-zero,
+
+00:03:22.967 --> 00:03:26.880
+then we cast the player state to our type.
+
+00:03:31.020 --> 00:03:35.000
+And if the controller is null, then we return nullptr.
+
+00:03:35.974 --> 00:03:43.553
+So, the helper functions are ready. Let's start creating basic functions. Let's start with GetKillsNum.
+
+00:03:43.553 --> 00:03:50.000
+The kill count is in the player state, so we create a local variable and call it PlayerState.
+
+00:03:51.127 --> 00:03:56.554
+We assign it the value that our GetSTUPlayerState function returns.
+
+00:03:57.188 --> 00:04:06.670
+Next, we check: if PlayerState is nonzero, then we return the value through the GetKillsNum function, and if it is zero,
+
+00:04:06.670 --> 00:04:15.468
+then we can simply return 0. The next function is GetCurrentRoundNum. The current round number
+
+00:04:15.468 --> 00:04:20.780
+is in game mode, so create a local variable as well. We call it GameMode.
+
+00:04:20.780 --> 00:04:29.246
+We assign it the value that the GetSTUGameMode function returns and check if the GameMode is not null,
+
+00:04:31.537 --> 00:04:36.317
+then we return the value using the GetCurrentRoundNum function
+
+00:04:36.317 --> 00:04:41.472
+that I created in advance. And if the pointer is null, then you can return zero.
+
+00:04:43.532 --> 00:04:48.447
+Moving on. The total number of rounds is also found in GameMode.
+
+00:04:48.447 --> 00:04:55.184
+We can copy part of the code from the previous function, and if GameMode is nonzero,
+
+00:04:56.161 --> 00:05:06.267
+then we get access to GameData and return the value of the RoundsNum field. If the pointer is zero, then we just return 0.
+
+00:05:06.267 --> 00:05:15.000
+And the last function: the number of seconds left until the end of the round. Also, this information is in GameMode.
+
+00:05:15.000 --> 00:05:20.000
+We get the number of seconds through the GetRoundSecondsRemaining function.
+
+00:05:20.000 --> 00:05:27.700
+If the pointer to GameMode is null, then we return 0. So, all the functions are ready. The only thing left
+
+00:05:27.700 --> 00:05:35.609
+to do is add the UFUNCTION macro so that we have access to these functions in the blueprints.
+
+00:05:39.200 --> 00:05:46.160
+Copy the macro, paste on top of each of the four functions.
+
+00:05:48.560 --> 00:05:54.495
+We compile the project. Let's create a blueprint widget class in the UI directory.
+
+00:05:56.280 --> 00:06:07.501
+In the search for all classes, we find our STUGameDataWidget. We inherit from it, call the widget WBP_GameData.
+
+00:06:07.501 --> 00:06:13.531
+We open the widget. We created a child blueprint class directly from the C ++ class.
+
+00:06:13.531 --> 00:06:20.000
+We need to add a base element called CanvasPanel. Add it to the object tree.
+
+00:06:21.158 --> 00:06:23.317
+Let's start with the vertical box element.
+
+00:06:24.350 --> 00:06:30.919
+Set its property SizeToContent to true and make the x and y coordinates equal to 0.
+
+00:06:33.120 --> 00:06:37.130
+Find the text UI element. Add it to the tree.
+
+00:06:39.188 --> 00:06:48.641
+This text block will be responsible for the time of the round. We will have it in the format: minutes: seconds. Let's make it bigger - 45.
+
+00:06:48.641 --> 00:06:55.274
+Open the PlayerHUD widget and copy the color that we use in the interface.
+
+00:06:56.521 --> 00:07:04.851
+Insert a color for our counter. The next UI element that we need is also text.
+
+00:07:06.194 --> 00:07:13.201
+Add it to the tree. We will display information on rounds in this text field.
+
+00:07:13.201 --> 00:07:21.165
+Current round and total. Also change the color of the text. Add the last text field.
+
+00:07:22.603 --> 00:07:29.164
+We will display the number of murders in it.
+
+00:07:30.111 --> 00:07:31.720
+Also change the color.
+
+00:07:33.720 --> 00:07:42.762
+Let's add a spacer element to defuse the space between the text fields. Let the first spacer have y 20 points,
+
+00:07:42.762 --> 00:07:51.070
+and the second 10. Let's bind each text. Let's start with the time of the round.
+
+00:07:51.070 --> 00:07:58.400
+Opposite the text field, click create binding. We call a function that returns the number of seconds
+
+00:07:58.400 --> 00:08:05.778
+until the end of the round. Convert integer to float. The UE has a handy function to format the
+
+00:08:05.778 --> 00:08:12.540
+number of seconds in a time. It is called TimeSecondsToString. In the tooltip, we see
+
+00:08:12.540 --> 00:08:18.445
+that the string is returned in the format: minutes: seconds: milliseconds. We connect it to the final pin.
+
+00:08:20.322 --> 00:08:28.251
+Next, let's take a look at the rounds. We also create bind. Let's immediately add a node called Append.
+
+00:08:28.251 --> 00:08:33.998
+It concatenates multiple lines. Enter "Round:" into the first pin.
+
+00:08:36.540 --> 00:08:42.900
+In the second pin, connect a function that returns the current round - GetCurrentRoundNum.
+
+00:08:42.900 --> 00:08:47.940
+On the right, you can add an additional pin. We enter "/" into it.
+
+00:08:47.940 --> 00:08:55.000
+Add another pin. Let's enter the total number of rounds into it - GetTotalRoundsNum.
+
+00:08:57.028 --> 00:09:03.929
+And we connect the output pin of the append node to the return value of our function.
+
+00:09:07.261 --> 00:09:11.911
+And the last field is the number of kills. Create bind.
+
+00:09:13.719 --> 00:09:19.663
+Find the GetKillsNum function. Create an append node.
+
+00:09:23.220 --> 00:09:26.459
+We connect the value returned by the function to the second pin.
+
+00:09:27.070 --> 00:09:33.816
+And the first will go "Kills:". We include append in the return node.
+
+00:09:35.404 --> 00:09:39.004
+The widget is ready, let's add it to the PlayerHUD.
+
+00:09:39.004 --> 00:09:43.687
+To do this, you can find it in the search, or in the user created category.
+
+00:09:45.095 --> 00:09:52.717
+Drag GameData onto Canvas. We will set the position at 50 points.
+
+00:09:52.717 --> 00:09:59.188
+Other elements along the edges have the same offset. This element should also be visible
+
+00:09:59.188 --> 00:10:04.223
+only when we are alive, so we bind the IsPlayerAlive function for Visibility.
+
+00:10:05.723 --> 00:10:14.529
+Click play. The widget has appeared. We also see that in the time of the round, milliseconds are displayed, which are equal to zero.
+
+00:10:14.529 --> 00:10:24.280
+You can get rid of them. We go to the game data widget, in the bind function of our time and the value
+
+00:10:24.280 --> 00:10:30.159
+returned by the TimeSecondsToString function can be truncated. To do this, we will use a function
+
+00:10:30.159 --> 00:10:37.667
+called Mid. This function returns a substring. You must specify the starting index
+
+00:10:37.667 --> 00:10:45.901
+and the number of characters required. We indicate 0 and 5 and milliseconds will not be displayed. Compiling the widget.
+
+00:10:47.398 --> 00:10:55.777
+Let's change the parameters of the AICharacter for the test so that the NPC is easier to kill. Let's go to the health component.
+
+00:10:57.480 --> 00:11:04.594
+Set AutoHeal to false and MaxHealth to 20. Compile.
+
+00:11:05.228 --> 00:11:09.267
+We'll also tweak GameData a bit. Open the GameMode blueprint.
+
+00:11:11.232 --> 00:11:13.752
+Let's set the round time to 10 seconds.
+
+00:11:15.480 --> 00:11:22.445
+We start the game. Our widget is slightly obscured by the Unreal Engine interface. Let's start the game in a separate window.
+
+00:11:23.170 --> 00:11:25.000
+Choose New window editor.
+
+00:11:26.538 --> 00:11:31.970
+Time is displayed without milliseconds. Rounds are also displayed. Let's wait for the start of the
+
+00:11:31.970 --> 00:11:36.154
+next round to see that kills are also displayed.
+
+00:11:36.154 --> 00:11:44.180
+We kill the NPC. Kills = 1, kills = 2. Everything works. And the last test. Let's substitute the round time
+
+00:11:44.180 --> 00:11:50.884
+to the maximum possible value. The time is 5 minutes. This concludes the lesson with you.
+

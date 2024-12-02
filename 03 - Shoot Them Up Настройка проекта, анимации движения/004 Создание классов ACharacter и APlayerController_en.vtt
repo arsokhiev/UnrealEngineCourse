@@ -1,0 +1,301 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:07.158 --> 00:00:11.552
+In this lesson, we will look at the ACharacter class. This class extends the APawn class
+
+00:00:11.552 --> 00:00:15.800
+that we discussed in the previous section. He added additional functionality for
+
+00:00:15.800 --> 00:00:22.316
+working with motion, animations and physical interactions. So, go to the directory
+
+00:00:22.316 --> 00:00:24.612
+with C ++ classes in the content browser.
+
+00:00:24.612 --> 00:00:27.370
+I remind you that if the directory is not visible to you, then we
+
+00:00:27.370 --> 00:00:34.850
+go to the content browser in the view options and click on the checkbox - show c ++ classes. Right
+
+00:00:34.850 --> 00:00:40.585
+-click, select the new C ++ class. Let's create an inheritor of the ACharacter base class.
+
+00:00:44.287 --> 00:00:46.567
+We name the class STUBaseCharacter.
+
+00:00:47.917 --> 00:00:53.300
+Let's create it in the Player subdirectory and also click on the public button on the right so that all
+
+00:00:53.300 --> 00:00:58.999
+header files are created in the public directory, and the cpp files in the private directory.
+
+00:01:02.027 --> 00:01:06.520
+We will also create a player controller class for character, which is the interface
+
+00:01:06.520 --> 00:01:12.130
+between the user and the character itself. We inherit from
+
+00:01:12.130 --> 00:01:19.045
+playercontroller and call the class STUPlayerController. Click on create class.
+
+00:01:22.548 --> 00:01:28.240
+So, in our player directory, the basecharacter and playercontroller classes were created, and the project was successfully
+
+00:01:28.240 --> 00:01:33.298
+compiled. Consider one point that we will use throughout the course.
+
+00:01:33.298 --> 00:01:38.950
+In some versions of unreal, a bug jumps over when generating a class in a subdirectory. Sometimes the
+
+00:01:38.950 --> 00:01:44.440
+full path to the file is not appended to include. Let's see what happens. Remove Player,
+
+00:01:44.440 --> 00:01:48.970
+right-click on the project and select build. We compile the project without
+
+00:01:48.970 --> 00:01:54.400
+opening the editor, open the log and see that the console shows that the compiler cannot find the
+
+00:01:54.400 --> 00:02:00.948
+path to the ABaseCharacter.h header file, because an incomplete path to the .h file is specified.
+
+00:02:01.536 --> 00:02:06.904
+To make the compiler find the header file without specifying the full path in the include name,
+
+00:02:06.904 --> 00:02:12.430
+we can add a special setting in the build file of our project. Open the corresponding
+
+00:02:12.430 --> 00:02:18.873
+C # file. UnrealBuildTool has a special list in which you can specify the directories
+
+00:02:18.873 --> 00:02:25.013
+in which the compiler will look for header files. The list is called PublicIncludePaths
+
+00:02:29.610 --> 00:02:35.390
+This list is initialized with an array of strings, which contain paths to directories
+
+00:02:35.390 --> 00:02:41.841
+with our include files. Add a relative path to the Player directory.
+
+00:02:44.536 --> 00:02:47.326
+Let's check. Let's build the project again.
+
+00:02:48.810 --> 00:02:52.140
+The build was successful, now the compiler finds
+
+00:02:52.140 --> 00:02:55.770
+our BaseCharacter header file. As the project progresses
+
+00:02:55.770 --> 00:02:58.770
+, when adding a new directory, I will also
+
+00:02:58.770 --> 00:03:05.790
+add it to PublicIncludePaths. We will also remove our changes in ABaseCharacter. Let's change the
+
+00:03:05.790 --> 00:03:09.313
+default character and controller classes in our game mode.
+
+00:03:09.811 --> 00:03:12.210
+We include the STUBaseCharacter and
+
+00:03:12.210 --> 00:03:16.316
+STUPlayerController headers into the GameModeBase .cpp file.
+
+00:03:17.470 --> 00:03:20.577
+Go to the header file, create a public section.
+
+00:03:23.583 --> 00:03:28.986
+We declare a constructor and create its body in a .cpp file.
+
+00:03:32.003 --> 00:03:33.395
+The Property that is responsible
+
+00:03:33.395 --> 00:03:39.000
+for the Pawn class is called DefaultPawnClass. Our character inherits from
+
+00:03:39.000 --> 00:03:44.380
+Pawn, so we can override this property using character.
+
+00:03:45.567 --> 00:03:50.500
+We indicate the class of our ABaseCharacter. The Property that is responsible for the controller
+
+00:03:50.500 --> 00:03:56.907
+is called PlayerControllerClass. In this property, we specify the class of our controller.
+
+00:03:59.136 --> 00:03:59.976
+We launch the project.
+
+00:04:03.572 --> 00:04:05.882
+We look in WorldSettings and see that all our
+
+00:04:05.882 --> 00:04:09.978
+classes are set correctly: DefaultPawn has become STUBaseCharacter
+
+00:04:09.978 --> 00:04:12.495
+and playercontroller has become STUPlayerController.
+
+00:04:13.790 --> 00:04:15.980
+Let's create blueprints
+
+00:04:15.980 --> 00:04:20.819
+based on these classes . First, create a new folder. Let's call it player.
+
+00:04:27.869 --> 00:04:29.829
+Create a blueprint for the GameMode class.
+
+00:04:33.232 --> 00:04:34.852
+Let's add it to the Content folder.
+
+00:04:40.673 --> 00:04:44.399
+Next, we create a controller in the Player package.
+
+00:04:47.235 --> 00:04:49.950
+We call it BP_STUPlayerController.
+
+00:04:51.240 --> 00:04:53.258
+and the last blueprint for Character.
+
+00:04:58.626 --> 00:05:01.117
+Also put this blueprint in the Player folder.
+
+00:05:03.792 --> 00:05:11.880
+We save everything and change all classes to blueprints in world settings. We do this in order to make
+
+00:05:11.880 --> 00:05:15.985
+all visual settings in blueprint, and not in code files.
+
+00:05:19.670 --> 00:05:22.226
+We open the character.
+
+00:05:24.102 --> 00:05:25.926
+Open full blueprint editor.
+
+00:05:30.402 --> 00:05:34.041
+In the components panel, we can see what our character is made of.
+
+00:05:34.911 --> 00:05:37.190
+The capsule component is responsible for the collision in the world,
+
+00:05:37.190 --> 00:05:40.547
+that is, for the physical interaction - this is the root component.
+
+00:05:41.078 --> 00:05:47.586
+Next comes the arrow component - this component was created for debugging, that is, it is not displayed in the game.
+
+00:05:47.586 --> 00:05:52.158
+It only shows the forward direction of the vector of our character.
+
+00:05:53.740 --> 00:05:57.530
+The next component is SkeletalMesh, which
+
+00:05:57.530 --> 00:05:59.900
+is responsible for the visual presentation of our
+
+00:05:59.900 --> 00:06:03.620
+character. In SkeletalMesh, in addition to ordinary polygons, there is
+
+00:06:03.620 --> 00:06:08.155
+also a hierarchy of bones with which these polygons can be animated.
+
+00:06:08.667 --> 00:06:13.259
+And the last component is CharacterMovement, which is responsible for the movement of our character.
+
+00:06:13.259 --> 00:06:16.140
+In the details panel, you can see that it has a bunch of settings. Also, the
+
+00:06:16.140 --> 00:06:19.360
+component is purely logical, it has no external representation.
+
+00:06:20.730 --> 00:06:25.892
+We can install SkeletalMesh right away. We imported this character from the shooter game.
+
+00:06:28.411 --> 00:06:31.556
+Let's lower it a little lower so that it matches the capsule.
+
+00:06:32.212 --> 00:06:35.078
+Also rotate the character 90 degrees so that its
+
+00:06:35.078 --> 00:06:40.294
+forward vector matches the direction of the arrow component. Compile. We save.
+
+00:06:41.853 --> 00:06:48.268
+If we start the game now, then by default our camera is located somewhere in the middle of the character.
+
+00:06:48.698 --> 00:06:52.056
+Let's go back to the code and take full control of the camera.
+
+00:06:56.040 --> 00:07:00.059
+Let's use the camera component and add it to our character.
+
+00:07:01.404 --> 00:07:03.577
+As we remember, this component is responsible for the
+
+00:07:03.577 --> 00:07:08.406
+viewport - how we see the world with you. Go to the character .h file.
+
+00:07:10.030 --> 00:07:16.750
+Create a protected property in the section, with the VisibleAnywhere access specifier.
+
+00:07:21.389 --> 00:07:25.429
+Let's also make it available in blueprint - BlueprintReadWrite.
+
+00:07:27.606 --> 00:07:31.476
+And add this property to the components category.
+
+00:07:41.240 --> 00:07:44.292
+Create a pointer to the UCameraComponent class.
+
+00:07:46.338 --> 00:07:49.171
+Let's call it CameraComponent.
+
+00:07:56.143 --> 00:08:00.943
+At the top of the .h file, add the forward declaration of the UCameraComponent class.
+
+00:08:10.126 --> 00:08:16.536
+Go to the .cpp file. Let's immediately include the header file with our camera component.
+
+00:08:25.262 --> 00:08:27.919
+We create this component in the character constructor.
+
+00:08:30.693 --> 00:08:34.362
+Let's use the familiar CreateDefaultSubobject function.
+
+00:08:38.258 --> 00:08:42.405
+Let's connect our camera component to the root component of the character.
+
+00:08:42.405 --> 00:08:45.764
+To do this, we will use the function of the SetupAttachment component.
+
+00:08:49.425 --> 00:08:51.361
+We need to pass a pointer
+
+00:08:51.361 --> 00:08:56.420
+to the root component to the function . For this, the actor has the GetRootComponent function,
+
+00:08:56.939 --> 00:08:59.720
+which returns a pointer to the root component of the actor.
+
+00:09:00.418 --> 00:09:05.685
+In a character, the root component is the collision component. Launch editor.
+
+00:09:09.000 --> 00:09:11.320
+We open the blueprint with our character.
+
+00:09:17.410 --> 00:09:18.250
+viewport
+
+00:09:20.390 --> 00:09:26.305
+Let's set up a camera offset, somewhere farther,
+
+00:09:26.305 --> 00:09:32.520
+backward and upward. Compile, save, press play.
+
+00:09:33.930 --> 00:09:38.440
+So, in this tutorial we have configured all the main classes that we need in this section.
+
+00:09:38.666 --> 00:09:43.175
+And from the next lesson, we proceed directly to animating our character.
+

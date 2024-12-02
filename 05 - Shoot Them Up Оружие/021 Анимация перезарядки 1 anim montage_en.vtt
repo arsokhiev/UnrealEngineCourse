@@ -1,0 +1,202 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.920 --> 00:00:11.320
+Let's move on to the implementation of the recharge logic. In this tutorial, we'll work with animations.
+
+00:00:11.320 --> 00:00:16.932
+We have two reload animations, one for the rifle and one for the launcher.
+
+00:00:16.932 --> 00:00:21.708
+Let's create appropriate animated montages for each of them.
+
+00:00:26.360 --> 00:00:32.604
+We transfer the montages to the player / animations folder.
+
+00:00:35.760 --> 00:00:42.193
+And by analogy, as we did with the animation of changing weapons, we need to replace the slot name with UpperBody.
+
+00:00:43.980 --> 00:00:53.315
+First and second animations. Let's create a bind for the animation change key. Go to project settings, to input.
+
+00:00:54.405 --> 00:01:00.056
+Add action mapping. We name it Reload and I will assign the R key.
+
+00:01:04.200 --> 00:01:09.550
+We have different launcher and rifle reload animations. The question of where to store the animation
+
+00:01:09.550 --> 00:01:15.459
+montage for reloading is quite philosophical. For example, we can create a property in the Base Weapon
+
+00:01:15.459 --> 00:01:20.450
+and specify the animation we need for each class in the corresponding blueprints,
+
+00:01:20.450 --> 00:01:25.276
+but if we suddenly have an additional character with his own reload animation,
+
+00:01:25.276 --> 00:01:32.106
+then this approach will not work. It’s even intuitively clear that keeping an animation that refers to a character
+
+00:01:32.106 --> 00:01:37.449
+in a weapon class is not entirely logical from an object-oriented programming point of view.
+
+00:01:37.449 --> 00:01:46.153
+Therefore, we will do it a little differently. We will add an additional structure called WeaponData.
+
+00:01:46.153 --> 00:01:51.667
+And in this structure we will store the weapon class and reload animation that belongs
+
+00:01:51.667 --> 00:02:00.900
+to this weapon class. Copy our properties with WeaponClasse. Let's add BlueprintReadWrite to the macro as well.
+
+00:02:00.900 --> 00:02:05.079
+We remove the array, we do not need it here. It will just be WeaponClass.
+
+00:02:06.690 --> 00:02:15.547
+Create a second property of type UAnimMontage, call it ReloadAnimMontage.
+
+00:02:20.270 --> 00:02:27.188
+And we will change the property from WeaponClasses to WeaponData, that is, we will have an array of WeaponData structures,
+
+00:02:27.188 --> 00:02:32.400
+from where we will take all the information we need. In fact, we slightly expanded our
+
+00:02:32.400 --> 00:02:38.250
+previous version and now we have information not only on classes, but also on reloading animations.
+
+00:02:38.250 --> 00:02:44.820
+Let's add an additional variable for convenience. This will be the AnimMonrage pointer and it will
+
+00:02:44.820 --> 00:02:50.610
+point to the current reload animation, that is, when the character changes weapons,
+
+00:02:50.610 --> 00:02:57.588
+we will also change the pointer to the reload animation. We call it CurrentReloadAnimMontage.
+
+00:02:58.087 --> 00:03:03.000
+The name is a bit long, but it fully describes the purpose of this pointer.
+
+00:03:05.612 --> 00:03:07.131
+Go to the weapon component.
+
+00:03:09.264 --> 00:03:11.689
+Let's tweak the SpawnWeapons function.
+
+00:03:13.315 --> 00:03:17.200
+It is necessary to replace WeaponClasses with WeaponData.
+
+00:03:20.480 --> 00:03:25.810
+We also change the name of the loop variable, call it OneWeaponData.
+
+00:03:26.228 --> 00:03:29.688
+And we refer to WeaponClass as a structure field.
+
+00:03:32.770 --> 00:03:40.350
+Moving to the EquipWeapon function. First, let's add the check that we were missing. This is a check
+
+00:03:40.350 --> 00:03:48.276
+for the correctness of the WeaponIndex. It must be greater than 0 or less than the number of array elements.
+
+00:03:48.276 --> 00:03:55.767
+If at least one of these conditions is not met, we can issue a warning message and exit the function.
+
+00:04:00.270 --> 00:04:08.010
+Next, after we changed the weapon, we need to change the reload animation. We can index the
+
+00:04:08.010 --> 00:04:15.930
+structure from our WeaponData array and pick up the reload animation from there. In our case, this will
+
+00:04:15.930 --> 00:04:23.556
+already work, because we spun the actors by simply walking through the WeaponData array and adding them
+
+00:04:23.556 --> 00:04:30.120
+to the Weapons array. But no one guarantees that in the future we will not need, for example, sorting
+
+00:04:30.120 --> 00:04:36.090
+one of these arrays, and in this case we can get an animation of reloading from another
+
+00:04:36.090 --> 00:04:42.660
+weapon class. Therefore, we can use a more reliable method. It consists in the fact that each
+
+00:04:42.660 --> 00:04:50.868
+time we will search in the WeaponData array for a structure that corresponds to our current class of weapons
+
+00:04:50.868 --> 00:04:57.550
+and, having found this structure, we will simply take the reload animation from there. Let's create an additional
+
+00:04:57.550 --> 00:05:03.040
+local variable, which we will call CurrentWeaponData, which will store a pointer
+
+00:05:03.040 --> 00:05:09.304
+to the found structure. Let's use an array function called FindByPredicate.
+
+00:05:09.866 --> 00:05:15.620
+A predicate is a functional object that returns true or false. In turn, a functional
+
+00:05:15.620 --> 00:05:21.700
+object is an object in which the parenthesis operator is redefined. We'll use a lambda function,
+
+00:05:21.700 --> 00:05:28.529
+an anonymous function that will be applied to each element in the array. And if the class of the structure,
+
+00:05:28.529 --> 00:05:35.350
+which is an element of the array, coincides with the class CurrentWeapon, then a pointer to this structure
+
+00:05:35.350 --> 00:05:40.600
+will be returned to us . If more than one element of the array does not satisfy this condition,
+
+00:05:40.600 --> 00:05:48.052
+a null pointer will be returned. For those who are not familiar with lambda functions in C ++, I recommend reading about it.
+
+00:05:48.052 --> 00:05:53.620
+Don't be alarmed by our example. The &amp; sign in brackets means capturing
+
+00:05:53.620 --> 00:06:02.293
+external variables, that is, we can refer to the CurrentWeapon pointer, and the Data function parameter
+
+00:06:02.293 --> 00:06:09.276
+has the WeaponData array element type. This function will be applied to each element of the array,
+
+00:06:09.800 --> 00:06:16.200
+and at the first match, a pointer to the element of the array will be returned to us. Let's add a comment mark to
+
+00:06:16.200 --> 00:06:25.130
+format the function in two lines. Let's set our CurrentReloadAnimMontage pointer to the animation of
+
+00:06:25.130 --> 00:06:32.560
+reloading from the found structure, but before that we check if the CurrentWeaponData pointer is not null
+
+00:06:33.304 --> 00:06:42.730
+and if not nullptr, then we refer to the ReloadAnimMontage field, if it's nullptr, then we assign nullptr to the pointer.
+
+00:06:43.798 --> 00:06:48.853
+Let's go to the header file. Let's add a recharge function. Let's call it Reload.
+
+00:06:49.502 --> 00:06:57.346
+Add a body for the function. Let's add for now just playing the animation - PlayAnimMontage
+
+00:06:57.896 --> 00:07:02.630
+and pass a pointer to the current reload animation to the function.
+
+00:07:03.817 --> 00:07:11.910
+In the BaseCharacter class, add a new bind for Reload and assign the Reload weapon component function.
+
+00:07:14.143 --> 00:07:19.216
+Open the character's blueprint. We need to customize our WeaponData array.
+
+00:07:20.583 --> 00:07:26.045
+Add the first item. Install the WeaponClass of the rifle
+
+00:07:27.000 --> 00:07:35.668
+and the corresponding animation for reloading the rifle. Add the second element to the array. Install the launcher blueprint
+
+00:07:36.197 --> 00:07:41.524
+and launcher reload animation. Compile. We launch the project.
+
+00:07:42.818 --> 00:07:51.073
+Press R - the rifle reload is played, if we change the weapon, the launcher reload animation is played
+
+00:07:51.073 --> 00:07:56.010
+. That's all in this lesson. In the next, we will continue with the reload logic.
+

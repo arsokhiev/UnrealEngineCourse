@@ -1,0 +1,13 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.684 --> 00:00:11.987
+In this section, we'll look at widgets, a system called UMG: unreal motion graphics.
+
+00:00:12.936 --> 00:00:18.116
+Let's create various types of scopes, display information about the weapon in the interface.
+
+00:00:19.125 --> 00:00:26.545
+Also create a life widget and an additional widget when we are in the spectator state.
+

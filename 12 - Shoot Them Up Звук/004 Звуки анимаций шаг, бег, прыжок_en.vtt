@@ -1,0 +1,199 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.380 --> 00:00:12.846
+In this lesson, we will work on the sounds of the character: the sounds of walking, running and jumping.
+
+00:00:12.846 --> 00:00:18.950
+Let's figure out how to play sounds linked to animation. Create an additional folder in the
+
+00:00:18.950 --> 00:00:24.870
+sound directory , call it character. We'll need some SoundQues, let's get them ready.
+
+00:00:28.463 --> 00:00:30.663
+The first asset is called SQ_FootstepsWalk.
+
+00:00:32.061 --> 00:00:42.389
+This SoundQue will sound the sounds of the character's footsteps. Duplicate. We call the next SoundQue SQ_Run.
+
+00:00:42.389 --> 00:00:49.440
+This asset will be played when the character runs. The next SoundQue is jump start. It will play
+
+00:00:49.440 --> 00:00:55.920
+when the character jump animation starts and the last SoundQue - jump end. This asset will be played
+
+00:00:55.920 --> 00:01:03.080
+when the character lands. Let's open all the assets right away to make it easier to drag and drop sounds.
+
+00:01:07.223 --> 00:01:14.442
+Go to ExternalContent, to the sounds directory, open the footsteps folder.
+
+00:01:15.275 --> 00:01:21.447
+This folder contains the voice acting of the character's steps. There are different sounds for different surfaces that the
+
+00:01:21.447 --> 00:01:26.598
+character walks on. We will not define the surface for the steps.
+
+00:01:26.598 --> 00:01:32.693
+In general, this is not difficult to implement. This is done in the same way as we did the impact effects. Let's play the sound of grass,
+
+00:01:35.411 --> 00:01:36.734
+metal.
+
+00:01:40.227 --> 00:01:42.408
+We will be using tile sounds.
+
+00:01:45.930 --> 00:01:50.940
+As we can see, there are several different sounds for steps. We can add all
+
+00:01:50.940 --> 00:02:00.000
+SoundWave data to our SoundQue and play it randomly. This will ensure that the sound of footsteps is not monotonous.
+
+00:02:00.000 --> 00:02:08.315
+Add the random node. Add pins and connect all sounds to the random node.
+
+00:02:10.502 --> 00:02:16.446
+You can also delete an unnecessary pin by right-clicking on it. Let's test it.
+
+00:02:22.043 --> 00:02:25.460
+At each step of the character, a random sound will be selected.
+
+00:02:26.208 --> 00:02:31.968
+This is how I added these sounds to the wrong SoundQue. Let's move them to Walk.
+
+00:02:34.658 --> 00:02:42.070
+Moving on, open the animation editor. Select the run forward animation.
+
+00:02:42.677 --> 00:02:48.065
+Sounds for animation are very easy to add. This is done in the same way as anim notify.
+
+00:02:49.727 --> 00:02:53.403
+On any of the tracks, we can right-click,
+
+00:02:54.810 --> 00:03:03.103
+select add notify from the menu and find play sound in the submenu. A special anim notify has been added to the track,
+
+00:03:03.103 --> 00:03:08.544
+which has a property sound in the details panel. We choose our sound of footsteps.
+
+00:03:09.980 --> 00:03:17.430
+If we move the slider in the timeline, we can immediately hear this sound. On the timeline, we
+
+00:03:17.430 --> 00:03:24.570
+need to position the given anim notify at the moment the foot touches the ground. We do this
+
+00:03:24.570 --> 00:03:31.993
+approximately by dragging anim notify to the position we need and press the spacebar to play it.
+
+00:03:34.330 --> 00:03:38.480
+This sound needs to be added for the other leg as well. The foot lands on the
+
+00:03:38.480 --> 00:03:44.110
+ground at the very end of the animation. Let's add an extra anim notify.
+
+00:03:46.875 --> 00:03:49.871
+Selecting the sound asset for the steps.
+
+00:03:51.517 --> 00:03:53.083
+Let's check how it sounds.
+
+00:03:55.273 --> 00:03:57.319
+You can move it a little to the right.
+
+00:04:04.689 --> 00:04:11.172
+So, you can add sounds on the timeline. This functionality is logical to use in blueprint. This is quite convenient,
+
+00:04:11.172 --> 00:04:16.450
+plus a sound designer can easily do this and customize this anim notify with an accuracy of
+
+00:04:16.450 --> 00:04:23.654
+hundredths of a second. I will now fast forward to add these sounds for other animations.
+
+00:04:23.654 --> 00:04:30.582
+We have animations for running to the right, left and back. The logic for adding sounds will be exactly the same here.
+
+00:04:37.676 --> 00:04:39.126
+The second animation is ready.
+
+00:04:45.951 --> 00:04:47.274
+The third animation is ready.
+
+00:04:59.004 --> 00:05:04.246
+And the last animation is also ready. Let's test how it works right away. The only thing is,
+
+00:05:04.246 --> 00:05:11.347
+let's turn off our NPCs, otherwise there will be a cacophony now. Remove all the behavior tree logic.
+
+00:05:15.429 --> 00:05:16.609
+And we start the game.
+
+00:05:24.687 --> 00:05:32.949
+The first part is ready. Move on. It is necessary to add sounds for the running animation. They are located in the foley folder.
+
+00:05:35.338 --> 00:05:39.718
+There are also several sounds. They have the text "run" in their names.
+
+00:05:45.000 --> 00:05:49.440
+Add all sounds to SQ_FootstepsRun.
+
+00:05:52.199 --> 00:05:54.626
+We also add a random node.
+
+00:06:02.457 --> 00:06:06.309
+We will play these sounds when our character starts to run.
+
+00:06:06.309 --> 00:06:13.556
+Let's set up the SoundQue for jumping right away. Sound files are also located in this foley directory.
+
+00:06:17.931 --> 00:06:22.912
+We select three sounds, they will be played randomly when the character starts jumping.
+
+00:06:23.647 --> 00:06:29.233
+Add jump start to SoundQue. Add the random node.
+
+00:06:34.517 --> 00:06:35.288
+Checking.
+
+00:06:41.765 --> 00:06:46.621
+For the character to land, there are different sounds for different surfaces.
+
+00:06:46.621 --> 00:06:51.846
+By analogy with running, we will only use sounds for tile.
+
+00:06:59.081 --> 00:07:04.311
+We select these assets, transfer them to the jump end.
+
+00:07:07.450 --> 00:07:10.898
+All the necessary SoundQues are ready. Let's add them to our animations.
+
+00:07:12.688 --> 00:07:18.118
+We start with a running animation. The asset is called RoadieRun_Fwd.
+
+00:07:27.118 --> 00:07:31.257
+Added for running animation. Next, open the jump start asset.
+
+00:07:34.549 --> 00:07:40.131
+Add a sound somewhere at the beginning when the feet start to lift off the ground.
+
+00:07:42.288 --> 00:07:46.508
+Set SoundQue jump start and check.
+
+00:07:51.075 --> 00:07:59.478
+And the last animation is the jump end. Let's add a sound at the very beginning of the timeline.
+
+00:08:03.500 --> 00:08:07.106
+We select the appropriate SoundQue and check.
+
+00:08:11.701 --> 00:08:13.981
+Everything is ready, let's test it in the game.
+
+00:08:21.072 --> 00:08:22.922
+Let's go over, hold down shift.
+
+00:08:29.521 --> 00:08:30.617
+Checking the jump.
+
+00:08:37.458 --> 00:08:39.433
+This concludes the current lesson.
+

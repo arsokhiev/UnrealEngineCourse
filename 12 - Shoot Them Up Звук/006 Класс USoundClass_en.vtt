@@ -1,0 +1,73 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.684 --> 00:00:10.000
+In this lesson, we'll look at how to change the volume of a whole group of sounds.
+
+00:00:10.000 --> 00:00:17.168
+We will need this feature for further testing. It can also be used in the settings of your game.
+
+00:00:17.168 --> 00:00:22.178
+That is, the player may want to make the background music quieter, or the special effects sounds quieter.
+
+00:00:22.178 --> 00:00:27.930
+In a specific SoundCue, we can change the VolumeMultiplier property, set the volume to 0 and the sound
+
+00:00:27.930 --> 00:00:35.220
+will not actually be played. We return the value. Changing the sound separately for each
+
+00:00:35.220 --> 00:00:42.000
+SoundCue is laborious. We can have 1000 sounds pertaining to a character. We can do
+
+00:00:42.000 --> 00:00:48.065
+this in a more centralized way. There is a special asset in unreal called SoundClass.
+
+00:00:48.065 --> 00:00:55.230
+Let's create a settings folder in the sounds root. Right click and in the sound category
+
+00:00:55.230 --> 00:01:02.103
+in the classes subcategory, find the asset SoundClass. We call it SoundClassCharacter.
+
+00:01:02.654 --> 00:01:09.082
+This asset allows you to configure various sound parameters and apply them to many SoundCue.
+
+00:01:09.791 --> 00:01:18.837
+Set the volume to 0, go to the SoundCue JumpEnd, find the property Class, the default is master.
+
+00:01:19.090 --> 00:01:25.189
+This asset is in the content of the engine, we will look at it a little later. Select our sound class
+
+00:01:26.447 --> 00:01:32.202
+and set this sound class for all SoundCue related to character sounds.
+
+00:01:36.000 --> 00:01:38.649
+And let's see how our sounds work now.
+
+00:01:39.225 --> 00:01:40.870
+We start the game.
+
+00:01:41.380 --> 00:01:44.667
+Footstep and jump sounds are no longer played.
+
+00:01:48.777 --> 00:01:55.101
+In this case, the rest of the sounds are in place. Thus, with the help of a sound class, we can manage a group of sounds.
+
+00:01:55.626 --> 00:02:00.419
+Let's create additional sound classes for weapons and UI:
+
+00:02:02.400 --> 00:02:08.728
+sound class weapon and third asset - sound class UI.
+
+00:02:11.354 --> 00:02:15.085
+And put them on the corresponding SoundCue.
+
+00:02:33.452 --> 00:02:41.496
+Checking. We all have sound classes set to volume = 0, so we don't have sounds in the game right now.
+
+00:02:42.569 --> 00:02:45.809
+Let's set the volume value in each sound class to one.
+
+00:03:00.097 --> 00:03:04.758
+All sounds are played again. Now we are able to control the volume of a group of sounds.
+

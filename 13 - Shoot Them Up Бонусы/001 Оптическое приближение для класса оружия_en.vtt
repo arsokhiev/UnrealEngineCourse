@@ -1,0 +1,187 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.485 --> 00:00:11.773
+In this lesson, we will make an optical zoom: by pressing the right mouse button, we will change the camera's angle of view.
+
+00:00:11.773 --> 00:00:17.405
+This will make objects appear closer. We create a new action. Name it zoom
+
+00:00:17.405 --> 00:00:20.271
+and assign the right mouse button to it.
+
+00:00:21.622 --> 00:00:25.003
+Let's create a virtual zoom function in the base weapon class.
+
+00:00:25.844 --> 00:00:34.465
+It will be empty by default. We will redefine it only in the rifle class, the launcher will not have the zoom option.
+
+00:00:34.465 --> 00:00:39.808
+The function will have one boolean parameter that will be responsible for turning the zoom on / off.
+
+00:00:42.853 --> 00:00:46.419
+Go to the rifle class, override the zoom function.
+
+00:00:50.438 --> 00:00:51.878
+We create the body of the function.
+
+00:00:53.467 --> 00:00:58.580
+The function that allows you to change the angle of view of the camera is in the PlayerCameraManager.
+
+00:00:58.878 --> 00:01:07.460
+We already used the Camera Manager class when shaking the camera. Let's create a local variable to which we will write the PlayerController.
+
+00:01:07.986 --> 00:01:12.122
+Using the GetController function that we created in the rifle class,
+
+00:01:12.122 --> 00:01:16.859
+we get a pointer to the AController and make it Cast to the PlayerController.
+
+00:01:17.550 --> 00:01:24.494
+This is where the PlayerCameraManager is located. Let's check two pointers in one if:
+
+00:01:24.494 --> 00:01:31.330
+if controller = nullptr or PlayerCameraManager = nullptr, then we exit the function.
+
+00:01:34.698 --> 00:01:42.530
+Let's create an auxiliary constant using the TInterval template. In this constant we will store the
+
+00:01:42.530 --> 00:01:49.498
+value of the field of view normal and the value of the field of view when zooming. Optionally, you can make a property
+
+00:01:49.498 --> 00:01:57.130
+to change this value later. The field of view value at zoom will be 50 degrees, and the usual 90 degrees.
+
+00:02:01.689 --> 00:02:09.853
+And we call the PlayerCameraManager function called SetFOV. This function changes the angle of view of the player's camera.
+
+00:02:09.853 --> 00:02:16.400
+Depending on the enabled flag, we pass either 50 degrees or 90 degrees to this function.
+
+00:02:20.430 --> 00:02:30.658
+Next, go to the weapon component. Here we also need to create a zoom function. And we create the body of the function.
+
+00:02:33.379 --> 00:02:36.859
+This function will call the zoom function of the current weapon.
+
+00:02:42.629 --> 00:02:44.249
+It remains to add input.
+
+00:02:45.956 --> 00:02:47.778
+Our action is called zoom.
+
+00:02:49.075 --> 00:02:58.666
+And when pressed, the zoom function of the weapon component should be called. We must call the zoom function and pass true to it when the key is pressed,
+
+00:02:58.666 --> 00:03:02.828
+and when the key is released, we must pass false there.
+
+00:03:03.444 --> 00:03:11.730
+The easiest option is to make two functions in the character: ZoomOn, ZoomOff and call through them the zoom function of the weapon component /
+
+00:03:11.730 --> 00:03:19.867
+Accordingly, with true or with false. But you can make it trickier. The BindAction function has a template version
+
+00:03:19.867 --> 00:03:25.388
+and with it you can make bind functions with a parameter. To do this
+
+00:03:25.388 --> 00:03:33.099
+, pass the delegate signature as a template parameter . We declare a new delegate. This can also be done directly in a function.
+
+00:03:34.053 --> 00:03:41.837
+Our delegate will have one boolean parameter, we call it FZoomInputSignature.
+
+00:03:44.370 --> 00:03:48.728
+We pass it as a template parameter to the BindAction function.
+
+00:03:53.210 --> 00:03:59.697
+After that, you need to pass all the parameters in accordance with the signature of the delegate. We have only one parameter.
+
+00:04:00.939 --> 00:04:06.339
+On the Pressed event, we pass true. And for the event released - false.
+
+00:04:14.132 --> 00:04:20.836
+We compile the project. Before starting the game, let's see what happens programmatically.
+
+00:04:20.836 --> 00:04:27.260
+Let's take the character onto the stage. In the details panel, we will find the camera component, it has a
+
+00:04:27.260 --> 00:04:32.678
+property called field of view. By changing the parameters on the camera preview on the right, we can
+
+00:04:32.678 --> 00:04:39.790
+observe how the image will change with different field of view. We remove the character from the scene.
+
+00:04:39.790 --> 00:04:47.178
+I turned off the sound of the game in advance so that it would not interfere with us. Press the right mouse button - the FOV changes.
+
+00:04:47.178 --> 00:04:53.596
+This is how our telescopic sight works. For the launcher class, the zoom function is not redefined,
+
+00:04:53.596 --> 00:05:00.270
+so it does not have optical zoom. We have several problems. One of them occurs when we
+
+00:05:00.270 --> 00:05:07.672
+switch weapons while holding the zoom. The viewing angle remains reduced. The second problem:
+
+00:05:07.672 --> 00:05:13.290
+this situation can arise when we are killed by the clamped zoom. The FOV also needs to
+
+00:05:13.290 --> 00:05:17.489
+be returned to its default value. Let's correct these two points.
+
+00:05:18.641 --> 00:05:29.195
+The OnDeath function is called when our character is killed. Let's call the zoom function of the weapon component in it with the false parameter.
+
+00:05:29.195 --> 00:05:36.781
+This is the first fix. And we need to do the same in the weapon component in the EquipWeapon function.
+
+00:05:37.606 --> 00:05:45.000
+In fact, if the functionality of a weapon becomes more complicated, then it is more convenient to make a separate function called UnEquip
+
+00:05:45.000 --> 00:05:50.070
+and call it when the user no longer uses this weapon. Let's add a
+
+00:05:50.070 --> 00:05:58.738
+property for the zoom FOV. Copy the uproperty macro in the RifleWeapon.
+
+00:06:00.935 --> 00:06:09.139
+Let's call it FOVZoomAngle and assign the value we are currently using - 50 degrees.
+
+00:06:10.922 --> 00:06:18.857
+And we will also create an additional variable in the private section, which we will call DefaultCameraFOV.
+
+00:06:18.857 --> 00:06:24.436
+Let the default be 90, but we'll see now that it doesn't matter to us at all.
+
+00:06:26.848 --> 00:06:33.780
+Let's go to the zoom function. The default FOV can be anything. In the blueprint, we can set any
+
+00:06:33.780 --> 00:06:40.399
+angle value: 100, 110, and so on. Therefore, it is not entirely correct to set the value to 90 when we remove the zoom.
+
+00:06:42.632 --> 00:06:49.621
+We can keep the current FOV of the camera when the zoom is enabled, that is, when enabled = true.
+
+00:06:50.256 --> 00:06:54.199
+And when the user wants to remove the zoom, we just set this value.
+
+00:06:54.199 --> 00:06:59.709
+This way, our logic will work correctly with any given default FOV.
+
+00:07:00.648 --> 00:07:05.358
+The function that returns the current FOV of the camera is called GetFOVAngle.
+
+00:07:09.048 --> 00:07:14.620
+We replace the values ​​with variables in our ternary operator: if zoom is on, then we set the
+
+00:07:14.620 --> 00:07:20.738
+value FOVZoomAngle, and if off, then DefaultCameraFOV.
+
+00:07:22.990 --> 00:07:26.018
+We no longer need the TInterval constant; we can remove it.
+
+00:07:26.909 --> 00:07:31.109
+This concludes the lesson. Please check these fixes yourself.
+

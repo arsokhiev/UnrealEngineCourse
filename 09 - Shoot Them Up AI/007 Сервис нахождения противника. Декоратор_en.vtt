@@ -1,0 +1,418 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.089 --> 00:00:11.281
+In this tutorial, we'll look at a new concept related to the behavior tree. It is called a service.
+
+00:00:11.281 --> 00:00:16.026
+A service is a special class that can be added to the nodes of the behavior tree.
+
+00:00:16.460 --> 00:00:22.513
+It has its own Tick function where we can put our game logic.
+
+00:00:22.513 --> 00:00:27.859
+And, for example, under certain conditions in the game, change the keys in our blackboard.
+
+00:00:27.859 --> 00:00:35.163
+In this logic, we will rewrite with you the logic of finding the enemy through the service, and when the NPC sees the enemy
+
+00:00:35.163 --> 00:00:41.987
+, a point around the enemy character will be calculated randomly. And the NPC will run to this location.
+
+00:00:41.987 --> 00:00:48.897
+Let's start by adding a new key to our blackboard. The key will be of type object.
+
+00:00:49.730 --> 00:00:56.477
+We name the object EnemyActor. In this key, we will store a pointer to the current enemy.
+
+00:00:57.962 --> 00:01:03.880
+Go to the behavior tree editor. In order to create a new service through the blueprint at the top,
+
+00:01:03.880 --> 00:01:11.575
+you can click on the corresponding icon, which is called new service. We will create a C ++ service with you,
+
+00:01:11.575 --> 00:01:18.217
+so go to the classes in the AI ​​folder. We create a new C ++ class.
+
+00:01:18.217 --> 00:01:25.601
+We open all the classes and find Service in the search. We will inherit from the BTService class.
+
+00:01:27.978 --> 00:01:36.653
+We name the class STUFindEnemyService and also specify a directory that we will call Services.
+
+00:01:37.809 --> 00:01:40.831
+Completing the creation - click create class.
+
+00:01:40.831 --> 00:01:47.360
+Do not forget to include an additional directory in the build file. Go to the service header file.
+
+00:01:48.173 --> 00:01:54.741
+I immediately created a constructor for this service. In fact, it will be the same as the task - there will be the name of the node.
+
+00:01:55.940 --> 00:02:03.890
+Let's add a protected section and declare a property that will store the key for our
+
+00:02:03.890 --> 00:02:15.518
+enemy character. We use the FBlackboardKeySelector type. We name the variable EnemyActorKey.
+
+00:02:15.518 --> 00:02:22.391
+The service has its own Tick function, and it is also possible to configure the update frequency of this function.
+
+00:02:22.391 --> 00:02:27.989
+We'll look at all this later in the blueprint, but now let's press f12 on the base class
+
+00:02:27.989 --> 00:02:36.147
+and in the header file we will find a function called TickNode. Let's override it in our child class.
+
+00:02:36.147 --> 00:02:42.000
+The enemy search logic will be in this function. Go to the .cpp file.
+
+00:02:42.920 --> 00:02:49.331
+In the constructor, we see that I named our service "Find Enemy". Assigned a value to the NodeName variable.
+
+00:02:51.770 --> 00:02:57.852
+We create the body of the TickNode function. Let's copy the header files from the task class.
+
+00:02:57.852 --> 00:03:06.964
+We also need a blackboard component, an AI controller. We insert into the header file of the service.
+
+00:03:08.361 --> 00:03:10.970
+Additionally, we connect STUUtils.
+
+00:03:11.690 --> 00:03:17.527
+We'll grab the perception component from the controller using our templated function.
+
+00:03:19.354 --> 00:03:28.134
+I will also copy the component's perception header file. So, all the header files are ready. Let's get down to the code.
+
+00:03:28.134 --> 00:03:34.560
+Let's go to the TickNode function. We, just like in the Task class, can get a pointer to the blackboard
+
+00:03:34.560 --> 00:03:40.999
+and the controller through the BehaviorTreeComponent. The if statements, in which we will check
+
+00:03:40.999 --> 00:03:47.374
+objects for nullptr, will be nested, because at the end we will need to call the base function Tick.
+
+00:03:47.374 --> 00:03:53.510
+Therefore, we will not do a return after checking each object. So, we
+
+00:03:53.510 --> 00:04:00.733
+get the blackboard through the GetBlackboardComponent function. Next, we get the controller through GetAIOwner.
+
+00:04:01.760 --> 00:04:06.373
+After that, we get the perception component, which is in our controller.
+
+00:04:09.027 --> 00:04:11.795
+If the perception component is nonzero,
+
+00:04:14.260 --> 00:04:18.214
+then we can immediately write the value to the blackboard in the EnemyActorKey.
+
+00:04:19.215 --> 00:04:25.122
+To do this, we will use the SetValueAsObject function. The first parameter is our key.
+
+00:04:25.122 --> 00:04:33.240
+Let's use our EnemyActorKey structure and its SelectedKeyName field. The second parameter is a pointer to the UObject.
+
+00:04:35.410 --> 00:04:38.320
+The actor is a UObject. This is its base class,
+
+00:04:38.320 --> 00:04:43.703
+so we can pass the value that the GetClosestEnemy function returns.
+
+00:04:45.720 --> 00:04:52.888
+And at the very end, we call the basic function TickNode. The enemy search service is ready.
+
+00:04:52.888 --> 00:04:58.830
+In fact, we rewrote what we did in the last lesson in the AI ​​controller through a service.
+
+00:04:59.367 --> 00:05:05.452
+After such a transformation, we will have access to the enemy both in the controller and in our behavior tree.
+
+00:05:08.173 --> 00:05:13.463
+Let's edit the controller a little. Open the controller header file.
+
+00:05:15.180 --> 00:05:21.820
+Let's create a property of type FName. In it we will store the name of the key, which contains a
+
+00:05:21.820 --> 00:05:27.710
+pointer to the enemy character. We cannot specify FBlackboardKeySelector here
+
+00:05:27.710 --> 00:05:34.785
+because the controller knows nothing about the keys. Let's call the variable FocusOnKeyName.
+
+00:05:35.600 --> 00:05:42.140
+And assign it the "EnemyActor" value. This name in the blackboard has our key, which
+
+00:05:42.140 --> 00:05:48.320
+stores a pointer to the enemy. And for convenience, let's create an additional function. The function will be
+
+00:05:48.320 --> 00:05:55.777
+internal, so we create a private category. Let's call the function GetFocusOnActor. It will return a
+
+00:05:55.777 --> 00:06:04.270
+pointer to the actor that we need to focus on. We create the body of the function.
+
+00:06:07.132 --> 00:06:16.345
+We need the "BehaviorTree / BlackboardComponent.h" header file. Through it, we will directly receive this object.
+
+00:06:18.444 --> 00:06:21.331
+Let's go to the GetFocusOnActor function.
+
+00:06:22.729 --> 00:06:28.645
+We check - if GetBlackboardComponent () returns a null pointer, then we will also
+
+00:06:28.645 --> 00:06:33.046
+return nullptr, that is, we have nothing to focus on.
+
+00:06:33.990 --> 00:06:42.530
+And if the component is non-zero, then we can get the object using the GetValueAsObject function.
+
+00:06:42.530 --> 00:06:49.073
+We pass property to the function, which stores the name of the key from the blackboard - FocusOnKeyName.
+
+00:06:52.300 --> 00:06:56.120
+Does this function return a pointer to the base type UObject?
+
+00:06:56.120 --> 00:07:00.398
+so we need to make Cast the given pointer to type actor.
+
+00:07:02.900 --> 00:07:11.500
+And now we can, in the Tick function, assign the AimActor variable the value that our GetFocusOnActor function returns.
+
+00:07:12.862 --> 00:07:19.829
+Our service is ready. We also tweaked the controller. Let's see how to add service to the behavior tree.
+
+00:07:19.829 --> 00:07:25.455
+So, we have two options for the development of events: the first option is just
+
+00:07:25.455 --> 00:07:33.427
+patrolling the territory. We have already implemented this option. We can call the sequence random roam.
+
+00:07:37.960 --> 00:07:45.858
+And the second scenario is an attack. Let's create a new sequence In NodeName, write Attack.
+
+00:07:47.590 --> 00:07:54.000
+Let's add one Task to this sequence - MoveTo. We will move towards our enemy.
+
+00:07:54.000 --> 00:07:59.320
+Now we need to make a choice - which of the two options we would like to launch. For this, there is a special
+
+00:07:59.320 --> 00:08:04.821
+node called Selector. It launches child trees from left to right.
+
+00:08:04.821 --> 00:08:11.080
+If the execution of a subtree ends with Fail, then the next tree is launched, and so on, that is, if we have a
+
+00:08:11.080 --> 00:08:16.630
+successful attack, then we will continue to attack, if something goes wrong, for example,
+
+00:08:16.630 --> 00:08:24.430
+we cannot find the path to our location, then it will start next subtree. In our case, this is a
+
+00:08:24.430 --> 00:08:31.799
+patrol sequence. Let's add the service we created. The service can be added to any node in the behavior tree.
+
+00:08:31.799 --> 00:08:38.260
+We can add to the sequence. Right-click on the AddService node and see our EnemyService.
+
+00:08:39.160 --> 00:08:45.136
+The enemy search service should always work, so it is reasonable to add it to the topmost node,
+
+00:08:45.136 --> 00:08:51.282
+to our selector. Add a service. FindEnemy node name, as we specified in the constructor.
+
+00:08:51.790 --> 00:08:59.171
+In property, you need to specify a key for our enemy. Choose EnemyActor. Below there are settings for
+
+00:08:59.171 --> 00:09:04.850
+the refresh rate of the Tick function. We will leave them by default, that is, from an optimization point of view, we
+
+00:09:04.850 --> 00:09:11.920
+can reduce the frequency of the update function of our service. The next thing we need to do is
+
+00:09:11.920 --> 00:09:22.270
+change MoveTo. We need to move to the EnemyActor position. We select MoveTo and on the right we see
+
+00:09:22.270 --> 00:09:30.370
+that we cannot select the EnemyActor key. Let's go to blackboard. Let's select EnemyActor
+
+00:09:30.370 --> 00:09:36.490
+and in the settings we see that you can specify the base class. By default, it also stands for Object. We can change
+
+00:09:36.490 --> 00:09:43.780
+it to Actor. UObject has no transformation in the world. So MoveTo just won't work. Now our key has
+
+00:09:43.780 --> 00:09:51.160
+become available. You also need to set property ObserveBlackboardValue to true. If the key changes,
+
+00:09:51.160 --> 00:09:57.370
+then the target location for MoveTo will be recalculated, and if EnemyActor is nullptr,
+
+00:09:57.370 --> 00:10:03.474
+then this node will return the Fail status and we will move on to the next RandomRoam branch.
+
+00:10:03.474 --> 00:10:13.871
+Let's see how it works visually. Leave the behavior tree window open. Move it to the right. We start the game.
+
+00:10:14.237 --> 00:10:20.440
+The first sequence didn't work. Actor began patrolling the area. The service finds the enemy.
+
+00:10:20.440 --> 00:10:26.650
+This can be understood because the enemy character is looking at our character and the attack will begin only
+
+00:10:26.650 --> 00:10:33.550
+if, at the end of the RandomRoam sequence, the EnemyActor object is non-zero,
+
+00:10:33.550 --> 00:10:39.640
+but I would like the NPC to immediately change the behavior as soon as he notices us. Let's see how
+
+00:10:39.640 --> 00:10:45.863
+you can do this. For such purposes, there is a special node called Decorator.
+
+00:10:45.863 --> 00:10:52.526
+This node contains a logical condition, in case of non-fulfillment of which, you can stop the entire subtree.
+
+00:10:52.526 --> 00:10:56.918
+Right-click on the node. In the menu item, select AddDecorator.
+
+00:10:56.918 --> 00:11:03.580
+We see some of the possible options that are in the library. Let's select the topmost one.
+
+00:11:03.580 --> 00:11:09.220
+It's called blackboard. This decorator checks if we have a key set in the blackboard or not.
+
+00:11:10.360 --> 00:11:18.572
+Select the decorator. In the settings, let's name it HasEnemy. And a little higher in the blackboard category, let's
+
+00:11:19.350 --> 00:11:26.435
+check if the EnemyActor object is null. There are two options IsSet or IsNotSet.
+
+00:11:26.435 --> 00:11:35.412
+If we have an enemy, then we perform the Attack sequence, and if there is no enemy, then we need to stop this sequence.
+
+00:11:35.412 --> 00:11:42.844
+This is done using property ObserverAborts. Select self and the nodes that will be stopped are
+
+00:11:42.844 --> 00:11:51.025
+highlighted in green . And when actor is installed, we will stop the RandomRoam branch.
+
+00:11:52.179 --> 00:11:56.321
+So let's add the same decorator to the second sequence.
+
+00:11:57.481 --> 00:11:59.095
+Selecting blackboard.
+
+00:12:00.604 --> 00:12:03.190
+Called it NoEnemy.
+
+00:12:05.490 --> 00:12:12.647
+Change the blackboard key to EnemyActor. Change KeyQuery to IsNotSet,
+
+00:12:12.647 --> 00:12:22.848
+that is, if it is null, and also set ObserverAborts to self. Let's see how it works for us. We start the game.
+
+00:12:23.520 --> 00:12:27.715
+EnemyActor is zero, so the character randomly runs around the scene.
+
+00:12:28.742 --> 00:12:35.217
+And as soon as EnemyActor ceases to be zero, the Attack sequence begins to execute and vice versa.
+
+00:12:35.217 --> 00:12:41.250
+That is, thanks to the decorators, we instantly switch between our sequences.
+
+00:12:43.835 --> 00:12:50.960
+So, we are done with the service. Let's add the following: we will not run to the point where the enemy is, but just like
+
+00:12:50.960 --> 00:12:56.480
+with patrolling, we will find a certain point in a radius around the enemy. You can add a separate Task
+
+00:12:56.480 --> 00:13:02.918
+for this. We will slightly improve the existing Task - NextLocation.
+
+00:13:04.549 --> 00:13:11.683
+Open the NextLocationTask header file. Let's create an additional boolean property.
+
+00:13:12.742 --> 00:13:18.000
+This variable will be responsible for whether we want to find a new point on the navigation mesh
+
+00:13:18.000 --> 00:13:21.227
+relative to ourselves, or relative to another actor.
+
+00:13:23.480 --> 00:13:27.418
+And we create an additional property FBlackboardKeySelector.
+
+00:13:27.894 --> 00:13:32.060
+It will store the key for the object, relative to which we will find a
+
+00:13:32.060 --> 00:13:38.220
+random point on the navigation mesh and call the property CenterActorKey.
+
+00:13:40.186 --> 00:13:46.200
+We will also add meta information so that this property is active in the editor only
+
+00:13:46.200 --> 00:13:52.050
+when the SelfCenter value is false. You and I have already done this.
+
+00:13:54.319 --> 00:14:02.180
+Go to the .cpp file. Let's create an additional variable called Location. This variable will be
+
+00:14:02.180 --> 00:14:08.270
+passed to the GetRandomReachablePointInRadius function. The variable is of type FVector
+
+00:14:08.270 --> 00:14:15.412
+and we assign to it the default value of the location of our pawn and also immediately pass it to the function.
+
+00:14:16.470 --> 00:14:23.160
+And if the SelfCenter parameter is false, then we must replace this location with the position of the
+
+00:14:23.160 --> 00:14:28.211
+actor, which is in the blackboard under the name of the key that we specified in the property.
+
+00:14:29.864 --> 00:14:33.305
+Let's create an additional variable, let's call it CenterActor.
+
+00:14:34.021 --> 00:14:40.893
+You can immediately cast to the actor, because through the blackboard we will get a pointer to the UObject.
+
+00:14:42.990 --> 00:14:47.940
+And we get a pointer to an object by calling the GetValueAsObject function.
+
+00:14:50.180 --> 00:14:55.055
+And we pass our key CenterActorKey as a parameter to this function.
+
+00:14:59.330 --> 00:15:03.075
+And if the object is null, then we can return the result Failed.
+
+00:15:05.661 --> 00:15:14.758
+And if it is nonzero, then we assign the position of this actor to the Location variable - CenterActor-&gt; GetActorLocation ().
+
+00:15:16.460 --> 00:15:23.745
+Launch the editor. Let's delete the MoveTo node. Copy NextLocation from another branch.
+
+00:15:24.624 --> 00:15:32.180
+Connect the arrows in the Attack sequence. In this sequence, in the NextLocation node, we need to set
+
+00:15:32.180 --> 00:15:40.837
+SelfCenter to false and specify EnemyActor in CenterActorKey. You can also change the radius, for example, put 500.
+
+00:15:41.740 --> 00:15:45.848
+Let's see how this works. We start the game.
+
+00:15:47.127 --> 00:15:49.334
+The character doesn't see anyone.
+
+00:15:51.915 --> 00:15:56.723
+We fall into line of sight and the NPC starts running around us.
+
+00:15:57.390 --> 00:16:01.290
+A little later in this section we will improve this approach, because the point can be
+
+00:16:01.290 --> 00:16:07.140
+close enough to our character and the NPC will crash into us. Everything. Thus, we learned how to
+
+00:16:07.140 --> 00:16:14.534
+make services, considered decorators and the selector node. In the next lesson, we move on to shooting.
+

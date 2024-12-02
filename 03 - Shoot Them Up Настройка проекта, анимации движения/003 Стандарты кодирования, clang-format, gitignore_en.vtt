@@ -1,0 +1,418 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.684 --> 00:00:11.580
+In this lesson, we'll talk about coding standards and code formatting. In Chapter 1, we also had a
+
+00:00:11.580 --> 00:00:17.280
+special file for formatting the code, I did not focus on it. It is called
+
+00:00:17.280 --> 00:00:21.810
+clang format and we will look at it today. We only need the block of code that I added for
+
+00:00:21.810 --> 00:00:26.670
+the formatting test. First, let 's make additional settings for Visual Studio: we will
+
+00:00:26.670 --> 00:00:31.980
+show the line numbers of the code file. To do this, go to the menu, tools,
+
+00:00:32.650 --> 00:00:35.160
+options. In the side menu, select
+
+00:00:35.160 --> 00:00:42.830
+text editor, all languages ​​and put a checkmark in front of line numbers, click ok. Line numbers
+
+00:00:42.830 --> 00:00:49.280
+are displayed to the left of the code file. Also in the file, I prefer to see white spaces - these are
+
+00:00:49.280 --> 00:00:56.623
+spaces or tabs, to display them you need to select the edit item in the main menu,
+
+00:00:57.690 --> 00:01:03.720
+go to the advanced category and click on view whitespace. The command also has a hotkey:
+
+00:01:03.720 --> 00:01:09.390
+Ctrl + R, Ctrl + W and now white spaces will be displayed in our code files.
+
+00:01:09.390 --> 00:01:15.960
+Spaces are displayed as dots. Let's open the unreal engine documentation page in a browser
+
+00:01:15.960 --> 00:01:21.960
+called coding standards. A link to this page will be below the video. The recommended coding standards
+
+00:01:21.960 --> 00:01:23.460
+are described here ,
+
+00:01:23.460 --> 00:01:27.150
+which are used, for example, when developing the unreal engine itself.
+
+00:01:27.150 --> 00:01:32.070
+In general, when developing a project, we will follow this document, with the exception of a
+
+00:01:32.070 --> 00:01:38.010
+few things. The first is parenthesis formatting. As we can see it is written here that the war of
+
+00:01:38.010 --> 00:01:43.970
+brackets is nonsense. This is indeed the case. The only thing you need to do is choose
+
+00:01:43.970 --> 00:01:49.250
+one of the styles and follow it. On the same project, the formatting style must be the same.
+
+00:01:49.250 --> 00:01:53.930
+In our project, when writing code, we will wrap the first bracket to a new line.
+
+00:01:53.930 --> 00:01:59.880
+This style is used in the code of the engine itself. The next important point is indentation.
+
+00:01:59.880 --> 00:02:06.870
+UE code uses a tab character for indentation. We will use spaces - this is my
+
+00:02:06.870 --> 00:02:11.010
+subjective opinion on this matter. The code with spaces looks cleaner,
+
+00:02:11.010 --> 00:02:13.410
+we'll see that soon.
+
+00:02:14.410 --> 00:02:18.970
+I recommend that you read this document in its entirety. It contains a lot of useful information.
+
+00:02:18.970 --> 00:02:25.590
+To format the code, we will use clang format - this is a
+
+00:02:25.590 --> 00:02:27.510
+special file that sets the rules for
+
+00:02:27.510 --> 00:02:33.900
+formatting the code. This file is added to the project, configured and after that all our
+
+00:02:33.900 --> 00:02:39.690
+code files will be formatted in the same style. Usually it is configured once at the
+
+00:02:39.690 --> 00:02:45.390
+start of the project and after that all formatting happens automatically. One
+
+00:02:45.390 --> 00:02:52.420
+less headache . Let's add this file to the root of our project. I am using total commander. It is
+
+00:02:52.420 --> 00:02:58.320
+more convenient to work with file extensions in it than in Explorer. We name the file .clang-format.
+
+00:03:02.650 --> 00:03:03.580
+Create it.
+
+00:03:03.580 --> 00:03:07.810
+We need to regenerate the project files.
+
+00:03:07.810 --> 00:03:12.950
+After that .clang-format will be available through the solution explorer.
+
+00:03:16.600 --> 00:03:20.480
+Open VS, reload solution.
+
+00:03:21.610 --> 00:03:25.750
+On the left side of the solution explorer file appeared clang-format. We open it.
+
+00:03:25.750 --> 00:03:31.010
+VS can work with clang-format.
+
+00:03:31.010 --> 00:03:32.810
+The only thing is that we need to make sure
+
+00:03:32.810 --> 00:03:37.830
+that it is enabled in the settings. To do this, go to tools, options.
+
+00:03:40.160 --> 00:03:48.000
+On the left, open the text editor menu, then fall into c / c ++, the formatting category
+
+00:03:49.210 --> 00:03:53.530
+and check that the enable clang format support setting is enabled. In visual studio it is possible to
+
+00:03:53.530 --> 00:03:57.370
+customize the formatting without using clang format, but this is not very convenient.
+
+00:03:57.370 --> 00:04:02.290
+It is more convenient to store formatting rules in a file. If we change the development environment:
+
+00:04:02.290 --> 00:04:03.790
+we go, for example, to
+
+00:04:03.790 --> 00:04:08.950
+visual studio code, then we will not have problems with formatting, because all our rules are stored
+
+00:04:08.950 --> 00:04:14.200
+in a separate file. Clang format is a YAML markup file: each line in
+
+00:04:14.200 --> 00:04:21.310
+it is "key: value". Let's start with a key called language. Depending
+
+00:04:21.310 --> 00:04:27.550
+on the value of this key, formatting will be applied to files corresponding to this programming language
+
+00:04:27.550 --> 00:04:32.800
+. If the project uses one programming language, or you have the same formatting
+
+00:04:32.800 --> 00:04:37.480
+for all languages, then you do not need to specify this key, the formatting
+
+00:04:37.480 --> 00:04:41.950
+will be the same for all files. If not, then we can use this key
+
+00:04:41.950 --> 00:04:46.810
+several times, change the values ​​depending on the programming language and
+
+00:04:46.810 --> 00:04:48.670
+set up our own formatting for each language .
+
+00:04:49.590 --> 00:04:53.700
+The next key we need is called BasedOnStyle.
+
+00:04:53.700 --> 00:04:59.460
+It is responsible for the general formatting style and as its value you can specify one of the
+
+00:04:59.460 --> 00:05:02.730
+most common styles, for example, google.
+
+00:05:03.630 --> 00:05:06.120
+To format the file we have selected,
+
+00:05:06.120 --> 00:05:13.230
+press Ctrr + K, Ctrl + D. Click. The indentation has changed in the code block. One indent is now equal to
+
+00:05:13.230 --> 00:05:16.500
+two spaces. The open parenthesis is
+
+00:05:16.500 --> 00:05:20.940
+not on a new line. Let's try a different style. Enter the value
+
+00:05:20.940 --> 00:05:27.240
+of the microsoft key, press Ctrr + K, Ctrl + D. One indent is now equal to four spaces
+
+00:05:27.240 --> 00:05:33.660
+and the parenthesis is wrapped to a new line. In general, these two keys are already enough. Subsequent
+
+00:05:33.660 --> 00:05:38.850
+keying will essentially override key values ​​that are specified in the base style.
+
+00:05:40.190 --> 00:05:47.790
+Let's take a look at some of them. The IndentWidth key is responsible for the size of the indentation.
+
+00:05:49.130 --> 00:05:56.580
+For example, set the value to 8. Format. And the number of spaces became equal to 8.
+
+00:05:59.240 --> 00:06:04.870
+If we change to 2, then this value will be equal to the default google-style value -
+
+00:06:04.870 --> 00:06:11.140
+two spaces for indentation. We will use a value of 4, which is the most optimal.
+
+00:06:11.140 --> 00:06:14.890
+It is essentially the default in our microsoft style.
+
+00:06:15.780 --> 00:06:21.750
+The next key is called UseTab. It determines whether we use a space or a tab character
+
+00:06:21.750 --> 00:06:26.820
+as indentation . In our style, its meaning will be Never. Let's check the
+
+00:06:26.820 --> 00:06:32.220
+style with Always Format. Arrows are displayed - tabs.
+
+00:06:32.220 --> 00:06:35.550
+This style is used in the unreal source code.
+
+00:06:35.550 --> 00:06:41.190
+When using tabs, spaces will still be used in the source file. We
+
+00:06:41.190 --> 00:06:47.790
+can see this in our file in the for loop, or when declaring a variable, that is, in this case we
+
+00:06:47.790 --> 00:06:53.640
+have spaces and tabs. It doesn't look very nice. Plus, in the settings, you can
+
+00:06:53.640 --> 00:07:00.560
+override the tab width, that is, how many spaces it contains. The key is called TabWidth
+
+00:07:01.820 --> 00:07:08.480
+For the test, set the value to 6. Format. The indentation looks terrible. For the first lines,
+
+00:07:08.480 --> 00:07:15.160
+spaces were not enough for one tab. And in the middle we have a mix of tabs and spaces.
+
+00:07:15.930 --> 00:07:18.990
+Therefore, the UseTab key will have the value Never.
+
+00:07:18.990 --> 00:07:22.620
+We format the document. Everything looks much neater with spaces
+
+00:07:22.620 --> 00:07:28.080
+. The key that is responsible for wrapping brackets is called BreakBeforeBraces. Enter the
+
+00:07:32.550 --> 00:07:33.630
+value of the Attach key
+
+00:07:35.650 --> 00:07:42.960
+. Format. And the parenthesis doesn't wrap anymore, but we'll set the value that the parentheses wrap.
+
+00:07:42.960 --> 00:07:47.190
+It's called Allman. The style can be customized very subtly,
+
+00:07:47.190 --> 00:07:49.860
+for example, parentheses that refer to a function
+
+00:07:49.860 --> 00:07:52.080
+can have one style, parentheses
+
+00:07:52.080 --> 00:07:56.190
+that refer to a loop statement, another, and so on. All you need
+
+00:07:56.190 --> 00:08:00.300
+to do for this is to find the name of the key you are interested in. The
+
+00:08:01.000 --> 00:08:04.360
+documentation also provides code examples
+
+00:08:04.360 --> 00:08:10.750
+for each key and its value. You can see how the code will look after it has been formatted.
+
+00:08:10.750 --> 00:08:17.550
+I will add a few more keys to our clang format. We will not consider them. You can look at the
+
+00:08:17.550 --> 00:08:24.130
+source code of the project and find the corresponding keys in the documentation. This concludes our review of the clang forma
+
+00:08:24.130 --> 00:08:30.040
+. It is just a document that is responsible for formatting the code. Let's add another
+
+00:08:30.040 --> 00:08:34.780
+file to our project. It also existed in our test project from the previous chapter,
+
+00:08:37.230 --> 00:08:45.625
+Create a New File. We name it .gitignore - this file allows us to specify for git
+
+00:08:45.625 --> 00:08:48.990
+those files and directories that we do not want to see in the repository.
+
+00:08:48.990 --> 00:08:55.350
+In our working directory, some folders and files are generated by unreal, so it makes no sense
+
+00:08:55.350 --> 00:08:59.580
+to store them in the repository. Generated again project files.
+
+00:09:00.440 --> 00:09:05.630
+The .gitignore file can be quite fine-tuned. Links to documentation will also be below the video.
+
+00:09:07.700 --> 00:09:14.740
+Reload the solution .gitignore appeared in the explorer tree. Let's take a look at the directories of
+
+00:09:14.740 --> 00:09:21.010
+our project. The first .vs directory is the visual studio cache. This folder is
+
+00:09:21.010 --> 00:09:24.490
+generated automatically, we do not need it in version control,
+
+00:09:24.490 --> 00:09:27.550
+so we can safely add it. To do this, write the name
+
+00:09:27.550 --> 00:09:35.130
+in the .gitignore file on a new line. Move on. We don't need the Binaries folder. Here are the
+
+00:09:35.130 --> 00:09:42.640
+files created when compiling the project, for example, dynamic libraries dll, I created the build directory
+
+00:09:42.640 --> 00:09:46.030
+manually, in which I usually build the game,
+
+00:09:46.840 --> 00:09:49.330
+so this directory will also go to .gitignore
+
+00:09:50.640 --> 00:09:56.190
+We need the config folder, this is where the project settings of the engine, editor and game are located ...
+
+00:09:56.190 --> 00:09:56.940
+We need the
+
+00:09:59.640 --> 00:10:06.240
+content folder . All assets, all our blueprints are located here. The DerivedDataCache directory is
+
+00:10:06.240 --> 00:10:08.880
+temporary, we don't need it in the repository.
+
+00:10:10.960 --> 00:10:16.210
+The Intermediate directory is temporary. Here, for example, is the visual studio project files
+
+00:10:16.210 --> 00:10:19.450
+that we generate using the .uproject file
+
+00:10:21.350 --> 00:10:25.070
+The Saved folder is also temporary. It contains various meta information:
+
+00:10:25.070 --> 00:10:27.470
+logs, backups and other files that we
+
+00:10:27.470 --> 00:10:31.460
+don't need in version control. The source folder is the most
+
+00:10:31.460 --> 00:10:33.860
+important, it contains all the source codes of our
+
+00:10:33.860 --> 00:10:39.470
+game and the last file is the solution visual studio. We don't need it in version control, because
+
+00:10:39.470 --> 00:10:45.290
+it is generated using an uproject. To prevent files with a specific extension from being included
+
+00:10:45.290 --> 00:10:51.790
+in version control in gitignore, an asterisk is indicated before the extension. We did this for files of
+
+00:10:51.790 --> 00:10:54.430
+type solution. We indicate each of the directories
+
+00:10:54.430 --> 00:10:58.420
+that we do not need on a new line of our .gitignore
+
+00:10:58.420 --> 00:11:04.920
+and add a forward slash at the end. None of the files from these directories will be included in our repository.
+
+00:11:04.920 --> 00:11:14.120
+I will leave an additional link below the video. It will lead to a file on github. This is a more
+
+00:11:14.120 --> 00:11:19.160
+complex, generic gitignore that can be used for any projects built with an
+
+00:11:19.160 --> 00:11:24.640
+unreal engine. But our simplified version of gitignore should be fine as well.
+
+00:11:26.590 --> 00:11:30.700
+And the last link is a link to a repository that
+
+00:11:30.700 --> 00:11:34.180
+describes the blueprint naming style quite well.
+
+00:11:34.180 --> 00:11:36.670
+The basic approach is as follows:
+
+00:11:36.670 --> 00:11:39.700
+each unreal asset we create is named as follows:
+
+00:11:39.700 --> 00:11:47.410
+The first 1, 2 or 3 letters is the class name of this asset. Next is the underscore,
+
+00:11:47.410 --> 00:11:50.980
+and at the very end is the custom name of the asset.
+
+00:11:50.980 --> 00:11:54.100
+In the course of the course, we will try to follow this document.
+
+00:11:55.380 --> 00:11:58.170
+I forgot to say one important thing about the code.
+
+00:11:58.170 --> 00:12:04.920
+All the first letters of functions, variables, constants in our code will start with a capital letter.
+
+00:12:04.920 --> 00:12:09.090
+A similar style is used in the source code of the unreal engine.
+
+00:12:09.890 --> 00:12:12.110
+This concludes the current lesson.
+

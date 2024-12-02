@@ -1,0 +1,181 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.612 --> 00:00:11.169
+Let's start developing pickups. In this tutorial, we will create all the necessary classes.
+
+00:00:11.169 --> 00:00:20.514
+Let's start with the main base class. We will inherit from the actor. We name the class STUBasePickup.
+
+00:00:22.562 --> 00:00:25.419
+Create a new directory called pickups.
+
+00:00:27.821 --> 00:00:38.536
+Click Create Class. If the project doesn't compile, add a new directory to PublicIncludePaths in build.
+
+00:00:38.536 --> 00:00:42.531
+We inherit from the base pickup class.
+
+00:00:42.531 --> 00:00:49.866
+We name the first class STUAmmoPickup. He will be in charge of the ammunition of the weapon.
+
+00:00:53.760 --> 00:01:02.674
+We create the second class. We call it STUHealthPickup. This class will be responsible for the life of the character.
+
+00:01:04.261 --> 00:01:09.801
+Let's create a collision component in the base class. This will be a spherical collision.
+
+00:01:10.894 --> 00:01:17.431
+We added this component when working with projectile. In C ++ logic, we will only have a collision.
+
+00:01:17.431 --> 00:01:21.560
+We will customize the visual representation of the pickup in blueprints.
+
+00:01:21.560 --> 00:01:27.670
+It can be either a static mesh or a particle system, or both. Therefore, it makes no sense to add
+
+00:01:27.670 --> 00:01:34.193
+specific presentation components in C ++. Add forward declarations for the sphere component.
+
+00:01:34.870 --> 00:01:38.800
+In C ++, we include the header file.
+
+00:01:44.670 --> 00:01:46.785
+Let's define a log category for pickup.
+
+00:01:51.050 --> 00:01:56.361
+Go to the projectile class, copy the creation of the collision component.
+
+00:01:56.361 --> 00:02:07.076
+Insert the constructor into BasePickup. Let's change some settings: set the radius of the sphere to 50 units, and set the collision response to ECR_Overlap.
+
+00:02:07.660 --> 00:02:13.638
+In projectile, we subscribed to the hit event, and our pickup will react to overlap.
+
+00:02:13.638 --> 00:02:18.815
+It was possible to use a collision delegate, as we did in the projectile case,
+
+00:02:18.815 --> 00:02:26.271
+but there is also another way. We can override a special actor function, which is called
+
+00:02:26.751 --> 00:02:33.355
+when an overlap event has occurred with any component of the actor, that is, in fact, one actor is overlapped by another.
+
+00:02:33.355 --> 00:02:38.032
+If we go into the actor class and enter NotifyActorBeginOverlap,
+
+00:02:38.032 --> 00:02:43.806
+then we can find a virtual function that will be called if the actors overlap.
+
+00:02:44.818 --> 00:02:48.000
+Let's override it in our ASTUBasePickup class.
+
+00:02:50.682 --> 00:02:52.134
+Add override.
+
+00:02:56.081 --> 00:02:58.228
+We create the body of the function.
+
+00:03:00.105 --> 00:03:04.892
+The first thing we will do is add a call to the base function through the Super keyword,
+
+00:03:04.892 --> 00:03:13.160
+so as not to lose the logic of the parent function, and to begin with, we just print a message to the console.
+
+00:03:13.160 --> 00:03:18.610
+That is, in fact, when players cross a collision, we will give the player the quantitative
+
+00:03:18.610 --> 00:03:24.389
+characteristics of this pickup, and the pickup itself can be deleted. Call the Destroy function.
+
+00:03:25.435 --> 00:03:30.415
+In order not to waste time on design, I have prepared material that we will use for pickup.
+
+00:03:31.254 --> 00:03:37.681
+The base material is called BaseGlow. It generally matches the normal color material.
+
+00:03:37.681 --> 00:03:43.611
+The only difference is that this material has an additional parameter, which is included in the emissive color.
+
+00:03:43.611 --> 00:03:48.380
+Emissive color is responsible for the glow of the material. I created a MaterialInstance
+
+00:03:48.380 --> 00:03:55.082
+based on the given base material. The first material we have will glow with a blue light. Also, if we
+
+00:03:55.082 --> 00:04:01.230
+increase the value of the glow parameter, the glow is more intense. The second similar material will
+
+00:04:01.230 --> 00:04:07.870
+glow green. I also added two additional meshes: the health mesh is for the
+
+00:04:07.870 --> 00:04:17.916
+health pickup, and the rockets mesh will be used for the weapon pickup. I created these meshes in UE
+
+00:04:17.916 --> 00:04:23.393
+using the simplest geometry. We have already done the floor in this way.
+
+00:04:23.393 --> 00:04:29.321
+On the left, in the geometry category, we can select the Box element, drag it onto the stage.
+
+00:04:30.226 --> 00:04:39.532
+And then in the details panel, you can adjust the size of the cube and, for example, let's change the value at the X coordinate - set it to 600.
+
+00:04:39.532 --> 00:04:49.474
+Copy this geometry, rotate the box 90 degrees along the Y axis.
+
+00:04:49.474 --> 00:04:56.257
+This way we get a cross. And, in order to turn this geometry into a static mesh,
+
+00:04:56.257 --> 00:05:04.250
+you need to select these boxes and click on the create static mesh button in the details menu. A static mesh is created
+
+00:05:04.250 --> 00:05:10.105
+based on this geometry and we can already use it directly in blueprints.
+
+00:05:13.970 --> 00:05:17.520
+I made the ammo mesh in a similar way
+
+00:05:17.520 --> 00:05:24.566
+using cylindrical and spherical geometries. Let's create blueprint classes.
+
+00:05:25.030 --> 00:05:27.498
+We inherit from our C ++ versions.
+
+00:05:30.000 --> 00:05:33.452
+Create a blueprint class for the ammo pickup.
+
+00:05:37.600 --> 00:05:48.227
+And create a blueprint class for the health pickup. We start with a health pickup. Add a new component to the blueprint - the static mesh component.
+
+00:05:49.075 --> 00:05:52.877
+And in the details panel, select a mesh for it - our cross.
+
+00:05:56.410 --> 00:06:01.031
+The dimensions are approximately the same, that is, the cross is inside the sphere.
+
+00:06:01.031 --> 00:06:06.263
+You can play a little with the scale - set the values ​​to 1.2.
+
+00:06:09.680 --> 00:06:14.640
+Go to the blueprint class AmmoPickup. Add a static mesh component.
+
+00:06:17.387 --> 00:06:26.160
+And set the rocket mesh in the details panel. You can move the mesh up along the Z axis.
+
+00:06:27.573 --> 00:06:31.963
+We return to the main window. We remove our giant cross.
+
+00:06:33.415 --> 00:06:36.046
+We take our pickups onto the stage.
+
+00:06:41.612 --> 00:06:42.554
+We start the game.
+
+00:06:44.467 --> 00:06:47.794
+We take pickup lives, we take pickup weapons.
+
+00:06:49.065 --> 00:06:54.290
+If you open the log, you can see our messages that the pickup was taken.
+

@@ -1,0 +1,136 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.314 --> 00:00:12.498
+Before building the project, let's make the pawn stop firing in all available game situations.
+
+00:00:12.498 --> 00:00:17.188
+The first is the end of the game. We call the TurnOff function on each pawn.
+
+00:00:17.709 --> 00:00:27.824
+The second situation, when we do a restart, call the reset function, and the third situation, when we call the SetPause function.
+
+00:00:27.824 --> 00:00:32.200
+The TurnOff and Reset functions are virtual, so we
+
+00:00:32.200 --> 00:00:38.540
+can override them in the BaseCharacter class. and add the functionality we need,
+
+00:00:38.540 --> 00:00:43.638
+that is, stop shooting. We override these functions in the public category.
+
+00:00:45.709 --> 00:00:48.139
+We create a body for each function.
+
+00:00:57.868 --> 00:01:00.778
+Call the StopFire function of the weapon component
+
+00:01:03.034 --> 00:01:07.524
+and at the same time remove the optical zoom - call the zoom function with the false parameter.
+
+00:01:12.984 --> 00:01:19.861
+We add the same calls to the Reset function. If you want, you can create an additional method so that there is no duplication of code.
+
+00:01:20.570 --> 00:01:24.963
+Let me remind you that we check the weapon component using the check macro.
+
+00:01:24.963 --> 00:01:31.026
+But if your components are dynamically recreated in the actor's code, then this check is naturally not enough
+
+00:01:31.026 --> 00:01:35.337
+and the components need to be checked for nullptr every time we access them.
+
+00:01:35.768 --> 00:01:39.218
+We will also stop firing when paused in the game.
+
+00:01:39.218 --> 00:01:44.462
+For convenience, let's create a new function in the game mode class. Let's call it from StopAllFire.
+
+00:01:50.903 --> 00:01:58.283
+Add the StopAllFire call to the SetPause function. We also need the weapon component.
+
+00:02:02.000 --> 00:02:10.728
+In the StopAllFire function, we need to iterate over all available pawns and call the StopFire function on the weapon component.
+
+00:02:13.471 --> 00:02:15.116
+We get a pointer to the weapon component.
+
+00:02:21.675 --> 00:02:24.256
+We call the StopFire function.
+
+00:02:27.897 --> 00:02:30.777
+And also forcibly remove the optical magnification.
+
+00:02:32.165 --> 00:02:38.000
+I will show you one more cosmetic point with which you can reduce the number of lines in our code.
+
+00:02:38.000 --> 00:02:43.154
+For example, in the playercontroller class, the creation of a local pointer can be removed under the if.
+
+00:02:43.154 --> 00:02:49.364
+This construction is allowed in C ++. In this case, the scope of the variable is limited to the if block.
+
+00:02:49.364 --> 00:02:53.288
+And one line less in the class. We compile the project.
+
+00:02:54.595 --> 00:03:02.210
+We have a small problem with the EQS. I have placed two PlayerStart on the scene at the edges of our scene.
+
+00:03:02.210 --> 00:03:07.900
+The enemy character does not move because he is at the very edge of the navigation mesh and cannot find
+
+00:03:07.900 --> 00:03:15.430
+a point suitable for movement. We can open debug information and verify this. This is
+
+00:03:15.430 --> 00:03:21.035
+due to our cone pattern. In general, this situation is quite rare, but unpleasant.
+
+00:03:21.035 --> 00:03:29.656
+Let's fix it in the simplest way. We can change the point generator for EQS or in our cone generator change the angle.
+
+00:03:29.656 --> 00:03:36.700
+Set 360. As a result, points will be generated in a full circle. We start the game.
+
+00:03:36.700 --> 00:03:43.597
+The character ran. Let's configure the weapon as well. We have a short firing range: 1500 units.
+
+00:03:43.597 --> 00:03:52.899
+Let's increase it to 10 thousand units. We do this in the rifle class and also in the launcher class.
+
+00:03:59.134 --> 00:04:01.408
+We are all ready to build the project.
+
+00:04:02.341 --> 00:04:09.460
+Choose file -&gt; package project, build configuration: shipping. Click on windows 64-bit.
+
+00:04:16.579 --> 00:04:21.373
+The project packaged successfully, but we can see that there are warnings in our log.
+
+00:04:22.000 --> 00:04:27.140
+The message says that some assets were saved with an empty version of the engine.
+
+00:04:27.140 --> 00:04:33.700
+This is an asset versioning bug. It is very easy to fix it - all the assets that
+
+00:04:33.700 --> 00:04:40.689
+were specified in the warnings are enough, just resave. In our case, this applies to animation assets.
+
+00:04:42.978 --> 00:04:45.534
+And also the skeletal mesh of the rifle asset.
+
+00:04:49.550 --> 00:04:52.454
+Clearing the log, let's pack it again.
+
+00:04:58.830 --> 00:05:05.011
+The game is packed, we can check that the log is really clean by removing messages of the message type in the filters.
+
+00:05:05.011 --> 00:05:07.827
+There are no errors or warnings in the log.
+
+00:05:09.177 --> 00:05:12.326
+EXE file us now with an icon. We start the game.
+
+00:05:26.635 --> 00:05:31.607
+Everything works. Now with the headshot we can destroy the enemy with one shot.
+

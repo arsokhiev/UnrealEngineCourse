@@ -1,0 +1,367 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.750 --> 00:00:11.520
+In this lesson, we will add an animation for changing weapons and deal with a new type
+
+00:00:11.520 --> 00:00:17.879
+called AnimNotify. The change animation will also be an AnimMonrage.
+
+00:00:18.343 --> 00:00:23.110
+We will store it in the weapon component. Add a new property that
+
+00:00:23.110 --> 00:00:29.251
+will store a pointer to the weapon change animation. Let's name the variable EquipAnimMontage.
+
+00:00:31.333 --> 00:00:39.166
+Additionally, let's create another function that will play the AnimMontage, let's call it PlayAnimMontage.
+
+00:00:39.825 --> 00:00:45.500
+And as a parameter there will be a pointer to the animation. We will also have an animation of reloading
+
+00:00:45.500 --> 00:00:52.147
+weapons a little later, so it is more convenient to immediately select a separate method for playing the animation.
+
+00:00:53.216 --> 00:01:01.280
+We create the body of this function at the very bottom of the class. We have already used AnimMontage
+
+00:01:01.280 --> 00:01:06.560
+to play the animation of the death of a character. Character has a special function for this,
+
+00:01:06.560 --> 00:01:14.577
+so we copy the code for getting character through owner and call the ACharacter class function PlayAnimMontage.
+
+00:01:16.260 --> 00:01:22.590
+We pass our Animation parameter to it. It is not necessary for us to check the pointer to nullptr,
+
+00:01:22.590 --> 00:01:28.170
+because if we go to the PlayAnimMontage function, we will see that this check
+
+00:01:28.170 --> 00:01:36.210
+already exists here . Let's call this function inside the EquipWeapon function, that is, when we change
+
+00:01:36.210 --> 00:01:42.841
+weapons, the animation of changing weapons should be played. Let's check how it all works.
+
+00:01:45.058 --> 00:01:49.922
+Our shooter game assets have a special animation called Equip.
+
+00:01:51.308 --> 00:02:00.167
+Let's create an AnimMontage based on it. Right-click. Choose create -&gt; create AnimMontage.
+
+00:02:00.167 --> 00:02:08.328
+We call it AM_Equip. Save and transfer to our animation folder.
+
+00:02:09.000 --> 00:02:20.042
+Open up the character's blueprint. Go to the weapon component and set AM_Equip to our property. We launch the project.
+
+00:02:20.042 --> 00:02:27.430
+Click on tab, on the mouse wheel. The weapon swap animation plays. We have a number of problems.
+
+00:02:27.430 --> 00:02:32.639
+If we quickly switch between weapons, then PlayAnimation is constantly called.
+
+00:02:33.242 --> 00:02:39.807
+We can also shoot at this moment, that is, nothing is blocked for us - full out of sync.
+
+00:02:39.807 --> 00:02:45.370
+We can block shooting at the start of the animation, block the change of weapons, but we need to have a
+
+00:02:45.370 --> 00:02:51.244
+mechanism for determining when the animation ends in order to unlock everything back.
+
+00:02:51.244 --> 00:02:57.352
+Animation has such a mechanism. It's called "Notify". If we open any animation asset,
+
+00:02:58.060 --> 00:03:05.087
+then in the lower panel of the animation editor we will see a timeline with you where the animation frames are played.
+
+00:03:05.087 --> 00:03:12.280
+And on the left, there is a category called Notifies. In the tracks, we can place
+
+00:03:12.280 --> 00:03:18.310
+events with you that are tied to specific animation frames. There is also a Track button
+
+00:03:18.310 --> 00:03:25.181
+in the Notifies category . We can add additional tracks with you. This is done for the convenience of
+
+00:03:25.181 --> 00:03:29.188
+grouping events. We will see how it looks in C ++ soon.
+
+00:03:29.188 --> 00:03:38.266
+Right-click on any track. Select Add Notify -&gt; New Notify and enter an arbitrary name in the window.
+
+00:03:38.266 --> 00:03:44.470
+Let's call our test event EquipFinished and place it at the very end of the timeline.
+
+00:03:46.223 --> 00:03:50.115
+At the bottom, you can press pause so that the animation does not flicker.
+
+00:03:50.115 --> 00:03:57.090
+Let's take a look at the animation. You can move the slider. The actual weapon change takes place somewhere in the second frame of the animation.
+
+00:03:57.090 --> 00:04:04.228
+The logic of changing weapons can be further complicated by adding an additional Notify, calling it WeaponChange
+
+00:04:04.228 --> 00:04:10.415
+and changing weapons immediately when this event occurs. We will not do this.
+
+00:04:10.415 --> 00:04:14.862
+For anyone interested, after this lesson, you can try to do it yourself.
+
+00:04:14.862 --> 00:04:20.010
+Let's go to the animation blueprint on EventGraph, that to subscribe to Notify,
+
+00:04:20.010 --> 00:04:27.508
+just select it in the "Add AnimNotify Event" category, or find it by name through the search.
+
+00:04:27.508 --> 00:04:33.684
+Let's check how it works and print a message when the EquipFinished event occurs.
+
+00:04:34.890 --> 00:04:41.280
+Compile. We start the game. We got two messages, because there are two characters
+
+00:04:41.280 --> 00:04:49.901
+on the stage , we press tab and when the animation comes to an end, a message is printed on the screen.
+
+00:04:51.293 --> 00:04:57.198
+So, we figured out what AnimNotify is. Let's create our own in C ++
+
+00:04:57.198 --> 00:05:05.371
+and program the logic in the weapon component. Click show all classes. In the search, enter AnimNotify.
+
+00:05:05.371 --> 00:05:12.817
+We will inherit from this base class. Let's call our class STUEquipFinishedAnimNotify.
+
+00:05:14.283 --> 00:05:19.395
+Let's create a new folder where we will put this class. Let's call it Animations.
+
+00:05:21.709 --> 00:05:23.873
+Click create class.
+
+00:05:24.435 --> 00:05:28.040
+Don't forget to add a new Animations folder to the build file.
+
+00:05:29.049 --> 00:05:37.350
+We open the created class and immediately go to the base class UAnimNotify. Press f12.
+
+00:05:38.725 --> 00:05:44.730
+Unfortunately, the UAnimNotify class does not have any C ++ event or delegate to which we
+
+00:05:44.730 --> 00:05:51.480
+could subscribe and find out when a given AnimNotify has occurred, but there is a virtual function that
+
+00:05:51.480 --> 00:05:57.577
+is called when AnimNotify fires. The functions are called Notify.
+
+00:05:58.098 --> 00:06:05.646
+We can override it in our concrete class and add a call to our own delegate in it.
+
+00:06:06.270 --> 00:06:12.768
+Copy the function. Create a public section and insert the notify function.
+
+00:06:15.404 --> 00:06:22.948
+Add the signature of the new delegate above the class. We call it FOnNotifiedSignature.
+
+00:06:25.800 --> 00:06:33.290
+And we create a delegate in the class. Let's call it OnNotified. In fact, we will use a pattern known
+
+00:06:33.290 --> 00:06:38.810
+in object-oriented programming as a decorator, that is, we add additional
+
+00:06:38.810 --> 00:06:45.615
+logic to an existing function. Therefore, we call the parent function through Super.
+
+00:06:48.530 --> 00:06:57.877
+Also, do not forget to pass all the arguments to it. And we add a call to our delegate on top. We use the Broadcast function.
+
+00:06:59.413 --> 00:07:04.404
+Go to the weapon component header file. Our next task is to access
+
+00:07:04.404 --> 00:07:09.650
+our AnimNotify and subscribe to the delegate we created. Let's create two additional
+
+00:07:09.650 --> 00:07:17.060
+functions. The first one is called InitAnimations. In it we will find our AnimNotify and subscribe to it.
+
+00:07:18.870 --> 00:07:25.627
+And the second function is the callback itself, which we must bind to the OnNotified delegate.
+
+00:07:25.627 --> 00:07:31.739
+Let's call it OnEquipFinished. We create a body for each function.
+
+00:07:36.380 --> 00:07:41.110
+We will also include the header file of our AnimNotify.
+
+00:07:43.890 --> 00:07:49.740
+Let's create a log category for the weapon component. We copy the macro for the log of
+
+00:07:49.740 --> 00:07:56.207
+any place where we already have it. We name the category LogWeaponComponent.
+
+00:07:57.000 --> 00:08:03.347
+And in the OnEquipFinished function, we will output to the log that we have finished changing weapons.
+
+00:08:06.000 --> 00:08:11.740
+First, let's add a call to the InitAnimations function in the BeginPlay function.
+
+00:08:12.988 --> 00:08:20.350
+It will be called once when character spawns. Go to the body of the function. We have a pointer
+
+00:08:20.350 --> 00:08:27.913
+to the animation montage. AnimNotify can be accessed using a custom property
+
+00:08:27.913 --> 00:08:33.637
+that almost all animation assets have. Property is called Notifies.
+
+00:08:33.637 --> 00:08:41.037
+Let's access this property using our animation montage. Find Notifies.
+
+00:08:42.326 --> 00:08:49.895
+Press F12. We find ourselves in the UAnimSequenceBase class. This is one of the base animation classes.
+
+00:08:49.895 --> 00:08:57.067
+The very first property we see is called Notifies. It is an array of FAnimNotifyEvent objects.
+
+00:08:57.818 --> 00:09:03.610
+Let's hit f12 on this type. This is a structure that stores additional information
+
+00:09:03.610 --> 00:09:09.490
+about the animation event and a pointer to the UAnimNotify object, which we
+
+00:09:09.490 --> 00:09:15.500
+directly need. We return to the component. Create a local
+
+00:09:15.500 --> 00:09:22.440
+variable called NotifyEvents and assign it the value of the Notifies array.
+
+00:09:24.330 --> 00:09:28.638
+Let's immediately add a check that EquipMantage is a non-null pointer.
+
+00:09:32.250 --> 00:09:36.580
+We have an array of animation events, let's go through it
+
+00:09:36.580 --> 00:09:45.147
+and find the AnimNotify we're interested in. We use a for loop over all the elements of the array.
+
+00:09:46.575 --> 00:09:51.387
+The pointer we are interested in is in the Notify field.
+
+00:09:52.853 --> 00:10:01.150
+We create a local pointer, which we call EquipFinishedNotify and, to find out
+
+00:10:01.150 --> 00:10:10.049
+if this Notify is our EquipFinishedAnimNotify, we will try to convert it to our type.
+
+00:10:10.049 --> 00:10:16.180
+For this we use Cast. We copy the name of the type of our Notify and substitute it into the template.
+
+00:10:16.850 --> 00:10:22.410
+That is, if the type conversion was successful, then this is the Notify we need.
+
+00:10:23.799 --> 00:10:25.676
+Checking the pointer.
+
+00:10:27.148 --> 00:10:34.903
+If the pointer is non-null, then we can get our OnNotified delegate
+
+00:10:36.360 --> 00:10:42.000
+and bind our OnEquipFinished function.
+
+00:10:44.408 --> 00:10:50.060
+After that, we can immediately make a break, that is, we leave the loop completely, although, purely theoretically,
+
+00:10:50.060 --> 00:10:55.100
+you can add several animated Notify of the same type, but in the case of changing weapons,
+
+00:10:55.100 --> 00:11:01.040
+this does not make sense and it turns out that someone just messed up in blueprints. One more thing - if we
+
+00:11:01.040 --> 00:11:08.783
+go to UAnimSequenceBase, we will see that this class also has a property AnimNotifyTracks.
+
+00:11:08.783 --> 00:11:14.570
+This is what we saw in editor. Tracks that can be added to the timeline. But this property
+
+00:11:14.570 --> 00:11:19.024
+is under the WITH_EDITORONLY_DATA macro. It can only be accessed during development.
+
+00:11:19.024 --> 00:11:27.580
+When building the game binaries, you will have a compilation error, because in the assembled project we do not access either the editor or its data,
+
+00:11:27.580 --> 00:11:29.863
+so this macro is set to 0.
+
+00:11:30.110 --> 00:11:34.137
+Let's install the Notify we created. Open the AM_Equip asset.
+
+00:11:36.230 --> 00:11:45.617
+And set it to the very, very end of our animation. Right-click on the track. AddNotify.
+
+00:11:45.617 --> 00:11:50.617
+And at the bottom of the list, we see our Notify, created in C ++.
+
+00:11:51.560 --> 00:11:54.303
+You can also change the color in the details panel.
+
+00:11:57.340 --> 00:11:58.821
+We save the asset.
+
+00:12:01.260 --> 00:12:10.602
+We launch the game and as many as 4 EquipFinished messages have been logged. If we clear the log
+
+00:12:11.803 --> 00:12:13.890
+and hit tab once.
+
+00:12:15.497 --> 00:12:21.096
+Then two events came. Let's figure out why this is happening and correct it.
+
+00:12:22.037 --> 00:12:28.350
+Our property EquipAnimMontage is a pointer to the animation asset and both of our characters
+
+00:12:28.350 --> 00:12:36.626
+on the stage subscribe to the event from this montage, that is, roughly speaking: WE change the weapon,
+
+00:12:36.626 --> 00:12:43.491
+the animation starts playing, and when it reached our Notify, the notification came to all characters.
+
+00:12:43.491 --> 00:12:49.710
+In our case, there are two of them. The Notify function that we've overridden has two parameters,
+
+00:12:49.710 --> 00:12:56.060
+one of which is USkeletalMeshComponent. We can change our delegate a bit and add
+
+00:12:56.060 --> 00:13:03.010
+a pointer to SkeletalMesh as a parameter. According to this pointer, we can filter AnimNotify, and if the
+
+00:13:03.010 --> 00:13:08.282
+animation is played not for our skeleton, then we will not process this AnimNotify.
+
+00:13:09.364 --> 00:13:16.744
+In the weapon component, we will also change the signature of the OnEquipFinished function. Add a pointer to USkeletalMeshComponent.
+
+00:13:19.940 --> 00:13:22.330
+We also add to the .cpp file.
+
+00:13:25.720 --> 00:13:32.899
+Through the GetOwner pointer, we can get a pointer to the SkeletalMeshComponent of the character
+
+00:13:32.899 --> 00:13:37.437
+and check if it matches the SkeletalMeshComponent that came in the parameter.
+
+00:13:44.620 --> 00:13:49.185
+And if they match, we will display the message "Equip finished".
+
+00:13:50.990 --> 00:13:52.351
+We launch the project.
+
+00:13:53.596 --> 00:14:01.355
+Only 2 messages were printed, not 4 like last time, that is, each character filtered the AnimNotify that he did not need.
+
+00:14:01.355 --> 00:14:08.620
+And if we press tab, then the message is displayed only once. That's all in this lesson.
+
+00:14:08.620 --> 00:14:14.800
+The main logic is ready. In the next lesson, we will finish blocking all actions until our animation is complete.
+

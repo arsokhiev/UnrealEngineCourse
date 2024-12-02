@@ -1,0 +1,301 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.886 --> 00:00:11.244
+In the current lesson, we will inflict damage to the character depending on which part of the body we hit,
+
+00:00:11.244 --> 00:00:18.570
+and in particular, we will make a headshot. Let's remember what happens in the TakeDamage function. Press f12.
+
+00:00:20.318 --> 00:00:29.020
+Inside the function, it is checked whether the parameter of the object of type DamageEvent is of type FPointDamageEvent and if it is,
+
+00:00:29.020 --> 00:00:39.377
+then the OnTakePointDamage delegate is called with various parameters. Next comes the second check: whether it belongs
+
+00:00:39.377 --> 00:00:45.544
+to the FRadialDamageEvent type and if it does, then the OnTakeRadialDamage function is called.
+
+00:00:46.392 --> 00:00:51.200
+In the health component, we subscribe to the OnTakeAnyDamage delegate, which is called
+
+00:00:51.200 --> 00:00:58.190
+in any case regardless of the type. FPointDamageEvent is a structure
+
+00:00:58.190 --> 00:01:04.490
+that inherits from the base FDamageEvent. It has additional parameters, the main one
+
+00:01:04.490 --> 00:01:12.164
+that interests us, called HitInfo. We can pass an object of type FPointDamageEvent to the TakeDamage function
+
+00:01:12.164 --> 00:01:21.140
+and specify the FHitResult structure. Let's create a local variable. Let's call it PointDamageEvent.
+
+00:01:21.140 --> 00:01:28.590
+Also in this structure there are two constructors: one is the default, and in the other we can pass
+
+00:01:28.590 --> 00:01:37.562
+damage, hit result, shot direction, damage type, and so on. We create an object using the default constructor.
+
+00:01:37.562 --> 00:01:44.670
+And we will explicitly indicate the only parameter of interest to us, HitInfo. We assign it a value,
+
+00:01:44.670 --> 00:01:52.068
+which we pass as a parameter to the MakeDamage function. And we pass this object to the TakeDamage function.
+
+00:01:53.237 --> 00:01:59.077
+After this transformation, the OnTakePointDamage delegate will be called
+
+00:01:59.077 --> 00:02:09.534
+and we can subscribe to it in the health component. Let's copy the signature. It is quite long for this delegate.
+
+00:02:17.720 --> 00:02:21.343
+And we create a callback function in the health component.
+
+00:02:22.989 --> 00:02:25.637
+We call it OnTakePointDamage.
+
+00:02:31.660 --> 00:02:36.952
+And when the projectile explodes, the ApplyRadialDamage function is called,
+
+00:02:39.146 --> 00:02:45.180
+which in the end calls the TakeDamage function
+
+00:02:45.180 --> 00:02:48.791
+with an event of the FRadialDamageEvent type.
+
+00:02:50.092 --> 00:02:54.589
+That is, in the case of projectile, two delegates are currently being called:
+
+00:02:54.589 --> 00:02:59.026
+one is OnTakeAnyDamage, and the second is OnTakeRadialDamage.
+
+00:03:01.010 --> 00:03:03.472
+Let's copy the signature OnTakeRadialDamage.
+
+00:03:12.544 --> 00:03:18.674
+We create an additional function in the health component, call it OnTakeRadialDamage.
+
+00:03:22.315 --> 00:03:23.950
+A little refactoring will need to be done.
+
+00:03:23.950 --> 00:03:28.581
+Let's add an additional function called ApplyDamage.
+
+00:03:29.400 --> 00:03:35.160
+We will move the code into it, which is now in the OnTakeAnyDamage function.
+
+00:03:38.800 --> 00:03:42.000
+We create a body for each function.
+
+00:04:07.910 --> 00:04:13.420
+And we transfer the code that is in the OnTakeAnyDamage function to the ApplyDamage function.
+
+00:04:15.821 --> 00:04:21.320
+We have 3 callback functions to handle damage events. Let's subscribe
+
+00:04:22.070 --> 00:04:25.640
+to the appropriate delegates. Let's bind our functions.
+
+00:04:38.556 --> 00:04:44.776
+We will handle damage in only two functions: OnTakePointDamage and OnTakeRadialDamage.
+
+00:04:45.380 --> 00:04:52.628
+Our old OnTakeAnyDamage function is no longer needed. Let's call the ApplyDamage function in these callbacks.
+
+00:04:55.800 --> 00:05:01.526
+At the moment, the logic of the health component has not changed, that is, bullets will be processed
+
+00:05:01.526 --> 00:05:09.320
+in OnTakePointDamage, and projectile explosions in the OnTakeRadialDamage function. Let's add logs to this function.
+
+00:05:12.138 --> 00:05:18.908
+In the OnTakePointDamage function, we will display the amount of damage that needs to be applied to the character's health
+
+00:05:18.908 --> 00:05:26.230
+and also one of the parameters called boneName. This is the name of the skeleton bone of our character
+
+00:05:26.230 --> 00:05:32.800
+that we got into. Information about the bone is in the FHitResult structure, but as we can see, the
+
+00:05:32.800 --> 00:05:39.070
+FHitResult structure is not completely in the parameters of this delegate. It is called with only some of the parameters
+
+00:05:39.070 --> 00:05:45.347
+from this structure. Knowing the name of the bone, we can already cause damage depending on the given name.
+
+00:05:45.810 --> 00:05:51.690
+We will do this with you using physical materials. If the FHitResult structure were
+
+00:05:51.690 --> 00:05:58.558
+completely passed in the delegate, then getting the physical material would not be a problem.
+
+00:05:58.558 --> 00:06:04.620
+We already know how to do it. Physical material is the field of a given structure. We will now
+
+00:06:04.620 --> 00:06:12.389
+learn how to obtain physical material, knowing only the name of the bone. In the OnTakeRadialDamage and OnTakeAnyDamage functions,
+
+00:06:12.389 --> 00:06:18.123
+we will only log the quantitative characteristics of the damage - the damage parameter.
+
+00:06:21.253 --> 00:06:27.314
+We will need an additional property, which will contain modifiers for damage
+
+00:06:27.314 --> 00:06:34.875
+, depending on the physical material. For this purpose, a data structure is suitable for us - an associative array,
+
+00:06:34.875 --> 00:06:40.392
+in which the key will be the physical material, and the value of the damage modifier is a
+
+00:06:40.392 --> 00:06:46.613
+certain number by which we will multiply the damage that we received in the callback function.
+
+00:06:51.742 --> 00:06:54.798
+We call property DamageModifiers.
+
+00:06:57.690 --> 00:07:02.250
+For convenience, we will create a function in which we will receive a pointer to a physical
+
+00:07:02.250 --> 00:07:08.270
+material depending on the name of the bone and return the value of the damage modifier.
+
+00:07:09.599 --> 00:07:16.979
+The function will have two parameters - this will point to the actor that received the damage and also the name of the bone.
+
+00:07:23.665 --> 00:07:27.765
+Let's add a forward declaration for the physical material class.
+
+00:07:29.180 --> 00:07:32.108
+And we create the body of the function in a .cpp file.
+
+00:07:35.619 --> 00:07:42.000
+We need the character header file. We already have an actor and a pawn. Delete the actor's header file.
+
+00:07:42.000 --> 00:07:49.522
+It is redundant, and we replace pawn with character. include the header file of the physical material.
+
+00:07:57.523 --> 00:08:02.684
+The first thing we will do in our function is cast the DamageActor to type Character.
+
+00:08:02.684 --> 00:08:09.082
+We will get the physical material using the mesh component, the pointer to which is in the charter class.
+
+00:08:11.537 --> 00:08:19.310
+If the pointer is null, then we will return the value 1. We will use the value that
+
+00:08:19.310 --> 00:08:26.582
+this function returns as a multiplier to our original damage. So when we return 1,
+
+00:08:26.582 --> 00:08:31.430
+the damage value simply won't change. We can immediately add a call to this
+
+00:08:31.430 --> 00:08:39.580
+function to OnTakePointDamage. We create a local constant. We call it FinalDamage.
+
+00:08:41.890 --> 00:08:49.570
+And assign it the value of the Damage product by the value returned by the GetPointDamageModifier function.
+
+00:08:49.570 --> 00:08:56.871
+We pass DamageActor and BoneName into it. We also change the parameter for the ApplyDamage function.
+
+00:08:57.444 --> 00:09:00.288
+Plus, we will output the FinalDamage value to the log.
+
+00:09:04.756 --> 00:09:13.267
+We return to the body of our function. Let's create a local variable for the physical material pointer.
+
+00:09:16.911 --> 00:09:25.285
+Let's get the given value. We call the GetMesh function. It returns a pointer to the mesh component.
+
+00:09:25.883 --> 00:09:30.643
+Next, we call the mesh component function called GetBodyInstance.
+
+00:09:30.643 --> 00:09:35.532
+It returns a pointer to a special type called FBodyInstance.
+
+00:09:36.578 --> 00:09:43.590
+We also pass the BoneName parameter to this function. And the final function of the FBodyInstance structure
+
+00:09:43.590 --> 00:09:49.830
+is called GetSimplePhysicalMaterial. This function directly returns a
+
+00:09:49.830 --> 00:09:56.338
+pointer to the physical material. We are not interested in the FBodyInstance structure. These are the implementation details.
+
+00:09:57.260 --> 00:10:01.804
+Next, we check if the given key exists in our associative array.
+
+00:10:05.210 --> 00:10:07.919
+If it does not exist, then we return 1.
+
+00:10:10.690 --> 00:10:13.877
+And if it does exist, then we return the value of the modifier.
+
+00:10:18.155 --> 00:10:23.354
+And also check that all pointers are nonzero.
+
+00:10:32.680 --> 00:10:38.399
+We compile the project. We can add two additional physical materials.
+
+00:10:38.871 --> 00:10:45.520
+We assign one to the collisions that are on the character's hands, call it hand, and assign the
+
+00:10:45.520 --> 00:10:52.893
+second one to the character's legs, call it leg. We go to the character editor, to the physics tab
+
+00:10:53.770 --> 00:11:00.737
+and replace the physical materials on the character's hands, we had a body. We change to hand.
+
+00:11:04.392 --> 00:11:10.694
+We do the same with the legs - change to leg. And we also check that we have head on our head.
+
+00:11:11.140 --> 00:11:18.285
+In the AICharacter blueprint, add data to our associative array. If we hit the body,
+
+00:11:18.970 --> 00:11:24.740
+let the modifier be 1, that is, the damage will not change. If we get into the hand,
+
+00:11:24.740 --> 00:11:32.530
+let's make the value less than one, that is, the final damage will be less. When hitting the leg,
+
+00:11:33.330 --> 00:11:40.268
+let the value be slightly more than 1. When hitting the head, we will multiply the damage by a large value.
+
+00:11:40.268 --> 00:11:45.090
+In our case, this will definitely kill the character, but with certain
+
+00:11:45.090 --> 00:11:51.690
+damage and health settings of the character, this scheme may not work, so if we want the character
+
+00:11:51.690 --> 00:11:58.415
+to die unambiguously when dealing damage to the head, in the code it is clearly possible to set the amount of health to 0
+
+00:11:58.415 --> 00:12:05.315
+on hit into the physical material head. For testing, disable the behavior tree logic.
+
+00:12:07.098 --> 00:12:10.371
+We will also set the round time a little more.
+
+00:12:12.722 --> 00:12:19.742
+We open the log. I also turned off the sound beforehand in the game. We run up to any character,
+
+00:12:20.710 --> 00:12:29.260
+shoot in the leg. All information was displayed in the log. For the leg, the modifier 1.1 worked for us and the final damage = 11.
+
+00:12:30.670 --> 00:12:39.478
+When it hit the hand, the modifier 0.8 worked. Next, we check for hitting the character's body.
+
+00:12:41.116 --> 00:12:43.807
+We shoot. Modifier = 1. Everything is correct.
+
+00:12:44.835 --> 00:12:47.883
+And at the end we kill the enemy with a shot in the head.
+
+00:12:51.955 --> 00:12:56.905
+We will also add modifiers to the PlayerCharacter blueprint.
+
+00:13:00.175 --> 00:13:02.157
+This concludes the current lesson.
+

@@ -1,0 +1,166 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.476 --> 00:00:11.280
+In this tutorial, we'll make the AI ​​characters a little smarter. Let's add a new feeling to them, which will be
+
+00:00:11.280 --> 00:00:18.000
+responsible for the perception of damage, that is, if we shoot at the enemy from behind, he
+
+00:00:18.000 --> 00:00:24.642
+will turn in this direction. First, you need to add a new feeling
+
+00:00:24.642 --> 00:00:34.875
+to the Senses Config perception component . Click on the plus sign and select the AI ​​Damage sense config from the
+
+00:00:37.510 --> 00:00:39.046
+list. Change the debug color.
+
+00:00:42.470 --> 00:00:48.290
+And we will set the lifetime of this feeling at one second. Moving to visual studio.
+
+00:00:49.716 --> 00:00:55.925
+Let's start with the perception class of the component. Add a header file sense damage.
+
+00:00:58.738 --> 00:01:05.779
+The logic that we add for the damage perception can later be used for the NPC's sense of hearing.
+
+00:01:09.535 --> 00:01:15.860
+The GetClosesEnemy function returns the closest enemy. At the beginning of the function, we get an array of actors that
+
+00:01:15.860 --> 00:01:22.570
+we see. Let's do the following: if the size of the array is zero, that is, we
+
+00:01:22.570 --> 00:01:28.160
+do not see anyone, then we will call the GetCurrentlyPercievedActors function again.
+
+00:01:29.115 --> 00:01:32.013
+But we will use a different feeling parameter - damage.
+
+00:01:39.641 --> 00:01:46.511
+If after this call the size of the array is 0, then we return nullptr.
+
+00:01:47.712 --> 00:01:52.320
+And if not, then we execute all our logic with an array of actors. Here we have one
+
+00:01:52.320 --> 00:01:57.060
+special case that we will not consider: if we see a player from our team
+
+00:01:57.060 --> 00:02:03.156
+and at the same time someone is shooting at us from behind, then we will not handle this situation in any way.
+
+00:02:04.107 --> 00:02:10.496
+Let's move on to the health component. Let's create an additional function called ReportDamage.
+
+00:02:10.496 --> 00:02:16.280
+In order for us to get in the perception component the actor that caused the damage, we need to pass
+
+00:02:16.280 --> 00:02:22.742
+information about the damage inflicted to the perception system. We will now see how this is done.
+
+00:02:23.622 --> 00:02:29.913
+The function will have two parameters: the first is a quantitative characteristic of the damage inflicted
+
+00:02:29.913 --> 00:02:34.860
+, and the second parameter is a pointer to the controller of the character that caused the damage.
+
+00:02:35.697 --> 00:02:37.325
+We create the body of the function.
+
+00:02:40.750 --> 00:02:47.204
+We will call it in the ApplyDamage function. You can add a call to the very bottom of the function.
+
+00:02:48.950 --> 00:02:52.529
+We pass parameters: damage and controller.
+
+00:02:58.452 --> 00:03:04.782
+Here we also need the sense damage header file. We connect it in the health component.
+
+00:03:06.730 --> 00:03:15.000
+And we return to the ReportDamageEvent function. The function that conveys information about the damage
+
+00:03:15.000 --> 00:03:22.367
+to the perception system is in the sense damage class. It is static.
+
+00:03:24.000 --> 00:03:25.965
+The ReportDamageEvent is called.
+
+00:03:28.426 --> 00:03:34.531
+We can press F12, see what's going on inside. A special AI Damage Event is formed
+
+00:03:34.531 --> 00:03:41.880
+and transferred to the perception system. As a result, a new actor will be added, which caused the damage,
+
+00:03:41.880 --> 00:03:47.850
+and in the perception component we can get it using the GetCurrentlyPercievedActors function.
+
+00:03:49.115 --> 00:03:51.206
+Let's pass all the necessary parameters.
+
+00:03:51.857 --> 00:03:56.380
+The first is a pointer to the world. We pass it using the GetWorld function.
+
+00:04:00.333 --> 00:04:06.636
+The second parameter is a pointer to the actor that suffered the damage. We will use the GetOwner function.
+
+00:04:08.520 --> 00:04:13.317
+The third parameter is directly the actor who caused the damage. This is what we will
+
+00:04:13.317 --> 00:04:19.430
+receive in the perception component. Let's use the GetPawn function of the controller, which has
+
+00:04:19.430 --> 00:04:25.960
+damaged us. Next is the amount of damage. We will not use this information in any way in our
+
+00:04:25.960 --> 00:04:33.820
+perception system. But it's better to pass the correct value. The next parameter is the location of the event.
+
+00:04:33.820 --> 00:04:39.640
+In other words, from what point the damage was caused. We will simply transfer the position of the enemy character.
+
+00:04:41.123 --> 00:04:47.213
+The last parameter is the hit location where the damage was caused. We pass the position of our character.
+
+00:04:48.420 --> 00:04:52.587
+More accurate values ​​can be passed, especially at point damage.
+
+00:04:59.502 --> 00:05:02.411
+We check all the necessary pointers to nullptr.
+
+00:05:05.680 --> 00:05:12.073
+If you, for example, want to implement hearing perception so that bots react to noise,
+
+00:05:12.073 --> 00:05:17.122
+then for this purpose you need a function called ReportNoiseEvent.
+
+00:05:17.122 --> 00:05:21.702
+She is in the AI ​​Sense hearing class. We compile the project.
+
+00:05:22.773 --> 00:05:25.536
+For the test, disable the behavior tree logic.
+
+00:05:27.153 --> 00:05:32.232
+We add the FindEnemy service to the node so that the enemy can be identified.
+
+00:05:32.232 --> 00:05:38.244
+I also unfolded all PlayerStart in advance so that the forward vector was directed
+
+00:05:38.244 --> 00:05:42.885
+from the center of the scene. So it will be faster to sneak up from the back to our enemies.
+
+00:05:45.126 --> 00:05:51.966
+We run up to the NPC character. We turn on AI debug information: press the number 4 on the numpad.
+
+00:05:51.966 --> 00:05:57.480
+The enemy does not see us. We shoot. He turned and saw us.
+
+00:05:57.480 --> 00:06:03.078
+Testing with a character who is on our team. Turn on / off debug information so
+
+00:06:03.078 --> 00:06:07.770
+that debug information is drawn from the character we are looking at. The NPC understands that
+
+00:06:07.770 --> 00:06:11.580
+we are in it, but does not turn, because we are on the same team with him.
+

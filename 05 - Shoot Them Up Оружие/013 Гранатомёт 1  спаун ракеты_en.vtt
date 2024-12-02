@@ -1,0 +1,235 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.434 --> 00:00:11.470
+In this lesson, we begin with you the development of the logic of the grenade launcher, the launcher and the first thing we
+
+00:00:11.470 --> 00:00:21.187
+will do is add the socket in the same way as we did for the rifle. We call it MuzzleSocket.
+
+00:00:21.187 --> 00:00:25.444
+The name will be the same, so we will not need to redefine it
+
+00:00:25.444 --> 00:00:30.530
+in the launcher class and also need to change the transformation so that it is located approximately
+
+00:00:30.530 --> 00:00:39.678
+where the mesh was blowing. I selected the parameters in advance so that we would not suffer. Relative position (0, -15, 65).
+
+00:00:39.678 --> 00:00:47.794
+The rotation is the same as that of the rifle socket (-90, 90, 0). Save asset.
+
+00:00:49.320 --> 00:00:54.869
+We also need an additional actor. The launcher will fire real rockets.
+
+00:00:55.660 --> 00:01:02.917
+Go to C ++ classes, to the weapon folder and create a new class.
+
+00:01:04.572 --> 00:01:06.112
+Choosing an actor.
+
+00:01:08.720 --> 00:01:12.818
+We call our rocket class STUPprojectile.
+
+00:01:18.000 --> 00:01:25.012
+Click create class and go to visual studio. I cleaned up the class I just created as usual.
+
+00:01:25.012 --> 00:01:32.009
+We don't need Tick, so bCanEverTick = false. Also I removed the tick function and cleaned up the comments.
+
+00:01:32.630 --> 00:01:38.080
+We will add one component to C ++. This will be a spherical collision. We will decorate the appearance, design
+
+00:01:38.080 --> 00:01:42.970
+in blueprints, since it is not so important whether the rocket will be some kind of mesh,
+
+00:01:42.970 --> 00:01:49.850
+or some kind of special particle system. Therefore, we create property. The class that is responsible for the spherical collision
+
+00:01:49.850 --> 00:01:55.005
+is called USphereComponent. You and I have already worked with the capsule collision.
+
+00:01:55.570 --> 00:02:01.450
+This collision class is even simpler. It represents a sphere and with the help of this collision we
+
+00:02:01.450 --> 00:02:07.341
+will understand whether we are somewhere or not. Add a forward declaration of this class.
+
+00:02:10.722 --> 00:02:23.067
+Go to the .cpp file. Add a header file where the "Components / SphereComponent.h" spherical component is located.
+
+00:02:24.339 --> 00:02:30.115
+Create it in the class constructor. We have done this many times already.
+
+00:02:34.580 --> 00:02:39.801
+Let's set the radius for our collision. This is done using the InitSphereRadius function.
+
+00:02:40.908 --> 00:02:46.407
+Set the radius of the sphere to 5 units. If something happens, we can always change it in the blueprint.
+
+00:02:47.132 --> 00:02:51.051
+And let's make the collision component the root of our class.
+
+00:02:52.310 --> 00:02:57.230
+This is enough for us for the current lesson, so let's go directly to
+
+00:02:57.230 --> 00:03:03.453
+the launcher class and dynamically create this projectile class when fired.
+
+00:03:04.176 --> 00:03:11.207
+First, let's override the StartFire and MakeShot functions. Their functionality will differ from the base class.
+
+00:03:14.790 --> 00:03:20.080
+Next, we create a property, which will indicate the rocket class that we want to spawn.
+
+00:03:23.320 --> 00:03:27.535
+For this we use the TSubclassOf &lt;&gt; template already known to us.
+
+00:03:29.619 --> 00:03:32.161
+We specify the STUProjectile class.
+
+00:03:33.291 --> 00:03:35.728
+We name the variable ProjectileClass.
+
+00:03:39.460 --> 00:03:43.784
+And add the forward declaration of the projectile class.
+
+00:03:46.167 --> 00:03:51.576
+Go to the .cpp file of the launcher class, create the body of the StartFire function.
+
+00:03:53.147 --> 00:04:01.252
+This function will contain a call to MakeShot. Let's write this down right away and create the body of the MakeShot function.
+
+00:04:02.350 --> 00:04:05.142
+Add the header file projectile.
+
+00:04:07.554 --> 00:04:17.400
+We need to include another header file that contains GameplayStatics. We will use it to spawn our rocket.
+
+00:04:18.570 --> 00:04:22.930
+Going into the MakeShot function, let's program the spawn logic.
+
+00:04:23.369 --> 00:04:28.286
+So, we create a local variable of type FTransform, which will be responsible
+
+00:04:28.286 --> 00:04:34.609
+for the initial transformation of our rocket. We name the variable SpawnTransform.
+
+00:04:36.540 --> 00:04:43.110
+And we pass rotation to the initialization constructor. Rotation will be zero, so we can
+
+00:04:43.110 --> 00:04:49.290
+use a static variable of the FRotator :: ZeroRotator class, and the starting position
+
+00:04:49.290 --> 00:04:56.465
+will coincide with the position of the socket, so we can use the GetMuzzleWorldLocation function,
+
+00:04:56.465 --> 00:05:01.040
+which is in our base class. The next variable is a pointer
+
+00:05:01.040 --> 00:05:08.390
+to the rocket actor, let's call it Projectile. We will spawn using a special function
+
+00:05:08.390 --> 00:05:15.080
+called BeginSpawnDeffered. We used it in the first chapter. It allows you to postpone the call
+
+00:05:15.080 --> 00:05:21.580
+to the BeginPlay function. This will allow us to configure some parameters in this class. The function has
+
+00:05:21.580 --> 00:05:28.450
+several arguments: the first is a pointer to the world. We pass GetWorld. The next argument is the class
+
+00:05:28.450 --> 00:05:35.087
+we want to spawn. We pass the projectile class and also pass the transformation.
+
+00:05:35.087 --> 00:05:41.113
+We leave the rest of the parameters by default, after that we will need to pass some parameters,
+
+00:05:41.113 --> 00:05:49.149
+which we will talk about in the next lesson. Therefore, we leave comments here: set projectile params.
+
+00:05:53.208 --> 00:05:57.229
+We need to complete the spawn in order for the BeginPlay function to be called.
+
+00:05:58.401 --> 00:06:05.109
+Therefore, we need to call another function called FinishSpawningActor.
+
+00:06:05.911 --> 00:06:11.333
+And we pass into it a pointer to the projectile actor and also SpawnTransform.
+
+00:06:12.792 --> 00:06:21.757
+Let's check what we got. Our launcher should spawn projectile in the place where the muzzle of the weapon is.
+
+00:06:23.016 --> 00:06:24.272
+We compile the project.
+
+00:06:26.482 --> 00:06:29.938
+We got an error, let's see what's wrong.
+
+00:06:31.527 --> 00:06:38.158
+I forgot to add .h in the projectle class when including the sphere component header file. We start again.
+
+00:06:39.137 --> 00:06:45.299
+We inherit from our projectile class. Let's create a blueprint inheritor class.
+
+00:06:46.241 --> 00:06:53.171
+We name it BP_STUProjectile and put it in the weapon folder.
+
+00:06:55.641 --> 00:07:00.171
+Our blueprint has opened. We see a spherical collision that we created in C ++.
+
+00:07:00.986 --> 00:07:07.839
+Let's add an elementary mesh for now, let it be a sphere as well. Click on Add Component.
+
+00:07:07.839 --> 00:07:13.342
+In the search, enter Sphere and add the sphere mesh, which is available in the editor resources.
+
+00:07:13.342 --> 00:07:19.700
+Also, the radius is quite large, so in the details panel, let's change the scale of our mesh to roughly
+
+00:07:19.700 --> 00:07:32.065
+match the size of the collision. Let's put, for example, 0.095. We compile the blueprint and the last step we need to take is
+
+00:07:32.065 --> 00:07:40.049
+to specify the class that we want to spawn in the launcher. Therefore, go to the weapon section
+
+00:07:40.940 --> 00:07:48.138
+and specify BP_STUProjectile in PeojectileClass. We launch the project.
+
+00:07:49.598 --> 00:07:57.321
+Checking the shooting. Our sphere spawns where the muzzle is. Everything works correctly.
+
+00:07:58.568 --> 00:08:02.337
+Change the color of the sphere to make it look more contrasting.
+
+00:08:03.290 --> 00:08:08.397
+In the root folder in the Content Browser, create a new folder called Materials.
+
+00:08:09.982 --> 00:08:16.407
+Right-click to create a material. We call it M_BaseColor.
+
+00:08:17.374 --> 00:08:23.720
+Open the material, click with the number 4 clamped anywhere on the graph. Add a 4D vector.
+
+00:08:23.720 --> 00:08:29.120
+We connect to Base Color. Right-click on the node. Select convert to parametr and
+
+00:08:29.120 --> 00:08:35.494
+name the parameter color. This is the simplest material, which is responsible only for color.
+
+00:08:36.181 --> 00:08:44.887
+Next, right-click on the asset and select create material instance. We call MT_RedColor.
+
+00:08:44.887 --> 00:08:47.910
+Activate the color parameter in details
+
+00:08:47.910 --> 00:08:54.240
+and set some shade of red. Go back to the blueprint projectile and
+
+00:08:54.240 --> 00:09:02.527
+set this material in details . We save. We start the project and our projectile is now red.
+
+00:09:03.182 --> 00:09:09.410
+That's all in this lesson, in the next we'll continue and program the projectile movement.
+

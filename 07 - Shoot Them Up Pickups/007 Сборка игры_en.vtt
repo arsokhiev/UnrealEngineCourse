@@ -1,0 +1,25 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.898 --> 00:00:11.580
+In this section, refactoring will be minimal. When we select weapons and the number of clips we
+
+00:00:11.580 --> 00:00:18.000
+have is equal to zero, then adding ClipsAmount to zero does not make sense, although this is also not an error.
+
+00:00:19.492 --> 00:00:22.839
+Let's check our changes in the packed version of the game.
+
+00:00:24.915 --> 00:00:31.299
+Check the development configuration and click windows 64-bit.
+
+00:00:34.640 --> 00:00:37.940
+We have successfully packed the game, pickups rotate a little faster,
+
+00:00:37.940 --> 00:00:43.711
+because the assembled version has more FPS. This can be adjusted a little later.
+
+00:00:44.883 --> 00:00:52.794
+We waste our lives. We take pickup lives, shoot a couple of cartridges and pick up a pickup with cartridges.
+

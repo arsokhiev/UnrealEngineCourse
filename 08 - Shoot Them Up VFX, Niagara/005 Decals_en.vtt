@@ -1,0 +1,349 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.270 --> 00:00:12.651
+In this tutorial, we'll look at the decals and create the bullet trail effect. If
+
+00:00:12.651 --> 00:00:17.653
+you see red lighting needs to rebuild in the upper left corner, you can fix it as follows.
+
+00:00:17.653 --> 00:00:21.690
+Click on the triangle next to the build button. In the lighting quality menu, you can
+
+00:00:21.690 --> 00:00:28.933
+select the quality of the light and then click on the build lighting only button and wait for a while.
+
+00:00:28.933 --> 00:00:34.481
+This time will depend directly on the quality that you have chosen. The process is complete, the
+
+00:00:34.481 --> 00:00:39.660
+lettering has been removed, and the lighting looks more realistic. In the place actors window, go
+
+00:00:39.660 --> 00:00:45.739
+to the visual effects category, find the asset decal there and drag it onto the stage.
+
+00:00:45.739 --> 00:00:50.160
+A decal is a special kind of material that is projected onto meshes: both static meshes
+
+00:00:50.160 --> 00:00:56.856
+and skeletal meshes. We pulled the decal actor asset onto the stage. In its settings,
+
+00:00:56.856 --> 00:01:02.257
+in the Decal category, we can see what properties are available: this is the decal material, various types of fade
+
+00:01:02.257 --> 00:01:08.070
+and also the size of the decal box. Before the lesson, I put the unreal logo .png file
+
+00:01:08.070 --> 00:01:14.898
+into the dev folder of our project . Let's create a decal material based on this image. Right
+
+00:01:14.898 --> 00:01:22.925
+click on the image asset and select create material. We name the material M_TestDecal.
+
+00:01:24.865 --> 00:01:32.030
+Open the material asset. The texture was automatically substituted into BaseColor. In order for us to use this
+
+00:01:32.030 --> 00:01:39.000
+material as a decal, we need to select the main material node and select Deferred Decal in the property material domain
+
+00:01:39.000 --> 00:01:44.282
+, and set translucent in blend mode. We will not analyze the materials
+
+00:01:44.282 --> 00:01:50.460
+, this is not really the topic of our course. The only addition is the alpha channel of the texture.
+
+00:01:50.460 --> 00:01:59.078
+Pin Opacity. Save the material, return to the content browser and assign this material
+
+00:01:59.078 --> 00:02:06.070
+to the property Decal Material. The logo is displayed on the stage and it is projected onto the floor. Using this technique,
+
+00:02:06.070 --> 00:02:11.230
+you can make various graffiti on the walls, create the effect of characters' traces on different
+
+00:02:11.230 --> 00:02:16.791
+surfaces. We will use this technique to create bullet marks.
+
+00:02:17.500 --> 00:02:22.630
+In the settings, you can change the size of the decal box, thereby reducing the volume in which it will be
+
+00:02:22.630 --> 00:02:29.063
+projected onto the mesh. The main thing is that this volume intersects the surface we need.
+
+00:02:30.000 --> 00:02:36.000
+Place it on the top of the cube. Let's see how it looks. We get a pretty neat poster.
+
+00:02:38.092 --> 00:02:41.811
+Before the tutorial, I added a special decal material from the shooter game.
+
+00:02:41.811 --> 00:02:47.681
+If you enter Decal in the search, you can find this material called ImpactDecal.
+
+00:02:47.681 --> 00:02:53.275
+Let's install it in our decal actor and this material visually represents a bullet trace.
+
+00:02:53.902 --> 00:02:58.830
+We can place it on the floor and see how it will look with the current textures.
+
+00:03:03.850 --> 00:03:10.211
+If we open the material, it looks a little more complex than the one we created,
+
+00:03:10.211 --> 00:03:16.171
+but all the manipulations with the texture are done to improve the visual quality: the textures are desaturated,
+
+00:03:16.544 --> 00:03:22.199
+different values ​​of the material parameters are set, and there is also a normal map texture.
+
+00:03:23.059 --> 00:03:27.135
+The decal will spawn at the same time as the inpact effect spawns.
+
+00:03:27.135 --> 00:03:32.560
+Let's create additional structures in CoreTypes that we will need in this tutorial. The first structure
+
+00:03:32.560 --> 00:03:39.250
+will be named FDecalData. In this structure, we will store the necessary settings for the current decal.
+
+00:03:39.250 --> 00:03:44.050
+First, the main property will contain the decal material. The base class that is responsible
+
+00:03:44.050 --> 00:03:50.355
+for material in C ++ is called UMaterialInterface. We name the variable Material.
+
+00:03:54.078 --> 00:04:01.950
+The second field will be responsible for the size of the decal. It is of type FVector. We name it Size. Let's set the default value for
+
+00:04:01.950 --> 00:04:07.260
+this variable. To do this, we will use the FVector constructor with one parameter.
+
+00:04:07.260 --> 00:04:13.017
+This constructor initializes all FVector components with the same number.
+
+00:04:13.017 --> 00:04:18.113
+That is, the decal will be projected in the box by default, each side of which is 10.
+
+00:04:19.002 --> 00:04:25.310
+The next parameter is lifetime. This is the lifetime of the decal, that is, how long this decal will be on the stage.
+
+00:04:26.480 --> 00:04:32.629
+The last parameter is FadeOutTime. It will be responsible for the animation time of the decal alpha component.
+
+00:04:32.629 --> 00:04:38.882
+In fact, over a given period of time, the decal will dissolve and then disappear from the scene.
+
+00:04:39.623 --> 00:04:44.333
+The second structure we need will combine the Niagara effect and the decal.
+
+00:04:47.210 --> 00:04:51.085
+Let's call this structure FImpactData.
+
+00:04:54.240 --> 00:05:02.027
+Above the structures, let's make a comment that these types are visual effects - vfx.
+
+00:05:02.027 --> 00:05:07.198
+And we also need a forward declaration for NiagaraSystem.
+
+00:05:10.820 --> 00:05:20.022
+The first property of our structure is a pointer to the Niagara system. We call the data property NiagaraEffect.
+
+00:05:21.267 --> 00:05:24.571
+The second property is our structure - FDecalData.
+
+00:05:29.080 --> 00:05:34.332
+Go to the weaponFX component. We include the header file CoreTypes.
+
+00:05:36.940 --> 00:05:41.810
+We change the first property. Instead of a separate Niagara system, the default effect will
+
+00:05:41.810 --> 00:05:45.099
+contain both the Niagara system and FDecalData.
+
+00:05:46.775 --> 00:05:51.443
+We will also change the name of the variable. Let's call it DefaultImpactData.
+
+00:05:53.627 --> 00:05:58.500
+We need to make the same change in the second property. Replace the Niagara system
+
+00:05:58.500 --> 00:06:07.149
+with FImpactData and rename the property to ImpactDataMap.
+
+00:06:08.367 --> 00:06:14.817
+Go to the .cpp file. Let's start by including additional header files. We need
+
+00:06:14.817 --> 00:06:21.655
+GameplayStatics and also the DecalComponent, which is located at "Components / DecalComponent.h"
+
+00:06:22.053 --> 00:06:27.328
+Before spawning the decal, let's refactor the code of the PlayImpactFX function.
+
+00:06:29.135 --> 00:06:35.792
+We call the local variable ImpactData and assign it the value of property DefaultImpactData.
+
+00:06:36.190 --> 00:06:44.453
+We replace property EffectsMap with ImpactDataMap and make a similar replacement under the if statement.
+
+00:06:52.749 --> 00:06:56.941
+Let's add a comment that first we are spawning Niagara.
+
+00:06:59.700 --> 00:07:04.175
+We'll also add some one-line comments for formatting, because the function code is quite long.
+
+00:07:09.080 --> 00:07:18.497
+And we replace the already non-existent variable Effect with ImpactData.NiagaraEffect, that is, we refer to the field of our structure.
+
+00:07:19.015 --> 00:07:23.315
+We added all the necessary structures and refactoring.
+
+00:07:23.315 --> 00:07:30.360
+We are now ready to spawn the decal. The decal spawn function is located
+
+00:07:30.360 --> 00:07:38.146
+in the UGameplayStatics functional library. This function is called SpawnDecalAtLocation,
+
+00:07:38.146 --> 00:07:44.306
+or SpawnDecalAttached. That is, we either simply spawn the decal into the world, or we spawn
+
+00:07:44.306 --> 00:07:51.248
+and attach it to some component. You and I will use the SpawnDecalAtLocation function.
+
+00:07:51.248 --> 00:07:55.878
+The first parameter is WorldContex, we pass the GetWorld pointer there.
+
+00:07:55.878 --> 00:08:01.058
+We will also add comments, otherwise the function will not fit on one line.
+
+00:08:01.900 --> 00:08:09.363
+The next parameter is the decal material. We have it stored in our FDecalData structure,
+
+00:08:09.363 --> 00:08:15.510
+which itself is in the ImpactData structure. We pass it as the second parameter.
+
+00:08:17.760 --> 00:08:27.395
+The third parameter is the size of the decal. We also refer to our FDecalData, to the Size field.
+
+00:08:28.958 --> 00:08:39.156
+After that comes the location of the decal in the world. By analogy with the Niagara effect, we get this variable from HitResult, the ImpactPoint field.
+
+00:08:40.236 --> 00:08:45.516
+The next variable is the rotation of the decal. We pass in the same value that we used
+
+00:08:45.516 --> 00:08:52.010
+when spawning the Niagara system. All other parameters can be left as default. And so we
+
+00:08:52.010 --> 00:09:00.524
+spawned the decal into the world. A reasonable question arises, what to do with our LifeTime and FadeOutTime variables?
+
+00:09:00.524 --> 00:09:06.666
+The decal spawn function returns a pointer to the decal component. We need
+
+00:09:06.666 --> 00:09:13.442
+this pointer to set the decal life parameters. We create a local variable. We call it DecalComponent
+
+00:09:13.442 --> 00:09:20.580
+and assign a pointer that the spawn function returns. Check the given pointer for nullptr.
+
+00:09:21.430 --> 00:09:30.181
+If the decal component is nonzero, then we use a function called SetFadeOut.
+
+00:09:30.181 --> 00:09:35.459
+The decal also has another function called SetFadeIn. She is responsible for the
+
+00:09:35.459 --> 00:09:41.872
+appearance of the decal, but we will not bother with you like that. The first parameter is called StartDelay,
+
+00:09:41.872 --> 00:09:47.357
+that is, after how long the disappearance animation will start. We directly pass the LifeTime variable into it.
+
+00:09:48.000 --> 00:09:54.256
+The second variable is responsible for the timing of the fade animation. We pass the FadeOutTime there.
+
+00:09:54.256 --> 00:09:59.916
+The third variable is responsible for removing the owner decal. This variable will only make sense
+
+00:09:59.916 --> 00:10:06.589
+when we spawn our decal using the SpawnDecalAttached function. Let's compile our code.
+
+00:10:08.470 --> 00:10:15.716
+Let's set up all the visual assets. Open the blueprint of the rifle. Selecting our vfx component.
+
+00:10:16.320 --> 00:10:21.189
+And now each effect consists of a Niagara system and a DecalData.
+
+00:10:22.756 --> 00:10:32.382
+Set the DefaultImpact Niagara effect. We will use the same material everywhere - ImpactDecal.
+
+00:10:33.690 --> 00:10:39.222
+Leave all decal parameters as default. We need to re-install the entire map of our
+
+00:10:39.222 --> 00:10:45.304
+effects, because we have changed the data type. In general, we could not add a decal to the structure
+
+00:10:45.304 --> 00:10:52.918
+because we only have one decal material for all surfaces. We could make it a separate property
+
+00:10:52.918 --> 00:10:58.861
+and spawn it independently of the Niagara effect. We did it right from the architectural point of view right away.
+
+00:10:58.861 --> 00:11:04.638
+Even in our case, when we do not have special materials, we can slightly change the parameters of the decal
+
+00:11:04.638 --> 00:11:10.582
+and even just copy the current material and add some kind of mixing with a different color to the texture.
+
+00:11:16.174 --> 00:11:21.655
+The second asset where we need to set the effects is projectile. We open it.
+
+00:11:24.432 --> 00:11:29.349
+Set the ProjectileImpact Niagara effect in the vfx component.
+
+00:11:32.510 --> 00:11:35.748
+Set up our only decal material.
+
+00:11:38.566 --> 00:11:42.470
+In the case of projectile, we can change the default decal size.
+
+00:11:42.470 --> 00:11:46.333
+Make it bigger. It's still a trace of a missile hit.
+
+00:11:48.676 --> 00:11:52.054
+We launch. We shoot at the floor.
+
+00:11:53.679 --> 00:12:01.559
+Together with the Niagara effect, our decals spawn. In our case, they are absolutely the same and do not depend on the surface.
+
+00:12:05.080 --> 00:12:14.619
+Let's switch to the launcher. The contacts leave a giant decal. The only thing that can
+
+00:12:14.619 --> 00:12:18.728
+be noticed is that these decals really disappear after 5 seconds,
+
+00:12:18.728 --> 00:12:24.112
+but they do it instantly without any animation of the alpha channel. Let's fix it up.
+
+00:12:25.350 --> 00:12:29.938
+We find the decal material in the search. We open it.
+
+00:12:32.607 --> 00:12:39.000
+Materials have a special parameter that stores the value of the decal transparency variable.
+
+00:12:39.000 --> 00:12:44.150
+This parameter is called DecalLifetimeOpacity. At the moment when the
+
+00:12:44.150 --> 00:12:49.605
+FadeOut animation starts in the decal, this parameter starts changing from 1 to 0.
+
+00:12:51.328 --> 00:12:54.553
+We can simply multiply this parameter by the
+
+00:12:54.553 --> 00:12:59.962
+alpha channel assignment of our texture and feed the final value to the Opacity node.
+
+00:13:02.734 --> 00:13:09.726
+Let's check it out. Let's change the weapon to the launcher - it will be more noticeable. We are waiting for five seconds.
+
+00:13:10.245 --> 00:13:17.596
+And the decal faded smoothly in the time we set - 0.7 seconds. We can also fire a burst
+
+00:13:17.596 --> 00:13:22.045
+and watch the decals fade away. That's all in this lesson.
+

@@ -1,0 +1,562 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.522 --> 00:00:14.542
+Hello everyone! In this tutorial we will teach our weapon to shoot, but first, let's open the rifle mesh
+
+00:00:14.542 --> 00:00:20.000
+and figure out how we can get the muzzle coordinate. Socket will help us with this.
+
+00:00:20.000 --> 00:00:27.391
+We used the socket as an anchor to attach our weapon, and now we can use it to mark the
+
+00:00:27.391 --> 00:00:34.710
+muzzle of our rifle. Add a socket to the skeleton tree. By default, it is located at the zero of the local
+
+00:00:34.710 --> 00:00:42.456
+coordinate system of our weapon. We name our socket MuzzleSocket in the details panel.
+
+00:00:42.456 --> 00:00:50.210
+Muzzle translates to muzzle. Using the keys on the keyboard W, E, R, we can change the
+
+00:00:50.210 --> 00:00:58.266
+editing modes: movement, rotation and scale. We move our socket approximately to the place where we want
+
+00:00:58.266 --> 00:01:04.544
+to fire a shot, that is, closer to the muzzle. We can also use various projections.
+
+00:01:05.141 --> 00:01:12.216
+At the top in the upper corner is the projection selection panel. That is, for example, we can choose a projection from above.
+
+00:01:14.513 --> 00:01:23.979
+Or projection from left, right, bottom, top and make sure our socket is correctly aligned on all axes.
+
+00:01:25.912 --> 00:01:33.822
+In the details panel, let's round up our numbers: at x = 0, at y = -10 and at z = 80.
+
+00:01:34.641 --> 00:01:42.336
+So we've created a socket that we can access from the code and actually fire a shot from that point.
+
+00:01:42.336 --> 00:01:46.411
+First, let's draw a line along which our weapon will shoot.
+
+00:01:49.369 --> 00:01:57.401
+We create an additional function in our weapon. Let's call it MakeShot. This function will contain all the logic of the shot.
+
+00:01:57.401 --> 00:02:01.700
+We can use the Fire function for these purposes, but looking ahead, I can say
+
+00:02:01.700 --> 00:02:06.219
+that we will have timer shooting, so it is better to separate this logic into a separate function.
+
+00:02:06.219 --> 00:02:11.870
+Plus, for example, if your weapon type is a Winchester, then you will need to
+
+00:02:11.870 --> 00:02:17.713
+fire several shots at the same time, so we add a function call to the Fire function.
+
+00:02:19.790 --> 00:02:28.064
+Let's include the header files that we need in this tutorial. These are Engine / World.h
+
+00:02:28.064 --> 00:02:35.894
+and DrawDebugHelpers. We used this header file - we drew debug spheres.
+
+00:02:35.894 --> 00:02:40.343
+And now we need this header file to draw a line.
+
+00:02:41.070 --> 00:02:47.940
+Let's add a check for WeaponMesh to BeginPlay so that we don't write if every time. We will use
+
+00:02:47.940 --> 00:02:54.210
+WeaponMesh to get a socket. Let's go to the MakeShot function and first of all we will check
+
+00:02:54.210 --> 00:03:02.634
+that we have a world. If the world pointer is null, then we immediately exit this function.
+
+00:03:03.319 --> 00:03:08.395
+First of all, let's get the socket transform. We need both the location
+
+00:03:08.395 --> 00:03:14.506
+and rotation of the socket. Therefore, we create a local variable SocketTransform.
+
+00:03:16.521 --> 00:03:19.634
+The socket we created is in the WeaponMesh.
+
+00:03:20.715 --> 00:03:24.074
+The function that receives the socket transformation is
+
+00:03:25.348 --> 00:03:31.196
+called GetSocketTransform. This function has two parameters.
+
+00:03:31.196 --> 00:03:37.133
+The first one is the name of the socket, for which we create a stub - MuzzleSocketName.
+
+00:03:38.579 --> 00:03:43.493
+And the second parameter is responsible for the coordinate system in which we want to receive our socket.
+
+00:03:43.493 --> 00:03:47.799
+We leave the default value, which corresponds to the world coordinate system.
+
+00:03:48.700 --> 00:03:54.712
+Add a property for the name of our socket, which we call MuzzleSocket.
+
+00:04:01.420 --> 00:04:10.429
+We'll need a few variables. The first is the point where the shot starts. Let's call the variable TraceStart.
+
+00:04:10.429 --> 00:04:18.700
+It will be of type FVector and we will write the socket position into it, that is, we will take location from the transformation.
+
+00:04:19.775 --> 00:04:26.264
+The second variable will be of the same type FVector. Let's call it ShootDirection.
+
+00:04:26.264 --> 00:04:32.833
+In this variable, we will write a unit vector of the direction along which the weapon is fired.
+
+00:04:33.770 --> 00:04:40.432
+To do this, we need to get the rotation of our socket. Let's get it through the GetRotation function.
+
+00:04:40.432 --> 00:04:47.453
+This function returns the quaternion. In addition to FRotator, UE also uses the FQuat type,
+
+00:04:47.453 --> 00:04:52.640
+which is a quaternion by day. If you are unfamiliar with this concept,
+
+00:04:52.640 --> 00:05:00.320
+then there is nothing wrong with that. We will not go deep into this topic. It is more convenient for us to use this type here
+
+00:05:00.320 --> 00:05:05.543
+, because the quaternion has a convenient function called GetForwardVector.
+
+00:05:09.810 --> 00:05:17.029
+If we press F12 on this function, we will see that this function rotates the rotation vector along the x-axis.
+
+00:05:19.230 --> 00:05:25.203
+Thus, you and I know the point from which we will shoot and the direction. Let's create a
+
+00:05:25.203 --> 00:05:31.833
+third variable called TraceEnd - this is the end point of our shot.
+
+00:05:32.980 --> 00:05:39.031
+To get it, we need to postpone the direction vector from the starting point,
+
+00:05:39.770 --> 00:05:46.830
+that is, add ShootDirection to the TraceStart variable. This vector is single. Let's multiply it
+
+00:05:46.830 --> 00:05:55.000
+by some number large enough. We make a variable stub for this value, as usual.
+
+00:05:55.000 --> 00:06:04.215
+Let's call it TraceMaxDistance. We make this variable property. It will be of type float.
+
+00:06:06.233 --> 00:06:14.009
+Let the default value be 1500 units, or 1500 centimeters, or 15 meters,
+
+00:06:14.009 --> 00:06:16.348
+that is, we will shoot at this distance.
+
+00:06:18.319 --> 00:06:23.207
+So there is a start point, an end point. We can draw a line with you.
+
+00:06:23.207 --> 00:06:27.961
+To do this, we will use a function called DrawDebugLine.
+
+00:06:29.829 --> 00:06:37.077
+She has several arguments. The first is the world. We pass GetWorld there, which returns a pointer to UWorld.
+
+00:06:38.785 --> 00:06:46.200
+The next variable is LineStart, that is, the point from which the line starts. We pass our TraceStart variable there.
+
+00:06:46.644 --> 00:06:56.197
+Next is the end point. Pass TraceEnd. The next parameter is color. We will draw red lines FColor :: Red The next parameter determines
+
+00:06:56.197 --> 00:07:01.475
+whether this line will be drawn for some time or permanently.
+
+00:07:01.475 --> 00:07:07.333
+We're passing in false, which means we don't want the line to stay forever.
+
+00:07:07.333 --> 00:07:11.626
+The next parameter is the number of seconds for how long the line will be drawn.
+
+00:07:11.626 --> 00:07:18.300
+We put 3 seconds. Leave the next DepthPriority at 0. This is the order in which the depth is drawn. He is not interesting to
+
+00:07:18.300 --> 00:07:24.720
+us now. Specify the Thickness parameter 3 - this is the thickness of the line. That is, we will have 3 units.
+
+00:07:25.620 --> 00:07:31.234
+And that's all. Let's start the editor. Let's see how it looks. Click play.
+
+00:07:32.344 --> 00:07:39.588
+We see that we have slightly modified socket. We have a wrong rotation. Shooting is at 90 degrees.
+
+00:07:39.588 --> 00:07:46.598
+Let's fix it up. Open up the mesh of the weapon. The Forward vector corresponds to the X direction,
+
+00:07:46.598 --> 00:07:51.663
+that is, the red line. Let's rotate it around the Y-axis 90 degrees.
+
+00:07:51.663 --> 00:07:56.610
+The X-axis is now pointing in the correct direction. In principle, this is enough, but let's also tweak the
+
+00:07:56.610 --> 00:08:04.566
+rotation around the X-axis so that the Z-axis is facing up. Change the X rotation to -90.
+
+00:08:04.566 --> 00:08:10.651
+Socket rotation is now set correctly. Let's take a look. The lines are drawn correctly:
+
+00:08:10.651 --> 00:08:18.010
+in the direction of the bullet's exit from the muzzle. Now let's see how we can get information about the intersection of
+
+00:08:18.010 --> 00:08:21.067
+any objects in our game world by a given ray .
+
+00:08:22.176 --> 00:08:30.250
+From a mathematical point of view, we need to find the intersection of our line with the objects that are on the scene. In our case, it is enough to find the
+
+00:08:30.250 --> 00:08:36.190
+object that our segment will cross first. In the engine, in the box, there are many functions
+
+00:08:36.190 --> 00:08:42.211
+that allow you to find such geometric intersections. We will use one of them.
+
+00:08:42.850 --> 00:08:47.500
+Most of the functionality is found in the UWorld object. Therefore, we get to point to it
+
+00:08:47.500 --> 00:08:56.966
+using GetWorld and the function that we need is called LineTraceSingleByChannel.
+
+00:08:56.966 --> 00:09:02.667
+It returns information about the intersection with the very first object that will meet on the path of our segment,
+
+00:09:02.667 --> 00:09:08.320
+if any. The first parameter is a structure that is returned by reference, it contains all the
+
+00:09:08.320 --> 00:09:15.698
+information about the intersection. It is of type FHitResult. We pass a non-existent variable.
+
+00:09:15.698 --> 00:09:22.150
+The next parameter is the starting point of our segment, so we pass TraceStart. Further, the end
+
+00:09:22.150 --> 00:09:29.080
+point is TraceEnd. The fourth parameter is CollisionChannel. With it, our trace will filter out
+
+00:09:29.080 --> 00:09:35.073
+all objects on the scene and our trace will work only with those objects that block this channel.
+
+00:09:35.073 --> 00:09:39.700
+All other objects will be ignored. We will use the ECC_Visibility channel
+
+00:09:39.700 --> 00:09:47.032
+for our trace . Leave the rest of the function parameters by default. We are not interested in them now.
+
+00:09:47.032 --> 00:09:53.121
+We create our local variable of type FHitResult named HitResult.
+
+00:09:53.121 --> 00:10:00.000
+This object is passed by reference, and in case of a successful trace, all information of interest to us will be written to it.
+
+00:10:00.000 --> 00:10:05.399
+Press F12 on FHitResult. This type is a structure.
+
+00:10:05.399 --> 00:10:09.800
+The fields of this structure contain comprehensive information about the intersection.
+
+00:10:09.800 --> 00:10:18.471
+The structure records the time of intersection, the point of intersection, the normal, the pointer to the actor with which the intersection occurred, and so on.
+
+00:10:19.060 --> 00:10:26.434
+Also, our function returns boolean, that is, it returns true if there was an intersection and false if there was no intersection.
+
+00:10:26.434 --> 00:10:32.660
+Therefore, we can find out about the intersection through the return value of the function, or there is a
+
+00:10:32.660 --> 00:10:39.140
+second way how this can be done. The HitResult structure will also contain information about whether there was an
+
+00:10:39.140 --> 00:10:46.614
+intersection or not. The variable responsible for this is called bBlockingHit. If the value of
+
+00:10:46.614 --> 00:10:54.123
+this variable is true, then we hit something, and if it is false, then the intersection did not happen.
+
+00:10:54.614 --> 00:11:00.137
+Let's draw a sphere at the intersection point. For this we use the DrawDebugSphere function.
+
+00:11:00.910 --> 00:11:06.940
+The first parameter is a pointer to the world, the second is the center of the sphere. The center of the sphere should be
+
+00:11:06.940 --> 00:11:13.117
+at the intersection point. The HitResult variable that stores this value is called ImpactPoint.
+
+00:11:14.067 --> 00:11:19.174
+The next parameter is the radius. Let's make our sphere small. Let's indicate 10 units.
+
+00:11:21.321 --> 00:11:25.595
+The number of segments is 24. Let the color also be red.
+
+00:11:28.054 --> 00:11:29.832
+Next, we pass false.
+
+00:11:32.630 --> 00:11:38.658
+And let our sphere draw for five seconds. Launch the editor.
+
+00:11:40.758 --> 00:11:45.559
+Let's check the CollisionChannel of our character. To do this, open its blueprint.
+
+00:11:46.130 --> 00:11:53.555
+Select the capsule component in the component tree and go to the details panel. In the Collision section, our CollisionPreset
+
+00:11:53.555 --> 00:11:58.457
+is called Pawn. Select Custom from the list. This allows the values ​​to be edited.
+
+00:11:58.457 --> 00:12:05.660
+And set TraceResponse for Visibility to Block. If the TraceResponse for Visibility is Overlap or Ignore, then our
+
+00:12:05.660 --> 00:12:13.122
+trace simply won't work. We start shooting and when the character hits a collision, we draw spheres.
+
+00:12:13.122 --> 00:12:20.980
+Spheres are also displayed when hitting our steps. TraceResponse for Visibility is also set to Block.
+
+00:12:20.980 --> 00:12:27.723
+The basic logic for shooting works, but such shooting mechanics are unnatural for computer games.
+
+00:12:27.723 --> 00:12:34.057
+We need to make the bullet fly to the place where our sight is directed.
+
+00:12:34.057 --> 00:12:38.412
+To do this, we need to trace directly from the player's camera.
+
+00:12:38.412 --> 00:12:45.558
+This is what we are going to do now. By the way, the shooting logic that we have now implemented will work fine in virtual reality,
+
+00:12:45.558 --> 00:12:50.000
+because the pistol will be in our hand and it will be natural.
+
+00:12:50.000 --> 00:12:57.528
+Let's see how we can access the camera in our weapon class. First, let's include two header files: a
+
+00:12:57.528 --> 00:13:05.083
+character and a controller. We will access the user's camera through the controller class,
+
+00:13:05.083 --> 00:13:09.608
+so our first task is to get a pointer to the controller object.
+
+00:13:13.380 --> 00:13:20.000
+Actors, like components, have the concept of Owner, that is, the owner of this actor.
+
+00:13:20.000 --> 00:13:25.458
+Therefore, you and I can do the same thing as in the components.
+
+00:13:25.458 --> 00:13:35.461
+Let's create a local variable Player and cast to the ACharacter class of the pointer
+
+00:13:36.080 --> 00:13:42.950
+that the GetOwner function returns. We create components inside the actors, so their Owner
+
+00:13:42.950 --> 00:13:51.075
+is determined automatically. For actors, you need to explicitly indicate the owner of this particular actor.
+
+00:13:51.075 --> 00:13:55.930
+Go to the weapon component class. The moment we spawn a weapon, we have the
+
+00:13:55.930 --> 00:14:04.173
+opportunity to indicate the owner of our weapon. We can specify it through FActorSpawnParameters
+
+00:14:04.173 --> 00:14:10.360
+when we call the SpawnActor function. You can check it yourself. We will do this simply by
+
+00:14:10.360 --> 00:14:19.479
+calling the SetOwner function on CurrentWeapon. The owner of the weapon is the same actor that owns the weapon component,
+
+00:14:19.479 --> 00:14:26.467
+that is, we can call GetOwner, or we can directly pass the Character pointer.
+
+00:14:29.222 --> 00:14:33.517
+Now the GetOwner function of the weapon will return a pointer to our character.
+
+00:14:34.090 --> 00:14:42.705
+We check that the Player is non-zero, if it is equal to nullptr, then we immediately exit the function.
+
+00:14:42.705 --> 00:14:47.830
+The ACharacter class has a pointer to the controller. The presence of this pointer
+
+00:14:47.830 --> 00:14:55.630
+is generally logical, because ACharacter objects are mainly controlled by someone. We create a local variable Controller
+
+00:14:55.630 --> 00:15:05.600
+and call the character function called GetController. This function is template.
+
+00:15:06.095 --> 00:15:13.456
+In the template parameter, you need to specify the type of controller. We are specifying our base class APlayerController.
+
+00:15:15.762 --> 00:15:19.140
+We also check for a null pointer.
+
+00:15:20.510 --> 00:15:28.275
+The function that returns the position of the camera and orientation in space is called GetPlayerViewPoint.
+
+00:15:28.275 --> 00:15:33.141
+This function has access to the PlayerCameraManager class,
+
+00:15:33.141 --> 00:15:38.870
+which is a global class for managing cameras. And already from it, a pointer
+
+00:15:38.870 --> 00:15:43.700
+to the character's camera is obtained . We do not consider some points in detail,
+
+00:15:43.700 --> 00:15:49.070
+otherwise the length of the course will be very long. Therefore, for anyone interested, I recommend that you look
+
+00:15:49.070 --> 00:15:56.303
+at the insides of this function yourself . The function has two output parameters by reference: this is the position of the camera
+
+00:15:56.303 --> 00:16:03.850
+and the rotation of the camera. Let's pass the ViewLocation and ViewRotation variables that don't exist yet.
+
+00:16:06.855 --> 00:16:13.952
+We create the given local variables. ViewLocation is of type FVector and ViewRotation is of type FRotator.
+
+00:16:15.410 --> 00:16:21.919
+We now have information about our camera and we can rewrite our trace.
+
+00:16:23.450 --> 00:16:30.000
+Let's assign the variable TraceStart = ViewLocation, that is, the starting point of trace is the position of the camera.
+
+00:16:30.869 --> 00:16:37.363
+And we can get the direction from ViewRotation. The FRotator class has a helper function
+
+00:16:37.363 --> 00:16:43.336
+called Vector. It works similarly to the GetForwardVector function of the quaternion.
+
+00:16:43.336 --> 00:16:49.240
+TraceEnd does not change for us, because it depends on the starting point and on the direction.
+
+00:16:50.264 --> 00:16:58.750
+Let's adjust the rendering of the shot line. Move DrawDebugLine under the hit branch. We must
+
+00:16:58.750 --> 00:17:04.293
+draw the line not from the position of the camera, but also from the muzzle, so we change the TraceStart
+
+00:17:04.856 --> 00:17:14.334
+to the position of our socket, that is, SocketTransform.GetLocation (), and the end point in case of a hit is our ImpactPoint.
+
+00:17:15.000 --> 00:17:22.042
+Therefore, we change TraceEnd to HitResult.ImpactPoint. Separately, let's draw a line in the else branch,
+
+00:17:22.042 --> 00:17:31.520
+that is, if we haven't got anywhere. Copy DrawDebugLine. We insert. The starting point is also from the barrel,
+
+00:17:31.520 --> 00:17:39.329
+that is, SocketTransform.GetLocation (), and the final one is TraceEnd. Let's see what we've got.
+
+00:17:40.970 --> 00:17:50.412
+We start the game. Trace goes from the camera and therefore we get to the place where our green sight points.
+
+00:17:50.412 --> 00:17:56.462
+The shooting angle looks a little strange because the character's body does not rotate up and down.
+
+00:17:57.076 --> 00:18:03.308
+We will correct this a little later. Now let's see this thing.
+
+00:18:03.308 --> 00:18:12.790
+Open the character's blueprint. Select the capsule component and let's temporarily resize the capsule.
+
+00:18:12.790 --> 00:18:18.801
+This can be done in the Shape category and set some value for the radius of the capsule.
+
+00:18:20.560 --> 00:18:26.616
+We start the game. Also open up a console and enter "show collision".
+
+00:18:28.512 --> 00:18:30.222
+We shoot at the enemy.
+
+00:18:30.895 --> 00:18:37.170
+Our trace works correctly with the capsule, but it looks a little ridiculous, because we would like to go
+
+00:18:37.170 --> 00:18:44.903
+directly to the character's mesh. Let's undo the CollisionPreset changes in the capsule component
+
+00:18:44.903 --> 00:18:52.060
+so that the Visibility is set to Ignore. And in the component of the skeleton of the mesh,
+
+00:18:52.060 --> 00:18:58.577
+change the CollisionPreset. Select Custom and set Visibility to Block.
+
+00:18:58.577 --> 00:19:06.180
+That is, the trace for the capsule will be ignored, but not for the mesh. Checking. We shoot at the character
+
+00:19:07.950 --> 00:19:11.694
+and the red spheres are displayed directly on the mesh.
+
+00:19:13.330 --> 00:19:17.875
+Additionally, we can verify this by once again displaying collisions.
+
+00:19:20.149 --> 00:19:28.638
+It is now clearly visible that the capsule is being ignored. We shoot between the legs of the character and if we hit, then only the mesh.
+
+00:19:29.534 --> 00:19:36.385
+We have two problems: one of them is that we can hit ourselves, for example, like this. We will fix this now.
+
+00:19:36.385 --> 00:19:42.303
+And there is a second problem. Let's first return the capsule to its original form.
+
+00:19:45.000 --> 00:19:50.180
+Let's undo the changes to the radius. The problem is that we can hit
+
+00:19:50.180 --> 00:19:59.027
+the enemy character even when we are behind him, that is, we have a trace from the camera triggered and we get into the enemy's mesh.
+
+00:19:59.027 --> 00:20:03.792
+We will not fix this at the moment, you can try to do it yourself.
+
+00:20:03.792 --> 00:20:08.685
+One option is to check that the angle between the trace and the direction from the muzzle is sharp.
+
+00:20:09.317 --> 00:20:16.854
+Let's fix hitting ourselves. This can be done through an additional parameter of the trace function.
+
+00:20:17.640 --> 00:20:22.781
+It is of type FCollisionQueryParams. Let's create a variable of this type.
+
+00:20:23.820 --> 00:20:30.710
+Let's pass this object directly to the trace function. FCollisionQueryParams is a structure
+
+00:20:30.710 --> 00:20:37.418
+and we are interested in a function called AddIgnoredActor. This function takes a pointer to an actor
+
+00:20:37.418 --> 00:20:42.323
+and adds it to the array of actors that we want to ignore in trace.
+
+00:20:42.630 --> 00:20:48.430
+We pass a pointer to our owner, that is, to character. Thus, line trace
+
+00:20:48.430 --> 00:20:56.100
+will ignore it. Finally, as a bonus, let's draw out the skeleton bone we hit.
+
+00:20:56.774 --> 00:21:01.250
+Copy the log. We insert into the branch where we hit.
+
+00:21:03.623 --> 00:21:08.022
+We write "bone% s" The
+
+00:21:09.843 --> 00:21:19.259
+information about the bone of the skeleton is in the HitResult variable called BoneName. It is of type FName,
+
+00:21:19.259 --> 00:21:28.000
+so we convert it to FString using the ToString function and don't forget the * operator. We compile the project.
+
+00:21:30.708 --> 00:21:39.349
+We open the log. Click play. We check that we do not get into ourselves now - our character is ignored.
+
+00:21:40.237 --> 00:21:48.510
+We shoot at the enemy and various bones of the skeleton are printed in the log. With this information, for example,
+
+00:21:48.510 --> 00:21:55.296
+you can make a headshot or different damage for different parts of the body and if, for example, we shoot
+
+00:21:55.960 --> 00:22:02.200
+at some other objects, we will see that None is displayed in the log, that is, we have no information about the bones.
+

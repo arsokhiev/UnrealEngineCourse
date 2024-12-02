@@ -1,0 +1,283 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.275 --> 00:00:09.660
+In the current lesson, we will create our own Task, which will randomly calculate the location
+
+00:00:09.660 --> 00:00:15.085
+and the NPC will patrol the scene, moving between the generated points.
+
+00:00:15.085 --> 00:00:22.298
+To create an asset for a Task in a blueprint, just click on the new task button in the behavior tree.
+
+00:00:22.298 --> 00:00:30.982
+We will create a task in C ++. Therefore, we go to the folder with C ++ classes. Open the AI ​​directory.
+
+00:00:31.490 --> 00:00:40.261
+Let's create a new C ++ class. Click show all C ++ classes. The base class for Task is called BTTaskNode.
+
+00:00:40.261 --> 00:00:46.972
+We will inherit from it. Let's call the class STUNextLocationTask.
+
+00:00:48.320 --> 00:00:55.975
+Let's create an additional directory in the AI ​​folder, name it tasks and go to visual studio
+
+00:00:56.780 --> 00:01:07.131
+Open the build. The first thing we do is add the tasks directory.
+
+00:01:08.771 --> 00:01:16.942
+We need to add two additional modules to work with AI. The first is called GameplayTasks
+
+00:01:17.650 --> 00:01:24.870
+and the second is called NavigationSystem. Let's make a build. Right -click
+
+00:01:24.870 --> 00:01:34.252
+on the project and select build. The build succeeded. We can go to the header file of our task.
+
+00:01:34.252 --> 00:01:39.800
+Let's declare all the functions and properties that we need to work. We need a
+
+00:01:39.800 --> 00:01:46.324
+constructor. We will need the constructor purely for cosmetic purposes. There we will define the name of the node
+
+00:01:46.324 --> 00:01:53.390
+that will be displayed in the editor. Let's click on the base class F12, we will fall into the header
+
+00:01:53.390 --> 00:02:00.900
+file of the task. To describe our logic for finding a random point, we need a function
+
+00:02:00.900 --> 00:02:06.897
+called ExecuteTask. This function is called when the execution of our task begins.
+
+00:02:07.573 --> 00:02:14.233
+We need to override it in the NextLocationTask class. Let's also add override
+
+00:02:14.233 --> 00:02:19.320
+and additionally we need 2 properties. We will calculate a random point in a certain
+
+00:02:19.320 --> 00:02:26.708
+radius relative to our character. To do this, let's create a property Radius.
+
+00:02:27.380 --> 00:02:32.031
+Let's assign some default value to the variable. Let there be 1000 units.
+
+00:02:33.585 --> 00:02:40.799
+The second property will store the blackboard key, into which we will write the random point we calculated.
+
+00:02:40.799 --> 00:02:50.734
+The type is called FBlackboardKeySelector. It's a structure. Let's call it AimLocationKey.
+
+00:02:51.800 --> 00:02:56.700
+That's all we need in the header file. Let's create a body for
+
+00:02:56.700 --> 00:03:01.154
+the ExecuteTask constructor and function in the appropriate .cpp file.
+
+00:03:02.991 --> 00:03:12.529
+First, let's add all the header files that we need: 1 header file BehaviorTree / BlackboardComponent.h
+
+00:03:13.962 --> 00:03:16.813
+The next header file is AIController.
+
+00:03:18.350 --> 00:03:23.976
+And the last header file that we need is NavigationSystem.h
+
+00:03:23.976 --> 00:03:33.312
+Let's start with the constructor. There will be only one line in the constructor. The base class has a variable called NodeName.
+
+00:03:33.312 --> 00:03:40.094
+Its value is displayed in the visual node, in the editor. Our node will be called NextLocation.
+
+00:03:40.094 --> 00:03:48.133
+Let's go to the ExecuteTask function. In this function, we will calculate a random point around the character
+
+00:03:48.133 --> 00:03:57.272
+and write this point to the blackboard. Let's start. Create a local variable, call it Controller.
+
+00:03:59.260 --> 00:04:04.508
+We can get the pointer to the NPC controller through the OwnerComp variable,
+
+00:04:04.508 --> 00:04:07.612
+which has the UBehaviorTreeComponent type.
+
+00:04:07.612 --> 00:04:14.080
+The component function that returns a pointer to AAIController is called GetAIOwner.
+
+00:04:16.168 --> 00:04:24.172
+The second local variable will be called blackboard. It will store a pointer to the current board.
+
+00:04:25.240 --> 00:04:30.520
+We can also get the pointer to the blackboard via OwnerComp. The function that returns the
+
+00:04:30.520 --> 00:04:37.270
+pointer is called GetBlackboardComponent. Next, we need to check that the controller
+
+00:04:37.270 --> 00:04:46.685
+and blackboard are non-null pointers. If one of them is zero, then our task exits with the Failed status.
+
+00:04:46.685 --> 00:04:52.964
+To do this, we must return the appropriate enum value. If we press F12, we will see
+
+00:04:52.964 --> 00:05:01.484
+that there are several statuses. We need to return Failed with you.
+
+00:05:03.104 --> 00:05:13.715
+Let's write this down. The next thing we need is a pointer to the pawn.
+
+00:05:14.580 --> 00:05:22.244
+To do this, we create a local variable, call it Pawn and get the pawn through the controller.
+
+00:05:22.960 --> 00:05:25.716
+To do this, we call the controller function GetPawn.
+
+00:05:27.402 --> 00:05:33.438
+We also check the pointer to nullptr, if it is null, then we return the Failed status.
+
+00:05:36.021 --> 00:05:43.233
+Next, we need a pointer to the NavigationSystem, a special class that describes the current navigation system.
+
+00:05:43.233 --> 00:05:50.564
+We need it to find a random point. We create a local variable. Let's call it NavSys.
+
+00:05:50.564 --> 00:05:54.930
+To get a pointer to the navigation system,
+
+00:05:54.930 --> 00:06:00.986
+you need to call the GetCurrent static function of the UNavigationSystemV1 class.
+
+00:06:03.001 --> 00:06:08.180
+This function takes a UObject as a parameter. We will pass a pawn to it.
+
+00:06:11.310 --> 00:06:13.812
+We also check NavSys for nullptr.
+
+00:06:17.710 --> 00:06:26.230
+The NavigationSystem function that returns a random point is called GetRandomReachablePointInRadius.
+
+00:06:26.230 --> 00:06:31.866
+It calculates an arbitrary point on the nav mesh where our character can go.
+
+00:06:31.866 --> 00:06:35.447
+This function has a pathfinding algorithm under the hood.
+
+00:06:35.447 --> 00:06:38.890
+That is, if this function finds a point, then we are one hundred percent sure
+
+00:06:38.890 --> 00:06:45.233
+that the path from the current point, where the pawn is located, to the point that we calculated exists.
+
+00:06:45.233 --> 00:06:51.329
+The function has several parameters - this is the center, relative to which we are looking for the home point.
+
+00:06:51.329 --> 00:06:58.683
+This center is the position of our pawn, so we can pass Pawn-&gt; GetActorLocation ().
+
+00:07:00.353 --> 00:07:05.544
+The second parameter is the search radius. We pass our property Radius.
+
+00:07:06.440 --> 00:07:11.653
+The third parameter is passed by reference. It will return the directly found point.
+
+00:07:11.653 --> 00:07:16.850
+Let's pass some variable there, call it NavLocation and before calling the function
+
+00:07:16.850 --> 00:07:23.875
+we need to create it. The type of the FNavLocation variable. Also, the function is evaluated by true or false,
+
+00:07:23.875 --> 00:07:28.492
+that is, the point may not be found. Therefore, we need to check the return value.
+
+00:07:29.850 --> 00:07:33.627
+Let's create an additional local variable where we will write the
+
+00:07:33.627 --> 00:07:37.393
+return value of the function. Let's name the variable found.
+
+00:07:38.620 --> 00:07:45.152
+And after calling the function, we check if the point is not found, then we return the Failed status.
+
+00:07:47.380 --> 00:07:53.829
+And if the point is found, then all we have to do is write this variable to the blackboard.
+
+00:07:53.829 --> 00:08:03.720
+To do this, we call the SetValueAsVector function, we used this function in the blueprint. It has two parameters: the
+
+00:08:03.720 --> 00:08:12.621
+first is the name of the key. We get the name of the key through our AimLocationKey structure.
+
+00:08:12.621 --> 00:08:21.875
+The field where the key name is stored is called SelectedKeyName. The second parameter is directly FVector.
+
+00:08:21.875 --> 00:08:29.140
+We will get this value from the NavLocation.Location field and at the end of the function we need
+
+00:08:29.140 --> 00:08:37.568
+to return a successful status - Succeeded. That is, we calculated the point, recorded it in the blackboard. Everything ended successfully.
+
+00:08:38.728 --> 00:08:43.365
+We wrote our first task. The function may seem scary on the one hand,
+
+00:08:43.365 --> 00:08:49.190
+but nothing supernatural happens here. We just get all the objects we need and call
+
+00:08:49.190 --> 00:08:57.149
+the GetRandomReachablePointInRadius function. Let's start editor and add our task to the behavior tree.
+
+00:08:58.270 --> 00:09:08.992
+First, let's go to the blackboard. Rename Location1 to AimLocation. We'll just delete Location2.
+
+00:09:10.908 --> 00:09:18.527
+We also delete all tasks except one - MoveTo. And the first task in the sequence will be our
+
+00:09:18.527 --> 00:09:25.972
+C ++ task - STUNextLocationTask. The node is called "Next Location". We did this in the constructor.
+
+00:09:25.972 --> 00:09:31.649
+In the details panel, we see our two properties, the radius and the blackboard key AimLocation,
+
+00:09:31.649 --> 00:09:38.825
+where we will write our point. In the MoveTo task, the key must also be specified AimLocation.
+
+00:09:38.825 --> 00:09:45.136
+This sequence will run indefinitely. Each time there will be a new point.
+
+00:09:45.136 --> 00:09:57.014
+Open up the blueprint of the controller. Delete all nodes except RunBehaviorTree. We will soon transfer it to C ++ too.
+
+00:09:57.014 --> 00:10:02.035
+Checking. We look at the NPC.
+
+00:10:02.683 --> 00:10:10.792
+Each time a random point is calculated on the navigation and npc runs to this point. Everything works as intended.
+
+00:10:10.792 --> 00:10:15.119
+Let's see what happens if the task returns a Failed status.
+
+00:10:15.119 --> 00:10:21.185
+Subsequent tasks are not launched in this case. Let's temporarily add a Wait node.
+
+00:10:23.840 --> 00:10:32.667
+Let's put two seconds. The library has a special task called FinishWithResult.
+
+00:10:32.667 --> 00:10:36.454
+With its help, we can test the work of statuses.
+
+00:10:36.454 --> 00:10:43.884
+If the task returns the Succeeded status, then the whole chain is working, MoveTo is called. Things are good.
+
+00:10:46.770 --> 00:10:48.896
+Now let's replace the result with Failed.
+
+00:10:51.080 --> 00:10:58.204
+We save. We start the game. Let's see what happens. The NextLocation task calls us, the
+
+00:10:58.204 --> 00:11:05.915
+Wait task and FinishWithResult ends with the Failed status. Therefore, MoveTo is simply not called
+
+00:11:05.915 --> 00:11:12.273
+and our character does not run anywhere. That's all in this lesson, let's delete the test nodes.
+
+00:11:12.273 --> 00:11:17.454
+Our tree still looks simple enough, but soon it will get more complicated.
+

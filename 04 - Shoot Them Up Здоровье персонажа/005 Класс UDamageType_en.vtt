@@ -1,0 +1,112 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.892 --> 00:00:09.942
+In this tutorial, we'll take a quick look at how the different damage types can be used.
+
+00:00:11.550 --> 00:00:20.881
+Go to our dev folder. We create a new class. In the search, we find the damage type.
+
+00:00:21.547 --> 00:00:29.367
+Let's inherit from this class, let's call the first damage type: STUFireDamageType.
+
+00:00:35.564 --> 00:00:37.367
+And create the second damage type.
+
+00:00:43.924 --> 00:00:47.311
+Let's call it STUIceDamageType.
+
+00:00:54.353 --> 00:01:03.681
+So, we have created two new classes: one of them will be responsible for fire damage, the other for ice damage.
+
+00:01:05.782 --> 00:01:12.254
+Go to dev damage actor. Let's create a property in which we will
+
+00:01:12.254 --> 00:01:21.281
+pass the damage class to which we want to damage our actor. We use the TSubclassOf template
+
+00:01:21.281 --> 00:01:30.000
+that helps to pass the UClass in a safe way, let's call property - DamageType.
+
+00:01:34.948 --> 00:01:40.577
+And in the .cpp file of the DevDamageActor class, in the ApplyRadialDamage function, change the
+
+00:01:41.901 --> 00:01:46.178
+parameter that is responsible for the damage type from nullptr to DamageType.
+
+00:01:49.267 --> 00:01:53.367
+The logic of the reaction to the damage type will be in the health component.
+
+00:01:56.095 --> 00:01:59.733
+First of all, let's include header files with our damage types.
+
+00:02:02.675 --> 00:02:09.035
+Let's go to the OnTakeAnyDamage function. In this function, information about the character's damage comes to us.
+
+00:02:09.532 --> 00:02:16.562
+First, we check the damage type for validity, as we have seen, you can pass a null pointer.
+
+00:02:17.287 --> 00:02:22.946
+We can get information about what type of damage came to us in several ways.
+
+00:02:22.946 --> 00:02:29.376
+We can cast in turn, that is, cast the DamageType pointer to one of the types of interest to us,
+
+00:02:29.376 --> 00:02:36.412
+that is, either fire damage or ice damage, and if the cast was successful, then work with the cast type.
+
+00:02:36.412 --> 00:02:41.470
+For example, we could add different parameters for ice or fire to our damage type.
+
+00:02:41.470 --> 00:02:46.660
+We'll do it a little differently: we'll use the UObject function called IsA.
+
+00:02:46.660 --> 00:02:53.451
+This function is template, it takes an object type as a template parameter and returns true
+
+00:02:53.451 --> 00:03:01.084
+if this object is of this type. Therefore, first we check if the given damage type belongs
+
+00:03:01.084 --> 00:03:07.080
+to fire damage type and if it does, then let's print some message.
+
+00:03:08.107 --> 00:03:19.033
+We copy the macro with the output of the message and replace the text with "so hoooooot" - let there be an exclamation that our character is hot.
+
+00:03:20.840 --> 00:03:28.095
+And in the second branch of the conditional statement if we check the given damage type: whether it is ice damage type.
+
+00:03:30.000 --> 00:03:35.527
+By analogy, we call the IsA function with the STUIceDamageType type.
+
+00:03:40.357 --> 00:03:42.994
+We also display a text message.
+
+00:03:45.182 --> 00:03:52.086
+With the text: "so cooooold". Our character is cold.
+
+00:03:54.301 --> 00:03:57.592
+We have finished the code part. Let's go to editor.
+
+00:04:02.690 --> 00:04:11.640
+Open the first damage actor, which we had with a red sphere and we see the property
+
+00:04:11.640 --> 00:04:17.647
+damage type appeared. We can select the damage we are interested in. Let's put fire.
+
+00:04:17.647 --> 00:04:25.609
+And to the second damage actor, which is blue, set the damage type - ice. Open the log and start the game.
+
+00:04:26.767 --> 00:04:35.140
+We run into the blue sphere and get the message "so cooold", we run into the red sphere - we get "so hooot".
+
+00:04:39.568 --> 00:04:45.319
+So, we have implemented with you the logic of reaction to various types of damage, in the most simplified form.
+
+00:04:46.260 --> 00:04:50.848
+Also, if we remove the damage type in the damage actor - that is, it will be nullptr,
+
+00:04:50.848 --> 00:04:55.082
+nothing will break with you - the message will simply not be displayed.
+

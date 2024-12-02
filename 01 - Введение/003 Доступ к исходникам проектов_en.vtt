@@ -1,0 +1,271 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.097 --> 00:00:10.388
+Hello everyone! In this lesson, we will figure out how to get the source codes for all projects of our course.
+
+00:00:10.388 --> 00:00:15.540
+The draft of the first chapter is located on GitHub at life-exe / GeometrySandbox.These sources
+
+00:00:15.540 --> 00:00:20.760
+can be downloaded even if you do not have a GitHub account. Click on the code button and download zip.
+
+00:00:20.760 --> 00:00:26.915
+The sources for the second, main project are located at life-exe / UnrealEngine
+
+00:00:26.915 --> 00:00:34.086
+The project is part of the Unreal Engine repository, where the engine source codes are located and lives in a separate branch.
+
+00:00:34.086 --> 00:00:40.181
+The project uses the assets of the Shooter Game. I don’t have the right to publish them,
+
+00:00:40.181 --> 00:00:46.070
+but they are available to everyone who joined the Epic Games organization on GitHub. By joining the Epic
+
+00:00:46.070 --> 00:00:51.440
+Games organization on GitHub, we sign a user agreement that grants us the right to use
+
+00:00:51.440 --> 00:00:57.440
+assets from the Shooter Game project. Let's do all the necessary steps. For demonstration purposes,
+
+00:00:57.440 --> 00:01:04.226
+I created test accounts for Epic Games and GitHub. Log in to the Unreal Engine
+
+00:01:05.510 --> 00:01:13.263
+site Go to the GitHub site. If you already have an account, then just log in, if not, then create an account.
+
+00:01:14.437 --> 00:01:17.362
+I log into my test account on GitHub.
+
+00:01:19.900 --> 00:01:26.210
+Now we need to link our GitHub account to our Epic Games account. Back to
+
+00:01:26.210 --> 00:01:31.460
+the Unreal Engine website. We point to our login and select Personal in the pop-up menu.
+
+00:01:32.530 --> 00:01:39.076
+Next, in the menu, go to the Connections, Accounts category and click on
+
+00:01:39.076 --> 00:01:45.550
+connect under GitHub. In the pop-up popup, we need to read one of the user
+
+00:01:45.550 --> 00:01:55.000
+agreements. We select the first option. Scroll down. It is understood that we are all reading this.
+
+00:01:56.290 --> 00:02:02.200
+And click on the agree button. Click on link account. A special GitHub popup opens,
+
+00:02:02.200 --> 00:02:05.110
+where you need to provide access to Epic Games.
+
+00:02:07.930 --> 00:02:14.230
+After that, a letter should come to the mail in which you are invited to the Epic Games organization.
+
+00:02:14.620 --> 00:02:19.651
+Epic team admin invited us to join the Epic Games organization.
+
+00:02:19.651 --> 00:02:25.790
+Click on the button in the join Epic Games letter. Again.
+
+00:02:28.830 --> 00:02:34.350
+We are automatically redirected to the Epic Games organization. Now we are in it
+
+00:02:34.350 --> 00:02:40.340
+and immediately get access to all the source code of the engine. If now we go to the
+
+00:02:40.340 --> 00:02:47.390
+life-exe / UnrealEngine page, Update it. Then the repository with the source code of the main project is now available to us.
+
+00:02:47.390 --> 00:02:52.730
+This is essentially the Unreal Engine repository. For our project, I created a separate branch there
+
+00:02:52.730 --> 00:02:56.870
+called ShootThemUpGame. The source archive can be downloaded
+
+00:02:56.870 --> 00:03:02.810
+by clicking on the code download zip. Or it can be done in another way. On the right by clicking
+
+00:03:02.810 --> 00:03:12.367
+on the releases hyperlink. And also by clicking on the source code. We will also download the sources for the first project.
+
+00:03:14.100 --> 00:03:15.971
+So, the archives have been downloaded.
+
+00:03:18.120 --> 00:03:20.700
+I will move them to the documents directory.
+
+00:03:21.782 --> 00:03:26.240
+Into the unreal project subdirectory. Unzip the zip files.
+
+00:03:31.470 --> 00:03:37.470
+Let's check the work of the projects. Let's start with the GeometrySandbox. To generate
+
+00:03:37.470 --> 00:03:40.890
+Visual Studio project files, right-click on the
+
+00:03:40.890 --> 00:03:48.104
+.uproject file and select generate visual studio project files. We open solution.
+
+00:03:50.460 --> 00:03:54.350
+Click on local windows debugger. We start compiling the project.
+
+00:03:57.240 --> 00:04:02.950
+The Unreal editor has opened. There isn't much to watch here. With the help of this project, we will study the
+
+00:04:02.950 --> 00:04:10.443
+architecture of the engine and also specific points related to C ++. We close the project.
+
+00:04:11.648 --> 00:04:21.269
+Close Visual Studio. Now let's launch the main project. We do the same - generate the Visual Studio files.
+
+00:04:22.770 --> 00:04:24.808
+Opening solution.
+
+00:04:27.140 --> 00:04:29.463
+We start compilation.
+
+00:04:33.620 --> 00:04:36.630
+The first time you launch the project, you will have to wait for the shaders to compile.
+
+00:04:36.630 --> 00:04:41.958
+This may take some time. Let's go to the levels directory.
+
+00:04:44.730 --> 00:04:48.660
+The shaders are compiled. Let's open some level. For example, death level.
+
+00:04:52.710 --> 00:04:54.160
+Click on the play button at the top.
+
+00:04:54.160 --> 00:05:00.220
+You can play and see what we get at the very end of the course.
+
+00:05:04.880 --> 00:05:09.210
+If you press the "P" key on the keyboard, you can go to the main menu.
+
+00:05:09.210 --> 00:05:14.790
+Select some other level in the interface and also test it.
+
+00:05:14.790 --> 00:05:21.594
+We will study all this. Close editor. The projects were compiled, opened, everything should work.
+
+00:05:22.350 --> 00:05:27.050
+All links to repositories will naturally be attached to the collection.
+
+00:05:27.050 --> 00:05:31.310
+Additionally, there is a page on the Unreal website with instructions on
+
+00:05:31.310 --> 00:05:35.870
+how to join the Epic Games organization. If you suddenly have any problems,
+
+00:05:35.870 --> 00:05:42.950
+you can use this instruction step by step, but we have already done these steps in the video,
+
+00:05:42.950 --> 00:05:48.430
+so I think you will succeed. Now let's see how to clone a repository.
+
+00:05:48.430 --> 00:05:53.800
+This is a more correct way, because we will be able to watch all the commits, all the changes
+
+00:05:53.800 --> 00:06:00.370
+that took place in a particular lesson. In the search for windows, we find comand promt.
+
+00:06:00.370 --> 00:06:04.745
+Go to the directory with our projects. We check that we have git installed on our system.
+
+00:06:04.745 --> 00:06:11.830
+Let's use the where git command. The path to git should be displayed in the console. The command for git cloning a repository
+
+00:06:11.830 --> 00:06:16.900
+is called git clone. We want to clone a specific branch from our repository,
+
+00:06:16.900 --> 00:06:26.371
+so the -b flag needs to be specified, i.e. branch, branch. The name of our branch is ShootThemUpGame.
+
+00:06:27.452 --> 00:06:30.815
+Copy the path to the repository.
+
+00:06:33.100 --> 00:06:37.150
+Click on the code button. We will clone in the usual way,
+
+00:06:37.150 --> 00:06:42.880
+without using ssh. Click on the button on the right, copy the path to our repository.
+
+00:06:42.880 --> 00:06:47.500
+Additionally, we need to specify a flag called --single-branch. This
+
+00:06:47.500 --> 00:06:53.080
+will only copy our specific branch. Add the repository path. Press enter.
+
+00:06:53.080 --> 00:06:59.244
+The authorization popup has opened. Click on the button. Add our account to git.
+
+00:07:00.674 --> 00:07:06.684
+We return to the command line and wait for the repository to clone.
+
+00:07:09.269 --> 00:07:13.840
+Everything is ready. Let's also clone the GeometrySandbox repository right away.
+
+00:07:13.840 --> 00:07:17.170
+Everything is simpler here. The project is in the master branch,
+
+00:07:17.170 --> 00:07:22.825
+so in the console you need to type git clone the path to the repository and press enter.
+
+00:07:23.513 --> 00:07:30.703
+We can open the folder with projects and make sure that the repositories were really cloned.
+
+00:07:33.090 --> 00:07:36.860
+Let's install the git client we talked about in the previous tutorial.
+
+00:07:36.860 --> 00:07:41.576
+It is called SourceTree. Run set up.
+
+00:07:43.840 --> 00:07:48.760
+We skip the first step. Atlassian has its own cloud-based code storage service
+
+00:07:48.760 --> 00:07:56.661
+called Bitbucket. The mercurial option can be unchecked. Click on next.
+
+00:07:56.661 --> 00:08:04.105
+On this screen, you must enter a username and mail. They will be used when creating a new commit.
+
+00:08:06.156 --> 00:08:12.342
+Click the next button. ssh key we don't have, so click on the no button.
+
+00:08:13.391 --> 00:08:18.736
+Opened SourceTree - the git management interface. Let's add our repositories.
+
+00:08:18.736 --> 00:08:26.250
+Click on the add button. We indicate the path to the directory with the repository we are interested in.
+
+00:08:26.250 --> 00:08:32.920
+Add GeometrySandbox repository. Let's immediately add the main repository of our ShootThemUp course.
+
+00:08:36.470 --> 00:08:39.400
+Now we can visually view all the commits
+
+00:08:39.400 --> 00:08:43.840
+that exist in the project. The name of each commit contains a lesson number,
+
+00:08:43.840 --> 00:08:49.050
+so you can conveniently view the changes that were made in a particular lesson.
+
+00:08:49.050 --> 00:08:54.460
+The list of files is displayed below. When you select any of them, the changes that have been made in this file
+
+00:08:54.460 --> 00:08:57.940
+will be displayed on the right . Note for advanced users
+
+00:08:57.940 --> 00:09:04.554
+that our repositories do not use git lfs settings for binaries.
+
+00:09:04.554 --> 00:09:12.249
+You can also watch the commits on GitHub itself. There is a link on the right that opens a list of all commits.
+
+00:09:14.590 --> 00:09:22.086
+And when you click on a specific commit, you can also see what changes were made in specific files.
+
+00:09:22.086 --> 00:09:24.385
+This concludes this lesson.
+

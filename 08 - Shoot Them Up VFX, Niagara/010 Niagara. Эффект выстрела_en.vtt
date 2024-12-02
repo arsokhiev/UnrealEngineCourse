@@ -1,0 +1,256 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.910 --> 00:00:11.844
+In this tutorial, we'll look at the muzzle flash effects. We will have two separate effects, one for the launcher and
+
+00:00:11.844 --> 00:00:16.760
+one for the rifle. We do not cover creating effects in Niagara in detail,
+
+00:00:16.760 --> 00:00:22.790
+because this is a topic for a separate course. I have created an emitter and two niagara systems. Let's go
+
+00:00:22.790 --> 00:00:30.140
+over their properties. In the base emitter, 4 particles will spawn. In InitialParticles I set the
+
+00:00:30.140 --> 00:00:39.314
+particle lifetime to 0.2 seconds and also the color, tint of blue. Next, the scale of the particles changes from zero to one during their lifetime,
+
+00:00:39.314 --> 00:00:43.550
+and I also set the random rotation of the particles. And in the sprite renderer,
+
+00:00:43.550 --> 00:00:50.158
+I specified the material from the shooter game that they use in the corresponding effect for the Cascade.
+
+00:00:50.158 --> 00:00:54.433
+The first Niagara system based on this emitter belongs to the launcher.
+
+00:00:54.433 --> 00:00:59.221
+She just uses it and does not override any properties of this emitter.
+
+00:00:59.221 --> 00:01:04.829
+The only important point in the emitter state category is that the property loop behavior has the value once.
+
+00:01:04.829 --> 00:01:08.562
+That is, this system will be played once and then destroyed.
+
+00:01:08.562 --> 00:01:18.000
+The Niagara rifle system uses the same emitter, but some properties are overridden. The spawn rate is set to 90 particles.
+
+00:01:18.000 --> 00:01:23.703
+Loop behavior has the Infinite value, that is, this particle system will play indefinitely
+
+00:01:23.703 --> 00:01:29.289
+until we remove it ourselves. And also I changed the color to a shade of yellow.
+
+00:01:29.289 --> 00:01:36.660
+Let's switch to C ++ and program the Niagara systems data spawn. The flash handling for the launcher and rifle
+
+00:01:36.660 --> 00:01:42.510
+will be slightly different. There are no problems with the launcher. We just need to spawn the flash at
+
+00:01:42.510 --> 00:01:47.790
+the muzzle. The logic for the rifle will be a little more complicated, since our shooting takes place
+
+00:01:47.790 --> 00:01:53.292
+on a timer. We only need to spawn the Niagaara system once. When we start shooting,
+
+00:01:53.292 --> 00:01:58.619
+we set the visibility of this system to true, and when we finish, we set it to false.
+
+00:01:59.110 --> 00:02:05.110
+Let's get started, starting with the logic of the base class. Add forward declaration. I immediately copied the
+
+00:02:05.110 --> 00:02:11.440
+data of the 2nd class. We need NiagraSystem and NiagaraComponent - a pointer to this class is
+
+00:02:11.440 --> 00:02:19.172
+returned when the Niagra system spawns. Create a property, change the category to vfx.
+
+00:02:19.780 --> 00:02:25.944
+This property will set the Niagara muzzle flash system. We name the property MuzzleFX.
+
+00:02:28.376 --> 00:02:35.170
+Also in the base class we will have a Niagara system spawn function. Let's create it in the protected section so that both of
+
+00:02:35.170 --> 00:02:39.058
+our classes that inherit from BaseWeapon have access to it.
+
+00:02:39.058 --> 00:02:45.927
+This function will return a pointer to the Niagara Component. Let's call the function SpawnMuzzleFX.
+
+00:02:47.308 --> 00:02:50.812
+Let's create the body of the function in the BaseWeapon .cpp file.
+
+00:02:54.675 --> 00:02:57.195
+And we will include the header files we need.
+
+00:02:58.541 --> 00:03:04.235
+We need a Niagara functional library and also a Niagara component.
+
+00:03:07.540 --> 00:03:13.830
+To spawn impact effects, we used the SpawnAtLocation function, and in this situation we need to
+
+00:03:13.830 --> 00:03:19.748
+use the SapwnAttached function. Thus, the transformation of the Niagara system will
+
+00:03:19.748 --> 00:03:25.840
+change in accordance with the parent transformation of the component to which we attached it.
+
+00:03:27.229 --> 00:03:33.000
+The first parameter is a pointer to the Niagara system. We transfer our MuzzleFX effect there.
+
+00:03:33.930 --> 00:03:38.150
+The second parameter is the component to which we want to connect this Niagara system.
+
+00:03:38.789 --> 00:03:46.692
+We will attach it to the weapon mesh of our weapon. Next comes the AttachPointName parameter.
+
+00:03:46.692 --> 00:03:53.040
+In this variable, you can pass the name of our socket and, thus, the transformation of the socket
+
+00:03:53.040 --> 00:03:57.180
+will be the parent transformation for our system. Next are the parameters
+
+00:03:57.180 --> 00:04:02.820
+regarding transformation. In both cases, we will specify zero vectors for location and rotation.
+
+00:04:05.060 --> 00:04:11.290
+The next parameter enum EAttachLocation, in fact, is an analogue of EAttachmentRules. We already
+
+00:04:11.290 --> 00:04:17.440
+used it when we attached our weapon to the character's mesh. We also select the SnapToTarget value.
+
+00:04:17.870 --> 00:04:22.960
+And the last parameter is AutoDestroy. Set to true. If the Niagara system is not played endlessly,
+
+00:04:22.960 --> 00:04:29.640
+then it will be automatically removed from the game world. This spawn function returns a
+
+00:04:29.640 --> 00:04:35.130
+pointer to the Niagara component, so we can simply return the same value
+
+00:04:35.130 --> 00:04:41.240
+when exiting the SpawnMuzzleFX function. Finished with a base class. Go to the launcher class.
+
+00:04:42.467 --> 00:04:48.800
+And all we need to do in this class is to call the SpawnMuzzleFX function, and in the launcher class we are
+
+00:04:48.800 --> 00:04:54.320
+not interested in the returned pointer to the Niagara component. We have discrete firing from the launcher,
+
+00:04:54.320 --> 00:05:00.260
+so we shoot once and forget about this effect, and the Niagara system will automatically delete itself
+
+00:05:00.260 --> 00:05:07.108
+at the end of the animation. Go to the header RifleWeapon, copy the forward declaration of the
+
+00:05:07.108 --> 00:05:15.975
+Niagara component from BaseWeapon. We insert into the RifleWeapon class. We need a variable in which we will
+
+00:05:15.975 --> 00:05:21.830
+store the pointer to the Niagara component, since in the rifle class we will only spawn the Niagara system
+
+00:05:21.830 --> 00:05:28.600
+once. We name the variable MuzzleFXComponent. Also, in the private section, we will create
+
+00:05:28.600 --> 00:05:35.694
+additional functions that will make our code easier to read. Let's call the first function InitMuzzleFX.
+
+00:05:35.694 --> 00:05:42.460
+This function will spawn the Niagara system if our pointer is nulltptr and also set the visibility of
+
+00:05:42.460 --> 00:05:49.793
+our system to true. The second function will be responsible for setting the Visibility of our Niagara system.
+
+00:05:49.793 --> 00:05:56.050
+Let's call it SetMuzzleFXVisibility and the function will have one parameter that will directly
+
+00:05:56.050 --> 00:06:02.690
+determine whether to set the visibility to true or false. We create a body for each function.
+
+00:06:04.905 --> 00:06:14.448
+And we need one NiagaraComponent header file. Copy it from BaseWeapon. Go to the InitMuzzleFX function.
+
+00:06:15.920 --> 00:06:22.161
+So, at the very beginning, we check: if our pointer to MuzzleFXComponent is zero,
+
+00:06:22.960 --> 00:06:29.897
+that is, if there has not been a spawn yet, then we must spawn this system and assign the
+
+00:06:29.897 --> 00:06:35.847
+pointer that the SpawnFXMuzzle function returns to our MuzzleFXComponent.
+
+00:06:36.635 --> 00:06:42.259
+We will call this function every time the shooting starts. Therefore, the next action
+
+00:06:42.259 --> 00:06:47.954
+we take in the function is to set the Visibility of this system to true.
+
+00:06:47.954 --> 00:06:55.521
+We call the function that we have not yet implemented SetMuzzleFXVisibility with the parameter true.
+
+00:06:57.088 --> 00:07:03.303
+This function is ready. Let's go directly to the function that will be responsible for the visibility of the Niagara system.
+
+00:07:03.954 --> 00:07:10.570
+To begin with, we check if our pointer is not 0 - MuzzleFXComponent, if it is not 0,
+
+00:07:12.063 --> 00:07:17.311
+then the first thing we will do is call the Niagara function of the system, which is called SetPaused. In fact, this
+
+00:07:17.896 --> 00:07:23.645
+function stops or starts the Niagara system, that is, it affects its Tick.
+
+00:07:23.645 --> 00:07:30.280
+In this function, we must pass the negation of the Visibility value, that is, when Visibility = true, our system
+
+00:07:30.280 --> 00:07:35.850
+must accept Tick and, accordingly, we must set SetPaused (false) and the second function that
+
+00:07:35.850 --> 00:07:40.590
+we must call is called SetVisibility. She is directly responsible for whether the
+
+00:07:40.590 --> 00:07:46.201
+system is rendered or not. As the first argument, we simply pass the Visible parameter.
+
+00:07:46.201 --> 00:07:50.970
+The second parameter we can specify either true or false. In our case, it makes no difference, because
+
+00:07:50.970 --> 00:07:56.910
+our component has no other child components. We have implemented 2 functions
+
+00:07:56.910 --> 00:08:05.407
+we need . Let's add to our code now. Every time we start shooting, we call the InitMuzzleFX function.
+
+00:08:05.407 --> 00:08:10.210
+The system will be spawned only once. All other calls will simply set
+
+00:08:10.210 --> 00:08:16.703
+visibility to true. When we finish firing, that is, the StopFire function is called,
+
+00:08:16.703 --> 00:08:25.490
+we simply set the visibility of our system to false. We are done with the logic in C ++. Let's see how it looks in our game.
+
+00:08:26.131 --> 00:08:30.091
+The effects I created are located in the Muzzles folder of the VFX directory.
+
+00:08:31.814 --> 00:08:36.368
+Let's install the appropriate Niagara rifle and launcher systems.
+
+00:08:36.920 --> 00:08:42.851
+Find property MuzzleFX in the VFX category. The first effect for the launcher.
+
+00:08:43.612 --> 00:08:52.605
+And the second effect is for the rifle. Compile. We start the game.
+
+00:08:54.067 --> 00:08:57.393
+We begin to shoot from the rifle. Our effect spawns.
+
+00:08:59.420 --> 00:09:06.118
+It plays endlessly. If we run, then this system is attached to our weapons. Everything works correctly.
+
+00:09:07.153 --> 00:09:14.359
+Let's switch to the launcher. We shoot once. The effect also spawns while attached to the muzzle and is immediately removed.
+

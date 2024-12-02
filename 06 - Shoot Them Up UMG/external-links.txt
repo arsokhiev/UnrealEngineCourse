@@ -1,0 +1,15 @@
+
+001 -UMG
+https://docs.unrealengine.com/en-US/InteractiveExperiences/UMG/UserGuide/index.html
+
+002 UMG-Property-Binding
+https://docs.unrealengine.com/en-US/InteractiveExperiences/UMG/UserGuide/PropertyBinding/index.html
+
+004 -
+https://docs.unrealengine.com/en-US/RenderingAndGraphics/Textures/Importing/index.html
+
+005 -
+https://ru.wikipedia.org/wiki/%D0%A1%D0%B8%D0%BC%D0%B2%D0%BE%D0%BB_%D0%B1%D0%B5%D1%81%D0%BA%D0%BE%D0%BD%D0%B5%D1%87%D0%BD%D0%BE%D1%81%D1%82%D0%B8
+
+006 -UMG
+https://docs.unrealengine.com/en-US/InteractiveExperiences/UMG/UserGuide/Animation/index.html

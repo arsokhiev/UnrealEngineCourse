@@ -1,0 +1,148 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.056 --> 00:00:11.196
+In this tutorial, we will create a service that will be responsible for shooting our NPC.
+
+00:00:12.340 --> 00:00:20.568
+Go to the class creation wizard. We inherit from BTService. We call our class STUFireService.
+
+00:00:21.547 --> 00:00:23.201
+Click on create class.
+
+00:00:24.337 --> 00:00:29.366
+In order not to waste time on retyping things we know, I created a class constructor,
+
+00:00:30.579 --> 00:00:37.813
+created a property where the key with the enemy actor will be located and also the function for updating the TickNode service.
+
+00:00:38.359 --> 00:00:45.255
+Included all the header files that we need.
+
+00:00:45.539 --> 00:00:50.097
+Named our service Fire and prepared the TickNode function.
+
+00:00:50.686 --> 00:00:56.385
+Let's go into it and first, let's understand whether it makes sense to shoot at all.
+
+00:00:56.385 --> 00:01:03.799
+To do this, we create a local boolean variable called HasAim. We have a goal if and only if the
+
+00:01:03.799 --> 00:01:08.903
+Blackboard component is not null and also when the object that is located
+
+00:01:08.903 --> 00:01:15.520
+in the Blackboard under the EnemyActor key is not null. We will place the service in the attack sequence, so on the one hand,
+
+00:01:15.520 --> 00:01:20.500
+this check is not needed, because we already have a decorator that checks the given key,
+
+00:01:21.423 --> 00:01:26.931
+but it is always better to make the class self-sufficient so as not to depend on any external conditions.
+
+00:01:28.270 --> 00:01:35.516
+Further, if the controller is not nullptr, we can get the weapon component from the pawn that the controller owns.
+
+00:01:39.742 --> 00:01:42.262
+And if the weapon component exists,
+
+00:01:43.612 --> 00:01:53.465
+then we use the ternary operator, check the HasAim flag. If there is a target, then we start shooting, if there is no target, then we finish.
+
+00:01:53.465 --> 00:01:59.369
+The StartFire function will be called with some frequency because it is in the tick function.
+
+00:01:59.369 --> 00:02:04.929
+In the case of a rifle, we set a timer and there is nothing wrong with that, because as soon as
+
+00:02:04.929 --> 00:02:10.737
+we call the StartFire function again, our old timer is simply reinitialized with a new call.
+
+00:02:10.737 --> 00:02:16.392
+The service is ready. It's simple enough, but we need to tweak one point in BaseWeapon.
+
+00:02:16.724 --> 00:02:24.274
+In the GetPlayerViewpoint function, we call the controller function, also called GetPlayerViewpoint.
+
+00:02:24.274 --> 00:02:30.497
+This function is in the PlayerController class, it does not exist in the AIController class.
+
+00:02:30.497 --> 00:02:37.094
+In the case of NPCs, GetPlayerViewpoint will return false, because GetPlayerController will return nullptr.
+
+00:02:37.094 --> 00:02:41.014
+Let's change this function a bit.
+
+00:02:41.014 --> 00:02:47.700
+Let's create a variable called STUCharacter. We make a cast of the pointer, which the GetOwner function returns.
+
+00:02:50.571 --> 00:02:57.840
+If the object is null, then we return false, and if not, then we can check if this character is controlled by
+
+00:02:57.840 --> 00:03:03.240
+artificial intelligence or a live player. For this, the character has a special
+
+00:03:03.240 --> 00:03:10.161
+function called IsPlayerControlled. It returns the corresponding bool value.
+
+00:03:10.161 --> 00:03:18.341
+Therefore, if the character is controlled by the player, then we simply use the code that we have already written.
+
+00:03:19.968 --> 00:03:21.378
+Let's move it under the if.
+
+00:03:23.626 --> 00:03:29.823
+And if the character is controlled by artificial intelligence, then we will simply shoot in the direction from the muzzle.
+
+00:03:29.823 --> 00:03:39.546
+Variable ViewLocation assign the value of the position of our muzzle. To do this, call the GetMuzzleWorldLocation function.
+
+00:03:41.703 --> 00:03:49.562
+And in ViewRotation, write the value returned by the GetSocketRotation mesh function.
+
+00:03:51.315 --> 00:03:55.659
+And we pass the name of the socket MuzzleSocketName as a parameter to the function.
+
+00:03:57.000 --> 00:03:59.851
+Let's compile the project and see how it works.
+
+00:04:00.224 --> 00:04:07.786
+First, in the AI ​​controller we will change the NPC's vision settings, set sight radius = 2000
+
+00:04:07.786 --> 00:04:15.072
+loose sight = 2500 and the angle of view 90. Let's slightly improve its performance.
+
+00:04:15.700 --> 00:04:20.320
+FIreService, we can add a selector to the node. Everything will work just as well, because
+
+00:04:20.320 --> 00:04:28.216
+we have a check for the enemy actor. But it is more logical that this service does not receive tick when we are not undergoing an attack.
+
+00:04:28.216 --> 00:04:34.510
+Therefore, we add FireService to the attack node. Install EnemyActorKey.
+
+00:04:35.587 --> 00:04:38.319
+The spacing can be left at the default.
+
+00:04:39.204 --> 00:04:42.509
+And let's see how it all looks for us.
+
+00:04:43.100 --> 00:04:49.829
+The behavior tree window will be open. Place it on the right as usual. We start the game.
+
+00:04:49.829 --> 00:04:56.892
+The NPC saw us right away, starts shooting and kills us. The first death from an NPC in our course.
+
+00:04:56.892 --> 00:05:05.828
+Let's run it again. Let's try to escape from him. All he does not see us. There is no shooting. Let's run out.
+
+00:05:08.457 --> 00:05:13.030
+As soon as we are noticed, the shooting starts, and it starts a little earlier,
+
+00:05:13.030 --> 00:05:18.250
+because we have an animation of the NPC's rotation with a certain rotation rate.
+
+00:05:18.250 --> 00:05:22.638
+If desired, this can also be corrected, but we will not dwell on this.
+

@@ -1,0 +1,247 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.520 --> 00:00:10.529
+Hello everyone! In this tutorial, we will create a crosshair with you. This will be a temporary solution, since
+
+00:00:10.529 --> 00:00:16.226
+we will be looking at widgets later , but for now we will just draw it using two lines.
+
+00:00:16.226 --> 00:00:22.643
+If we look at the world settings, we will see that there is a special class called HUD.
+
+00:00:22.643 --> 00:00:29.210
+It stands for Head up display. This class is responsible for rendering the interface, which will be
+
+00:00:29.210 --> 00:00:35.000
+superimposed on top of the game. We can inherit from this class and draw all the
+
+00:00:35.000 --> 00:00:42.483
+elements we need using this class. Let's get started. Let's go to C ++ classes.
+
+00:00:43.405 --> 00:00:51.844
+Selecting a new C ++ class. Show all classes and find the HUD in the search. Click the next button.
+
+00:00:53.185 --> 00:01:07.061
+We name the class STUGameHUD. Let's put this class in the UI (user interface) folder. Click the create class button.
+
+00:01:10.340 --> 00:01:15.793
+I immediately added the UI folder to the build file.
+
+00:01:20.330 --> 00:01:27.180
+Go to the header file of our HUD and let's drop into the base AHUD class.
+
+00:01:28.881 --> 00:01:34.437
+Press Ctr + F and search for a function called DrawHUD.
+
+00:01:37.155 --> 00:01:43.662
+This function is responsible for rendering. It is called every frame and in this function we can draw lines,
+
+00:01:44.211 --> 00:01:48.544
+rectangles, display textures, text, and so on.
+
+00:01:50.376 --> 00:01:58.995
+It's virtual, so let's redefine it in our HUD and add the necessary logic to draw the crosshair.
+
+00:02:02.563 --> 00:02:12.796
+And we will add an additional function to encapsulate the rendering code in it. Let's call it DrawCrossHair.
+
+00:02:15.479 --> 00:02:19.029
+Go to the .cpp file. We create the body of the DrawHUD function.
+
+00:02:21.110 --> 00:02:27.615
+We call the parent function through Super. We also create the body of the DrawCrossHair function.
+
+00:02:29.766 --> 00:02:33.059
+And add a call to the DrawCrossHair function in DrawHUD.
+
+00:02:36.627 --> 00:02:41.192
+The function of the AHUD class that allows you to draw lines on the screen is called DrawLine.
+
+00:02:42.071 --> 00:02:47.890
+It has several arguments: the start point on the screen, the end point on the screen, the
+
+00:02:47.890 --> 00:02:55.056
+line color, and the line thickness. So, we have a function that can draw lines.
+
+00:02:55.056 --> 00:02:58.861
+Now we somehow need to calculate the center of our screen.
+
+00:03:00.950 --> 00:03:07.431
+Let's create an additional variable of type int32. Let's call it CenterX.
+
+00:03:09.813 --> 00:03:15.271
+To get the value of the screen size, we need an additional object called Canvas.
+
+00:03:15.907 --> 00:03:20.058
+In this object, all graphic primitives are drawn directly.
+
+00:03:20.900 --> 00:03:28.743
+And it is in it that the dimensions of the current window are located. If we switch to canvas.
+
+00:03:31.440 --> 00:03:39.206
+Scroll down and find the two variables we need. They are named SizeX and SizeY.
+
+00:03:40.496 --> 00:03:46.986
+We will also need to include the Engine / Canvas.h header file. Let's start with this.
+
+00:03:48.817 --> 00:03:55.080
+Write #include "Engine / Canvas.h"
+
+00:03:58.668 --> 00:04:05.650
+Assign CenterX = Canvas-&gt; SizeX to the variable and create an additional CenterY variable.
+
+00:04:07.182 --> 00:04:10.280
+So only this is not CenterX, but SizeX.
+
+00:04:12.782 --> 00:04:18.388
+Also change to SizeY.
+
+00:04:20.920 --> 00:04:28.907
+To calculate the center of the screen, let's use a special type that is new to us. It is called TInterval &lt;&gt;
+
+00:04:29.302 --> 00:04:35.644
+It is a segment and stores only two elements of the type with which we instantiate the template.
+
+00:04:35.644 --> 00:04:42.667
+In our case, this is a float. We name the object center and pass the
+
+00:04:42.667 --> 00:04:55.635
+point to the class constructor , which is the center of our screen. SizeX is multiplied by 0.5 and SizeY is also multiplied by 0.5.
+
+00:05:01.160 --> 00:05:06.564
+We can press F12 to make sure that there really are two variables, Min and Max.
+
+00:05:08.059 --> 00:05:12.000
+Let's create additional variables to avoid hardcode.
+
+00:05:12.000 --> 00:05:18.935
+We will have two calls to the DrawLine function: a horizontal line and a vertical line. However, at the same time, we
+
+00:05:18.935 --> 00:05:23.790
+will not make the data to the property variable, because in the future we will redo this
+
+00:05:23.790 --> 00:05:30.575
+sight through the widget, that is, such a temporary solution. The first variable is called HalfLineSize.
+
+00:05:30.575 --> 00:05:34.740
+She will be responsible for half of the line, because we will draw with you from the center
+
+00:05:34.740 --> 00:05:41.185
+and put this half to the right, left, up and down. Let it be the default 10.
+
+00:05:42.129 --> 00:05:55.067
+The next variable will be responsible for the line thickness. Let's call it LineThickness. And by default, let it be 2.
+
+00:05:56.655 --> 00:06:05.134
+And the extreme variable that we need is this line color. We call it LineColor.
+
+00:06:05.134 --> 00:06:12.699
+And let's paint the crosshair in green. Using the static constant FlinearColor :: Green
+
+00:06:13.140 --> 00:06:18.461
+So, we are ready to draw the line. Let's start with a horizontal line.
+
+00:06:19.434 --> 00:06:26.406
+The first argument to the DrawLine function is the x-coordinate. Therefore, we take the center Min
+
+00:06:27.000 --> 00:06:34.817
+and subtract our constant HalfLineSize. Thus, we move along X by 10 points to the left.
+
+00:06:36.705 --> 00:06:43.297
+The next parameter is the starting Y coordinate. It will simply be Center.Max.
+
+00:06:44.889 --> 00:06:52.854
+The next parameter is the final X coordinate. Therefore, we take Center.Min with you and now add the HalfLineSize.
+
+00:06:52.854 --> 00:07:03.389
+Thus, we move to the right by this amount - 10 points. End point on Y does not change - Center.Max
+
+00:07:04.754 --> 00:07:13.484
+The last 2 parameters are line color and line thickness. Therefore, we pass our parameters,
+
+00:07:13.484 --> 00:07:18.366
+which we created. So the horizontal line is ready. We proceed to the vertical line.
+
+00:07:18.366 --> 00:07:26.951
+Now we will have a fixed X. The Y coordinate will change, so the first parameter is StartX = Center.Min
+
+00:07:29.668 --> 00:07:36.106
+Y Coordinate = Center.Max - HalfLineSize
+
+00:07:36.106 --> 00:07:47.635
+That is, we go up 10 points and the end point in X is just the center, and along Y we add the HalfLineSize to the center.
+
+00:07:55.250 --> 00:07:58.580
+And also the color and thickness of the lines.
+
+00:08:03.245 --> 00:08:08.673
+We drew a horizontal and vertical line with you. Everything is ready for us. We can also get rid
+
+00:08:08.673 --> 00:08:14.925
+of the intermediate parameters SizeX and SizeY and pass it directly to the constructor.
+
+00:08:17.606 --> 00:08:22.545
+And the last thing we need to do is override the HUD class in game mode.
+
+00:08:30.547 --> 00:08:32.521
+Everything is ready for us. Launch the editor.
+
+00:08:33.212 --> 00:08:42.958
+Check in world settings that the HUD class has changed and launch our game. We see a green cross in the middle.
+
+00:08:43.485 --> 00:08:48.882
+Moreover, if we launch the game with you in a separate window. Let's choose New Editor Window.
+
+00:08:49.539 --> 00:08:58.500
+Let's start resizing the window and the cross will remain in the center, because the Canvas parameters are recalculated,
+
+00:08:58.500 --> 00:09:04.020
+and we draw lines every frame. But with this position of the camera, naturally the
+
+00:09:04.020 --> 00:09:09.870
+cross looks somehow ridiculous. Therefore, let's change the camera settings now and also take the
+
+00:09:09.870 --> 00:09:15.630
+lives of the character, because in the future we will still redo them through the interface. Open the blueprint of
+
+00:09:15.630 --> 00:09:22.560
+our character and in the spring arm component change the Y coordinate of the socket offset, for example, by 100,
+
+00:09:22.560 --> 00:09:27.685
+that is, we move the camera to the right and the character will be on the left side of the screen.
+
+00:09:27.685 --> 00:09:33.850
+Let's go to the health text component and hide it in a slightly tricky way. Let's search for owner.
+
+00:09:34.772 --> 00:09:40.850
+Components have two special properties called OwnerNoSee and OnlyOwnerSee.
+
+00:09:40.850 --> 00:09:47.095
+Using the property data, you can control the rendering of the component, depending on whether we own it or not.
+
+00:09:47.095 --> 00:09:53.370
+Let's set OwnerNoSee so that the text is not rendered over the character we are controlling.
+
+00:09:53.370 --> 00:09:59.795
+And also reset the rotation of this component so that it is rotated towards us above the other character.
+
+00:10:00.641 --> 00:10:10.401
+We start the game. All. Now it will be convenient for us to aim. The character is shifted to the left and there are no lives above him.
+
+00:10:10.401 --> 00:10:15.900
+But above the other, lives are still displayed. This is due to our OwnerNoSee flag.
+
+00:10:17.580 --> 00:10:21.240
+And let's, since our course is about C ++ in the UE,
+
+00:10:21.240 --> 00:10:29.297
+we will set the offset and OwnerNoSee settings through the code.
+
+00:10:31.381 --> 00:10:40.097
+We assign the offset vector (0, 100, 80) to the SocketOffset variable of the Spring Arm component
+
+00:10:42.206 --> 00:10:49.430
+and call the SetOwnerNoSee function of the health text component with the argument true.
+

@@ -1,0 +1,16 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.645 --> 00:00:11.434
+In this section, we will create the rules of the game. Let's look at two new classes GameMode and PlayerState.
+
+00:00:11.434 --> 00:00:16.755
+Let's divide all the players into two teams. We will assign a unique color to each team.
+
+00:00:16.755 --> 00:00:21.915
+We will learn how to make a respawn, calculate statistics: the number of kills, the
+
+00:00:21.915 --> 00:00:28.723
+number of deaths, we will limit the playing time, we will create several rounds. We can get started!
+

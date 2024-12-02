@@ -1,0 +1,142 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.675 --> 00:00:09.392
+In the current lesson, we will work on the logic for switching rounds.
+
+00:00:09.392 --> 00:00:13.904
+Let's create two additional variables in the FGameData structure.
+
+00:00:15.320 --> 00:00:22.571
+One of them will be responsible for the number of rounds - let's call it RoundsNum, let it be 4 by default.
+
+00:00:22.571 --> 00:00:29.090
+Let's change its clamp max. Let the maximum number of rounds be 10. Another variable will
+
+00:00:29.090 --> 00:00:35.526
+store the time of one round in seconds. Let's call it RoundTime and let it be 10 seconds by default.
+
+00:00:35.526 --> 00:00:40.903
+Let the minimum value be 3 seconds so that we can do quick tests for the rounds, and let the maximum
+
+00:00:40.903 --> 00:00:46.490
+value be 300, that is, five minutes. And we will also leave a comment that this value
+
+00:00:46.490 --> 00:00:53.289
+is measured in seconds. Go to the Game Mode header file. Let's create the variables we need.
+
+00:00:53.289 --> 00:00:59.603
+You will need a variable that will store the number of the current round. Let's call it CurrentRound.
+
+00:01:01.760 --> 00:01:09.621
+The next variable will store the amount of time left for the current round. Let's call it RoundCountDown.
+
+00:01:11.827 --> 00:01:19.757
+We need a timer descriptor. Create a variable of type FTimerHandle. We call it GameRoundTimerHandle.
+
+00:01:21.241 --> 00:01:26.779
+Let's create two additional functions as well. One of them will start the round. We call it StartRound.
+
+00:01:27.930 --> 00:01:32.820
+The second function will be responsible for updating the timer. Let's call it GameTimerUpdate.
+
+00:01:34.586 --> 00:01:36.206
+We create a body for each function.
+
+00:01:40.859 --> 00:01:45.193
+We will also create a logging category, so that we will output everything to the console for now.
+
+00:01:47.595 --> 00:01:50.868
+When the game starts, the StartPlay function is called.
+
+00:01:50.868 --> 00:01:57.460
+The variable CurrentRound must be set to one and the StartRound function must be called.
+
+00:01:59.503 --> 00:02:01.285
+Let's go to this function.
+
+00:02:02.403 --> 00:02:09.415
+The round begins, we need to update the variable that is responsible for the time of the round. Let's assign it a value,
+
+00:02:09.415 --> 00:02:16.299
+which is in the GameData structure, in the RoundTime field. After that, we start the timer.
+
+00:02:17.090 --> 00:02:20.892
+The timer will be called in a loop once per second.
+
+00:02:23.177 --> 00:02:29.516
+Each time the timer fires, the GameTimerUpdate function we just created will be called.
+
+00:02:29.516 --> 00:02:34.678
+For each tick of the timer, the RoundCountDown variable must be decreased by one,
+
+00:02:34.678 --> 00:02:41.644
+and when the variable becomes equal to zero, our round ends. We can write this logic in one line.
+
+00:02:41.644 --> 00:02:46.972
+We call the prefix decrement operator and compare the variable to zero.
+
+00:02:46.972 --> 00:02:55.035
+If the round is over, you must stop the timer. Call the ClearTimer function and pass a handle to it.
+
+00:02:56.869 --> 00:02:59.938
+Next, you need to check whether the game is over or not.
+
+00:03:00.892 --> 00:03:12.218
+To do this, we are trying to increase the CurrentRound by one and if this value is less than or equal to GameData.RoundsNum
+
+00:03:12.398 --> 00:03:19.132
+then the game continues, in this case we increase the CurrentRound value by one.
+
+00:03:19.132 --> 00:03:23.510
+Let's use the prefix version of the increment operator and then call
+
+00:03:23.510 --> 00:03:29.382
+the StartRound function, that is, we update the countdown timer and restart the timer.
+
+00:03:30.217 --> 00:03:36.769
+In the else section for this condition, the game ends. Let's output Game Over to the console.
+
+00:03:37.404 --> 00:03:45.288
+At the beginning of the function, we will display the remaining time until the end of the round and also the number of the current round and how many there are in total.
+
+00:03:55.695 --> 00:04:00.841
+We use the assumption that the round timer fires once per second and decrease the
+
+00:04:00.841 --> 00:04:07.110
+RoundCountDown value by one. You can get rid of this assumption. The timer manager has a function
+
+00:04:07.110 --> 00:04:13.665
+called GetTimerRate. This function returns the frequency of the timer,
+
+00:04:13.665 --> 00:04:20.878
+that is, roughly speaking, we can create a TimerRate variable and change the RoundCountDown value by this value.
+
+00:04:20.878 --> 00:04:25.440
+Thus, our function does not need to know that the timer fires every second.
+
+00:04:27.455 --> 00:04:33.388
+I showed this code as an example, we will not use it. Our RoundCountDown variable is an integer,
+
+00:04:33.388 --> 00:04:36.810
+GetTimerRate returns a float, so this solution doesn't quite work for us.
+
+00:04:36.810 --> 00:04:41.894
+Rounding errors are possible, but in general it is good to know about the existence of GetTimerRate.
+
+00:04:42.860 --> 00:04:49.057
+So, the logic is ready. The only thing is, let's delete one log in BaseWeapon that will interfere with us.
+
+00:04:49.057 --> 00:04:56.463
+It is called ChangeClip. We comment on this line and compile the project.
+
+00:04:57.848 --> 00:05:03.108
+First, in the game mode settings, let's set the minimum round time to 3.
+
+00:05:05.075 --> 00:05:12.978
+Compile. Open the log and start the game. Every second, the remaining time to the end
+
+00:05:12.978 --> 00:05:19.906
+and information about the current round are displayed . And at the very end, Game Over is displayed in the log.
+

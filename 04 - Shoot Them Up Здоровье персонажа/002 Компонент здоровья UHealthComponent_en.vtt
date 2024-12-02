@@ -1,0 +1,268 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.492 --> 00:00:11.472
+So let's get started. Let's start by creating a component that will control the health of our character.
+
+00:00:12.270 --> 00:00:16.290
+In this course, we will work closely with components and try to encapsulate
+
+00:00:16.290 --> 00:00:20.686
+all the features in these components so as not to inflate the main character class.
+
+00:00:21.306 --> 00:00:26.809
+Go to the folder with components, right-click, create a new class.
+
+00:00:27.581 --> 00:00:35.675
+We will inherit from the actor component class. Select it, click the next button.
+
+00:00:39.602 --> 00:00:44.932
+Let's call our health component STUHealthComponent.
+
+00:00:48.252 --> 00:00:50.129
+Click the create class button.
+
+00:00:52.780 --> 00:00:58.036
+So, our component has been created. The first thing we will do with you is change the bCanEverTick variable to false.
+
+00:01:00.230 --> 00:01:04.440
+We don't need Tick in this class. We will process all the logic on events,
+
+00:01:04.440 --> 00:01:11.466
+so we can optimize a little and remove the TickComponent function from the class altogether.
+
+00:01:13.062 --> 00:01:18.481
+So we cleaned up the .cpp file, formatted it. Let's go to the .h file.
+
+00:01:19.111 --> 00:01:27.372
+We will also remove the TickComponent function declaration and any unnecessary comments.
+
+00:01:29.919 --> 00:01:34.998
+We'll start with the most important variable that will be responsible for the health of our character.
+
+00:01:37.201 --> 00:01:39.130
+We create a private section.
+
+00:01:40.204 --> 00:01:46.182
+The variable will be of type float. We call it Health and assign a default value of 0.
+
+00:01:48.518 --> 00:01:53.484
+Let's create a public getter function for this variable that will return its value.
+
+00:01:54.000 --> 00:01:56.894
+We call it GetHealth.
+
+00:01:58.524 --> 00:02:02.558
+The body of the function will consist of one statement - return Health;
+
+00:02:04.149 --> 00:02:10.580
+We will leave this function in the .h file, because it is one-line. There is nothing wrong with that and do not forget
+
+00:02:10.580 --> 00:02:14.622
+about the const modifier, because the function inside we will not change anything.
+
+00:02:16.937 --> 00:02:22.950
+We also need an additional variable that will be responsible for the maximum life value
+
+00:02:22.950 --> 00:02:31.902
+and also for the default value of the Health variable. Name it MaxHealth and set it to 100.
+
+00:02:32.910 --> 00:02:38.919
+Let's also make this variable a property so that we can change its value in the editor.
+
+00:02:41.239 --> 00:02:44.699
+We will only change it in the default settings.
+
+00:02:45.752 --> 00:02:50.355
+So let's write EditDefaultsOnly and let's add BlueprintReadWrite as well.
+
+00:02:52.496 --> 00:03:00.162
+Go to the .cpp file and assign the Health variable to the MaxHealth variable on BeginPlay.
+
+00:03:00.162 --> 00:03:04.215
+That is, every time the game starts, or our character
+
+00:03:05.022 --> 00:03:09.390
+spawns again, his life value will be equal to MaxHealth.
+
+00:03:11.415 --> 00:03:21.474
+Let's create this component in our character, go to the character class, copy the uproperty macro, declare the component.
+
+00:03:23.534 --> 00:03:25.586
+We call it HealthComponent.
+
+00:03:27.323 --> 00:03:34.517
+Add the forward declaration of our component, go to the character .cpp file.
+
+00:03:36.658 --> 00:03:45.953
+Let's include the header file for our component.
+
+00:03:48.580 --> 00:03:53.636
+We create this component in the constructor. Everything is as usual.
+
+00:03:54.950 --> 00:03:57.650
+The only difference from other components will be
+
+00:03:57.650 --> 00:04:02.307
+that this component is purely logical, that is, it has no scene, no representation.
+
+00:04:03.209 --> 00:04:06.029
+Therefore, we will not call the SetupAttachment function.
+
+00:04:09.215 --> 00:04:15.000
+So, we've created a health component in character. Let's make the health value
+
+00:04:15.000 --> 00:04:19.664
+from this component appear on top of the character in some text field.
+
+00:04:20.355 --> 00:04:25.674
+For this we need a special component called TextRenderComponent.
+
+00:04:27.392 --> 00:04:36.000
+Let's create this component, copy the property macro. The component is of type UTextRenderComponent.
+
+00:04:36.997 --> 00:04:41.941
+Let's call this variable HealthTextComponent.
+
+00:04:45.287 --> 00:04:53.286
+We also add a forward declaration for this component. Go to the .cpp file, include the header file.
+
+00:04:54.975 --> 00:04:59.496
+This component is located at Components / TextRenderComponent.h
+
+00:05:02.422 --> 00:05:05.374
+In the constructor of the class, we create this component.
+
+00:05:09.661 --> 00:05:17.125
+Let's attach this component to the root component.
+
+00:05:19.330 --> 00:05:23.689
+Soon we will see in the editor how this component looks like, what settings it has.
+
+00:05:23.689 --> 00:05:27.271
+Let's do one thing now to finish the code.
+
+00:05:28.031 --> 00:05:33.954
+In the Tick function, each frame we will pass to the health component the value of the health variable.
+
+00:05:34.571 --> 00:05:41.582
+To do this, we create a local variable health. We set its value from the component.
+
+00:05:43.255 --> 00:05:48.155
+The TextRenderComponent has a function called SetText.
+
+00:05:49.278 --> 00:05:58.493
+It takes a variable of type FText. This is one of the UE string types. We will use a
+
+00:05:58.493 --> 00:06:05.014
+static function of the FText class called FromString and convert our Health variable to FString.
+
+00:06:05.692 --> 00:06:09.844
+To do this, we will use the static function Printf.
+
+00:06:11.645 --> 00:06:17.848
+And let's create a string that will only contain our variable. The only thing that we will indicate
+
+00:06:18.574 --> 00:06:23.530
+is the precision for float, put 0, that is, we will display it as an integer
+
+00:06:24.501 --> 00:06:30.948
+and pass Health as an argument. In fact, we can not use the additional function FString,
+
+00:06:30.948 --> 00:06:35.350
+but use the functions that are available in FText, but these functions are directly
+
+00:06:35.350 --> 00:06:40.660
+related to localization (with translation), so we will not consider them with you for now.
+
+00:06:40.660 --> 00:06:47.867
+We'll do everything through FString. Also, if you paid attention to these components, we do not check for a null pointer.
+
+00:06:48.183 --> 00:06:51.250
+Our character cannot exist without these components,
+
+00:06:51.250 --> 00:06:57.550
+so we make the assumption that they are nonzero and created, but we can check with you on BeginPlay
+
+00:06:57.550 --> 00:07:03.447
+using the check macro, which will generate an assertion if these components are null.
+
+00:07:03.739 --> 00:07:08.420
+This macro works only in development and debug environments, that is, during development,
+
+00:07:08.420 --> 00:07:13.790
+we can find this error if, for example, we have not created these components in the constructor.
+
+00:07:13.790 --> 00:07:19.223
+And in the shipping assembly, it is ignored, so this will not affect the speed of our program in any way.
+
+00:07:21.665 --> 00:07:27.118
+We open the blueprint with our character. We check that our components have been created.
+
+00:07:27.597 --> 00:07:33.522
+In the component tree, we see the health component in details, it has the MaxHealth variable.
+
+00:07:34.850 --> 00:07:41.781
+You and I can change it as we want, perhaps it should be limited so that there are no negative appointments.
+
+00:07:43.130 --> 00:07:48.380
+And we also see that the TextRender component has been created.
+
+00:07:49.467 --> 00:07:56.418
+It looks like this in the blueprint. In the details panel, we can adjust some of the
+
+00:07:56.418 --> 00:08:02.287
+properties of this component, for example, change the alignment. Now it is left, we will put it in the center.
+
+00:08:02.884 --> 00:08:07.510
+Let's change the color as well. Let's set some turquoise.
+
+00:08:11.430 --> 00:08:20.170
+Move the text a little higher so that it is above the character. And since we have a camera on the back, let's rotate it 180 degrees.
+
+00:08:25.700 --> 00:08:32.646
+Let's change the default text value, let it be 0. Compile.
+
+00:08:33.466 --> 00:08:39.420
+Let's check in the game. Click play.
+
+00:08:41.866 --> 00:08:48.883
+And on top of the character, the number of lives is displayed, that is, each frame we set the text value in the TextRenderComponent
+
+00:08:48.883 --> 00:08:52.930
+depending on our health variable. Let's check the work with some other
+
+00:08:52.930 --> 00:09:02.244
+value of the MaxHealth variable, for example, 35. Compile. Click play. Lives = 35.
+
+00:09:06.050 --> 00:09:11.482
+Let's see how the check macro works. To do this, let's assume that we forgot
+
+00:09:12.723 --> 00:09:19.333
+to create a health component. That is, the pointer will be null. Compile.
+
+00:09:22.880 --> 00:09:27.598
+Let's try to start our group and immediately on BeginPlay we get assertion.
+
+00:09:28.250 --> 00:09:32.600
+Thus, using the check macro, we can secure ourselves and be sure
+
+00:09:32.600 --> 00:09:38.382
+that all assumptions about the correct operation of the program are met.
+
+00:09:41.449 --> 00:09:51.982
+Finally, let's limit our MaxHealth variable to the minimum and maximum values. To do this, go to the movement component
+
+00:09:53.024 --> 00:10:01.280
+and copy the meta specifier ClampMin, ClampMax. We insert into the property of our MaxHealth.
+
+00:10:02.715 --> 00:10:05.458
+Change ClampMin to 0.
+
+00:10:08.857 --> 00:10:18.529
+And set the ClampMax value to one thousand and add a category for this property, let it be Health.
+
+00:10:19.933 --> 00:10:22.208
+This concludes this lesson with you.
+

@@ -1,0 +1,30 @@
+
+005 Collision-Overview
+https://docs.unrealengine.com/en-US/InteractiveExperiences/Physics/Collision/Overview/index.html
+
+006 Single-line-trace-by-channel
+https://docs.unrealengine.com/en-US/InteractiveExperiences/Tracing/HowTo/SingleLineTraceByChannel/index.html
+
+009 Aim-Offset
+https://docs.unrealengine.com/en-US/AnimatingObjects/SkeletalMeshAnimation/AimOffset/index.html
+
+010 Fabrik
+https://docs.unrealengine.com/en-US/AnimatingObjects/SkeletalMeshAnimation/NodeReference/Fabrik/index.html
+
+017 Animation-Notifications
+https://docs.unrealengine.com/en-US/AnimatingObjects/SkeletalMeshAnimation/Sequences/Notifies/index.html
+
+019 Blend-Nodes
+https://docs.unrealengine.com/en-US/AnimatingObjects/SkeletalMeshAnimation/NodeReference/Blend/index.html
+
+021 Lambda
+https://docs.microsoft.com/en-us/cpp/cpp/lambda-expressions-in-cpp
+
+022 -c-
+https://ru.wikipedia.org/wiki/%D0%A8%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D1%8B_C%2B%2B
+
+024 -
+https://lifeexe-art.gitbook.io/unreal-engine-c-course/dopolneniya-k-urokam/lekciya-065/blokirovka-strelby-pri-bege
+
+024 Blocking-shooting-while-running
+https://lifeexe-art.gitbook.io/unreal-engine-c-course-eng/lessons/lecture-065/blocking-shooting-while-running

@@ -1,0 +1,16 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.157 --> 00:00:13.081
+In this section, we will work on the sounds of the game. Let's create sounds of the character, sounds of weapons, impact, interface.
+
+00:00:13.081 --> 00:00:18.300
+Let's figure out how to spawn sound programmatically. What are the spatial sound settings.
+
+00:00:18.300 --> 00:00:24.408
+Consider SoundClass, SoundMix and also add functionality to enable, disable sound.
+
+00:00:25.217 --> 00:00:27.187
+All this will sound as follows.
+

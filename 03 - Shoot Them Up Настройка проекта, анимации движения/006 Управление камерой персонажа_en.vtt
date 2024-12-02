@@ -1,0 +1,235 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.000 --> 00:00:09.893
+Hello everyone! In this lesson we will work out the control of the character's camera.
+
+00:00:09.893 --> 00:00:13.890
+Let's teach her to rotate around the character depending on the input of the mouse.
+
+00:00:15.129 --> 00:00:20.547
+Let's start by creating two new axis mappings. Click on the + button.
+
+00:00:21.435 --> 00:00:26.437
+The first mapping will be called lookup. He will be responsible for tilting the camera up and down.
+
+00:00:26.437 --> 00:00:32.570
+This angle will change depending on the vertical position of the mouse. So we add MouseY.
+
+00:00:34.011 --> 00:00:40.171
+Create a second mapping, call it Turn Around. He will be responsible for turning the camera around the character.
+
+00:00:40.866 --> 00:00:47.010
+The angle of this rotation will change depending on the horizontal position of the mouse. Add MouseX
+
+00:00:47.010 --> 00:00:49.572
+and return to visual studio.
+
+00:00:50.361 --> 00:00:53.640
+We declare two functions that we need to rotate the camera.
+
+00:00:55.012 --> 00:01:00.468
+LookUp and TurnAround. They will have the same signature as MoveForward and MoveRight.
+
+00:01:06.718 --> 00:01:12.144
+We create a body for each function. To do this, right-click on the functions
+
+00:01:12.870 --> 00:01:17.494
+and select quick actions and refactoring -&gt; create declaration, definition from the menu. We connect
+
+00:01:19.391 --> 00:01:24.482
+through the input component mapping and the functions that we just created.
+
+00:01:35.050 --> 00:01:42.201
+Go to the body of the lookup function. To rotate the camera up and down, we will use a pawn function
+
+00:01:42.201 --> 00:01:48.400
+called AddControllerPitchInput - the function takes one parameter, the value of the pitch,
+
+00:01:48.400 --> 00:01:53.350
+which will be added to the rotation. We pass our Amount parameter into it, which will be equal to
+
+00:01:53.350 --> 00:01:58.120
+zero if the mouse does not move, it will take a positive value if the mouse moves
+
+00:01:58.120 --> 00:02:05.970
+up and negative if down. If we press f12 on the function, we fall inside, we will see that
+
+00:02:05.970 --> 00:02:14.086
+in fact this function is a wrapper over the AddPitchInput function of the controller. We fall further into AddPitchInput.
+
+00:02:14.086 --> 00:02:17.614
+Inside this function, the pitch angle is changed by the RotationInput variable.
+
+00:02:17.614 --> 00:02:22.414
+It changes to the value of the variable that we pass multiplied by IputPitchScale.
+
+00:02:25.385 --> 00:02:31.710
+Similarly, add the AddControllerPitchInput function to the TurnAround function. Thus, we change the
+
+00:02:31.710 --> 00:02:38.110
+rotation of the pawn, that is, our character, through the rotation of the controller, that is, the pawn does not own the
+
+00:02:38.110 --> 00:02:43.310
+rotation of the control. This division is not accidental and can be used in many situations.
+
+00:02:43.310 --> 00:02:48.799
+For example, if we need to aim at one point with the mouse, but visually the body is rotated absolutely to another.
+
+00:02:50.206 --> 00:02:54.662
+Press play and see what we get when we move along the X axis
+
+00:02:54.662 --> 00:02:58.379
+, the camera-character system rotates. Everything is correct.
+
+00:02:58.379 --> 00:03:04.837
+But when we move the mouse horizontally, nothing happens to us. Let's fix this quickly.
+
+00:03:06.345 --> 00:03:12.355
+We will do this in blueprint so that we do not recompile the project. We open our character.
+
+00:03:13.875 --> 00:03:23.048
+We select our camera component and in details in the search, enter: use pawn control rotation and put a checkmark in front of this parameter.
+
+00:03:23.048 --> 00:03:27.210
+After setting this parameter to true, the rotation of our camera will correspond
+
+00:03:27.210 --> 00:03:34.660
+to the rotation of the controller, the angles of which we change when moving the mouse. Compile. We save.
+
+00:03:34.660 --> 00:03:39.670
+Let's also show you a little trick so that we don't click on compile-save a hundred times. Click on the arrow
+
+00:03:39.670 --> 00:03:46.030
+next to compile and select save on compile on success only, if we change something
+
+00:03:46.030 --> 00:03:53.170
+in the blueprint and compile it, it will be saved automatically. Press play again. We see that the
+
+00:03:53.170 --> 00:04:00.100
+camera began to rotate along Y, but it rotates with an inversion, to correct this we can
+
+00:04:00.100 --> 00:04:07.567
+return to project settings -&gt; input and change the scale value of our lookup parameter to -1.
+
+00:04:10.363 --> 00:04:14.900
+And if we open the player controller, we will see the reason why the inversion occurs.
+
+00:04:14.900 --> 00:04:20.180
+This is the input pitch scale parameter. This parameter is negative, we saw it in the code of
+
+00:04:20.180 --> 00:04:25.649
+the AddPitchInput function, by changing its value we can control the speed of rotation of our camera.
+
+00:04:27.000 --> 00:04:30.270
+The camera's pitch is working, but the rotation is around the point
+
+00:04:30.270 --> 00:04:35.890
+at which the camera is currently located. Let's tweak this a bit and make it so
+
+00:04:35.890 --> 00:04:40.071
+that we can rotate the camera in an orbit around the character.
+
+00:04:40.071 --> 00:04:48.000
+We will do this using an additional component called the spring arm. Let's go into the code and add it.
+
+00:04:49.991 --> 00:04:53.680
+Let's create a new component. Copy the property macro.
+
+00:04:55.560 --> 00:04:58.926
+The component is of type USpringArmComponent.
+
+00:05:05.395 --> 00:05:08.188
+Add a forward declaration to our class.
+
+00:05:13.278 --> 00:05:16.372
+And go to the .cpp file of our character.
+
+00:05:17.807 --> 00:05:24.813
+We connect the header file of the new component, it is located at GameFramework / SpringArmComponent.h
+
+00:05:27.960 --> 00:05:33.320
+We create the component in the constructor in a known way through the CreateDefaultSubobject function.
+
+00:05:40.549 --> 00:05:46.129
+Let's add it to the root component. To do this, we will use the SetupAttachment function.
+
+00:05:49.120 --> 00:05:50.410
+GetRootComponent ()
+
+00:05:57.618 --> 00:06:02.520
+Just as we did with the blueprint camera before, let's now set the
+
+00:06:02.520 --> 00:06:07.867
+use pawn control rotation variable to true through the code for our spring arm component.
+
+00:06:09.900 --> 00:06:18.471
+And we change the parent of our camera component from the root component to the spring arm component. Launch editor.
+
+00:06:20.724 --> 00:06:27.355
+We open the blueprint with our character. Go to viewport. In the component tree, we can see our created spring arm component.
+
+00:06:27.862 --> 00:06:31.890
+The camera we have is not clear where, because it has a relative transformation.
+
+00:06:31.890 --> 00:06:37.570
+Let's reset it. This component is a kind of tripod on which the camera is located.
+
+00:06:37.570 --> 00:06:44.170
+We can change various parameters: shoulder length, offsets and others. Also, this component is very
+
+00:06:44.170 --> 00:06:50.255
+helpful in collision processing so that our camera does not bump into the wall. We will see this a little later.
+
+00:06:51.670 --> 00:06:57.401
+Let's set a more adequate offset for our camera. For Z, for example, 80.
+
+00:06:59.402 --> 00:07:07.752
+Compile. Let's remove the use pawn control rotation value from the camera component that we set earlier.
+
+00:07:07.752 --> 00:07:09.972
+For the spring arm component, we have set this value in the code.
+
+00:07:12.804 --> 00:07:19.104
+Press play and our camera rotates in an orbit around the character.
+
+00:07:22.840 --> 00:07:28.043
+In the subsequent lessons of this section, we will be closely involved with character animations.
+
+00:07:28.043 --> 00:07:32.130
+Now let's add a simple running animation for the character, otherwise it looks a little silly.
+
+00:07:32.130 --> 00:07:39.000
+moving in this position. Set the mesh in the animation category to animation mode = use animation offset
+
+00:07:39.000 --> 00:07:45.075
+and select some animation from those that we added, for example, Idle.
+
+00:07:47.171 --> 00:07:59.408
+So Idle, this is just a pose. Let's choose a run, for example, run forward. Compile. We start the game.
+
+00:08:00.143 --> 00:08:04.990
+So, we have set one animation for the character, one animated asset. Now he always
+
+00:08:04.990 --> 00:08:10.657
+runs, but the main goal we had in this tutorial: to set up the camera, with which we have successfully corrected.
+
+00:08:13.428 --> 00:08:19.224
+And the last thing in this lesson. If we pay attention to the AddControllerYawInput
+
+00:08:19.224 --> 00:08:27.213
+and AddControllerPitchInput functions, we will notice that these functions have the same signature as LookUp and TurnAround.
+
+00:08:27.213 --> 00:08:32.388
+The functions are identical: they return nothing and take only one parameter - float.
+
+00:08:33.000 --> 00:08:36.940
+What does this give us? The following gives us this - we can not create
+
+00:08:36.940 --> 00:08:45.303
+additional functions, but bind the AddControllerYawInput and AddControllerPitchInput functions directly.
+
+00:08:45.303 --> 00:08:52.580
+Remove LookUp and TurnAround functions from .cpp and .h files.
+

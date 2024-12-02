@@ -1,0 +1,206 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.690 --> 00:00:09.650
+In this lesson, we will create and perform the basic configuration of our main project.
+
+00:00:09.650 --> 00:00:12.890
+In the epic game launcher, go to the unreal engine
+
+00:00:12.890 --> 00:00:17.660
+category , to the library subcategory and launch the latest
+
+00:00:17.660 --> 00:00:25.020
+version of the engine. The project creation assistant has opened. As we remember, the first screen contains the categories of
+
+00:00:25.020 --> 00:00:31.095
+projects. We choose the games category. The second screen contains templates. We create our project
+
+00:00:31.095 --> 00:00:36.360
+using blank template blank. On the latter, we will not change any settings at all, we will even
+
+00:00:36.360 --> 00:00:42.450
+leave the blueprint project type. Let's see how to create a c ++ project based on the blueprint of a project.
+
+00:00:43.330 --> 00:00:48.370
+Below, in the first field, indicate the directory where we want to create a project, and in the second, enter the
+
+00:00:48.370 --> 00:00:55.090
+name of the project. Let's call it ShootThemUp and finish creating the project by clicking the create project button.
+
+00:00:55.090 --> 00:00:59.640
+The first thing we will do is add copyrights.
+
+00:00:59.640 --> 00:01:12.880
+Main menu, edit, project settings. In the description category, we find copyright notice. And we write:
+
+00:01:14.710 --> 00:01:15.910
+shoothem up game.
+
+00:01:17.310 --> 00:01:23.730
+This description will be at the top of each of our code files. Close project settings.
+
+00:01:23.730 --> 00:01:31.120
+Create a new Levels folder in the Content Browser.
+
+00:01:31.120 --> 00:01:39.680
+Click the Save current button and save the current map.
+
+00:01:39.680 --> 00:01:45.890
+Let's call it TestLevel. We save in this
+
+00:01:45.890 --> 00:01:52.580
+directory. Open the project settings and point this card to the start of the editor.
+
+00:01:52.580 --> 00:01:56.420
+To do this, in the maps and modes category, select the editor
+
+00:01:56.420 --> 00:01:59.930
+startup map. We specify TestLevel. In GameDefaultMap we
+
+00:02:00.920 --> 00:02:06.560
+also select this map. The GameDefaultMap specifies the map that will open in
+
+00:02:06.560 --> 00:02:11.840
+standalone mode. This can be the launch of an already assembled version of the game or launch in a special
+
+00:02:11.840 --> 00:02:17.630
+mode without an editor. So, the first part is ready. Let's add the content we need.
+
+00:02:19.390 --> 00:02:21.700
+To do this, open the epic launcher again.
+
+00:02:21.700 --> 00:02:35.440
+Go to the learn subcategory, go down to the very bottom and find the shooter game project.
+
+00:02:39.140 --> 00:02:42.860
+Download and create a shooter game project. I already have it installed.
+
+00:02:43.460 --> 00:02:49.250
+When all this is done, open the directory with the project and launch it - shooter game.
+
+00:02:49.250 --> 00:02:54.150
+We will use this project from the point of view of
+
+00:02:54.150 --> 00:02:59.040
+content - take all the assets from it and create our game based on them.
+
+00:02:59.040 --> 00:03:05.700
+Take the character from here, his animations, sounds, weapons, and so on. We think that we have a certain in- house
+
+00:03:05.700 --> 00:03:10.560
+designer who provides us with all the assets for the game, and we program them with you.
+
+00:03:10.560 --> 00:03:15.450
+In general, you do not need to download this project - all assets will be added to our repository.
+
+00:03:16.320 --> 00:03:20.970
+They will also be cleaned up, there will be no custom settings, we will create everything from scratch.
+
+00:03:20.970 --> 00:03:26.340
+The Unreal engine encourages the use of their assets in your personal projects as
+
+00:03:26.340 --> 00:03:31.920
+long as you use the Unreal Engine for these purposes. From a licensing point of view, this is absolutely
+
+00:03:31.920 --> 00:03:35.760
+legal and free, but if you make money from your game, then you
+
+00:03:35.760 --> 00:03:42.110
+will have to pay a small percentage from a certain income . To transfer content from one project to another, you need to select
+
+00:03:42.110 --> 00:03:50.180
+the assets of interest to us, right-click and select asset action, migrate.
+
+00:03:50.180 --> 00:03:58.070
+A content migration helper appears. Uncheck the
+
+00:03:58.070 --> 00:04:01.460
+sounds folder. We don't need sounds yet.
+
+00:04:01.460 --> 00:04:08.640
+We have chosen animations, but animations also consist of meshes, materials, so the unreal engine
+
+00:04:08.640 --> 00:04:13.920
+itself links all the files that need to be transferred and automatically
+
+00:04:13.920 --> 00:04:20.010
+adds our character, materials, textures. Therefore, we press the ok button.
+
+00:04:20.010 --> 00:04:21.910
+Find the directory with
+
+00:04:24.130 --> 00:04:30.940
+our ShootThemUp project. We need to select the content folder and click select folder.
+
+00:04:32.530 --> 00:04:38.050
+A message appears that the content was successfully migrated. We no longer need
+
+00:04:38.050 --> 00:04:42.040
+this project in the current section . We have transferred all the content that we need.
+
+00:04:42.040 --> 00:04:46.270
+We close it. We return to our project and see
+
+00:04:46.270 --> 00:04:48.160
+that additional
+
+00:04:48.160 --> 00:04:57.180
+folders with content from the shooter game have appeared in the content browser . If we click on the animations, then everything has been successfully
+
+00:04:57.180 --> 00:05:03.540
+symported. We will use these materials.
+
+00:05:03.540 --> 00:05:06.900
+Let's create the ExternalContent
+
+00:05:06.900 --> 00:05:18.000
+folder
+And transfer all the shooter game content to this folder, so that in the future we won't get confused about
+
+00:05:18.000 --> 00:05:21.270
+where our content is, and where is the external, design one.
+
+00:05:23.050 --> 00:05:29.430
+Mark this folder with a different color. To do this, select set color with the right mouse button.
+
+00:05:32.830 --> 00:05:34.240
+Let's put it in red.
+
+00:05:35.670 --> 00:05:40.470
+Let's make a code project from a blueprint project. To do this, it is enough to add a
+
+00:05:40.470 --> 00:05:45.960
+C ++ class to our project. Unreal will do everything for us automatically.
+
+00:05:45.960 --> 00:05:54.150
+Go to menu, file, new c ++ class and start with the main class of our GameModeBase level.
+
+00:05:54.870 --> 00:06:01.380
+Click on the next button. Let's call it an abbreviation of the name of our
+
+00:06:02.520 --> 00:06:05.670
+STUGameModeBase. Click the public button
+
+00:06:05.670 --> 00:06:08.160
+to place the header files in the public folder,
+
+00:06:08.160 --> 00:06:11.865
+and C ++ files in the private folder and click create class.
+
+00:06:11.865 --> 00:06:15.990
+So, our game mode is created. We see
+
+00:06:15.990 --> 00:06:24.900
+our copyrights at the top of the .cpp file and at the top of the .h file.
+
+00:06:24.900 --> 00:06:31.620
+We return to the editor and let's immediately set this game mode in the world settigns settings.
+
+00:06:31.620 --> 00:06:35.130
+Our game mode is also available in the c ++ classes folder.
+
+00:06:35.130 --> 00:06:39.480
+If you do not see this folder, then check the box in the view options. We are saved.
+

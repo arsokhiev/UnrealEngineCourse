@@ -1,0 +1,151 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.882 --> 00:00:11.420
+This lesson is preparatory. We need to create our own internal state for GameMode,
+
+00:00:11.420 --> 00:00:14.116
+which will store the current state of the game.
+
+00:00:14.116 --> 00:00:20.208
+We will also create a delegate that will notify all subscribed clients that this state has changed.
+
+00:00:20.208 --> 00:00:24.572
+In CoreTypes, we create an enum class that will describe all the states of the game.
+
+00:00:28.285 --> 00:00:33.015
+The very first state is waiting for the start, let's call it WaitingToStart.
+
+00:00:35.128 --> 00:00:38.038
+The second state InProgress is when the game is running.
+
+00:00:39.755 --> 00:00:46.062
+The third state is Pause and the fourth state is GameOver - when the game is over.
+
+00:00:47.081 --> 00:00:50.921
+Next, we declare the delegate. Let's copy the macro.
+
+00:00:53.098 --> 00:00:57.388
+The delegate will have one parameter. This parameter will be directly state.
+
+00:00:59.635 --> 00:01:03.895
+Set a name to the FOnMatchStateSignature delegate
+
+00:01:05.613 --> 00:01:14.621
+and a parameter of type ESTUMatchState. Let's create a delegate in game mode. Let's go to the header file.
+
+00:01:15.702 --> 00:01:21.506
+In the public section, under the constructor. We call it OnMatchStateChanged.
+
+00:01:23.361 --> 00:01:26.845
+Next, you need to create a variable that will store state.
+
+00:01:29.135 --> 00:01:31.656
+The default value will be WaitingToStart Let's
+
+00:01:34.320 --> 00:01:40.925
+also create a helper function. It will be internal, so we declare it in the private section.
+
+00:01:40.925 --> 00:01:46.492
+We call it SetMatchState. It will have one parameter of type ESTUMatchState.
+
+00:01:47.747 --> 00:01:51.590
+In this function, we will set the MatchState variable and call
+
+00:01:51.590 --> 00:01:56.241
+the Broadcast function of our delegate. Let's create the body of this function.
+
+00:01:57.729 --> 00:02:02.910
+First, let's add one check: if the current MatchState is equal to the State that we
+
+00:02:02.910 --> 00:02:09.770
+want to set, then we exit the function, if not, then set the MatchState variable to a new value
+
+00:02:11.898 --> 00:02:20.599
+and call the Broadcast function of our OnMatchStateChanged delegate. We pass the MatchState parameter to it.
+
+00:02:21.468 --> 00:02:25.613
+In this lesson, the pause state has not yet been defined. We will consider it
+
+00:02:25.613 --> 00:02:35.575
+in the next lesson, but now we can call this function in the game over, transfer the GameOver state there.
+
+00:02:38.967 --> 00:02:47.957
+We can also call this function at the very beginning of the game, in the StartPlay function and set the InProgress value.
+
+00:02:48.989 --> 00:02:55.908
+We will mainly use this state to change interfaces. Go to the game HUD class.
+
+00:02:57.290 --> 00:03:04.553
+Let's connect STUCoreTypes. At BeginPlay, we will now subscribe to the notification of the change in the state of the game.
+
+00:03:05.121 --> 00:03:10.966
+For this we need a callback function. We call it OnMatchStateChanged.
+
+00:03:12.307 --> 00:03:17.257
+According to the signature of our delegate, it should have one parameter.
+
+00:03:20.484 --> 00:03:22.574
+We create the body of the function.
+
+00:03:25.713 --> 00:03:31.640
+Let's include the header file of our game mode. In this lesson, we will simply display a message
+
+00:03:31.640 --> 00:03:39.053
+that the state of the game has changed. For this we need our own logging category.
+
+00:03:41.282 --> 00:03:44.342
+Called it LogSTUGameHUD.
+
+00:03:46.427 --> 00:03:54.292
+In the BeginPlay function, subscribe to the delegate. First, we check the world pointer.
+
+00:03:55.814 --> 00:04:03.373
+Next, we create a local variable GameMode. We immediately cast to our concrete game mode class.
+
+00:04:04.795 --> 00:04:09.244
+And we get game mode through UWorld.
+
+00:04:11.178 --> 00:04:13.139
+If the GameMode pointer is not nullptr,
+
+00:04:15.325 --> 00:04:18.404
+then we subscribe to our delegate.
+
+00:04:20.801 --> 00:04:24.687
+And add the OnMatchStateChanged function as a callback.
+
+00:04:25.910 --> 00:04:30.624
+In this function, we will display a message about the changed state of the game.
+
+00:04:32.999 --> 00:04:40.780
+The UENUM macro adds various meta information to the enum class, thanks to this, using special
+
+00:04:40.780 --> 00:04:48.219
+functions, we can convert the enum value to a string literal. The function is in the UEnum class.
+
+00:04:48.219 --> 00:04:56.000
+The function is static, called GetValueAsString and it takes an enum variable as a parameter.
+
+00:04:56.484 --> 00:05:02.020
+The return value is of type FString, so we need to add an asterisk operator *
+
+00:05:02.278 --> 00:05:05.496
+Compile the project, check if everything works for us.
+
+00:05:07.345 --> 00:05:09.853
+Let's change the game data for a quick test.
+
+00:05:10.227 --> 00:05:18.228
+Let's put the number of rounds - 2 and the number of seconds in one round - 3. Compile. We save.
+
+00:05:20.121 --> 00:05:29.555
+We will only display the message from our log LogSTUGameHUD. We start the game.
+
+00:05:30.055 --> 00:05:33.471
+The console displays a message that the game state is InProgress.
+
+00:05:34.881 --> 00:05:38.994
+And at the end of the second round, a message was displayed that the state was Game Over.
+

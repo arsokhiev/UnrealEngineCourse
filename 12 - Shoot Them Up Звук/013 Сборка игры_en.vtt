@@ -1,0 +1,22 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.198 --> 00:00:11.979
+The section has come to an end. Let's pack the project. Returning the behavior tree logic.
+
+00:00:13.629 --> 00:00:23.050
+Also in GameModeBase we check the number of rounds. We return them to 4. The rifle was also changed, we check
+
+00:00:23.050 --> 00:00:28.840
+that the number of bullets = 15. One more thing. In AttenuationSettings, the shooting
+
+00:00:28.840 --> 00:00:36.205
+distance is large enough , so the sound will be heard at long distances. Let's reduce to 3000 for example.
+
+00:00:36.205 --> 00:00:42.089
+And in the general mix, we will also reduce the volume of the weapon - set it to 0.5 We
+
+00:00:44.616 --> 00:00:52.360
+can pack everything: file, package project, check the configuration - shipping and click on windows 64-bit
+

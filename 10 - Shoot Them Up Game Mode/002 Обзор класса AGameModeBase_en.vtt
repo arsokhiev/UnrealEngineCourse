@@ -1,0 +1,109 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.834 --> 00:00:10.564
+In this section, let's move on to looking at the Game Mode class. This is the heart of the gaming grade.
+
+00:00:10.725 --> 00:00:17.332
+It defines the rules of the game, gameplay settings, how many players, bots participate in the game.
+
+00:00:17.964 --> 00:00:20.292
+How long a round lasts, how many rounds there are.
+
+00:00:21.046 --> 00:00:23.471
+What are the conditions for the end of the game.
+
+00:00:24.085 --> 00:00:27.551
+Game Mode also calculates various game statistics.
+
+00:00:28.000 --> 00:00:31.358
+Roughly speaking, this class is a kind of game manager.
+
+00:00:31.710 --> 00:00:34.101
+Our own Game Mode class already exists.
+
+00:00:34.513 --> 00:00:37.960
+In it, we have overridden various gameplay classes.
+
+00:00:38.419 --> 00:00:40.419
+Pawn class, HUD, controller.
+
+00:00:41.129 --> 00:00:43.834
+All these classes are spawned in Game Mode.
+
+00:00:44.210 --> 00:00:47.103
+That is, we did not spawn the base classes manually.
+
+00:00:48.058 --> 00:00:50.321
+Each Game Mode class is associated with a level.
+
+00:00:51.410 --> 00:00:55.339
+All this time we have been working with you in our test level.
+
+00:00:56.278 --> 00:01:03.972
+A little later we will add additional levels, and for now, for example, we can create a level via File -&gt; New Level.
+
+00:01:05.022 --> 00:01:06.844
+Select Default from the menu.
+
+00:01:07.554 --> 00:01:13.769
+We start the game. Empty settings create Game Mode by default - Game Mode Base. Also DeafaultPawn.
+
+00:01:13.769 --> 00:01:16.419
+This can be seen in the level object tree.
+
+00:01:17.284 --> 00:01:25.760
+If we set our STUGameMode in the settings, then all our classes will be spawned: HUD, Character, Controller, and so on.
+
+00:01:26.000 --> 00:01:30.044
+We can also change some classes, for example, set the default HUD.
+
+00:01:30.605 --> 00:01:32.726
+As a result, our interface will not be displayed.
+
+00:01:33.251 --> 00:01:36.358
+Thus, each level can be customized with its own classes.
+
+00:01:36.858 --> 00:01:38.969
+At the same time keeping the general logic of the game.
+
+00:01:40.252 --> 00:01:43.242
+There are actually two Game Mode classes in the Unreal Engine.
+
+00:01:44.340 --> 00:01:48.285
+The first is the base class, GameModeBase.
+
+00:01:50.081 --> 00:01:53.002
+Our Game Mode is inherited directly from it.
+
+00:01:53.664 --> 00:01:57.830
+And there is also a second class called simply GameMode.
+
+00:01:58.898 --> 00:02:05.271
+It also inherits from the GameModeBase class and extends the functionality of the base class.
+
+00:02:05.719 --> 00:02:09.411
+The logic of the match state of the game is added to this class.
+
+00:02:09.799 --> 00:02:14.242
+We will not touch this class. Let's create our own match states.
+
+00:02:15.101 --> 00:02:21.182
+I highly recommend that you study the Unreal Engine source code. It will be difficult at first.
+
+00:02:21.635 --> 00:02:25.690
+Step by step, as you learn the engine, everything will fall into place.
+
+00:02:26.054 --> 00:02:30.217
+We'll walk you through many of the GameModeBase functions.
+
+00:02:30.575 --> 00:02:37.306
+Let's see how they work, in what sequence they are called, what information we can get about the state of the game,
+
+00:02:37.766 --> 00:02:41.971
+how to pause the game, how to restart, and so on.
+
+00:02:42.687 --> 00:02:43.778
+Let's get started!
+

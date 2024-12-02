@@ -1,0 +1,46 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.069 --> 00:00:10.200
+Hello everyone! In this lesson, we will pack our game and run it from the binary.
+
+00:00:10.200 --> 00:00:15.165
+I recommend doing this as often as possible: to check that everything is going and working correctly
+
+00:00:15.165 --> 00:00:19.708
+with the latest changes . I also added additional materials
+
+00:00:19.708 --> 00:00:24.164
+from the shooter game: one material for the floor, another for the steps, which I specially created so that
+
+00:00:24.164 --> 00:00:30.369
+we can check the jump animation. Let's pack our game. The first thing we will do is go
+
+00:00:30.369 --> 00:00:36.594
+to project settings, to the maps and modes category and check that the game default map is set to TestLevel.
+
+00:00:37.263 --> 00:00:43.306
+This setting is responsible for the card that will start when our exe starts.
+
+00:00:44.490 --> 00:00:52.080
+Next, go to the main menu, file, package project. In the build configuration, select shipping.
+
+00:00:53.518 --> 00:01:02.597
+And then windows, windows 64 bit. Create a build folder at the root of our project or anywhere and click ok.
+
+00:01:03.372 --> 00:01:08.512
+The assembly will take some time. We can open the output log and watch the output to the console.
+
+00:01:15.181 --> 00:01:20.781
+So, our game is packed. Open the build folder, WindowsNoEditor and run the exe file.
+
+00:01:21.686 --> 00:01:25.603
+We all packaged our game. Everything works in the release build.
+
+00:01:27.265 --> 00:01:31.889
+So far, there is not much to do in our game, but from the point of view of the quality of
+
+00:01:31.889 --> 00:01:36.140
+software development, it is extremely important to build the project as often as possible.
+

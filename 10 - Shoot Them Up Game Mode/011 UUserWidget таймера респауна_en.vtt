@@ -1,0 +1,109 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.174 --> 00:00:12.105
+Let's create a C ++ class for the spectator widget. Let's rename the blueprint.
+
+00:00:14.200 --> 00:00:17.422
+Go to C ++ classes, to the UI directory.
+
+00:00:19.324 --> 00:00:23.614
+We create a new C ++ class. In the search we find UserWidget.
+
+00:00:27.260 --> 00:00:30.110
+We call the class STUSpectatorWidget.
+
+00:00:34.890 --> 00:00:40.505
+Before moving on to the widget, let's create two functions in the respawn component.
+
+00:00:40.505 --> 00:00:43.230
+The first will return the number of respawn seconds.
+
+00:00:45.884 --> 00:00:52.933
+The second function will return true when the respawn timer is running. We call the function IsRespawnInProgress.
+
+00:00:55.741 --> 00:00:57.551
+We create the body of the function.
+
+00:00:59.730 --> 00:01:07.102
+To determine whether the timer is running or not, we will use the manager's timer function, which is called IsTimerActive.
+
+00:01:12.626 --> 00:01:14.126
+Go to the widget class.
+
+00:01:17.055 --> 00:01:18.675
+We create a public section.
+
+00:01:20.005 --> 00:01:21.940
+Add the UFUNCTION macro.
+
+00:01:26.104 --> 00:01:29.314
+The function will return true if the timer is running.
+
+00:01:30.974 --> 00:01:37.735
+We call the function GetRespawnTime and the parameter will be by reference.
+
+00:01:38.400 --> 00:01:46.376
+We will transfer to it the number of seconds left before waiting for the respawn. We create the body of the function.
+
+00:01:48.207 --> 00:01:52.663
+Let's include the necessary header files.
+
+00:01:55.398 --> 00:01:59.193
+We get a pointer to the respawn component.
+
+00:02:05.266 --> 00:02:07.886
+If pointer = nullptr,
+
+00:02:10.663 --> 00:02:12.433
+or the timer is not running,
+
+00:02:16.677 --> 00:02:18.742
+then the function will return false.
+
+00:02:20.165 --> 00:02:23.129
+Otherwise, write in the CountDownTime variable the
+
+00:02:25.292 --> 00:02:28.102
+number of seconds left until the respawn
+
+00:02:30.618 --> 00:02:32.371
+and return true.
+
+00:02:33.987 --> 00:02:35.201
+We compile the project.
+
+00:02:36.311 --> 00:02:43.250
+Go to the file menu -&gt; reparent blueprint. We change the parent class of the widget.
+
+00:02:43.250 --> 00:02:48.140
+We check on the right that it has changed. Next, let's create a bind for the text.
+
+00:02:50.052 --> 00:02:54.222
+So, we call our GetRespawnTime function.
+
+00:02:56.050 --> 00:03:02.590
+If the return value is false, then we can display either Dead, or, for example, write Wait.
+
+00:03:06.710 --> 00:03:10.990
+And if the value is true, then just display the number of seconds.
+
+00:03:14.188 --> 00:03:15.435
+The function is ready.
+
+00:03:16.579 --> 00:03:19.181
+The only thing is that you can change the size of the text.
+
+00:03:21.264 --> 00:03:22.074
+Let's put 40.
+
+00:03:23.533 --> 00:03:31.343
+Also set the number of seconds of the round a little more, for example, 80. Start the game.
+
+00:03:32.128 --> 00:03:34.955
+We were killed. The countdown counter is running.
+
+00:03:36.746 --> 00:03:39.514
+The character has respawned. Everything works.
+

@@ -1,0 +1,358 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.466 --> 00:00:11.806
+In this tutorial we will spawn our entire arsenal of weapons: a grenade launcher and a rifle.
+
+00:00:12.578 --> 00:00:18.860
+We will switch between them by pressing a key. We will need an additional socket, to which
+
+00:00:18.860 --> 00:00:26.190
+a weapon that is not currently being used will be attached. In the skeleton tree, add a new socket
+
+00:00:26.190 --> 00:00:32.011
+to the spine1 bone . This bone belongs to the spine. The weapon will be strapped to the back.
+
+00:00:33.290 --> 00:00:38.879
+In the details panel, set a name for the socket. Let's call it ArmorySocket.
+
+00:00:40.814 --> 00:00:46.770
+Let's add a preview asset to it. Right click and select the asset launcher.
+
+00:00:46.770 --> 00:00:51.230
+Let's set up a relative transformation. I selected these parameters in advance.
+
+00:00:51.230 --> 00:01:05.253
+RelativeLocation will be = (-9, -26, -23). The relative rotation will be = (-10, 70, -29).
+
+00:01:06.970 --> 00:01:10.112
+Thus, the second weapon will be behind the back.
+
+00:01:12.000 --> 00:01:14.001
+And if you open an animation asset,
+
+00:01:15.000 --> 00:01:19.824
+you can see how it will look in a certain pose of the character.
+
+00:01:21.740 --> 00:01:28.311
+Next, go to project settings, in the input category. We need to add a new action mapping
+
+00:01:28.311 --> 00:01:34.280
+that will be responsible for switching weapons. Let's call it NextWeapon. We won't be making
+
+00:01:34.280 --> 00:01:40.485
+separate buttons for each weapon. It's just that the weapon will cycle on demand.
+
+00:01:41.212 --> 00:01:46.407
+Let the weapon switch by pressing the tab key and also we can add a
+
+00:01:46.919 --> 00:01:53.925
+switch when scrolling the mouse wheel. To do this, add mouse wheel up and mouse wheel down.
+
+00:01:53.925 --> 00:01:59.707
+That is, no matter where we turn the wheel, our weapon switches to the next one.
+
+00:02:01.774 --> 00:02:08.701
+Go to the .h file of the weapon component and the first thing we do is change the property WeaponClass.
+
+00:02:09.496 --> 00:02:12.860
+It will now be an array. We write TArray.
+
+00:02:13.814 --> 00:02:22.450
+The array element type will be TSubclassOf &lt;ASTUBaseWeapon&gt;. And change WeaponClass to WeaponClasses. We will need to spawn
+
+00:02:22.450 --> 00:02:29.340
+all weapon classes that are added to this array. In our case, there will be 2 of them. Let's rename the variable that
+
+00:02:29.340 --> 00:02:35.826
+is responsible for socket. The title is actually a little flawed. Let's call it WeaponEquipSocketName.
+
+00:02:36.662 --> 00:02:44.720
+Copy this property. We have added a new socket. We name the variable WeaponArmorySocketName.
+
+00:02:45.233 --> 00:02:50.268
+This variable is responsible for the name of the socket to which we attach the additional weapon.
+
+00:02:50.646 --> 00:02:55.870
+We need an additional array where all pointers to the weapon actors that we spawn
+
+00:02:55.870 --> 00:03:02.770
+will be stored . Each time you change weapons, the CurrentWeapon pointer will change to the corresponding
+
+00:03:02.770 --> 00:03:09.981
+pointer from the Weapons array, which we will now create with you. We write TArray. The element type of the array will be a
+
+00:03:09.981 --> 00:03:19.920
+pointer to ASTUBaseWeapon and call the array Weapons. Let's rename the SpawnWeapon function to SpawnWeapons.
+
+00:03:20.860 --> 00:03:26.535
+We also need an additional variable, which will store the index of the array element,
+
+00:03:26.535 --> 00:03:33.502
+which is currently being referenced by our CurrentWeapon pointer. The variable will be of integer type.
+
+00:03:33.502 --> 00:03:38.548
+Let's call it CurrentWeaponIndex and by default it will be equal to zero.
+
+00:03:40.188 --> 00:03:48.070
+Go to the .cpp file of the weapon component. Change SpawnWeapon to SpawnWeapons in two places.
+
+00:03:49.756 --> 00:03:57.000
+Let's also move the GetWorld check under one if so we have fewer lines.
+
+00:03:58.921 --> 00:04:07.518
+Our code was written for one weapon class, and now we need to change that and go through the entire WeaponClasses array
+
+00:04:08.072 --> 00:04:13.192
+and spawn the appropriate actors. We use a range for loop.
+
+00:04:14.142 --> 00:04:23.636
+We transfer the lines with the spawn of the weapon. We insert it into the body of the loop, change the CurrentWeapon to the local variable Weapon.
+
+00:04:24.100 --> 00:04:31.418
+We'll install CurrentWeapon a bit later. Further. If after calling the SpawnActor function the
+
+00:04:31.418 --> 00:04:39.000
+pointer turned out to be null, then in this case we can also leave return and change to continue.
+
+00:04:39.538 --> 00:04:46.697
+We can also output some warning message to the log. We will return to this situation in a few lectures.
+
+00:04:46.697 --> 00:04:51.680
+Let's leave continue for now. Next, for each actor that spawns, we set the
+
+00:04:51.680 --> 00:04:58.906
+Owner - our character. And we add this pointer to the Weapons array that we just created.
+
+00:04:58.906 --> 00:05:04.630
+This is done using the Add function. It remains to attach the weapon to the character's mesh.
+
+00:05:04.630 --> 00:05:13.759
+In the spawn function, we will attach all weapons to the ArmorySocket, and when equipping, we will attach the current weapon to the Equip socket.
+
+00:05:13.759 --> 00:05:17.355
+Therefore, we can separate the attachment code into a separate method,
+
+00:05:17.910 --> 00:05:24.459
+because it will be called for two different sockets. Let's call the function AttachToSocket.
+
+00:05:24.459 --> 00:05:30.197
+It's even better to call it AttachWeaponToSocket. This function will have three parameters: the
+
+00:05:30.197 --> 00:05:38.624
+first is a pointer to the weapon we want to attach, the second is the character's mesh.
+
+00:05:39.566 --> 00:05:41.755
+And the third is the name of the socket.
+
+00:05:42.561 --> 00:05:49.152
+We must use WeaponArmorySocketName when spawning. Let's start with the body of the function.
+
+00:05:52.200 --> 00:05:55.937
+The first parameter is a pointer to ASTUBaseWeapon.
+
+00:05:58.900 --> 00:06:06.840
+We name the argument Weapon. The second parameter can be a pointer to USkeletalMeshComponent, or you can use a pointer
+
+00:06:06.840 --> 00:06:12.690
+to a more basic component, to USceneComponent, because the AttachToComponent function
+
+00:06:12.690 --> 00:06:19.664
+takes a pointer to this type as the first argument. And the last parameter is the name of the socket.
+
+00:06:20.270 --> 00:06:24.449
+FName by constant reference. We name the parameter SocketName.
+
+00:06:26.471 --> 00:06:30.144
+Let's add the function declaration to the .h file. We copy the signature.
+
+00:06:35.950 --> 00:06:37.926
+We insert into the private section.
+
+00:06:43.492 --> 00:06:50.541
+Let's move the attachment code from SpawnWeapons into our new function.
+
+00:06:53.302 --> 00:06:59.482
+And change all the variables to function parameters, that is, replace CurrentWeapon with Weapon,
+
+00:07:00.910 --> 00:07:07.154
+Character-&gt; GetMesh () with SceneComponent and set SocketName as the last parameter.
+
+00:07:08.331 --> 00:07:13.408
+You can add nullptr check for Weapon and SceneComponent.
+
+00:07:18.830 --> 00:07:22.770
+Let's create an additional function that will deal with equipping the weapon, that is,
+
+00:07:22.770 --> 00:07:28.470
+setting the CurrentWeapon and attaching the weapon to the character's hand. We call this
+
+00:07:28.470 --> 00:07:34.787
+function EquipWeapon. It will have one integer parameter. Let's call it WeaponIndex.
+
+00:07:34.787 --> 00:07:38.880
+This parameter will be the index for the Weapons array, the element of which
+
+00:07:38.880 --> 00:07:45.281
+we want to set as the current weapon. We create the body of the function.
+
+00:07:47.860 --> 00:07:54.807
+We can immediately add this call to BeginPlay after we have spawned all weapons and pass
+
+00:07:54.807 --> 00:08:01.686
+the CurrentWeaponIndex parameter there . Also, for clarity, we can set it to zero on BeginPlay.
+
+00:08:02.240 --> 00:08:08.097
+Let's program the EquipWeapon function. We also need a pointer to character.
+
+00:08:10.406 --> 00:08:12.333
+We copy it.
+
+00:08:14.311 --> 00:08:16.690
+Checking for nullptr.
+
+00:08:18.684 --> 00:08:21.448
+Now is the time to install CurrentWeapon.
+
+00:08:22.062 --> 00:08:29.540
+We assign to the given pointer an array element that corresponds to the WeaponIndex.
+
+00:08:29.540 --> 00:08:33.970
+It is also possible here that the user did not add any weapon elements
+
+00:08:33.970 --> 00:08:41.090
+in the blueprint, and therefore a crash will occur here. We will also handle this situation in a few lectures.
+
+00:08:42.134 --> 00:08:46.941
+The CurrentWeapon now points to the actor that we want to use as the main weapon.
+
+00:08:48.430 --> 00:08:52.876
+And we can attach it to the character's hand, that is, to the EquipSocket.
+
+00:08:57.110 --> 00:09:02.023
+We will call this EquipWeapon function every time we want to install a new weapon,
+
+00:09:02.023 --> 00:09:08.750
+so the CurrentWeapon pointer will be null only when it is called in BeginPlay. In other situations,
+
+00:09:08.750 --> 00:09:16.229
+CurrentWeapon points to the current weapon. Therefore, the next time we call the EquipWeapon function with a different index,
+
+00:09:16.229 --> 00:09:22.214
+before changing the CurrentWeapon pointer, we must return the weapon behind the character's back,
+
+00:09:22.214 --> 00:09:28.246
+that is, call the AttachWeaponToSocket function with the WeaponArmorySocketName socket name.
+
+00:09:28.246 --> 00:09:34.747
+Let's add one more function that will be called when processing NextWeapon action.
+
+00:09:34.747 --> 00:09:43.262
+Let's also call it NextWeapon. Create a body at the very end of the file.
+
+00:09:43.262 --> 00:09:51.275
+The logic of this function will be the simplest. We are incrementing the CurrentWeaponIndex variable by one.
+
+00:09:51.275 --> 00:10:01.124
+And also, so that the variable does not go beyond the Weapons array, we will take the expression (CurrentWeaponIndex + 1)
+
+00:10:01.560 --> 00:10:09.090
+modulo the length of the array. That is, the counter value will be equal to the number of array elements, then it
+
+00:10:09.090 --> 00:10:15.000
+will turn into 0. The number of array elements is calculated using the Num function.
+
+00:10:16.370 --> 00:10:22.842
+And we just need to call the EquipWeapon function with the changed CurrentWeaponIndex.
+
+00:10:25.331 --> 00:10:30.000
+Go to the character class. Let's add bind to the action.
+
+00:10:30.750 --> 00:10:38.760
+Copy any of the existing ones and replace the name with NextWeapon, which we created in the editor.
+
+00:10:39.720 --> 00:10:43.909
+And we will call the NextWeapon function of the weapon component.
+
+00:10:45.118 --> 00:10:51.330
+One point that I missed when copying - the name of the socket that is responsible for the equipment
+
+00:10:51.330 --> 00:10:58.521
+should be ArmorySocket. Go to the character's blueprint and add the rifle
+
+00:10:59.416 --> 00:11:05.112
+and launcher to the WeaponClasses array in the
+
+00:11:06.176 --> 00:11:11.549
+weapon component . Compile. We start the game.
+
+00:11:13.494 --> 00:11:22.180
+Press tab. The weapon switches. When you scroll the mouse wheel, the weapon changes too quickly. We'll tweak
+
+00:11:22.180 --> 00:11:27.982
+this in future chapters with gear animations. Now in the game we can switch
+
+00:11:27.982 --> 00:11:34.561
+between the two types of weapons. Let's modify the weapon component a bit. We will destroy the weapon actors
+
+00:11:34.561 --> 00:11:40.910
+when calling the EndPlay function of the component. The EndPlay function is called on each component when
+
+00:11:40.910 --> 00:11:47.120
+the EndPlay function of the parent actor is called. In our logic, we destroy the character a few
+
+00:11:47.120 --> 00:11:54.231
+seconds after death. At the same time, the EndPlay function will be called for all character components.
+
+00:11:54.864 --> 00:12:00.829
+The first thing we will do when calling this function is to set the CurrentWeapon pointer to nullptr.
+
+00:12:00.829 --> 00:12:09.836
+He should not point to any actor. Next, we do a range loop over the array of our Weapons actors.
+
+00:12:11.910 --> 00:12:17.820
+Detach the actors from the mesh. To do this, we will use a function that
+
+00:12:17.820 --> 00:12:23.716
+is essentially the opposite of the AttachToComponent function. It's called DetachFromActor.
+
+00:12:23.716 --> 00:12:28.509
+As a parameter, the structure is also inverse to the EAttachmentRule structure.
+
+00:12:28.509 --> 00:12:33.990
+It is of type FDetachmentTransformRules and we can pass in a static variable
+
+00:12:33.990 --> 00:12:40.735
+called KeepWorldTransform. It is important not to get confused here: this is not an enum element, but a static structure.
+
+00:12:40.735 --> 00:12:45.160
+After that, we can remove the weapon actor by calling the Destroy function.
+
+00:12:45.160 --> 00:12:52.442
+Next, we clear the Weapons array. We call the Empty function. And don't forget about calling the parent function through Super.
+
+00:12:52.442 --> 00:12:59.422
+After detach, you can do other logic. You can, for example, turn on the physics simulation on the weapon actors,
+
+00:12:59.422 --> 00:13:04.736
+just leave them on the stage or delete them on a timer after ten seconds.
+
+00:13:04.736 --> 00:13:13.684
+One more point. When we change weapons, if we also have the current weapon, then we must call the StopFire function,
+
+00:13:13.684 --> 00:13:18.921
+otherwise, for example, our rifle, which fires on a timer, will not stop firing.
+
+00:13:20.322 --> 00:13:28.452
+We must do the same when our character dies - call the StopFire function of the weapon component.
+
+00:13:28.452 --> 00:13:32.318
+Because our character can die when the fire button is held down.
+
+00:13:34.410 --> 00:13:42.350
+We start the game. Let's run into the sphere. We are lost. We are waiting for a few seconds.
+
+00:13:44.121 --> 00:13:47.268
+The entire arsenal withdrew with the character.
+

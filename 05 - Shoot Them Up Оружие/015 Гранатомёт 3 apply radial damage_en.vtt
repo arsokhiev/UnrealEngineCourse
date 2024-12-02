@@ -1,0 +1,289 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.430 --> 00:00:13.030
+Let's get down to the final 3 parts of the launcher development. In the current lesson, our task is to cause damage
+
+00:00:13.030 --> 00:00:20.236
+when colliding with any object. We will specify the parameters for damage in projectile. It can also be done in
+
+00:00:20.236 --> 00:00:25.950
+another way, for example, the launcher can be fully responsible for damage and all parameters are passed
+
+00:00:25.950 --> 00:00:33.502
+to the projectile class in the same way as we pass the shoot direction. Let's create the required property right away: the
+
+00:00:33.502 --> 00:00:40.034
+first property is the radius of damage. We will apply radial damage, as we have already done
+
+00:00:41.349 --> 00:00:46.061
+. Name the variable DamageRadius and set an arbitrary value.
+
+00:00:47.530 --> 00:00:52.740
+The second property will be directly responsible for the number of dmages.
+
+00:00:53.810 --> 00:00:58.936
+We name it DamageAmount and give it some high value. It's an explosion.
+
+00:00:59.298 --> 00:01:02.812
+At the epicenter, 50 health points will be taken away from us.
+
+00:01:04.226 --> 00:01:10.189
+Go to the .cpp file projectile. First, let's include two header files.
+
+00:01:10.431 --> 00:01:18.736
+We'll need DrawDebugHelpers to draw the sphere and also KismetGameplayStatics to do the damage.
+
+00:01:18.736 --> 00:01:23.091
+Go to the projectile constructor. Let's set up the collision component.
+
+00:01:23.091 --> 00:01:29.893
+We have not set any properties for it. To begin with, we will set SetCollisionEnabled
+
+00:01:29.893 --> 00:01:37.540
+and pass the ECollisionEnabled :: QueryOnly value, that is, we will not have physical
+
+00:01:37.540 --> 00:01:43.128
+interactions with this collision, there will only be a collision alert.
+
+00:01:44.240 --> 00:01:49.700
+Further. Let's set how this collision will react to other objects that have
+
+00:01:49.700 --> 00:01:55.590
+collisions. We will set the same response for all channels. There is a
+
+00:01:55.590 --> 00:02:01.590
+special function for this called SetCollisionResponseToAllChannels. It takes
+
+00:02:01.590 --> 00:02:09.900
+ECollisionResponse elements as a parameter. We select ECR_Block, that is, our projectile
+
+00:02:09.900 --> 00:02:15.300
+will simply be blocked by all available channels. You can fine-tune this
+
+00:02:15.300 --> 00:02:20.753
+so that the collision reacts differently with different channels, but for now we do not need this.
+
+00:02:22.008 --> 00:02:31.424
+Let's go to the BeginPlay function. Let's add a check for the collision component. Let's take a look at the new OnComponentHit delegate.
+
+00:02:32.078 --> 00:02:39.773
+It is called when a collision has occurred with an actor or other components. This delegate is dynamic.
+
+00:02:39.773 --> 00:02:46.050
+We add it using the AddDynamic macro. The first parameter is a pointer to the current object.
+
+00:02:46.050 --> 00:02:53.901
+The second is a function reference. Let's write the currently non-existent OnProjectileHit function.
+
+00:02:56.130 --> 00:03:03.000
+Press F12 on OnComponentHit. The signature of our function must match the signature of the delegate.
+
+00:03:03.000 --> 00:03:09.793
+So we press F12 on FComponentHitSignature. We copy this long signature.
+
+00:03:12.980 --> 00:03:19.411
+Go to the projectile header file, to the private section. Let's declare a function.
+
+00:03:19.411 --> 00:03:24.000
+We write the ufunction macro and insert the signature.
+
+00:03:25.225 --> 00:03:32.911
+I'll copy the name of the OnProjectileHit function. The return value will be void. Insert the name of the function.
+
+00:03:33.640 --> 00:03:39.450
+Let's remove the extra commas. This event is passed a bunch of parameters related
+
+00:03:39.450 --> 00:03:45.523
+to the collision, but when implementing the explosion, we will not use any of these parameters.
+
+00:03:49.476 --> 00:03:59.318
+Copy the function declaration. Insert into the .cpp file and add the class name before the function.
+
+00:04:01.546 --> 00:04:08.530
+So, we had a collision. Let's program the logic of this behavior. First, we check the UWorld
+
+00:04:08.530 --> 00:04:15.926
+pointer for nullptr. We'll need it. And the first thing we have to do is stop our movement.
+
+00:04:17.039 --> 00:04:22.674
+To do this, the motion component has a function called StopMovementImmediately.
+
+00:04:24.165 --> 00:04:29.940
+All its functionality lies in the fact that it sets the speed of movement to 0. We did something similar
+
+00:04:29.940 --> 00:04:36.700
+when our character was dying. We called a function on the character movement component - DisableMovement.
+
+00:04:36.700 --> 00:04:41.756
+Next, we need to do radial damage. Let's put a comment on MakeDamage.
+
+00:04:42.570 --> 00:04:48.540
+And at the very end, destroy the actor. That is, call the Destroy function. Thus, the actor
+
+00:04:48.540 --> 00:04:54.490
+is deleted either by a timer of 5 seconds, or by a collision. Let's go to the launcher class
+
+00:04:54.490 --> 00:05:03.000
+and set another projectile parameter. Let's define the owner of the given actor. Let's call the SetOwner function
+
+00:05:03.000 --> 00:05:08.390
+and pass the pointer there, which the GetOwner function returns, that is, in fact, we say
+
+00:05:08.390 --> 00:05:15.020
+that the projectile owner is also our character, because we have already set the character owner to the weapon.
+
+00:05:15.020 --> 00:05:22.058
+Therefore, GetOwner will return a pointer to the given character. Let's do damage on collision.
+
+00:05:23.663 --> 00:05:28.368
+Let's copy the function that we used in the DevDamageActor.
+
+00:05:29.785 --> 00:05:32.277
+We need to copy the ApplyRadialDamage.
+
+00:05:35.081 --> 00:05:36.391
+We paste this code.
+
+00:05:37.505 --> 00:05:46.030
+Let's adapt it. Leave the first parameter unchanged - GetWorld. Next comes the
+
+00:05:46.030 --> 00:05:53.649
+amount of damage. We have just created the property DamageAmount. The center of the sphere is also located at the location of the actor.
+
+00:05:53.649 --> 00:05:59.485
+Replace the radius with DamageRadius. It is not necessary to create DamageType for now,
+
+00:05:59.830 --> 00:06:07.410
+so we can pass the base class UDamageType there. To do this, call the StaticClass function.
+
+00:06:11.760 --> 00:06:15.638
+Let's format this function because it is getting too long.
+
+00:06:16.012 --> 00:06:19.935
+Add an empty comment after each parameter //
+
+00:06:24.370 --> 00:06:30.778
+Press Ctrl + K, Ctrl + D. It became clearer. The next parameter is an array of
+
+00:06:30.778 --> 00:06:36.140
+actors to ignore when doing damage. We can pass a pointer to our
+
+00:06:36.140 --> 00:06:43.674
+character, or we can not pass it. It all depends on whether we want to harm ourselves with our own patron.
+
+00:06:43.674 --> 00:06:47.795
+Let's also create a property for the DoFullDamage parameter.
+
+00:06:47.795 --> 00:06:53.660
+Let me remind you that this parameter is responsible for whether the damage is done at each point of the sphere in the same way or
+
+00:06:53.660 --> 00:07:00.050
+will increase uniformly from the surface of the sphere to its radius. And since we are
+
+00:07:00.050 --> 00:07:05.522
+in the header file, let's also create a property for the seconds in the life of our projectile.
+
+00:07:05.522 --> 00:07:14.578
+So that there are no magic numbers in our code. Let's call the property LifeSeconds. We also put 5 seconds.
+
+00:07:15.384 --> 00:07:22.130
+Let's pass this variable to the SetLifespan function. And the last two parameters: one of them is this, a
+
+00:07:22.130 --> 00:07:27.199
+pointer to the actor that caused the damage. Here we also leave it unchanged.
+
+00:07:27.759 --> 00:07:33.530
+And instead of nullptr, we can pass a pointer to the character controller. Let's create an additional
+
+00:07:33.530 --> 00:07:39.512
+function called GetController. We can check whether the GetOwner pointer
+
+00:07:39.512 --> 00:07:45.174
+is a pawn or not. And if so, return its controller.
+
+00:07:45.174 --> 00:07:51.205
+This is a groundwork for the future. For this tutorial, we could leave the controller at zero. This is not so important to us now.
+
+00:07:51.579 --> 00:07:57.151
+But in the future, when calculating who shot whom, we will use a pointer to this controller.
+
+00:08:00.200 --> 00:08:03.785
+We substitute the call of this function in the penultimate parameter.
+
+00:08:05.184 --> 00:08:08.986
+Let's draw a sphere that will visualize our explosion.
+
+00:08:14.420 --> 00:08:20.610
+Before starting the editor, let's take a look at one last point. We can tell the collision component
+
+00:08:20.610 --> 00:08:25.800
+which actors we want to ignore while moving. The function that adds such
+
+00:08:25.800 --> 00:08:32.510
+actors is called IgnoreActorWhenMoving. The first parameter is a pointer to the actor.
+
+00:08:32.510 --> 00:08:39.874
+We can pass a pointer to our owner, that is, to the character. Let's write GetOwner.
+
+00:08:39.874 --> 00:08:45.300
+And the second argument is whether to ignore it or not. Set to true. In general, the situation that the
+
+00:08:45.300 --> 00:08:50.580
+projectile will collide with our character is unlikely, but at least this can
+
+00:08:50.580 --> 00:08:55.770
+happen if we set a very low movement speed for the projectile, that is,
+
+00:08:55.770 --> 00:09:01.569
+our character will be able to catch up with the projectile. Let's check. We launch the project.
+
+00:09:03.435 --> 00:09:09.820
+We shoot at the enemy character. We have uniform damage depending on where the
+
+00:09:09.820 --> 00:09:16.025
+sphere hit, so you need to shoot several times. And we cannot kill ourselves.
+
+00:09:16.650 --> 00:09:22.110
+And also when we collide with other objects, we have an explosion. Let's check
+
+00:09:22.110 --> 00:09:29.380
+the damage done to several characters. Copy, paste. We launch and shoot somewhere in the
+
+00:09:29.380 --> 00:09:36.730
+middle so that the characters overlap with the sphere. One explosion damages all actors
+
+00:09:36.730 --> 00:09:42.850
+that are in the radius of destruction. We described ourselves a bit when developing weapons. In the BaseWeapon class,
+
+00:09:42.850 --> 00:09:49.771
+change the VisibleAnywhere property to EditDefaultsOnly, otherwise they cannot be edited in blueprints.
+
+00:09:50.109 --> 00:09:58.178
+The same is in the rifle class, and in the projectile class for the components we will set VisibleAnywhere
+
+00:09:58.178 --> 00:10:04.510
+so that everything looks uniform for us. And one more small refactoring. We have essentially
+
+00:10:04.510 --> 00:10:13.423
+created two families of weapons: one type of rifle weapon, the other a launcher. The launcher inherits from BaseWeapon.
+
+00:10:13.423 --> 00:10:19.480
+And there is a MakeDamage function in BaseWeapon that the launcher doesn't use because the cartridge
+
+00:10:19.480 --> 00:10:25.560
+does damage on its own. As I already said, this can be done in another way, but with this architecture,
+
+00:10:25.560 --> 00:10:31.922
+we do not need this function in BaseWeapon. Let's move it to the rifle class.
+
+00:10:34.569 --> 00:10:42.364
+Also, don't forget about the function body. We remove from BaseWeapon and insert into the rifle class.
+
+00:10:48.263 --> 00:10:52.362
+We also transfer the DamageAmount property from BaseWeapon.
+
+00:10:52.362 --> 00:10:57.505
+The launcher class also does not use this parameter, so we do not need it here.
+

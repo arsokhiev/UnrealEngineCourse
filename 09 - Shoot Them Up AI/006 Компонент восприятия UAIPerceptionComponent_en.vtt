@@ -1,0 +1,367 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.292 --> 00:00:09.456
+In this tutorial, we'll look at a new component called the perception component.
+
+00:00:09.456 --> 00:00:16.876
+This component allows NPC actors to define other actors in the world: see, hear enemies, react to damage.
+
+00:00:16.876 --> 00:00:23.247
+In this lesson, we will focus specifically on vision. Go to the folder with C ++ classes,
+
+00:00:23.247 --> 00:00:34.022
+to the directory with components. We create a new C ++ class. The class we need is called AIPerceptionComponent.
+
+00:00:34.022 --> 00:00:40.120
+Find it and create a child component and click the next button.
+
+00:00:41.590 --> 00:00:49.415
+Let's call the component STUAIPerceptionComponent. We finish creating the class. Click on create class.
+
+00:00:50.000 --> 00:00:55.270
+We will create this component in our AI controller class. The perception component already exists
+
+00:00:55.270 --> 00:01:00.119
+in the base AI controller class . You and I will need to redefine it.
+
+00:01:00.119 --> 00:01:08.453
+We start with a forward declaration. Let's declare a constructor for the controller, in which we will create the component.
+
+00:01:09.980 --> 00:01:12.662
+We create a property for the component.
+
+00:01:14.083 --> 00:01:16.598
+Move to the controller .cpp file.
+
+00:01:18.030 --> 00:01:20.000
+Let's create a constructor there.
+
+00:01:21.645 --> 00:01:26.533
+Let's include a header file with a component. Include can be simply copied.
+
+00:01:31.870 --> 00:01:36.667
+And in a familiar way, we create a component through CreateDefaultSubobject.
+
+00:01:40.580 --> 00:01:44.030
+The only caveat when setting up this component is that we need to call
+
+00:01:44.030 --> 00:01:48.508
+the AI ​​controller function called SetPerceptionComponent.
+
+00:01:49.890 --> 00:01:53.082
+And pass the component we created as a parameter.
+
+00:01:54.618 --> 00:01:59.352
+Also, the parameter is passed by reference, so we need to dereference our pointer.
+
+00:02:00.100 --> 00:02:07.449
+We have created a component. We launch the project. Let's set it up in blueprints. Open up the blueprint of the controller.
+
+00:02:08.745 --> 00:02:14.250
+The STUAIPerceptionComponent has been added to the component tree. Select it and go
+
+00:02:14.250 --> 00:02:20.336
+to the AIPerception category in the details panel. Property SensesConfig is an array.
+
+00:02:20.336 --> 00:02:26.220
+Through this array of configs, the feelings of our character are configured. Press plus. The first
+
+00:02:26.220 --> 00:02:35.498
+item has been added . Click on the combobox. A list of available configs opens: damage, hearing, sight and others.
+
+00:02:35.874 --> 00:02:41.275
+Now we are interested in sight config, which is responsible for the vision of the character.
+
+00:02:42.590 --> 00:02:44.150
+So let's select it from the list.
+
+00:02:46.048 --> 00:02:53.110
+Click on the triangle, open the settings for this config. Property SightRadius is responsible for the NPC's
+
+00:02:53.110 --> 00:02:59.620
+sighting distance . Let's put 1000. LooseSightRadius determines the distance at which the NPC loses the
+
+00:02:59.620 --> 00:03:06.045
+object from the field of view. Let's put 1500. We'll see a little later how this works. The next parameter is the angle of view.
+
+00:03:06.045 --> 00:03:12.403
+Set it to 60. Set the Debug color to blue. The next property is DetectionByAffiliation.
+
+00:03:12.403 --> 00:03:18.340
+It indicates who we see: enemies, neutral characters, or friendly to us. So far, we do not have the
+
+00:03:18.340 --> 00:03:25.611
+logic of assigning to teams. Therefore, we will check all the boxes. Next comes the MaxAge property,
+
+00:03:25.611 --> 00:03:30.970
+which determines how long the object is stored after we lose sight of it.
+
+00:03:30.970 --> 00:03:36.080
+Let's put it on for one second. The last property is DominantSense. With the help of it, the
+
+00:03:36.080 --> 00:03:42.644
+priority of the config is indicated , we have several senses configured. We can leave either None or Sight.
+
+00:03:42.644 --> 00:03:47.590
+Let's see how it all looks visually. It will become clearer. Compile.
+
+00:03:47.590 --> 00:03:53.270
+Let's turn off the behavior tree for now. Alt-click on the first arrow. This is for testing to keep our
+
+00:03:53.270 --> 00:03:59.960
+character in place. Click play. Hit the apostrophe to enable debug information and press
+
+00:03:59.960 --> 00:04:06.800
+4 to enable debug perception information. So what do we see? We see a green
+
+00:04:06.800 --> 00:04:12.830
+cylinder that renders SightRadius, that is, the visibility radius. We see the pink cylinder that
+
+00:04:12.830 --> 00:04:20.353
+LooseSightRadius renders and we also see the green lines that visualize the angle of view of our character.
+
+00:04:20.353 --> 00:04:26.030
+Our angle is 60 degrees. We run into the line of sight. A blue debug sphere is drawn around us.
+
+00:04:26.030 --> 00:04:32.402
+This means that the character saw us. If we go beyond the angle of view, then after one second this sphere
+
+00:04:32.402 --> 00:04:39.111
+disappears. If the character saw us, then after we leave SightRadius, he continues to see us.
+
+00:04:39.111 --> 00:04:43.670
+Now he does not see us, because we hid behind a cube. Let's run into the field of view again
+
+00:04:43.670 --> 00:04:51.512
+and the character stops seeing us if we run behind the pink top hat. Let's add one more player to the scene.
+
+00:04:52.900 --> 00:04:59.880
+Let's program the following: if there are several players in sight of the NPC, then he must
+
+00:04:59.880 --> 00:05:05.806
+choose the closest to him and turn in his direction, that is, aim at him.
+
+00:05:05.806 --> 00:05:12.812
+We need this mechanic to attack. Open the header file for our perception component.
+
+00:05:12.812 --> 00:05:19.410
+In the public section, we declare a function that we will call GetClosestEnemy. This function
+
+00:05:19.410 --> 00:05:25.000
+will return a pointer to the closest actor that our component found.
+
+00:05:27.235 --> 00:05:29.335
+We create the body of the function.
+
+00:05:30.911 --> 00:05:37.348
+First, let's include all the header files that we need: the first is AIController.
+
+00:05:37.990 --> 00:05:40.599
+Next, you need to connect STUUtils.
+
+00:05:40.599 --> 00:05:45.224
+We will need to get a health component to determine whether a character is alive or not.
+
+00:05:47.128 --> 00:05:50.663
+Therefore, its header file is also required.
+
+00:05:52.050 --> 00:05:56.880
+The last header file we need is directly related to perception.
+
+00:05:56.880 --> 00:06:05.000
+It is located at "Perception / AISense_Sight.h"
+
+00:06:06.605 --> 00:06:12.040
+Go to the body of the function. The function should return the closest character that
+
+00:06:12.040 --> 00:06:17.260
+our component has defined . To calculate this, we need to somehow get all the actors
+
+00:06:17.260 --> 00:06:23.244
+that are in view. Create a local array of pointers to actors.
+
+00:06:23.900 --> 00:06:29.150
+We call this array PercieveActors. This array will contain all the actors that
+
+00:06:29.150 --> 00:06:35.060
+are in the field of view of our NPC. The component's perception function, which gets
+
+00:06:35.060 --> 00:06:41.844
+all the actors that have been identified by a particular feeling, is called GetCurrentlyPerceivedActors.
+
+00:06:42.541 --> 00:06:49.471
+This function has two parameters: the first is the type of feeling, we need to convey the feeling of Sight.
+
+00:06:51.651 --> 00:06:54.531
+Let's pass the first parameter through StaticClass.
+
+00:06:58.790 --> 00:07:03.560
+The second parameter is an array of actors, which is passed by reference. We pass our
+
+00:07:03.560 --> 00:07:09.657
+local array PercieveActors there. The function will remember our array if the NPC sees anyone.
+
+00:07:09.657 --> 00:07:15.872
+We can immediately highlight a separate case: if the number of actors is zero, then we exit the function
+
+00:07:18.170 --> 00:07:24.400
+and return nullptr, that is, no nearest actor exists. We got in the array all the
+
+00:07:24.400 --> 00:07:29.320
+actors that our NPC sees, then we need to calculate all the distances and find the
+
+00:07:29.320 --> 00:07:37.070
+closest one to us. This will require a pointer to our own pawn. We will get it using the
+
+00:07:37.070 --> 00:07:44.706
+controller. We create a local variable for it and cast to the AI pointer controller
+
+00:07:45.290 --> 00:07:50.687
+, which the GetOwner function returns to us. Our component resides in the controller.
+
+00:07:54.330 --> 00:07:58.522
+If the pointer is null, then we return nullptr.
+
+00:08:02.830 --> 00:08:09.065
+If not, then create an additional local variable. We call it Pawn.
+
+00:08:09.065 --> 00:08:15.996
+And we get a pointer to the pawn through the controller using the GetPawn function.
+
+00:08:17.531 --> 00:08:20.267
+Pawn also checks for nullptr.
+
+00:08:22.680 --> 00:08:28.169
+The last thing left to do is walk through the entire array and determine the nearest distance.
+
+00:08:28.169 --> 00:08:33.142
+For this we need two additional variables: the first one will be called BestDistance.
+
+00:08:33.142 --> 00:08:37.088
+By default, we will assign a certain large number to this variable.
+
+00:08:37.088 --> 00:08:41.199
+The UE has a macro specifically for this called MAX_FLT.
+
+00:08:43.400 --> 00:08:48.604
+And we also need a variable that will store a pointer to the closest actor.
+
+00:08:48.604 --> 00:08:55.220
+By default BestPawn will be nullptr.
+
+00:08:56.914 --> 00:09:02.306
+So we need to go through the entire array. We will use the range version of the for loop.
+
+00:09:03.952 --> 00:09:10.000
+First, let's see if our actor is alive. for this we will try to get a health component.
+
+00:09:12.760 --> 00:09:18.150
+We see that our GetSTUPlayerComponent function is underlined with a red line. This happens
+
+00:09:18.150 --> 00:09:25.252
+because we have specified pawn as a parameter to it, although we could have just specified actor.
+
+00:09:25.252 --> 00:09:31.704
+The GetComponentByClass function is located in AActor, not in APawn, so it is wise to correct this flaw.
+
+00:09:31.704 --> 00:09:38.622
+Also, if we go through the actor's header file, we can find that there is already a function
+
+00:09:38.622 --> 00:09:44.251
+called FindComponentByClass. It is also formulaic. To be honest, I forgot about her.
+
+00:09:44.251 --> 00:09:49.020
+That is, in fact, in STUUtils, we made an analogue of this function. There is nothing wrong with that.
+
+00:09:49.020 --> 00:09:54.608
+You can use our function, you can use the actor function. Whom it is more convenient.
+
+00:09:55.330 --> 00:10:02.140
+Let's go back to our component's .cpp file and continue. So, now we have no error and therefore
+
+00:10:02.140 --> 00:10:09.370
+we can check that the health component exists and the character is alive. We do Destroy for a
+
+00:10:09.370 --> 00:10:15.010
+character some time after death, so there is no point in aiming at a dead character.
+
+00:10:15.010 --> 00:10:20.320
+We can also leave a comment for the future - we need to check whether this
+
+00:10:20.320 --> 00:10:25.630
+character is in the same team with us or not, and if in one, we will simply ignore this
+
+00:10:25.630 --> 00:10:30.700
+actor, because we will only aim at enemies. If the observed actor is alive, then now
+
+00:10:30.700 --> 00:10:37.433
+we can calculate the distance to it. To do this, we create a local variable. We call it CurrentDistance.
+
+00:10:37.433 --> 00:10:43.807
+We get a vector between PercieveActor and our pawn. To do this, subtract their coordinates
+
+00:10:49.780 --> 00:10:55.600
+and find the length of the vector using the Size function from the FVector class.
+
+00:10:56.483 --> 00:11:04.560
+Thus, we got the distance to the actor we are observing. If CurrentDistance is less than BestDistance ( it will be so
+
+00:11:04.560 --> 00:11:10.491
+during the first pass through the loop, because we have some large number in BestDistance ),
+
+00:11:10.848 --> 00:11:16.911
+then we can write CurrentDistance in BestDistance, because the distance to the current actor is less.
+
+00:11:17.719 --> 00:11:26.174
+And set the BestPawn pointer to PercieveActor. Accordingly, if the next time in the cycle we have a smaller distance,
+
+00:11:26.174 --> 00:11:32.210
+then we will overwrite the value, and if the distance is greater, then we will not overwrite
+
+00:11:32.210 --> 00:11:40.396
+either the distance or the pawn. And at the end of the function, we just return the BestPawn pointer. At this point, our function is ready.
+
+00:11:40.396 --> 00:11:48.250
+Go to the AI ​​controller header file. Let's add the Tick function. Each frame we
+
+00:11:48.250 --> 00:11:57.282
+will identify the closest enemy and rotate the controller to him. We create the body of the Tick function.
+
+00:11:59.009 --> 00:12:07.441
+Create a local variable called AimActor and assign it a value that is resolved by the GetClosestEnemy function of
+
+00:12:07.441 --> 00:12:12.340
+our perception component. I will not add check to STUAIPerceptionComponent
+
+00:12:12.340 --> 00:12:19.180
+, because a little later we will change this logic a little. The controller has a
+
+00:12:19.180 --> 00:12:24.705
+special function called SetFocus. It sets the rotation of the controller so
+
+00:12:24.705 --> 00:12:30.070
+that the forward vector points to the actor, which we will pass to it as a parameter.
+
+00:12:30.850 --> 00:12:39.742
+We pass our AimActor into it. Let's check the work of our logic. Launch editor. Let's add an
+
+00:12:39.742 --> 00:12:50.751
+additional obstacle to the scene - a cube, to make it easier to test. Let's increase its size a little. We start the game.
+
+00:12:51.649 --> 00:13:01.413
+We include debug information. Press key 4. NPC looks at another character, because he is closer.
+
+00:13:02.770 --> 00:13:09.760
+And if we get closer, then the NPC turns in our direction. As soon as we get further,
+
+00:13:09.760 --> 00:13:16.646
+it turns to another character. If we run over an obstacle, then the NPC
+
+00:13:17.210 --> 00:13:22.850
+will lose us, and he does not see the other character, because he has his back to him. So, we have studied the
+
+00:13:22.850 --> 00:13:28.468
+perception component. Programmed aiming logic. This concludes this lesson.
+

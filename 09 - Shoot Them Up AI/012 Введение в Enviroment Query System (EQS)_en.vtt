@@ -1,0 +1,163 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.123 --> 00:00:11.170
+From this lesson, we begin to consider an additional artificial intelligence system
+
+00:00:11.170 --> 00:00:15.971
+called EQS - Environment Query System.
+
+00:00:15.971 --> 00:00:22.648
+This system helps the character to analyze the space and in accordance with the conditions that we set
+
+00:00:22.648 --> 00:00:27.840
+in this system. At the output, we will generate the most suitable location or actor
+
+00:00:27.840 --> 00:00:33.883
+for the given conditions. Let's create a new directory. We call it EQS.
+
+00:00:33.883 --> 00:00:45.207
+Right-click and select Enviroment Query from the artificial intelligence menu. Create an asset, call it EQS_RandomRoam
+
+00:00:45.207 --> 00:00:51.000
+This EQS will replace the logic for finding the next point while patrolling the scene.
+
+00:00:51.000 --> 00:00:57.502
+Let's add a new blueprint class as well. This is a special pawn called EQS_TestsingPawn.
+
+00:00:57.502 --> 00:01:04.201
+It is needed exclusively for testing EQS in the editor. In production, it is not used in any way.
+
+00:01:05.917 --> 00:01:14.753
+We take it to the stage and also in the details panel in the EQS section select our EQS template EQS_RandomRoam.
+
+00:01:15.419 --> 00:01:24.259
+Let's open asset. Before us is a count. It is somewhat similar to the behavior tree graph. We take out the arrow from root
+
+00:01:24.764 --> 00:01:31.600
+And the menu invites us to create one of the so-called generators. Selecting the generator grid.
+
+00:01:31.600 --> 00:01:37.942
+We generated grid-shaped locations around our pawn. In the details panel, we can also change the
+
+00:01:37.942 --> 00:01:45.400
+parameters of this mesh. If you replace the node with circle, then points on the circle are generated. We can also
+
+00:01:45.400 --> 00:01:52.530
+edit the parameters. For patrolling, let's use the cone generator - points are generated
+
+00:01:52.530 --> 00:01:59.460
+in the sector, in the center of our pawn and also the forward vector corresponds to the rotation of our character.
+
+00:01:59.460 --> 00:02:04.740
+This is a pretty good pattern for choosing the next point when moving, because the direction
+
+00:02:04.740 --> 00:02:11.863
+will not change dramatically for the character. We can adjust the parameters that are available for this generator.
+
+00:02:11.863 --> 00:02:18.787
+For example, let's change the cone degree - the angle of the sector. Let's put 200 degrees for example.
+
+00:02:18.787 --> 00:02:26.817
+The next parameter is angle step - how many rays come out of the point. You can also play around with the values.
+
+00:02:26.817 --> 00:02:36.000
+I'll return the default value of 10. The next parameter is range - the length of the rays. You can put, for example, 1500.
+
+00:02:37.854 --> 00:02:45.330
+Next, you need to check that Trace Mode = Navigation is set in the projection data setting. This means
+
+00:02:45.330 --> 00:02:51.129
+that all points are projected onto our navigation mesh, for example, if we set None,
+
+00:02:51.129 --> 00:02:57.506
+then they will not be projected and a situation is possible when a point is generated that we cannot get to.
+
+00:02:59.206 --> 00:03:05.810
+There is an additional setting for parameters called data binding. We can select a
+
+00:03:05.810 --> 00:03:12.000
+value in the combobox - random number and specify the interval at which the range will be generated.
+
+00:03:12.000 --> 00:03:16.839
+That is, every time the generator is called, for example, when we change the position of the pawn, the
+
+00:03:16.839 --> 00:03:23.120
+range is selected randomly on our segment. We generated points around the pawn. Now, somehow
+
+00:03:23.120 --> 00:03:28.221
+, we need to choose one of them, that is, the point to which our NPCs will run.
+
+00:03:28.221 --> 00:03:35.120
+For this purpose, there are so-called tests in the EQS. Right-click on the legs and in the Add Test menu
+
+00:03:35.120 --> 00:03:42.056
+we can select one of the existing tests. Let's choose distance. Location spheres turned blue.
+
+00:03:42.056 --> 00:03:49.156
+This means that none of these points are suitable. Click on the test and in the details panel in the filter category
+
+00:03:49.156 --> 00:03:55.246
+we see that the default type is range with values ​​0-0, so none of these points are suitable.
+
+00:03:55.246 --> 00:04:00.560
+Change the type filter to a minimum. This test calculates the distance from each generated
+
+00:04:00.560 --> 00:04:07.256
+point to our pawn and weights are assigned to each point depending on the distance. The farther the point,
+
+00:04:07.256 --> 00:04:12.000
+the more weight and vice versa. Also, if we, for example, change the minimum value of the distance.
+
+00:04:12.000 --> 00:04:20.561
+We put 400, then at all points at a distance from 0 to 400 units, we will not pass the test. We see it visually.
+
+00:04:20.561 --> 00:04:25.031
+They are marked in blue and also in parentheses, their weight is zero.
+
+00:04:25.031 --> 00:04:32.240
+Thus, the most distant points have the maximum weight, and as a result of running EQS in the behavior tree
+
+00:04:32.240 --> 00:04:39.534
+, one of these points will be randomly selected. Let's see how it works. Open the behavior tree.
+
+00:04:40.675 --> 00:04:47.427
+Disable our main tree for now. Click on the arrow while holding Alt. Let's add a simple sequence.
+
+00:04:48.982 --> 00:04:56.570
+The first task will launch EQS. There is a special task type for this - Run EQS Query.
+
+00:04:57.530 --> 00:05:03.580
+Also, in the details panel, you need to select our template and make sure that the blackboard key is
+
+00:05:03.580 --> 00:05:10.960
+in AimLocation. The selected point will be written to the variable with this key. And the second task
+
+00:05:10.960 --> 00:05:19.115
+in the sequence is MoveTo. We also see that the blackboard key is in AimLocation. Let's save the tree.
+
+00:05:22.240 --> 00:05:30.288
+We start the game. Open debug info. Press the apostrophe. To display the EQS data,
+
+00:05:30.288 --> 00:05:35.490
+you must press the number 3. The EQS starts. Points are generated.
+
+00:05:35.490 --> 00:05:41.311
+The most successful one with the maximum weight is selected and the character moves to this point.
+
+00:05:41.311 --> 00:05:45.231
+EQS is updated with a slight delay. Let's add a Wait node.
+
+00:05:46.266 --> 00:05:52.999
+Let's set it 2 seconds to see in more detail what is happening. We start.
+
+00:05:56.294 --> 00:06:00.967
+So, we have generated points. The most suitable location is selected.
+
+00:06:01.610 --> 00:06:06.354
+It is also highlighted in light green and we see the inscription winner on it.
+
+00:06:06.354 --> 00:06:12.527
+Thus, with the help of EQS, we have realized with you a more natural patrolling of the scene.
+

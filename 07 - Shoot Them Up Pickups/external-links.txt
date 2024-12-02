@@ -1,0 +1,9 @@
+
+007 -
+https://lifeexe-art.gitbook.io/unreal-engine-c-course/dopolneniya-k-urokam/lekciya-079/pikap-vidim-posle-nachisleniya-patronov
+
+007 Pickup-is-visible-after-the-ammo-has-been-taken
+https://lifeexe-art.gitbook.io/unreal-engine-c-course-eng/lessons/lecture-079/pickup-is-visible-after-the-ammo-has-been-taken
+
+007 Ammo-is-not-picked-up-if-character-spends-ammo-at-the-pickup-respawn-point
+https://lifeexe-art.gitbook.io/unreal-engine-c-course-eng/lessons/lecture-079/ammo-is-not-picked-up-if-character-spends-ammo-at-the-pickup-respawn-point

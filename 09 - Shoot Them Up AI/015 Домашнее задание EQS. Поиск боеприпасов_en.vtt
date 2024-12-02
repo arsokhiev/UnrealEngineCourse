@@ -1,0 +1,157 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.180 --> 00:00:11.785
+In this lesson, we have an independent work. It is necessary to make a selection of a pickup truck with ammunition.
+
+00:00:11.785 --> 00:00:17.728
+This should be done by analogy with the previous lesson. Add a new sequence to the behavior tree,
+
+00:00:17.728 --> 00:00:23.035
+which will consist of two tasks: 1 task - EQS for searching for ammunition
+
+00:00:23.035 --> 00:00:26.931
+and 2 task - this is the movement to the found ammunition.
+
+00:00:26.931 --> 00:00:32.573
+We also need to add a decorator that will determine whether our character needs ammunition.
+
+00:00:32.573 --> 00:00:39.280
+It must have an additional property with the type of weapon that we want to check for full ammunition.
+
+00:00:39.280 --> 00:00:44.071
+I recommend that you pause the video and try to implement this mechanic.
+
+00:00:44.730 --> 00:00:46.751
+So, let's get down to the task.
+
+00:00:46.751 --> 00:00:52.990
+First, let's place some additional pickups with our rockets on the scene.
+
+00:00:54.156 --> 00:01:01.416
+Next, go to the EQS folder and copy FindHealthPickup (press Ctrl + W).
+
+00:01:03.662 --> 00:01:06.828
+We name the new EQS: FindAmmoPickup.
+
+00:01:08.255 --> 00:01:18.354
+Move the pawn that is testing the EQS closer to these pickups on the stage and change its template to FindAmmoPickup.
+
+00:01:19.783 --> 00:01:29.734
+Open the EQS asset, change the SelectedActorClass in the generator, change it to STUAmmoPickup.
+
+00:01:29.734 --> 00:01:37.878
+EQS search for ammunition is ready. It completely coincides with the search for a health pickup. The only difference is in the type of actor.
+
+00:01:39.704 --> 00:01:42.635
+Next, let's start creating a decorator.
+
+00:01:43.738 --> 00:01:52.066
+Go to the appropriate directory. We create a new class, inheriting from the decorator.
+
+00:01:54.189 --> 00:02:02.657
+Name the new class STUNeedAmmoDecorator and create a class.
+
+00:02:03.000 --> 00:02:11.444
+I added all the technical code to the decorator class in advance, included the necessary header files.
+
+00:02:11.444 --> 00:02:18.907
+Created a constructor with the name of the node and also prepared the main function CalculateRawConditionalValue.
+
+00:02:18.907 --> 00:02:27.214
+Go to the header file, start with the property of the weapon type. We need a forward declaration of the base weapon class.
+
+00:02:28.171 --> 00:02:34.536
+And we create a property with the type of weapon that we want to check for completeness of ammunition.
+
+00:02:35.021 --> 00:02:38.938
+Copy the UPROPERTY macro, paste it into the protected section.
+
+00:02:40.562 --> 00:02:45.325
+Property will be of type TSubclassOf &lt;STUBaseWeapon&gt;.
+
+00:02:46.866 --> 00:02:48.886
+We name the property - WeaponType.
+
+00:02:50.822 --> 00:02:55.715
+Move to the .cpp file, to the CalculateRawConditionalValue function.
+
+00:02:56.698 --> 00:03:05.106
+Let's get a pointer to the weapon component. If the pointer is nullptr, then exit the function.
+
+00:03:06.610 --> 00:03:13.120
+If not, then we will use a still non-existent function that will check whether a
+
+00:03:13.120 --> 00:03:20.563
+given type of weapon needs ammunition. We name the function NeedAmmo and pass the WeaponType to it.
+
+00:03:20.563 --> 00:03:28.363
+The decorator code is ready, let's create the NeedAmmo function in the weapon component class.
+
+00:03:29.160 --> 00:03:36.381
+Go to the STUWeaponComponent header file, the public section, and let's just copy the TryToAddAmmo function.
+
+00:03:36.381 --> 00:03:42.864
+It has almost the same signature. Rename it to NeedAmmo and delete ClipAmount.
+
+00:03:43.750 --> 00:03:53.138
+We go to the .cpp file, and also completely copy the body of the TryToAddAmmo function. We call it NeedAmmo.
+
+00:03:54.902 --> 00:04:01.645
+We remove the second parameter. The logic of iterating over the array is absolutely the same: we check
+
+00:04:01.645 --> 00:04:07.550
+whether the current element of the array is of a given type or not, and if we find the type of weapon we are interested in
+
+00:04:07.550 --> 00:04:13.114
+, then we need to check whether it has a full ammunition load or not. To do this, you can use the
+
+00:04:13.114 --> 00:04:20.700
+IsAmmoFull function and take the negation of the return value. The last thing to do is change
+
+00:04:20.700 --> 00:04:28.255
+the access specifier of the IsAmmoFull function, which is located in the protected section of the BaseWeapon class.
+
+00:04:29.238 --> 00:04:34.067
+Let's move it to the public section of the class. We compile the project.
+
+00:04:34.814 --> 00:04:40.736
+First, let's go to the blueprint of AICharacter and make the launcher the first element in the array.
+
+00:04:41.382 --> 00:04:44.028
+We swap the elements in the array.
+
+00:04:44.780 --> 00:04:49.226
+Compile blueprint. Go to behavior tree.
+
+00:04:49.226 --> 00:04:56.789
+Let's add a new sequence for finding ammunition. She will be the second priority after finding health.
+
+00:04:57.594 --> 00:04:59.635
+Add a sequence node.
+
+00:05:02.815 --> 00:05:04.055
+Run EQS.
+
+00:05:05.311 --> 00:05:11.362
+Install the FindAmmoPickup template. Add task MoveTo.
+
+00:05:13.182 --> 00:05:21.233
+And it remains to add our new decorator to the sequence. Right-click - Add Decorator. Find the NeedAmmo we created.
+
+00:05:21.755 --> 00:05:27.232
+Specify STULauncherWeapon in the property WeaponType of the decorator.
+
+00:05:28.114 --> 00:05:35.801
+We also set the property Observer aborts to self. The behavior tree is now complete. Let's check how everything works together.
+
+00:05:37.460 --> 00:05:40.478
+Move the behavior tree to the right.
+
+00:05:45.000 --> 00:05:46.401
+We start the game.
+
+00:05:46.401 --> 00:05:54.337
+The NPC immediately fires a rocket, his ammunition is no longer full. And he picks up the ammo pickup. Our logic works.
+

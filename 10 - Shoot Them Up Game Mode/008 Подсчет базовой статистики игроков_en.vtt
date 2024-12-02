@@ -1,0 +1,223 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.861 --> 00:00:11.280
+In this lesson, we will add statistics for the kills and deaths of the character. For this we need
+
+00:00:11.280 --> 00:00:16.934
+2 additional changes, one of them will be responsible for the number of kills KillsNum.
+
+00:00:17.425 --> 00:00:24.163
+And the other for the number of deaths DeathNum. We create them in the character's PlayerState class.
+
+00:00:24.896 --> 00:00:32.794
+In the public category, add methods for working with these variables. The first method will be called AddKill.
+
+00:00:35.096 --> 00:00:42.800
+In this function, the KillsNum variable will be incremented by one. Add a similar AddDeath method.
+
+00:00:44.910 --> 00:00:48.013
+In this function, we will increase the number of deaths.
+
+00:00:49.156 --> 00:00:52.704
+And also add getter functions for each variable.
+
+00:00:53.528 --> 00:01:00.769
+Let's create a special function LogInfo, which will output all the variables of this class to the console.
+
+00:01:02.190 --> 00:01:08.600
+We create the body of the function. Let's create a logging category.
+
+00:01:08.600 --> 00:01:15.979
+The macro can be copied from anywhere. Let's call the category LogSTUPlayerState.
+
+00:01:18.472 --> 00:01:23.585
+And we will print all the values ​​of the variables.
+
+00:01:24.585 --> 00:01:30.945
+Calculate the kill statistics we will be in game mode. Let's create a function for this, which we will call Killed.
+
+00:01:34.130 --> 00:01:40.980
+She will have two controllers: one is the killer's controller, and the other is the victim's controller.
+
+00:01:42.500 --> 00:01:46.054
+Therefore, we call the first parameter KillerController.
+
+00:01:48.341 --> 00:01:50.230
+And the second is VictimController.
+
+00:01:54.379 --> 00:02:02.659
+And we also create an additional function that will print information on all PlayerStates, let's call it LogPlayerInfo.
+
+00:02:04.526 --> 00:02:11.464
+Let's start with the Killed function. We create the body of the function at the very bottom of the .cpp file.
+
+00:02:13.430 --> 00:02:19.242
+All the information needs to be written to the PlayerState and so let's get them first.
+
+00:02:19.826 --> 00:02:25.801
+The first PlayerState is killers. We can get PlayerState using the ternary operator:
+
+00:02:25.801 --> 00:02:32.460
+if the controller is not equal to a null pointer, we cast the PlayerState to our type.
+
+00:02:34.656 --> 00:02:39.844
+If the controller is a null pointer, then we also write nullptr in PlayerState.
+
+00:02:41.241 --> 00:02:43.865
+Similarly, we get VictimPlayerState.
+
+00:02:48.980 --> 00:02:51.819
+We replace KillerController with Victim.
+
+00:02:53.891 --> 00:02:58.135
+Further, if the PlayerState of the killer is not zero,
+
+00:03:01.235 --> 00:03:05.293
+then we call its AddKIll function, which we have just created.
+
+00:03:07.537 --> 00:03:09.904
+We also check the victim's PlayerState.
+
+00:03:12.760 --> 00:03:16.809
+If it is not 0, then we call the AddDeath function.
+
+00:03:20.490 --> 00:03:28.074
+Let's also create the LogPlayerInfo function. In this function, we need to go through all the PlayerStates.
+
+00:03:28.760 --> 00:03:33.244
+To do this, we can copy the cycle from CreateTeamsInfo.
+
+00:03:35.890 --> 00:03:38.664
+We insert it into the LogPlayerInfo function.
+
+00:03:39.692 --> 00:03:42.645
+First, we will also check that the world pointer is not 0.
+
+00:03:44.660 --> 00:03:50.819
+The loop is almost ready, it remains to call the logging function that we created a few minutes ago.
+
+00:03:53.536 --> 00:04:02.469
+So, I made a mistake, called LigInfo. Let's rename to LogInfo. Also replace in PlayerState.
+
+00:04:09.504 --> 00:04:13.124
+We will print all the information when the game is over.
+
+00:04:14.707 --> 00:04:21.664
+Therefore, under the GameOver log we add a call to this function. And the last moment, we need to call
+
+00:04:21.664 --> 00:04:26.823
+the Killed function in the health component when the character dies.
+
+00:04:27.600 --> 00:04:32.069
+In the header file, let's add a helper function, which we'll also call Killed.
+
+00:04:32.473 --> 00:04:39.614
+It will have one parameter - the killer controller. We create the body of this function.
+
+00:04:40.866 --> 00:04:48.079
+We will need to access the game mode, so let's start by including the game mode header file.
+
+00:04:50.500 --> 00:04:57.070
+And we will call this function in the OnTakeAnyDamage function, before calling the Broadcast delegate OnDeath.
+
+00:04:58.210 --> 00:05:01.375
+We transfer this function to InstigatedBy.
+
+00:05:01.375 --> 00:05:05.454
+That is, the controller of the character that called the OnTakeAnyDamage function.
+
+00:05:07.286 --> 00:05:13.370
+Go to the Killed function, create a local variable GameMode.
+
+00:05:15.690 --> 00:05:21.888
+The GameMode pointer is in the UWorld object, we get it using the GetWorld function
+
+00:05:21.888 --> 00:05:28.370
+and call the GetAuthGameMode function. This function returns a pointer to GameMode.
+
+00:05:29.360 --> 00:05:33.274
+We need to cast to our class.
+
+00:05:35.586 --> 00:05:39.109
+If the pointer is null, then exit the function.
+
+00:05:40.280 --> 00:05:46.130
+Next, we need to get our own controller. Let's use the GetOwner function,
+
+00:05:46.130 --> 00:05:52.804
+which will return a pointer to our character. Let's Cast to APawn, this will be enough for us.
+
+00:05:54.730 --> 00:05:58.884
+We create a helper variable that we will call VictimController.
+
+00:06:01.027 --> 00:06:10.810
+If the pointer to player is not 0, then we assign the controller of our player to this variable, and if 0, then nullptr.
+
+00:06:12.370 --> 00:06:19.804
+And at the very end, we call the Killed function, pass the killer controller parameter and the victim's controller
+
+00:06:22.270 --> 00:06:23.650
+into it .
+
+00:06:25.757 --> 00:06:28.356
+All is ready. You can check. Compile.
+
+00:06:28.820 --> 00:06:38.669
+In the game mode blueprint, set the number of players to 4, and the number of seconds in a round to 6. Open log. We start the game.
+
+00:06:42.320 --> 00:06:50.748
+We look in the log and we do not agree on the number of deaths and the number of murders. Let's see what the problem is.
+
+00:06:51.198 --> 00:06:55.820
+The problem is as follows: when we were developing the rifle, we passed a controller
+
+00:06:55.820 --> 00:07:00.696
+to the TakeDamage function , which the GetPlayerController function returns.
+
+00:07:01.010 --> 00:07:08.043
+We didn’t know about the AI ​​controller at that time, and in general we didn’t use the killer's controller.
+
+00:07:08.043 --> 00:07:14.298
+In the case of the NPC, it turns out that the GetController template function returns us nullptr.
+
+00:07:14.298 --> 00:07:18.097
+Because the NPC has a different type of controller.
+
+00:07:18.097 --> 00:07:25.160
+In the case of projectile, everything works correctly for us, because we pass a pointer
+
+00:07:25.160 --> 00:07:32.404
+to the base AController class to the ApplyRadialDamage function. Let's copy this function and add it to RifleWeapon.
+
+00:07:35.672 --> 00:07:40.514
+Let's pass a pointer to the base class of the controller into the TakeDamage function.
+
+00:07:41.941 --> 00:07:44.489
+We also declare the function in the header file.
+
+00:07:49.170 --> 00:07:53.696
+In general, we can remove the GetPlayerController function from BaseWeapon.
+
+00:07:53.696 --> 00:07:59.378
+We only call it in one place, where we can explicitly specify the PlayerController.
+
+00:08:00.629 --> 00:08:05.730
+Let's copy the receipt of the PlayerController into the GetPlayerViewPoint function and change the
+
+00:08:05.730 --> 00:08:10.244
+Player to STUCharacter. The function body can be deleted.
+
+00:08:13.326 --> 00:08:16.699
+And also its declaration from the .h file.
+
+00:08:19.022 --> 00:08:20.405
+We compile the project.
+
+00:08:21.207 --> 00:08:22.980
+Let's check again.
+
+00:08:28.295 --> 00:08:35.640
+We look in the log and now the number of murders and deaths are the same: both values ​​are 5.
+

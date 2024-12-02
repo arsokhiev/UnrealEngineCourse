@@ -1,0 +1,97 @@
+WEBVTT
+
+0
+00:06.390 --> 00:11.018
+The name of the level that we need to load will be stored in the GameInstance class. Let's create
+
+1
+00:11.018 --> 00:12.690
+Let's create a property.
+
+2
+00:14.820 --> 00:20.479
+The variable will be of type FName. Let's call ee StartupLevelName.
+
+3
+00:20.479 --> 00:26.000
+The default constructor of the FName class initializes the variable with the special value None.
+
+4
+00:26.595 --> 00:32.694
+Let's assign this value explicitly. It is stored in a special variable called NAME_None.
+
+5
+00:32.694 --> 00:40.065
+Before loading the level, we will check the value of the variable: if it is equal to None, then we will enter an error message.
+
+6
+00:40.065 --> 00:47.924
+We will not check for the existence of a level with this name. Naturally, it is possible to implement this logic in the UE.
+
+7
+00:47.924 --> 00:53.095
+We create a public section. Add a getter function for this variable.
+
+8
+00:56.493 --> 01:03.352
+Go to the .cpp file of the widget menu. We include the header file of our game instance.
+
+9
+01:06.325 --> 01:09.715
+In the StartGame function, check the world pointer for nullptr.
+
+10
+01:13.323 --> 01:18.450
+Next, we create a local variable STUGameInstance and assign it the pointer value,
+
+11
+01:18.450 --> 01:23.190
+which is returned to the GetGameInstance functions of the UWorld object.
+
+12
+01:25.289 --> 01:29.214
+If the pointer is nullptr, then exit the function.
+
+13
+01:32.000 --> 01:38.500
+If not, then we do an additional check: we get the value of the level name through the getter function.
+
+14
+01:42.522 --> 01:50.711
+The FName class has a special function called IsNone. It returns true if the variable is None.
+
+15
+01:51.664 --> 01:59.360
+In this case, we will exit the function, and let's also display an error message in the console.
+
+16
+01:59.669 --> 02:07.644
+Copy the log definition macro. We call the log STUMenuWidget.
+
+17
+02:13.253 --> 02:17.063
+We display the error message: Level name is none.
+
+18
+02:19.522 --> 02:25.199
+If all our checks are passed, then the OpenLevel function is passed the name of the startup level.
+
+19
+02:26.888 --> 02:27.886
+Compile the code.
+
+20
+02:28.795 --> 02:35.334
+We open the console. We start the game. Click on StartGame. We see an error message.
+
+21
+02:37.102 --> 02:40.866
+Open up the GameInstance asset.
+
+22
+02:42.962 --> 02:48.711
+The default value for our variable is None. We replace it with TestLevel.
+
+23
+02:51.554 --> 02:56.362
+Run it again. Click start game. The level has opened. Everything works.

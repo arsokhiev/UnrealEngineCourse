@@ -1,0 +1,100 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.841 --> 00:00:11.720
+In this lesson, we have our own work. It is necessary to implement a pickup of lives: if you and I
+
+00:00:11.720 --> 00:00:18.509
+take damage and take a pickup of lives, then the number that is stored in this pickup is added to the health.
+
+00:00:19.922 --> 00:00:28.789
+If our health scale is full, then we cannot take pickup. This should be done by analogy with the ammo pickup through the health component.
+
+00:00:29.527 --> 00:00:31.632
+Let's start solving our homework.
+
+00:00:32.320 --> 00:00:39.330
+Let's create a property in the protected section, which will store the number of lives that we want to add after
+
+00:00:39.330 --> 00:00:46.200
+taking the pickup. The property macro is the same as in ammo pickup, that is, EditAnywhere. I also set clamp: the
+
+00:00:46.200 --> 00:00:53.790
+minimum value is one and the maximum is -100. Name the variable HealthAmount and set it to 100
+
+00:00:53.790 --> 00:01:00.132
+by default. Further, in each instance, we can replace this value.
+
+00:01:00.132 --> 00:01:08.803
+Go to the .cpp file, include the necessary header files. We need a health component and STUUtils.
+
+00:01:08.803 --> 00:01:16.770
+Let's start by getting the health component. Everything is simple here. Further, if the component is not found, we simply
+
+00:01:16.770 --> 00:01:22.950
+exit the function. We will check for IsDead inside the component, I also remind you that in our logic
+
+00:01:22.950 --> 00:01:30.837
+with spectator - the absence of the health component also means the death of the character. If the health component is found,
+
+00:01:30.837 --> 00:01:36.224
+then, by analogy with the previous lesson, we will create a function, which we will call TryToAddHealth,
+
+00:01:36.224 --> 00:01:43.930
+to which we will pass the amount of health and it will return true if the health was successfully added.
+
+00:01:45.281 --> 00:01:51.549
+Go to the header file health component. We declare the function in the public section.
+
+00:01:53.368 --> 00:02:00.382
+In the health component, we will also create a helper function, which we call IsHealthFull, it can be defined in the public section, there is
+
+00:02:00.382 --> 00:02:04.772
+nothing wrong with that, maybe someone will need it in the future.
+
+00:02:06.555 --> 00:02:07.945
+Go to the .cpp file
+
+00:02:11.861 --> 00:02:13.718
+Create a body for each function.
+
+00:02:17.385 --> 00:02:26.487
+In fact, we already have the code for the IsHealthFull function. In the HealUpdate function, we have already compared Health and MaxHealth.
+
+00:02:26.487 --> 00:02:34.000
+Therefore, we can simply copy this code and paste it into the IsHealthFull function.
+
+00:02:34.000 --> 00:02:39.951
+Plus, here we are refactoring method highlighting, which improves the readability of our program.
+
+00:02:40.386 --> 00:02:48.445
+Substitute IsHealthFull in HealUpdate. Go to TryToAddHealth. First, let's check the conditions under which this
+
+00:02:48.445 --> 00:02:55.548
+function will return false. There are 2 such conditions: either the character is dead, or we have a full health scale.
+
+00:02:58.000 --> 00:03:04.560
+We return false. If we have passed these conditions, then we can use our function
+
+00:03:04.560 --> 00:03:11.828
+of the health component SetHealth and add HealthAmount to the current value of life.
+
+00:03:12.505 --> 00:03:18.173
+That is, the value that we pass as a parameter. Do not forget to add return true at the end
+
+00:03:18.630 --> 00:03:25.667
+That is, the lives have been successfully added by our function. Let me also remind you that if suddenly HealthAmount is some kind of large number,
+
+00:03:25.667 --> 00:03:31.218
+then in the SetHealth function this value will be limited only by the MaxHealth value.
+
+00:03:31.218 --> 00:03:32.607
+We compile the project.
+
+00:03:34.000 --> 00:03:41.597
+We inflict small damage on the character. We are trying to take a pickup and our health bar is completely full.
+
+00:03:42.198 --> 00:03:47.466
+If we try to do this at full scale, the pickup will not be taken.
+

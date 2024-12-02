@@ -1,0 +1,331 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.702 --> 00:00:11.689
+In the current lesson, we will work on the traces of bullets in space.
+
+00:00:11.689 --> 00:00:17.008
+In the trace folder I have created effects for the projectile and for the rifle.
+
+00:00:17.008 --> 00:00:22.659
+We'll take a closer look at the effect for the rifle, since this particle system has a number of features.
+
+00:00:22.659 --> 00:00:30.422
+Let's create it from scratch first, then simply replace it with the existing effect, in which I adjusted the necessary parameters.
+
+00:00:30.422 --> 00:00:39.148
+Right-click in the content browser. In the fx category, choose Niagara Emitter. Select the Emmiter from template option.
+
+00:00:39.148 --> 00:00:48.000
+Click next and select dynamic beam from the list. Let's call asset NE_TestBeam.
+
+00:00:50.500 --> 00:00:57.040
+We open the asset. This system is a pulsating beam and it is perfect for us
+
+00:00:57.040 --> 00:01:04.404
+to create traces of bullets in space. Let's immediately create a Niagara system based on this emitter.
+
+00:01:04.404 --> 00:01:08.901
+Right click on the asset and select create niagara system.
+
+00:01:09.768 --> 00:01:18.353
+Let's call our system NS_RifleBeam. Drag and drop the system onto the stage.
+
+00:01:18.353 --> 00:01:25.002
+Place it in space so that our beam is visible and let's move on to the emitter construction.
+
+00:01:25.002 --> 00:01:31.914
+The main category of settings for this emitter is called the beam emitter setup. We can change the end
+
+00:01:31.914 --> 00:01:39.316
+point of our ray. Property is called BeamEnd and, for example, set X = 1200.
+
+00:01:41.040 --> 00:01:45.679
+The beam has changed in size. Its length has become equal to 1200 units.
+
+00:01:45.679 --> 00:01:51.940
+Thus, in order to implement spatial traces from bullets, we need to access this property
+
+00:01:51.940 --> 00:01:57.700
+and set its value depending on our shot. Let's see how
+
+00:01:57.700 --> 00:02:03.865
+this can be implemented. The first thing we need to do is set the checkbox to AbsoluteBeamEnd.
+
+00:02:03.865 --> 00:02:08.360
+This means that we will be using the world coordinate system, not the local one.
+
+00:02:10.860 --> 00:02:15.253
+Let's see how to create your own variable in the Niagara system.
+
+00:02:16.370 --> 00:02:19.578
+We open the asset niagara system.
+
+00:02:21.579 --> 00:02:29.625
+On the left there is a window with the parameters of the Niagara system. We need a user exposed category. Click on the plus.
+
+00:02:29.625 --> 00:02:35.908
+We can create variables of various types. We need a variable of the vector type,
+
+00:02:35.908 --> 00:02:43.782
+which is a point in 3d space, that is, in fact, it has the FVector type. We name the variable TraceTarget.
+
+00:02:43.782 --> 00:02:49.292
+Now we need to bind this variable in the niagara emitter.
+
+00:02:49.292 --> 00:02:58.980
+To do this, select our emitter trace and, opposite the property BeamEnd, click on the triangle and
+
+00:02:58.980 --> 00:03:05.698
+find our TraceTarget variable in the search . Thus, the end of trace became dependent on our
+
+00:03:05.698 --> 00:03:11.906
+newly created TraceTarget variable. And let's set one more setting: in the Emitter State category,
+
+00:03:11.906 --> 00:03:19.709
+in the LoopBehavior, select the Once option. That is, our system will only be played once. Let's go to visual studio.
+
+00:03:20.444 --> 00:03:27.919
+Our task is to spawn the trace effect and figure out how you can set the TraceTarget parameter
+
+00:03:27.919 --> 00:03:34.613
+for our Niagara system. Let's start with the forward declaration of the niagara system in the rifle header file.
+
+00:03:36.372 --> 00:03:41.082
+Create a property that will store a pointer to the trace effect.
+
+00:03:43.670 --> 00:03:48.470
+Let's also create an additional property that will store the name of the variable
+
+00:03:48.470 --> 00:03:57.699
+for the endpoint of our effect. The variable is of type FString. Let's call it TraceTargetName.
+
+00:03:59.199 --> 00:04:05.181
+By default, we will assign the name of this variable, which we just created with you - TraceTarget.
+
+00:04:05.800 --> 00:04:11.926
+Let's create a function that will be responsible for the spawn of this effect. Create it in the private section and
+
+00:04:11.926 --> 00:04:18.126
+name the function SpawnTraceFX. The function will have two parameters.
+
+00:04:18.710 --> 00:04:23.750
+The first parameter is the start point of the trace, and the second parameter is the end point of the trace.
+
+00:04:27.743 --> 00:04:33.713
+We create the body of the function in a .cpp file. Let's include the header file NiagaraFunctionLibrary.
+
+00:04:35.736 --> 00:04:40.760
+Let's go to the MakeShot function. In fact, we have already implemented trace.
+
+00:04:40.760 --> 00:04:45.960
+They were done by drawing debug lines and now we are going to convert that
+
+00:04:45.960 --> 00:04:52.052
+to a particle system. The starting point of trace is known to us - this is the location of the rifle muzzle.
+
+00:04:53.380 --> 00:04:59.335
+And the coordinates of the end point will change depending on whether we got somewhere or not.
+
+00:04:59.335 --> 00:05:07.290
+Let's create a local variable. Name it TraceFXEnd and assign the default value TraceEnd.
+
+00:05:07.290 --> 00:05:14.306
+If trace was successful and we got into something, then we need to overwrite this variable.
+
+00:05:16.124 --> 00:05:21.954
+Therefore, in the if block, we will assign it the value HitResult.ImpactPoint
+
+00:05:27.650 --> 00:05:32.393
+Delete the commented out lines. We no longer need the debug output.
+
+00:05:32.874 --> 00:05:36.746
+Also remove the else branch.
+
+00:05:38.470 --> 00:05:43.365
+Thus, we have a starting point for trace, an ending point,
+
+00:05:43.365 --> 00:05:49.996
+and we can call the SpawnTraceFX function in this place, which does not yet have an implementation.
+
+00:05:51.119 --> 00:05:58.670
+As the first parameter, we pass the GetMuzzleLocation function, which returns the muzzle position, and as the
+
+00:05:58.670 --> 00:06:07.721
+second parameter, we pass the TraceFXEnd variable. Let's start implementing the SpawnTraceFX function.
+
+00:06:14.230 --> 00:06:20.060
+We create a local variable. We call it TraceFXComponent. In this variable,
+
+00:06:20.060 --> 00:06:24.000
+we will assign a pointer that rotates the function
+
+00:06:24.000 --> 00:06:29.678
+from the Niagara functional library SpawnSystemAtLocation.
+
+00:06:32.214 --> 00:06:41.072
+We pass arguments to it. The first is the world. The second is the effect itself - TraceFX.
+
+00:06:41.947 --> 00:06:49.910
+The third argument is the location of the system in the world. We pass the TraceStart parameter. The rest of the parameters can be
+
+00:06:49.910 --> 00:06:58.149
+left as default. The last step that remains to be done is to pass the TraceEnd parameter to the Niagara system.
+
+00:06:58.149 --> 00:07:04.330
+Checking for nullptr for TraceFXComponent. The Niagara component has a set of
+
+00:07:04.330 --> 00:07:11.082
+functions that allow you to pass various types of parameters. The functions have the same origin:
+
+00:07:11.082 --> 00:07:18.970
+SetNiagaraVariable. This is followed by Actor, Bool, Float, and so on. The function that is responsible for passing the vector
+
+00:07:18.970 --> 00:07:26.190
+is called SetNiagaraVariableVec3. The first parameter to this function is the name of the variable.
+
+00:07:26.190 --> 00:07:33.000
+We pass our property TraceTargetName, and the vector itself is the second parameter.
+
+00:07:33.000 --> 00:07:39.452
+We pass the value of the TraceEnd variable. Let's see what we got. Launch editor.
+
+00:07:40.797 --> 00:07:47.020
+Open the rifle's blueprint asset. Find TraceFX in the search and set
+
+00:07:47.020 --> 00:07:52.246
+the niagara rifle beam effect. Compile. We start the game.
+
+00:07:53.402 --> 00:08:04.241
+We start shooting. Our beam spawns. The starting point is at the muzzle and the ending point is at the point of impact. Everything works correctly.
+
+00:08:05.707 --> 00:08:09.000
+Let's change the given beam effect to the one that I prepared in advance.
+
+00:08:10.993 --> 00:08:14.473
+Open the vfx / rifle folder.
+
+00:08:16.352 --> 00:08:24.900
+Open the niagara system. Right-click on the graph. Add emitter. Choose rifle beam.
+
+00:08:25.555 --> 00:08:30.968
+In this emitter, you also need to bind to the end point of trace.
+
+00:08:31.980 --> 00:08:36.610
+We find TraceTarget in the search. This emitter differs from the one we just
+
+00:08:36.610 --> 00:08:43.450
+created only in a set of parameters. The main changes are essentially: the color of this emitter
+
+00:08:43.450 --> 00:08:52.691
+and the thickness of the trace. We turn off the test emitter. We remove the check mark. Compile. We start the game. We shoot.
+
+00:08:54.082 --> 00:08:56.004
+Trace has become more accurate.
+
+00:08:57.643 --> 00:09:03.342
+The second type of trace refers to our rocket. It is located in the projectile folder.
+
+00:09:03.342 --> 00:09:10.570
+We will not consider the detailed creation of this effect . We open the Niagara system. We are waiting for all shaders to be compiled.
+
+00:09:10.570 --> 00:09:17.525
+In fact, this effect consists of several emitters and is a ported effect from the shooter game,
+
+00:09:17.525 --> 00:09:24.000
+which is based on Cascade. The first emitter is a kind of flash with a special material.
+
+00:09:25.028 --> 00:09:31.314
+The second emitter is the ball lightning that spawns on the sphere. The third emitter is the smoke trail.
+
+00:09:32.672 --> 00:09:38.399
+And the fourth is a kind of spray. The only feature of this particle system is its
+
+00:09:39.110 --> 00:09:44.836
+collision property. That is, the particles of this emitter will bounce off objects in the world that
+
+00:09:44.836 --> 00:09:48.402
+have collisions. Let's see how it looks.
+
+00:09:50.042 --> 00:09:57.113
+We open the folder with weapons. We choose projectile. We're completely customizable in blueprints,
+
+00:09:57.113 --> 00:10:04.892
+so we'll just add the NiagaraparticleSystem component. Let's call this component TraceFX.
+
+00:10:07.176 --> 00:10:10.722
+And we will set our niagara system in the property of this component.
+
+00:10:14.420 --> 00:10:15.598
+Compile.
+
+00:10:17.340 --> 00:10:26.750
+We start the game. We change the weapon to the launcher. We shoot and the projectile leaves a noticeable trace in space.
+
+00:10:26.750 --> 00:10:31.237
+The particles also bounce off the floor, which looks quite impressive.
+
+00:10:33.830 --> 00:10:37.467
+Let's make some improvements to our projectile.
+
+00:10:37.467 --> 00:10:42.759
+Go to the materials folder. We created a special luminous material for pickups.
+
+00:10:42.759 --> 00:10:48.894
+Let's make a copy and name the material MI_ProjectileGlow.
+
+00:10:51.448 --> 00:10:53.350
+Open up material instance.
+
+00:10:55.140 --> 00:10:57.971
+Let's replace the color with a lighter one.
+
+00:11:03.640 --> 00:11:13.210
+And immediately copy it. And we will also increase the glow - set it to 500, that is, we have got
+
+00:11:13.210 --> 00:11:18.293
+such a glowing material and let's assign this material to our sphere.
+
+00:11:20.789 --> 00:11:33.408
+You can temporarily disable the Niagara system. Set Visible to false. Select our static mesh component and expose the created material.
+
+00:11:35.200 --> 00:11:44.889
+The result is a glowing ball in the colors of our particle system and for the sake of completeness, let's add a light source to our projectile.
+
+00:11:44.889 --> 00:11:51.360
+To do this, add a component called point light. This component
+
+00:11:51.360 --> 00:11:55.700
+is a point light source. In the light category, we can adjust
+
+00:11:55.700 --> 00:12:01.363
+various parameters of this light. I will only change the color of the light source.
+
+00:12:02.510 --> 00:12:11.125
+Let's pull the projectile onto the stage and, thanks to the new component, our projectile will emit blue light,
+
+00:12:11.125 --> 00:12:16.980
+that is, in fact, the visual part of our projectile now consists of 3 parts: this is the light source, the
+
+00:12:16.980 --> 00:12:25.160
+luminous material and the Niagara particle system. Let's return the visibility of our particle system and see
+
+00:12:25.160 --> 00:12:32.073
+how it looks on stage. Click play. We launch the rocket and see that the projectile is now illuminating the floor.
+
+00:12:32.970 --> 00:12:40.043
+The only thing that can be improved in this system is to separate the effect of smoke from the entire system
+
+00:12:40.043 --> 00:12:45.570
+and allow it to dissolve itself, because now we have such a moment: when we
+
+00:12:45.570 --> 00:12:52.799
+hit the floor, the smoke immediately disappears, because we are doing the destruction of the entire actor with all its components.
+
+00:12:52.799 --> 00:12:57.900
+At the moment of the collision, we can hide all components except the smoke and set, for example, the
+
+00:12:57.900 --> 00:13:04.620
+projectile's lifespan in three seconds. This is food for thought. We will not implement this.
+

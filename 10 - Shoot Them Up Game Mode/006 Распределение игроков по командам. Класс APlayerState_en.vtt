@@ -1,0 +1,304 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.308 --> 00:00:08.299
+In this lesson, we'll look at the new APlayerState class.
+
+00:00:08.299 --> 00:00:16.373
+Let's create it first. Go to the player directory. This class can be found in the general list.
+
+00:00:18.681 --> 00:00:20.571
+We select it.
+
+00:00:22.156 --> 00:00:27.365
+Let's call the class STUPlayerState. Click the create class button.
+
+00:00:29.410 --> 00:00:35.020
+PlayerState is generated for each player. This class exists in the same way as the controller throughout
+
+00:00:35.020 --> 00:00:40.368
+the game, that is, it is not deleted along with the character, for example, when we die.
+
+00:00:40.368 --> 00:00:46.600
+Therefore, it is convenient to store various data in it that are not directly related to the character. Most often
+
+00:00:46.600 --> 00:00:54.207
+these are statistical data: the number of deaths, the number of kills, the player's name, team number, and so on.
+
+00:00:54.207 --> 00:00:59.980
+In this lesson, we will distribute the players by teams and assign a unique color to
+
+00:00:59.980 --> 00:01:06.010
+each team . We need two variables in PlayerState: the first will be responsible for
+
+00:01:06.010 --> 00:01:13.214
+the team number. Let's call it TeamID, and the second one will be responsible for the color of the team - TeamColor.
+
+00:01:15.966 --> 00:01:21.466
+Additionally, let's create getter / setter functions for these variables in the public section.
+
+00:01:31.200 --> 00:01:39.270
+Next, we move to the file with our types. Let's create two fields in GameData. The first field will be
+
+00:01:39.270 --> 00:01:44.190
+responsible for the default color of the team, it will be used as a last
+
+00:01:44.190 --> 00:01:49.410
+resort, if suddenly the colors for the teams are not set in the game mode blueprint.
+
+00:01:51.744 --> 00:01:54.191
+Let it be red by default.
+
+00:01:57.598 --> 00:02:00.332
+The second property will be an array of colors,
+
+00:02:00.332 --> 00:02:05.000
+from which we will choose a color for the team, depending on the TeamID.
+
+00:02:08.268 --> 00:02:13.960
+Go to the header file game mode. Let's add the necessary functions for the distribution of players
+
+00:02:13.960 --> 00:02:21.750
+by teams. The first function will be called CreateTeamsInfo. This function will be called
+
+00:02:21.750 --> 00:02:27.517
+once at the start of the game. Directly in it, we will distribute the players by teams.
+
+00:02:30.435 --> 00:02:36.216
+The following helper function will return the color based on the TeamID.
+
+00:02:36.216 --> 00:02:43.899
+Let's call the function DetermineColorByTeamID. It will have one parameter - this is the command number.
+
+00:02:46.053 --> 00:02:50.334
+And the last function will be called SetPlayerColor.
+
+00:02:51.364 --> 00:02:57.800
+This function will transfer its color to the character class. It will have one parameter - a pointer
+
+00:02:57.800 --> 00:03:03.392
+to the player's controller. Let's create a body for each function.
+
+00:03:10.659 --> 00:03:13.419
+Let's include the header file PlayerState.
+
+00:03:15.569 --> 00:03:22.585
+In the constructor, you must set the base class for PlayerState. Property is named PlayerStateClass.
+
+00:03:23.150 --> 00:03:28.255
+We indicate that we want to use STUPlayerState in this game mode.
+
+00:03:29.610 --> 00:03:35.310
+The game starts in the StartPlay function. We have created all the bots and after that we
+
+00:03:35.310 --> 00:03:42.114
+need to distribute them into teams. Therefore, the CreateTeamsInfo function will be called here.
+
+00:03:42.875 --> 00:03:49.786
+Let's program the logic for this function. A pointer to PlayerState is stored in the controller.
+
+00:03:49.786 --> 00:03:54.230
+Therefore, we can iterate over all the controllers, as we did before,
+
+00:03:54.230 --> 00:04:02.135
+and set all the necessary data in the PlayerState of each of the controllers. Checking world for nullptr.
+
+00:04:02.135 --> 00:04:08.380
+Copy the loop through the controllers. There will be two teams in our game. If desired, it
+
+00:04:08.380 --> 00:04:13.720
+will be easy to expand it to any number of teams. We create a local variable that
+
+00:04:13.720 --> 00:04:20.684
+will be responsible for the command number. We name it TeamID and set it to 1 by default.
+
+00:04:22.080 --> 00:04:27.536
+Create a local variable that will hold the raw pointer to the controller.
+
+00:04:29.277 --> 00:04:33.424
+If the pointer is null, then we call the continue statement.
+
+00:04:35.000 --> 00:04:40.000
+If not, create a variable that will hold a pointer to the PlayerState.
+
+00:04:43.030 --> 00:04:45.734
+The pointer to PlayerState is in the controller.
+
+00:04:47.431 --> 00:04:53.180
+Property is called PlayerState. Naturally, property is of the base class type APlayerState,
+
+00:04:53.180 --> 00:04:57.872
+so we need to cast to our STUPlayerState type.
+
+00:05:07.850 --> 00:05:12.971
+We also check: if the PlayerState pointer is null, then we call the continue operator.
+
+00:05:16.479 --> 00:05:19.770
+So, we got a pointer to PlayerState. Now we
+
+00:05:19.770 --> 00:05:25.082
+can take advantage of our functions. Let's start by setting the TeamID value.
+
+00:05:27.523 --> 00:05:31.917
+We pass the TeamID variable to the SetTeamID function.
+
+00:05:34.700 --> 00:05:36.807
+Next, let's set the color for the players.
+
+00:05:38.550 --> 00:05:40.767
+We call the SetTeamColor function.
+
+00:05:43.040 --> 00:05:48.653
+And we will pass there the value returned by the DetermineColorByTeamID function.
+
+00:05:48.653 --> 00:05:56.410
+We will create it very soon. And at the very end, you need to change the TeamID variable. Since we have two
+
+00:05:56.410 --> 00:06:03.040
+teams, we can use the ternary operator. If TeamID was equal to one,
+
+00:06:03.040 --> 00:06:09.750
+then it will be equal to two and vice versa. Next, we need to determine the color depending on the TeamID.
+
+00:06:10.396 --> 00:06:25.174
+Let's implement the DetermineColorByTeamID function. First, we check: if TeamID is 1 &lt;GameData.TeamColorsNum
+
+00:06:25.529 --> 00:06:31.060
+TeamID starts with one. In the array, the first element has index 0. Therefore, to
+
+00:06:31.060 --> 00:06:37.943
+check the correctness of TeamID as an array index, we need to decrease TeamID by one.
+
+00:06:37.943 --> 00:06:42.160
+If the condition is met, then everything is correct. TeamID does not exceed
+
+00:06:42.160 --> 00:06:48.940
+the boundaries of the array and we can return the color with the TeamID - 1 index. If the condition is
+
+00:06:48.940 --> 00:06:56.243
+not met, for example, we forgot to set the colors in the array. Let's display a Warning message.
+
+00:06:57.300 --> 00:07:05.679
+And in this situation, we will return the default color from the GameData structure. We have set the color to PlayerState.
+
+00:07:05.679 --> 00:07:12.318
+After that, you need to call the SetPlayerColor function. Let's add the call to our loop right away.
+
+00:07:12.318 --> 00:07:17.560
+And we will pass a pointer to the controller as a parameter. We will also need to
+
+00:07:17.560 --> 00:07:23.350
+call this function when the respawn occurs. A pawn that has just been created has no idea what
+
+00:07:23.350 --> 00:07:29.922
+color it should have. Therefore, we need to call this function also in the ResetOnePlayer function.
+
+00:07:32.441 --> 00:07:35.736
+Let's move on to creating the SetPlayerColor function.
+
+00:07:37.542 --> 00:07:39.369
+Check the controller for nullptr.
+
+00:07:41.650 --> 00:07:47.125
+Next, we create a local variable that will store a pointer to our character.
+
+00:07:47.125 --> 00:07:51.589
+Cast directly to the STUBaseCharacter type.
+
+00:07:53.200 --> 00:07:57.737
+Cast will be done for the pointer returned by the GetPawn controller function.
+
+00:07:59.290 --> 00:08:07.442
+If the pointer to character is null, then we also exit the function. Next, we get a pointer to PlayerState.
+
+00:08:07.442 --> 00:08:15.228
+Naturally, we can immediately transfer the color to this function so that we do not repeat Cast to PlayerState in the loop.
+
+00:08:15.228 --> 00:08:21.120
+But since this function will also be called in ResetOnePlayer, in any case we
+
+00:08:21.120 --> 00:08:25.800
+will need to add the code for getting PlayerState, that is, in this case, we prefer the
+
+00:08:25.800 --> 00:08:32.292
+readability of the code, although this will also not affect performance in any way since CreateTeamsInfo
+
+00:08:32.292 --> 00:08:38.120
+is called once for the whole the game. Now that we have pointers to Character and PlayerState,
+
+00:08:38.120 --> 00:08:43.980
+we can set the character to the desired color. We call an as yet non-existent function
+
+00:08:43.980 --> 00:08:51.750
+in Character - SetPlayerColor and pass there the color that the GetTeamColor function returns.
+
+00:08:54.170 --> 00:09:00.094
+Everything. Thus, all the code for the game mode is ready. It remains for us to implement the SetPlayerColor function
+
+00:09:00.094 --> 00:09:03.361
+in the character class. Let's go to the header file character.
+
+00:09:05.180 --> 00:09:07.732
+We create a function in the public section.
+
+00:09:11.028 --> 00:09:17.334
+It will have one parameter of type FLinearColor. This function will set the parameter to the material
+
+00:09:17.923 --> 00:09:24.460
+What kind of code we wrote with you in the very first section. Let's create an additional property that will be
+
+00:09:24.460 --> 00:09:33.349
+responsible for the name of the material parameter. The type will be FName. Let's call it MaterialColorName.
+
+00:09:35.542 --> 00:09:40.219
+The default name for this variable is PaintColor. I already know the name of the parameter.
+
+00:09:40.219 --> 00:09:43.694
+In a few minutes we will check this in the material editor.
+
+00:09:45.412 --> 00:09:47.632
+We create the body of the function.
+
+00:09:50.192 --> 00:09:56.086
+We need to create a dynamic material from the material that is on the mesh.
+
+00:09:57.459 --> 00:10:06.667
+We create a local variable MaterialInstance and call the CreateAndSetMaterialInstanceDynamic function.
+
+00:10:07.570 --> 00:10:11.470
+We looked at what happens inside this function in the first section, so if
+
+00:10:11.470 --> 00:10:20.854
+someone has forgotten, then I recommend watching the video. If MaterialInstance is zero, then exit the function.
+
+00:10:21.970 --> 00:10:27.069
+If not zero, then call the SetVectorParameterValue function.
+
+00:10:28.712 --> 00:10:37.407
+The first argument is the name of the MaterialColorName parameter, and the second is the color itself.
+
+00:10:39.424 --> 00:10:44.680
+Everything is ready. Let's compile the project and see what happens.
+
+00:10:45.222 --> 00:10:55.740
+First, open the material of our character, scroll to the left and see that there is a parameter
+
+00:10:55.740 --> 00:11:04.304
+called PaintColor. We will establish its value. So, let's open the log, launch the game.
+
+00:11:04.304 --> 00:11:09.550
+We did not fill the array of colors, so our warnings were displayed and the color for the characters is red,
+
+00:11:09.550 --> 00:11:16.175
+which we have by default. We fill the array of colors. Let the first color be a shade of green.
+
+00:11:20.300 --> 00:11:24.374
+Add a second color. Let's make it blue.
+
+00:11:26.478 --> 00:11:34.470
+And set the number of players to 4. Compile. We start the game. We see that the players were
+
+00:11:34.470 --> 00:11:39.561
+divided into two teams and the corresponding colors were established for the materials.
+

@@ -1,0 +1,232 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.951 --> 00:00:10.730
+There are several ways to program artificial intelligence in the UE:
+
+00:00:10.730 --> 00:00:16.332
+for example, you can describe all the logic of a character's behavior in a controller, but there is a more convenient way -
+
+00:00:16.332 --> 00:00:21.680
+this is using behavior trees. Globally, it is a mathematical model, which is
+
+00:00:21.680 --> 00:00:26.880
+a directed acyclic graph, the nodes of which are possible behaviors.
+
+00:00:26.880 --> 00:00:31.824
+The UE has its own behavior tree editor that visually represents this
+
+00:00:31.824 --> 00:00:38.521
+mathematical model. Let's start. Right-click in the content browser and
+
+00:00:38.521 --> 00:00:47.647
+select behavior trree under the artificial intelligence category. We name the new asset BT_STUCharacter.
+
+00:00:49.270 --> 00:00:56.289
+And add the second asset that we need. It is in the artificial intelligence category.
+
+00:00:56.289 --> 00:01:04.112
+It is called Blackboard. We name the asset BB_STUCharacter. These two assets work in conjunction.
+
+00:01:04.112 --> 00:01:11.505
+Now we will consider everything in detail with you. Open the behavior tree. Before us is a new editor Unreal Engine,
+
+00:01:12.200 --> 00:01:18.000
+in which the logic of the character's behavior is configured. The behavior tree consists of nodes, the so-called
+
+00:01:18.000 --> 00:01:23.784
+control nodes, and of leaves, which are tasks, that is, tasks that
+
+00:01:23.784 --> 00:01:30.111
+describe the direct actions of the characters. We will consider everything one by one. Let's start.
+
+00:01:30.111 --> 00:01:35.573
+So far, the only node in front of us is root, the entry point of our behavior tree.
+
+00:01:35.573 --> 00:01:42.934
+We take out the arrow from our node. Release the mouse button. We are offered to choose one of the control nodes of the nodes.
+
+00:01:42.934 --> 00:01:49.192
+These include selector, sequence, and simple parallel. We'll start with the sequence node.
+
+00:01:49.192 --> 00:01:55.553
+This node provides sequential execution of several tasks. Select this node from the list.
+
+00:01:57.125 --> 00:02:02.590
+In the same way, we pull the arrow out of this node and, in addition to the node nodes,
+
+00:02:02.590 --> 00:02:08.960
+now we have the opportunity to select tasks. If we open this list, we will see the
+
+00:02:08.960 --> 00:02:16.556
+tasks that are available in the UE by default. A little later, we will create our own tasks for our character.
+
+00:02:16.556 --> 00:02:20.374
+For now, let's start with the simplest task called MoveTo.
+
+00:02:20.720 --> 00:02:27.302
+This task is responsible for finding a path to a specific location. In fact, this is a different representation of the MoveAITo function,
+
+00:02:27.302 --> 00:02:33.300
+which we already created in blueprints. In the details panel, the task has its own properties,
+
+00:02:33.300 --> 00:02:39.350
+one of them is called the blackboard key, this property is of the blackboard key selector type and through
+
+00:02:39.350 --> 00:02:46.677
+it the point in the world is determined, or the actor to which we want our character to start moving.
+
+00:02:46.677 --> 00:02:52.966
+If we click anywhere on the graph, the details panel will open directly in the behavior tree.
+
+00:02:52.966 --> 00:02:59.321
+We need to make sure that our blackboard asset, which we recently created with you, is set
+
+00:02:59.321 --> 00:03:06.290
+in the property blackboard asset . The Behavior tree is the brain of our character: a set of rules, transitions and logical
+
+00:03:06.290 --> 00:03:13.520
+states of our NPC. Blackboard is a database - a set of variables, the values ​​of which
+
+00:03:13.520 --> 00:03:20.800
+we can change from different parts of our code, and the behavior tree will react to changes in these variables.
+
+00:03:20.800 --> 00:03:27.396
+There is a large Add Key button in the upper left corner. We can add variables of various types.
+
+00:03:27.396 --> 00:03:35.420
+Let's start with a vector variable. Name our key Location1 and create another
+
+00:03:35.420 --> 00:03:43.374
+Vector variable named Location2. Let's make the logic of moving between the two given points.
+
+00:03:44.227 --> 00:03:53.999
+Save asset. We return to the behavior tree. Select the MoveTo node and see that the Location1 key is automatically set in the blackboard key
+
+00:03:53.999 --> 00:04:01.348
+, so when the behavior tree starts, our character will start moving to this point.
+
+00:04:01.348 --> 00:04:07.174
+The sequence node executes tasks sequentially, so we can add one more task.
+
+00:04:07.174 --> 00:04:13.389
+Let's choose Wait - this task does nothing, our character will stop
+
+00:04:13.389 --> 00:04:18.856
+and wait for the number of seconds that we specify in the property for this node.
+
+00:04:18.856 --> 00:04:28.095
+In the details panel, specify the wait time, for example, 2 seconds. We add the next task. It will also be MoveTo,
+
+00:04:28.095 --> 00:04:38.885
+only now we change the key to Location2 and add wait to the fourth node, we will wait another two seconds.
+
+00:04:39.343 --> 00:04:45.825
+We've created the simplest logic for our character. The behavior tree is executed from top to bottom and from left to right,
+
+00:04:46.237 --> 00:04:52.080
+that is, first we move to location one, wait two seconds, to location 2, wait two seconds
+
+00:04:52.080 --> 00:04:58.238
+and then the process will start again. Also, in the upper right corner of each node there is a number
+
+00:04:58.238 --> 00:05:03.570
+that means priority execution. Another important feature is behavior trees, which
+
+00:05:03.570 --> 00:05:09.630
+we will look at a little later. Task has an execution status: it completed successfully or not.
+
+00:05:10.224 --> 00:05:15.969
+If it succeeds, it runs the next task. If execution fails,
+
+00:05:15.969 --> 00:05:23.310
+then the entire sequence is aborted. Let's see how to run this behavior logic and also how to
+
+00:05:23.310 --> 00:05:30.000
+set the location value to the blackboard variable. Go to the AI ​​Controller blueprint class.
+
+00:05:30.442 --> 00:05:38.265
+The logic is still educational, so you can check the work in blueprints. Disable the AIMoveTo node.
+
+00:05:40.444 --> 00:05:45.950
+And we call the AIController function called RunBehaviorTree.
+
+00:05:47.629 --> 00:05:54.167
+We must pass the behavior tree as a parameter to this function. Therefore, we select our tree from the list.
+
+00:05:54.840 --> 00:06:01.020
+Further. We need to get a pointer to the blackboard. To do this, the controller has a function
+
+00:06:01.020 --> 00:06:06.307
+called GetBlackboard and returns a pointer to the asset.
+
+00:06:07.100 --> 00:06:12.692
+We will not do a check for nullptr for blackbord, because we are sure that we have it installed.
+
+00:06:12.692 --> 00:06:19.538
+The family of functions that allow you to set different values ​​for variables in the blackboard is called SetValueAs ..
+
+00:06:19.772 --> 00:06:28.750
+Our Location variables need the SetValueAsVector function. Let's copy the location value from the AIMoveTo node.
+
+00:06:30.593 --> 00:06:37.011
+Also, you need to pass the name of the key to this function, for this we will use the special MakeLiteralName node
+
+00:06:37.011 --> 00:06:47.246
+to make a variable in the node and write Location1 in the field, that is, the name of our first key. Let's copy 3 nodes.
+
+00:06:49.143 --> 00:06:51.735
+Change the variable name to Location2.
+
+00:06:53.209 --> 00:07:00.180
+And let's define the second point to which our character will run. To do this, we'll
+
+00:07:00.180 --> 00:07:06.966
+use the empty actor we created earlier. Copy and drag to another corner of the floor.
+
+00:07:09.291 --> 00:07:17.434
+Copy the coordinates. We've all done minimal customization. Let's see what we got.
+
+00:07:18.100 --> 00:07:25.340
+Also, if we leave behavior three open, we can see how the logic of the behavior tree is executed.
+
+00:07:29.610 --> 00:07:38.869
+We start the game and the character ran from the current position to the Location1 point, after which the Wiat node starts.
+
+00:07:38.869 --> 00:07:43.574
+He waits for two seconds and starts running to Location2.
+
+00:07:46.070 --> 00:07:52.094
+They ran and stopped. We wait two seconds and ran to Location1.
+
+00:07:52.094 --> 00:08:00.644
+Thus, it will move between the given two points. Naturally, this logic can also be written using the MoveAITo function
+
+00:08:00.644 --> 00:08:04.880
+in the controller, but we will immediately switch to the behavior tree, because our logic will be
+
+00:08:04.880 --> 00:08:10.220
+quite complex in the future. If you press an apostrophe on the keyboard, then debug
+
+00:08:10.220 --> 00:08:16.048
+information appears that relates to artificial intelligence. Using the numeric keys on the num pad,
+
+00:08:16.048 --> 00:08:20.664
+you can turn on / off various debug categories of artificial intelligence.
+
+00:08:21.091 --> 00:08:26.662
+Also on the screen you can see the active task - what our NPC is currently doing.
+
+00:08:27.059 --> 00:08:32.874
+This concludes the lesson. In the next, we will write our own task for the bot in C ++.
+
+00:08:34.609 --> 00:08:41.057
+It is also possible to configure hotkey to show debug information. To do this, you need to
+
+00:08:41.057 --> 00:08:48.924
+find the gameplay debugger category in the project settings and the topmost property - activation key is responsible for the key,
+
+00:08:48.924 --> 00:08:55.283
+when pressed, the debug information will be called. You can change it if necessary.
+

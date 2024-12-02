@@ -1,0 +1,82 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.755 --> 00:00:09.804
+Congratulations to everyone on completing the course and thank you for watching it to the end.
+
+00:00:10.467 --> 00:00:14.511
+We figured out the specifics of C ++ development in the Unreal Engine.
+
+00:00:14.916 --> 00:00:20.870
+We studied various subsystems and programmed all the logic exclusively in C ++.
+
+00:00:21.620 --> 00:00:24.834
+If you liked the course, I would be grateful for your feedback.
+
+00:00:25.617 --> 00:00:26.987
+What to do next?
+
+00:00:27.639 --> 00:00:31.638
+First, you can continue to develop our current project on your own.
+
+00:00:31.638 --> 00:00:35.472
+For example, add new characters and make it possible to choose them.
+
+00:00:35.927 --> 00:00:41.563
+Characters can be found in the Unreal marketplace. There are many free options out there.
+
+00:00:42.165 --> 00:00:48.124
+You can create a system of difficulty level and change various parameters of bots, depending on it.
+
+00:00:48.721 --> 00:00:51.948
+Or, for example, create a mechanic for the selection of a special totem
+
+00:00:52.304 --> 00:00:56.538
+AND count the victory for the team if at the end of the round it owns it.
+
+00:00:56.921 --> 00:01:00.948
+Etc. You can think of anything you want and try to implement it.
+
+00:01:01.643 --> 00:01:06.558
+Secondly, you can continue to study Unreal, depending on the specifics of your activity.
+
+00:01:06.914 --> 00:01:15.372
+If you are an idie developer, then learning unreal will happen depending on what is required to implement your game mechanics. This is logical.
+
+00:01:15.640 --> 00:01:21.118
+If you are planning to work in a large company, then it makes sense to thoroughly study several subsystems.
+
+00:01:21.118 --> 00:01:26.781
+For example, you can delve deeper into artificial intelligence, user interface programming, or animation programming.
+
+00:01:27.186 --> 00:01:32.382
+But no matter what you do, it is extremely important to devote due time to the documentation, to study it carefully.
+
+00:01:32.771 --> 00:01:39.732
+Also, in training, I recommend not to focus only on the Unreal Engine. Improve various other programmer skills.
+
+00:01:40.000 --> 00:01:46.670
+Study software design methodologies, testing, refactoring, follow the development of the C ++ standard,
+
+00:01:46.960 --> 00:01:48.917
+read and watch professional blogs.
+
+00:01:49.465 --> 00:01:53.398
+All this knowledge can be easily transferred to projects based on the Unreal Engine,
+
+00:01:53.623 --> 00:02:00.000
+while the speed and quality of development can be greatly improved. All this together will help create your dream project.
+
+00:02:00.827 --> 00:02:04.351
+Also in the description, I will leave a link to my YouTube channel,
+
+00:02:04.351 --> 00:02:11.241
+which covers the topics of unreal development automation, source building, testing and much more.
+
+00:02:12.106 --> 00:02:15.054
+Thanks again for watching this course.
+
+00:02:15.630 --> 00:02:18.000
+Wish you luck! Bye everyone!
+

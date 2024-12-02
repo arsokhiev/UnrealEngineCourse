@@ -1,0 +1,259 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.017 --> 00:00:07.080
+In this lesson, we will create an actor
+
+00:00:07.080 --> 00:00:12.073
+that will damage our character. The actor will deal radial damage.
+
+00:00:12.073 --> 00:00:16.153
+This logic will simulate a grenade explosion next to our character.
+
+00:00:19.541 --> 00:00:27.372
+In the content browser, go to the folder with our classes. We create a new C ++ class. Select actor.
+
+00:00:30.440 --> 00:00:36.640
+Let's create an additional folder for the development content, let's just call it dev.
+
+00:00:39.570 --> 00:00:48.801
+Let's give our actor a name. We name it STUDevDamageAactor and click on create class.
+
+00:00:49.405 --> 00:00:56.335
+If the project did not compile when adding a new directory, then in the build file we specify the path
+
+00:00:56.335 --> 00:01:04.158
+to the dev folder in PublicIncludePaths. Go to the BaseCharacter. Let's remove the line from TakeDamage.
+
+00:01:04.158 --> 00:01:09.764
+We will no longer harm ourselves and start working with dev damage actor.
+
+00:01:10.998 --> 00:01:15.130
+The first thing we will do is add a SceneComponent to our actor,
+
+00:01:15.130 --> 00:01:19.799
+so that it has a transformation and we can freely move it around the scene.
+
+00:01:38.670 --> 00:01:43.407
+The first thing we will do is visualize a sphere that will simulate an explosion.
+
+00:01:43.407 --> 00:01:48.548
+Let's include the header file, which contains the functions that help to draw graphic primitives.
+
+00:01:48.548 --> 00:01:55.090
+Including the sphere. The header file is called DrawDebugHelpers. We will draw our sphere
+
+00:01:55.090 --> 00:02:00.969
+every frame, for this we go to the Tick function and call the DrawDebugSphere function.
+
+00:02:06.457 --> 00:02:15.418
+The first parameter to this function is a pointer to world. Let's use the GetWorld function. The next parameter is the center of the sphere.
+
+00:02:15.418 --> 00:02:21.255
+We will draw it in the place where the actor is, so we will use the GetActorLocation function.
+
+00:02:21.255 --> 00:02:25.728
+Next, you need to specify the radius of the sphere. We'll create this variable a little later.
+
+00:02:26.593 --> 00:02:31.871
+The next parameter is the number of sphere segments - the tessellation parameter.
+
+00:02:31.871 --> 00:02:36.125
+We put any number here, the main thing is that it is visually clear that this is a sphere.
+
+00:02:37.451 --> 00:02:45.049
+The next argument is the color of the sphere. Let's also create a variable. Let's call it SphereColor and leave the
+
+00:02:45.049 --> 00:02:51.934
+rest of the parameters as default. Go to the .h file. Let's create a property for the Radius and SphereColor.
+
+00:02:54.449 --> 00:02:56.820
+Copy the UPROPERTY macro.
+
+00:02:58.000 --> 00:03:03.782
+Let's make these properties with the EditAnywhere specifier so that we can edit them anywhere.
+
+00:03:05.139 --> 00:03:14.763
+The radius is of the float type, let's put some number, for example, 300 and the color of the sphere is of the FColor type.
+
+00:03:17.910 --> 00:03:20.773
+And let it be red by default.
+
+00:03:25.300 --> 00:03:30.153
+Let's see how it looks in the editor. Compile.
+
+00:03:38.436 --> 00:03:49.559
+So we have a compilation error. We've forgotten something. We have written world with a small letter. Let's compile one more time.
+
+00:03:54.626 --> 00:04:03.871
+Go to our classes, to the dev folder and drop the dev damage actor onto the stage. Let's give it some position in space.
+
+00:04:03.871 --> 00:04:09.770
+Checking the parameters: radius - 300, color - red and let's throw out one more actor.
+
+00:04:11.442 --> 00:04:21.980
+Put it in another place and, for example, change the color to blue. Let the radius be 500. Launch the project.
+
+00:04:22.483 --> 00:04:28.671
+Each frame we draw spheres. Now we need to make it so that when actor
+
+00:04:28.671 --> 00:04:33.385
+gets inside these spherical volumes, the number of his lives begins to decrease.
+
+00:04:36.510 --> 00:04:42.410
+We start off by including the GameplayStatics file on top of our dev damage actor.
+
+00:04:42.410 --> 00:04:52.087
+We already used this class when we got all the actors from the stage - Kismet / GameplayStatics.h
+
+00:04:52.649 --> 00:04:55.882
+We will cause damage in the Tick function, that is, every frame.
+
+00:04:55.882 --> 00:05:04.774
+We write: UGameplayStatics and let's see what functions there are in this class. Enter: Apply.
+
+00:05:05.760 --> 00:05:12.000
+We have several ways to damage an actor: ApplyDamage, ApplyPointDamage
+
+00:05:12.000 --> 00:05:18.317
+and ApplyRadialDamage. In the first two functions, we need to know the pointer to the actor
+
+00:05:18.317 --> 00:05:23.717
+we want to harm. We haven’t gone through collisions yet, so we can implement the logic of
+
+00:05:23.717 --> 00:05:29.488
+calculating the actor that is in the sphere and will use the ApplyRadialDamage function.
+
+00:05:29.488 --> 00:05:33.909
+Inside it, this logic has already been implemented and damage will be done to all
+
+00:05:33.909 --> 00:05:38.960
+actors who are in the model sphere. Let's see what arguments
+
+00:05:38.960 --> 00:05:44.801
+this function has. The first is the world contex object. We pass the GetWorld pointer there.
+
+00:05:44.801 --> 00:05:53.330
+Further, BaseDamage is directly a quantitative characteristic of damage. Let's pass the Damage variable there, which we'll
+
+00:05:53.330 --> 00:06:01.210
+create a little later. The next variable is the center of the damage sphere. We also pass GetActorLocation there.
+
+00:06:04.487 --> 00:06:13.100
+Next comes the radius of the sphere. We have already created this variable. We pass Radius. The next parameter is the
+
+00:06:13.100 --> 00:06:18.690
+type of damage. We can pass a null pointer. We'll look at DamageType a little later.
+
+00:06:18.690 --> 00:06:26.396
+Now we are not interested in him. Next comes the IgnoreActors array. We can specify the actors that we do not want to harm.
+
+00:06:26.396 --> 00:06:32.495
+given damage. We pass in an empty array. We want to harm all actors in the affected area.
+
+00:06:32.495 --> 00:06:36.810
+Next up is DamageCauser, which is the actor who causes damage. This is ourselves,
+
+00:06:36.810 --> 00:06:43.666
+so we pass the this pointer. The next parameter is the controller. You and I can pass nulltpr,
+
+00:06:43.666 --> 00:06:49.830
+because our actor is not a pawn or a character. It is not controlled by anyone. The penultimate variable
+
+00:06:49.830 --> 00:06:56.479
+is called DoFullDamage. Let's also make it property. This variable is responsible for
+
+00:06:56.479 --> 00:07:02.206
+how the radial damage data will be damaged. If this variable is set to true,
+
+00:07:02.206 --> 00:07:09.102
+then no matter what point on the sphere we are, we will receive full damage.
+
+00:07:09.960 --> 00:07:15.200
+If the variable is false, then we will receive full damage only in the center of the sphere,
+
+00:07:15.200 --> 00:07:20.630
+in the epicenter, and the further we are from the center, the less damage we will receive. That is, the value
+
+00:07:20.630 --> 00:07:27.296
+will be interpolated along the radius. The last argument relates to collisions. We'll leave it at the default.
+
+00:07:27.857 --> 00:07:32.350
+This parameter allows you to control how damage will be done if there
+
+00:07:32.350 --> 00:07:37.510
+are any other objects between our character and the epicenter of the explosion. We can make it so
+
+00:07:37.510 --> 00:07:41.822
+that under the given circumstances damage is ignored for our character.
+
+00:07:42.430 --> 00:07:50.709
+Go to the .h file. Let's create the missing variables. The first variable is Damage, it is also float.
+
+00:07:52.007 --> 00:08:00.000
+Post it some small value, let it be 10. The second variable is of type boolean - DoFullDamage.
+
+00:08:03.199 --> 00:08:09.406
+Set the default to false and check in the editor what changes if we change the value to true.
+
+00:08:12.821 --> 00:08:18.605
+Let's fall inside the ApplyRadialDamage function. Press f12 on this function.
+
+00:08:19.307 --> 00:08:25.645
+In fact, this function is a wrapper with a slight change over the player's ApplyRadialDamageWithFalloff function.
+
+00:08:26.125 --> 00:08:32.063
+Two main points let's look at what happens inside this function. It is not necessary to understand a lot of the code here.
+
+00:08:32.063 --> 00:08:38.278
+The essence is important to us. The first moment: all the actors are found that are overlapped by the
+
+00:08:38.278 --> 00:08:45.047
+sphere with our passed parameters. The OverlapMultiByObjectType function is responsible for this.
+
+00:08:46.890 --> 00:08:51.000
+And the second point: we iterate over all the found actors and call the TakeDamage function
+
+00:08:51.000 --> 00:08:56.040
+on each of them , which we went through in the previous lesson. The details of the function are
+
+00:08:56.040 --> 00:09:01.650
+not so important to us, these two points are important in order to understand what this function actually does.
+
+00:09:02.807 --> 00:09:09.087
+Let's log the damage that comes to our actor in the health component in order to better understand the numbers.
+
+00:09:10.359 --> 00:09:14.469
+We create a local logging category in the health component.
+
+00:09:17.402 --> 00:09:22.624
+And in the OnTakeAnyDamage function we log the value of the Damage variable.
+
+00:09:26.365 --> 00:09:28.187
+All is ready. We compile the project.
+
+00:09:31.048 --> 00:09:39.637
+Let's set an actor that has full damage blue to true. We open the log.
+
+00:09:40.440 --> 00:09:47.310
+So, let's get into the blue sphere and in the log we see that damage = 10 comes
+
+00:09:47.310 --> 00:09:52.977
+regardless of where we are on the sphere. We fall into the red sphere
+
+00:09:52.977 --> 00:09:58.410
+and see that the damage changes depending on how close we are to the
+
+00:09:58.410 --> 00:10:05.925
+center of the sphere. The center of the sphere is somewhere higher, so we don't get the top ten, but the essence is clear.
+
+00:10:08.037 --> 00:10:11.911
+Let's check with several characters in the scene.
+
+00:10:11.911 --> 00:10:17.043
+Let's pull another character onto the stage so that he is in the sphere.
+
+00:10:19.055 --> 00:10:23.880
+And we see that all the actors, all the characters that are in the sphere, take damage.
+

@@ -1,0 +1,9 @@
+
+002 Unreal-assertions
+https://docs.unrealengine.com/en-US/ProgrammingAndScripting/ProgrammingWithCPP/Assertions/index.html
+
+004 F.A.Q.
+https://lifeexe-art.gitbook.io/unreal-engine-c-course/problemy-i-resheniya/ne-rabotaet-apply-damage
+
+008 Comparing-floating-point-numbers
+https://www.jetbrains.com/help/resharper/CompareOfFloatsByEqualityOperator.html

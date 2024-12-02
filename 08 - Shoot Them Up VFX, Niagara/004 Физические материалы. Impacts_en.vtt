@@ -1,0 +1,334 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.980 --> 00:00:13.643
+In the current lesson, we will analyze the method of spawning various impact effects depending on the hit surface.
+
+00:00:13.643 --> 00:00:19.762
+For example, if you hit the ground, then one impact effect spawns, if you hit the character, then another.
+
+00:00:19.762 --> 00:00:25.420
+And if we hit the character's head, then we spawn the headshot effect. This method can also be
+
+00:00:25.420 --> 00:00:30.940
+used to inflict different quantitative damage depending on the hit in different
+
+00:00:30.940 --> 00:00:37.242
+parts of the character's body. Rename NS_BaseImpact to NS_DefaultImpact.
+
+00:00:37.242 --> 00:00:43.659
+We will spawn this system by default if we cannot determine which surface we hit.
+
+00:00:44.588 --> 00:00:51.098
+We open the Niagara system. Change the color of the particles to a shade of dark.
+
+00:00:54.643 --> 00:01:03.341
+We copy this system using Ctrl + W. The new Niagara system is called GroundImpact.
+
+00:01:03.657 --> 00:01:10.931
+This system will spawn if we hit the floor of our world, or the steps. We make another copy.
+
+00:01:12.367 --> 00:01:19.286
+We call the new Niagara system BodyImpact. We will spawn it if we hit the character's body.
+
+00:01:20.707 --> 00:01:25.234
+And the last Niagara system that we need will be called HeadImpact.
+
+00:01:25.234 --> 00:01:32.920
+We will spawn it when it hits the character's head. Let's save all the assets. We will not touch on the
+
+00:01:32.920 --> 00:01:38.540
+design of particle systems for now . Let's change only the color coding. Open up GroundImpact
+
+00:01:40.337 --> 00:01:44.407
+and change the color to green in Initial Particles.
+
+00:01:48.104 --> 00:01:52.552
+Opening BodyImpact. We set the color to red.
+
+00:02:00.864 --> 00:02:04.942
+HeadImpact is also red, just a little darker.
+
+00:02:07.083 --> 00:02:16.149
+Also change the number of particles in the SpawnBurst property. Let it be 200.
+
+00:02:16.619 --> 00:02:21.654
+We have prepared with you all the impact effects that we need. Only one emitter was used.
+
+00:02:21.654 --> 00:02:27.295
+And they simply redefined some parameters in specific Niagara systems, which is quite convenient.
+
+00:02:27.784 --> 00:02:35.506
+Create a new folder. Let's call it PhysMaterials and consider a new type of asset called Physical Material.
+
+00:02:35.506 --> 00:02:39.818
+This type of asset is used to set the physical characteristics of an object.
+
+00:02:39.818 --> 00:02:46.555
+To create it, right-click in the Content Browser and select Physical Material in the Physics category.
+
+00:02:47.620 --> 00:02:54.387
+An additional window opens. Select Physical Material from the list and press Select.
+
+00:02:54.387 --> 00:03:01.890
+The first material is called PhysMatGround. This physical material will be assigned to the floor or staircase.
+
+00:03:06.340 --> 00:03:12.467
+If we open this type of asset, we will see various physical characteristics that can be overridden.
+
+00:03:12.467 --> 00:03:17.738
+If an object has physics simulation enabled, then it will interact with other
+
+00:03:17.738 --> 00:03:23.345
+objects according to our settings. The material has a special property Surface,
+
+00:03:23.345 --> 00:03:29.871
+which allows you to create your own type of surface and, depending on this type of surface, spawn the effect we need.
+
+00:03:29.871 --> 00:03:36.814
+Physical materials may differ slightly in their parameters, but they may have the same Surface type.
+
+00:03:36.814 --> 00:03:40.480
+For now, we can do without this additional property and define the surface
+
+00:03:40.480 --> 00:03:45.430
+solely from physical materials. Physical parameters do not make sense for us, because we
+
+00:03:45.430 --> 00:03:51.760
+do not use these assets for physical simulation, but only use them to define the surface.
+
+00:03:52.275 --> 00:03:57.970
+Created three physical materials: body, ground and head. Let's see how
+
+00:03:57.970 --> 00:04:03.310
+you can install them. The floor in our scene is not a mesh, it is geometry. You
+
+00:04:03.310 --> 00:04:09.200
+cannot assign a physical material for this kind of asset. We will convert it to a mesh later, but for now you can
+
+00:04:09.200 --> 00:04:19.184
+drag any geometric object into the scene and in the details panel find it in the PhysMaterialOverride collision category.
+
+00:04:19.778 --> 00:04:23.579
+Install the PhysMaterialGround asset.
+
+00:04:24.861 --> 00:04:31.209
+Let's go into the character's mesh and set up the physical materials for his collisions.
+
+00:04:33.870 --> 00:04:44.220
+Choosing a character. Moving on to the skeletal mesh, into the physics category. The mesh has collisions that
+
+00:04:44.220 --> 00:04:49.830
+we directly hit when we shoot. Set all collisions to the appropriate
+
+00:04:49.830 --> 00:04:56.452
+physical material. We have only 2. Set the Head for the head.
+
+00:05:00.010 --> 00:05:06.200
+And for all the rest, set Body. I will speed up the video of routine work. If necessary, we can always
+
+00:05:06.200 --> 00:05:08.630
+create additional physical materials
+
+00:05:08.630 --> 00:05:13.908
+and make different impact effects when hitting different parts of the body.
+
+00:05:17.173 --> 00:05:23.254
+Having installed all the necessary physical materials, now let's see in C ++ how you can
+
+00:05:23.254 --> 00:05:29.281
+spawn the appropriate Niagara systems depending on the given physical materials.
+
+00:05:30.460 --> 00:05:34.090
+In order for the class of physical material to become available in our project,
+
+00:05:34.090 --> 00:05:38.319
+it is necessary to connect an additional module called PhysicsCore.
+
+00:05:41.014 --> 00:05:48.627
+Go to the WeaponFX component, into the header file. First, let's rename the Effect variable to DefaultEffect.
+
+00:05:49.063 --> 00:05:55.886
+We will spawn this niagara system when we hit an object for which we cannot determine the
+
+00:05:55.886 --> 00:06:01.735
+physical material. We need to match each physical material to the effect
+
+00:06:01.735 --> 00:06:06.704
+that we want to spawn when we get into it.The data structure that suits us is
+
+00:06:06.704 --> 00:06:13.494
+called TMap - an internal implementation of an associative container in Unreal Engine that stores data
+
+00:06:13.494 --> 00:06:21.057
+as a key + value combination. This container is generic - it accepts the types that we want to store in it.
+
+00:06:21.057 --> 00:06:26.801
+We will use the physical material as the key, and the Niagara system as the value.
+
+00:06:26.801 --> 00:06:35.614
+The data type for the physical material is called UPhysicalMaterial. We name our container EffectsMap.
+
+00:06:40.410 --> 00:06:45.194
+Add a forward declaration on top for the UPhysicalMaterial class.
+
+00:06:47.789 --> 00:06:55.713
+And go to the .cpp file of our component. We include the header file of the physical material.
+
+00:07:00.340 --> 00:07:06.731
+Let's go to the PlayImpactFX function. The spawn effect will take place at the very end.
+
+00:07:07.498 --> 00:07:15.800
+Let's name the variable Effect and assign it the default value of the effect, DefaultEffect. Also, in the call to the spawn function,
+
+00:07:15.800 --> 00:07:20.811
+we do not have to change the name of the variable, it will be the same - Effect.
+
+00:07:22.397 --> 00:07:29.551
+We have a default value, but it can change. It will depend on where we got to.
+
+00:07:30.425 --> 00:07:36.073
+The HitResult object has a field that contains information about the physical material.
+
+00:07:36.073 --> 00:07:42.170
+The field is named PhysMaterial. This variable is of type WeakObject. Again, this is the internal
+
+00:07:42.170 --> 00:07:47.930
+implementation of weak pointers in the Unreal Engine. If you are not familiar with the concepts of shared, I recommend that you study this issue
+
+00:07:47.930 --> 00:07:54.380
+in the C ++ documentation for a weak pointer . At the moment, we need to know the following: this pointer also needs
+
+00:07:54.380 --> 00:08:00.800
+to be checked for validity. This is done using the IsValid function. If this function returns true,
+
+00:08:00.800 --> 00:08:06.919
+then our object is valid and we can access the raw pointer using the Get function.
+
+00:08:07.935 --> 00:08:15.491
+We create an additional variable PhysMat. We assign it a raw pointer
+
+00:08:15.491 --> 00:08:20.708
+to a physical material, that is, if we hit a given
+
+00:08:20.708 --> 00:08:26.609
+point in the code, then some physical material is returned to us. Now we need to check if there is a
+
+00:08:26.609 --> 00:08:31.080
+special effect for the given physical material in our container.
+
+00:08:31.080 --> 00:08:35.701
+To do this, we call a special container function called Contains.
+
+00:08:35.701 --> 00:08:42.259
+This function checks if the key that we pass to it as an argument exists in our TMap container.
+
+00:08:43.190 --> 00:08:48.950
+If this key exists, then we can pick up the corresponding value and override the effect
+
+00:08:48.950 --> 00:08:54.818
+that we are going to spawn. To access the value by key, the parenthesis operator [] is used.
+
+00:08:55.241 --> 00:09:02.890
+In this operator we pass our PhysMat pointer. The spawn function is ready. We just need to add
+
+00:09:02.890 --> 00:09:09.801
+some settings. Physical material is not passed in the HitResult parameter by default.
+
+00:09:09.801 --> 00:09:16.680
+This is done from an optimization point of view. In the MakeHit function, in CollisionParams, we must explicitly indicate
+
+00:09:16.680 --> 00:09:23.550
+that we want the physical material to go into the final HitResult object. To do this, set
+
+00:09:23.550 --> 00:09:31.757
+the bReturnPhysicalMaterial flag to true. And a similar setting needs to be done for projectile.
+
+00:09:31.757 --> 00:09:38.189
+In projectile, HitResult is defined directly on collision collision. The property that is responsible
+
+00:09:38.189 --> 00:09:47.056
+for returning the physical material is called bReturnMaterialOnMove. We also set the value to true. We launch the project.
+
+00:09:48.258 --> 00:09:52.240
+Open the rifle blueprint. Go to the FX component of the weapon.
+
+00:09:52.240 --> 00:09:59.800
+Set DefaultImpact to the default effect. EffectsMap also appeared. Click on the plus and collect
+
+00:09:59.800 --> 00:10:07.415
+assets in pairs, that is, the physical body material corresponds to BodyImpact, ground corresponds to GroundImpact.
+
+00:10:09.322 --> 00:10:12.844
+And the physical material head matches HeadImpact.
+
+00:10:13.873 --> 00:10:20.765
+Right click on property. Press Copy and go to blueprint projectile, weaponFX component.
+
+00:10:21.580 --> 00:10:27.760
+Right click on the effects map, choose Paste. And the default effect is set to DefaultImpact.
+
+00:10:28.236 --> 00:10:35.283
+That is, the set of effects for rifle shooting and for projectile is still the same for us. We will also add some kind of mesh,
+
+00:10:35.283 --> 00:10:40.746
+which we will not set the physical material to. One more thing, let's while testing, install
+
+00:10:40.746 --> 00:10:47.602
+BulletSpread on a smaller rifle so that it approximately shoots at the same point for clarity.
+
+00:10:48.660 --> 00:10:55.447
+We launch and start checking. The cube has a physical material ground - a green particle system spawns.
+
+00:10:55.447 --> 00:11:02.150
+The cylinder is black, the floor also has no physical material, and if we shoot at the character, then it is red.
+
+00:11:02.520 --> 00:11:11.638
+And on headshot spawns a big headshot effect. Let's change weapons, check the launcher.
+
+00:11:12.406 --> 00:11:17.986
+Particle systems spawn the same, because we have the same effect cards at the moment.
+
+00:11:19.182 --> 00:11:25.422
+Projectile is a special case, so let's make it one explosion effect for all surfaces.
+
+00:11:27.000 --> 00:11:35.131
+Create a new niagara system and select the new system from template option, click next.
+
+00:11:36.618 --> 00:11:40.537
+Choose the SimpleExplosion template.
+
+00:11:44.050 --> 00:11:47.599
+We name the asset NS_ProjectileImpact.
+
+00:11:52.910 --> 00:11:59.942
+We open the asset. We also see that the momentum is set along the z-axis, but we need to do it along the x-axis.
+
+00:11:59.942 --> 00:12:04.983
+If you click on the person on an effect, only the selected effect will be played.
+
+00:12:04.983 --> 00:12:11.093
+Select the AddVelocityFromPoint property from the emitter and change the value of the x and z axis.
+
+00:12:14.890 --> 00:12:17.057
+Going further, the next effect.
+
+00:12:18.217 --> 00:12:28.104
+We also click on the little man. This is the familiar arrow particle system. Change x and z in the AddVelocityFromPoint property.
+
+00:12:28.620 --> 00:12:33.706
+And it's the same in the latest particle system in the AddVelocityFromPoint property.
+
+00:12:41.856 --> 00:12:50.306
+Our entire effect spawns along the x-axis. Go to projectile in the FX component. Remove EffectsMap completely
+
+00:12:50.306 --> 00:12:58.165
+and set the just created projectile impact to the default effect. We start the game.
+
+00:12:59.785 --> 00:13:08.680
+We switch to the launcher, shoot, and now it doesn't matter where we got to, the explosion particle system spawns.
+
+00:13:08.680 --> 00:13:14.410
+In this way, you can add as many physical materials and their corresponding effects as you want.
+

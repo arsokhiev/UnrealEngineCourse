@@ -1,0 +1,40 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.884 --> 00:00:10.770
+We have a new section. It will be dedicated to pickups, that is, items that our character can
+
+00:00:10.770 --> 00:00:17.400
+pick up. We'll do two pickups with you: one of them will be an ammo pickup. It will have several
+
+00:00:17.400 --> 00:00:23.230
+parameters: the number of magazines our player can get if he picks up this pickup, the
+
+00:00:23.626 --> 00:00:30.000
+type of weapon this magazine belongs to, and also respawn time - the time after which
+
+00:00:30.000 --> 00:00:36.300
+this pickup will appear on the scene again. The second pickup is a health pickup. Its main parameter is the
+
+00:00:36.300 --> 00:00:41.310
+number of health units our player will receive. Our lives are resumed on a timer,
+
+00:00:41.310 --> 00:00:46.110
+so overall this pickup is a bit useless. An educational moment is important for us here
+
+00:00:46.110 --> 00:00:50.850
+- to see how to handle pickups of various types. Pickup will add
+
+00:00:50.850 --> 00:00:55.802
+ammo to the launcher. Let's switch weapons and shoot some bullets.
+
+00:00:58.048 --> 00:01:04.220
+And when we run into the pickup, our arsenal is full. If we run into the damage sphere, we will waste
+
+00:01:04.220 --> 00:01:08.592
+some life. We select health and the health bar fills up instantly.
+
+00:01:08.592 --> 00:01:13.638
+If the arsenal and health are completely full, then we will not be able to take pickups.
+

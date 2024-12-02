@@ -1,0 +1,352 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.600 --> 00:00:10.361
+Hello everyone! We are starting a new section. We will deal with weapons.
+
+00:00:10.361 --> 00:00:15.522
+I copied all the content we need from the shooter game - these are two skeletal meshes.
+
+00:00:16.350 --> 00:00:22.600
+One of them is a launcher, it will shoot missiles here.
+
+00:00:24.340 --> 00:00:32.678
+The second mesh is the rifle. Will shoot with regular cartridges. We will actually start with it.
+
+00:00:33.170 --> 00:00:37.795
+In this lesson, we will create an actor who will be responsible for the weapon. Let's spawn it
+
+00:00:37.795 --> 00:00:43.838
+and attach it to our character. Let's get started. Go to the folder with C ++ classes.
+
+00:00:44.724 --> 00:00:52.040
+Let's create a base weapon class. This will be an actor. Let's call it STUBaseWeapon.
+
+00:00:55.540 --> 00:01:01.635
+And put it in the new Weapon folder. Click on create class.
+
+00:01:03.678 --> 00:01:12.982
+In the build file, I added the Weapon folder. We have already done this for other directories.
+
+00:01:14.287 --> 00:01:22.417
+Go to our BaseWeapon file, remove the Tick function. We will not need it in this class.
+
+00:01:23.714 --> 00:01:29.924
+We clean the comments, format the file. We'll start with the look of our weapon.
+
+00:01:30.627 --> 00:01:36.872
+Let's create a property for this, which will store a pointer to the skeletal mesh of our weapon.
+
+00:01:37.400 --> 00:01:45.529
+We have already implicitly worked with the skeletal mesh in the ACharacter class, we used the skeletal mesh of the character.
+
+00:01:45.529 --> 00:01:51.057
+A skeletal mesh, just like a regular mesh, has polygons, that is, it has a certain appearance.
+
+00:01:51.057 --> 00:01:55.901
+And additionally there is a hierarchy of bones with which you can animate this mesh.
+
+00:01:56.540 --> 00:02:03.649
+Actually what we did with you in the case of our character. The type in C ++ is called USkeletalMeshComponent.
+
+00:02:04.357 --> 00:02:10.381
+We create a pointer to this type and called it WeaponMeshComponent.
+
+00:02:14.500 --> 00:02:19.797
+Add a forward declaration for this type, above the class.
+
+00:02:24.485 --> 00:02:32.613
+Go to the BaseWeapon .cpp file. Let's clean it up a bit too. Let's remove unnecessary comments.
+
+00:02:38.193 --> 00:02:40.297
+We removed the Tick function.
+
+00:02:43.800 --> 00:02:52.100
+We set the value of the bCanEverTick variable to false. We don't need a Tick loop in this class.
+
+00:02:54.792 --> 00:03:05.162
+We include the header file SkeletalMeshComponent. We create an object of this class in the constructor.
+
+00:03:05.162 --> 00:03:10.828
+Likewise, how we created other components.
+
+00:03:11.910 --> 00:03:17.096
+And let's make this component the root one.
+
+00:03:24.370 --> 00:03:29.097
+Let's start the editor, create a blueprint and set the model of our weapon.
+
+00:03:31.840 --> 00:03:34.690
+Create a new content folder. We call it Weapon.
+
+00:03:39.771 --> 00:03:44.462
+We inherit from our C ++ class. Create a blueprint.
+
+00:03:45.226 --> 00:03:49.986
+We call it BP_STUBaseWeapon.
+
+00:03:51.608 --> 00:03:58.880
+Go inside the blueprint. The skeletal mesh component has been created and in the details panel we can
+
+00:03:58.880 --> 00:04:04.771
+set one of the skeletal mesh available to us. Let's install Rifle.
+
+00:04:04.771 --> 00:04:11.944
+In the upper right corner, we can adjust the speed of the camera in the viewport to make it smoother.
+
+00:04:12.600 --> 00:04:19.275
+Save the blueprint. Our next task: we must spawn this weapon into the world
+
+00:04:19.622 --> 00:04:24.790
+and attach it to our character in such a way that the transformation of the weapon is calculated
+
+00:04:24.790 --> 00:04:30.851
+relative to our character. First, let's open a blueprint with a character.
+
+00:04:34.212 --> 00:04:41.392
+Double click on the property with skeletal mesh. We get into the character editor.
+
+00:04:41.683 --> 00:04:49.020
+On the left we have a skeleton tree panel. All bones of the character are represented here. In the details panel on the right,
+
+00:04:49.020 --> 00:04:56.616
+you can also see the relative transformations of the bones. The skeleton characters also have virtual bones,
+
+00:04:56.616 --> 00:05:03.360
+that is, they are not represented graphically in any way, but they have transformations. Right-
+
+00:05:03.360 --> 00:05:10.620
+click on this virtual bone and select AddSocket from the menu. Socket is a special
+
+00:05:10.620 --> 00:05:17.520
+object in the skeletal mesh. We can add socket to absolutely any bone. In essence, this object
+
+00:05:17.520 --> 00:05:24.660
+is a transformation. In the details panel, we can see the socket name, parent bone
+
+00:05:24.660 --> 00:05:33.964
+name and also position, rotation and scale. Let's simplify the name by simply calling it WeaponSocket.
+
+00:05:35.070 --> 00:05:41.520
+Sockets in the skeleton are used in different ways, for example, we will use this socket precisely for
+
+00:05:41.520 --> 00:05:47.888
+attaching our weapons. Also, in the future, in our weapon, we will use the socket
+
+00:05:48.430 --> 00:05:53.830
+as the point of fire, that is, this is a certain named transformation in the skeletal mesh, which can be
+
+00:05:53.830 --> 00:05:59.696
+obtained both in the code and in the blueprints. In the editor, you can see
+
+00:05:59.696 --> 00:06:06.164
+how the attached mesh will look like to this socket. If we right click on the socket,
+
+00:06:06.164 --> 00:06:15.474
+we can select the preview asset. Let's find the Rifel and select our rifle from the list.
+
+00:06:17.114 --> 00:06:26.251
+Rifle mesh has been added to the editor. Socket transformation is single and our rifle is oriented incorrectly.
+
+00:06:27.060 --> 00:06:33.910
+We can fix this by changing the relative rotation of the RelativeRotation socket and the rifle
+
+00:06:33.910 --> 00:06:39.635
+will be oriented correctly. The Preview asset is also saved in the other tabs of the
+
+00:06:40.036 --> 00:06:45.910
+persona editor, so we can go to Animation and adjust the transformation to a more
+
+00:06:45.910 --> 00:06:52.216
+specific character pose. Let's also lower the camera speed in the viewport - set it to one.
+
+00:06:53.354 --> 00:06:59.875
+On the left, we also have a skeleton tree available, so here we can also change the transformation of the socket.
+
+00:06:59.875 --> 00:07:06.445
+Let's rotate it along the X-axis so that the rifle is oriented along with the character.
+
+00:07:07.390 --> 00:07:13.410
+And if we fly closer with the camera, we will make sure that this transformation suits us,
+
+00:07:13.410 --> 00:07:19.720
+because the rifle sits more or less neatly in the character's hands. Also in the details panel, you can
+
+00:07:19.720 --> 00:07:28.630
+explicitly specify rotation at x = -90, and at y and at z = 0. And if you and I, for example, open
+
+00:07:28.630 --> 00:07:34.480
+some other animation, for example, RunForward, we will see that the socket transformation is correct
+
+00:07:34.480 --> 00:07:41.560
+and the weapon is fixed in the hands of our character. And also, if we start the game, then there are no weapons
+
+00:07:41.560 --> 00:07:47.260
+in the hands of the character, because this is a preview asset. We have not done any spawn yet.
+
+00:07:47.260 --> 00:07:55.759
+Let's get down to it now. Let's create a function in our character class. Let's call it SpawnWeapon.
+
+00:07:56.508 --> 00:08:03.228
+This function will spawn weapons and attach to the mesh socket of our character.
+
+00:08:03.990 --> 00:08:08.562
+We need a property with the class of the weapon we want to spawn.
+
+00:08:09.580 --> 00:08:16.543
+Copy the property macro. Change the category to weapon and use the TSublassOf template.
+
+00:08:18.337 --> 00:08:23.541
+The template parameter will be the ASTUBaseWeapon weapon class.
+
+00:08:29.240 --> 00:08:31.230
+Let's call the property WeaponClass.
+
+00:08:34.090 --> 00:08:40.584
+And add a forward declaration of this class to the top of the BaseCharacter.h
+
+00:08:41.807 --> 00:08:54.788
+file. Go to the .cpp file. We immediately include the STUBaseWeapon.h header file.
+
+00:08:56.373 --> 00:09:03.203
+We will spawn the weapon on BeginPlay. Add a call to the SpawnWeapon function to the BeginPlay function.
+
+00:09:06.500 --> 00:09:11.816
+And at the very bottom of our .cpp file, let's create the body of the SpawnWeapon function.
+
+00:09:16.179 --> 00:09:22.213
+We need to do two things - the first is to spawn the actor directly and the second
+
+00:09:22.213 --> 00:09:30.506
+to attach our character to the mesh. The actor spawn function is located in the game world object.
+
+00:09:31.603 --> 00:09:40.855
+Therefore, to begin with, let's check that the pointer to the world is non-null, if it is null, then we immediately exit the function.
+
+00:09:42.764 --> 00:09:48.580
+If not, then we call a templated function on the UWorld object called SpawnActor.
+
+00:09:49.450 --> 00:09:57.244
+We pass the STUBaseWeapon class as a template parameter, and we specify our WeaponClass variable
+
+00:09:57.244 --> 00:10:03.470
+as an argument . We will not change the transformation. It will be single by default.
+
+00:10:04.080 --> 00:10:08.790
+Also, the SpawnActor function returns a pointer to the created actor object,
+
+00:10:08.790 --> 00:10:14.383
+so we can store this object in a variable. Let's call it Weapon.
+
+00:10:18.290 --> 00:10:24.093
+We check that the given object has been created, that is, the Weapon pointer is non-zero.
+
+00:10:27.900 --> 00:10:32.430
+Now we need to attach this actor to our character's mesh. To do this, we will use a
+
+00:10:32.430 --> 00:10:35.756
+function called AttachToComponent.
+
+00:10:37.560 --> 00:10:42.875
+This function has several arguments. The first is a pointer to the component to which we want to
+
+00:10:42.875 --> 00:10:48.849
+attach this actor. The second argument is FAttachmentTransformRules. We will now take a closer look at what it is.
+
+00:10:49.307 --> 00:10:55.190
+And the third optional parameter is the name of the socket. We will indicate the socket that
+
+00:10:55.190 --> 00:11:02.010
+we created for the mesh. To get a pointer to a character's mesh, the ACharacter class has a function
+
+00:11:02.010 --> 00:11:07.884
+called GetMesh. It returns a pointer to the skeleton mesh component.
+
+00:11:08.680 --> 00:11:15.112
+The second parameter is for now the stub variable - AttachmentRules. We are going to create it now.
+
+00:11:18.690 --> 00:11:24.562
+And the last parameter is the name of the socket. We named it WeaponSocket.
+
+00:11:27.870 --> 00:11:35.832
+We create the AttachmentRules variable. It is of type FAttachmentTransformRules.
+
+00:11:41.110 --> 00:11:45.955
+This structure has several constructors. Let's hit f12 on the type.
+
+00:11:48.410 --> 00:11:55.407
+This is the first constructor that accepts an EAttachmentRule enum, we'll move on to it a bit later.
+
+00:11:56.240 --> 00:12:03.470
+In this constructor, the AttachmentRule is applied to all basic transformations: location, rotation,
+
+00:12:03.470 --> 00:12:10.200
+and scale uniformly. In the second constructor, we can apply AttachmentRule asynchronously,
+
+00:12:10.200 --> 00:12:16.530
+that is, specify different AttachmentRule for location, rotation and scale. There is also an additional
+
+00:12:16.530 --> 00:12:22.040
+parameter called bWeldSimulatedBodies. It belongs to physics. He is responsible for
+
+00:12:22.040 --> 00:12:27.486
+how the physics simulation will take place when two bodies are attached to each other.
+
+00:12:27.486 --> 00:12:35.230
+We are not interested in this parameter and therefore we will simply set it to false. Press f12 on AttachmentRule.
+
+00:12:35.230 --> 00:12:43.087
+We see that this is an enum. It has 3 elements: KeepRelative, KeepWorld and SnapToTarget.
+
+00:12:43.087 --> 00:12:49.229
+Each of these elements is responsible for how the final transformation matrix will be calculated.
+
+00:12:51.280 --> 00:12:56.950
+We will be using SnapToTarget. With this rule, actors inherit the transformation of the component
+
+00:12:56.950 --> 00:13:01.720
+to which we attach it. KeepWorld will initially calculate the relative
+
+00:13:01.720 --> 00:13:07.570
+transformation between the position of the actor in the world and the position of the component to which we attach
+
+00:13:07.570 --> 00:13:13.930
+this actor and this will be taken into account in the final transformation matrix, and KeepRelative will
+
+00:13:13.930 --> 00:13:20.474
+multiply the final transformation by the relative transformation matrix of the actor, if it exists.
+
+00:13:22.600 --> 00:13:30.730
+So let's call the first constructor for our AttachmentRules object. We specify the enum value
+
+00:13:30.730 --> 00:13:36.786
+EAttachmentRule :: SnapToTarget and set the second parameter, which is responsible for the simulation of physical bodies
+
+00:13:36.786 --> 00:13:45.336
+, to false. Everything, thus, on BeginPlay we will have a spawn of an actor of the WeaponClass type.
+
+00:13:45.683 --> 00:13:51.899
+And after that we attach this object to our mesh using the WeaponSocket transformation.
+
+00:13:54.000 --> 00:13:59.641
+We go into the blueprint of our character. We need to specify the weapon class that we want to spawn.
+
+00:13:59.641 --> 00:14:07.710
+In details, in the weapon section, specify BP_BaseWeapon. We start the game. Our weapons have spawned
+
+00:14:07.710 --> 00:14:14.540
+and the transformation matrix of the weapon object now depends on the transformation of our socket.
+
+00:14:14.540 --> 00:14:18.956
+That is, its transformation is now the parent of our weapon object.
+
+00:14:19.480 --> 00:14:26.083
+Let's pull an additional character onto the stage and see that his weapon spawns as well.
+
+00:14:27.750 --> 00:14:33.330
+It works correctly. Two characters. Everyone has their own weapon. As an independent work, I recommend that
+
+00:14:33.330 --> 00:14:37.206
+you experiment with AttachmentRules. See how they differ.
+

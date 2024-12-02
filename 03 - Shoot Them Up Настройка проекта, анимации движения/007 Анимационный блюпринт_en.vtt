@@ -1,0 +1,283 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.932 --> 00:00:11.663
+Hello everyone! In this lesson, we will work exclusively in blueprint. Let's create a basic animation blueprint
+
+00:00:11.663 --> 00:00:17.055
+for our character. Let's consider a one-dimensional blend space and learn how to change the animation of a character
+
+00:00:17.055 --> 00:00:22.745
+depending on its speed. First, let's increase a little the size of the platform on which
+
+00:00:22.745 --> 00:00:28.797
+our character moves, so that it is more convenient for us to test his movements. Select the floor object
+
+00:00:28.797 --> 00:00:34.786
+on the stage and press the delete key. Go to the modes window, click on the geometry category and select the
+
+00:00:34.786 --> 00:00:40.740
+box geometry. The brush type is the simplest editable geometry. For example, we can change the position of the vertices
+
+00:00:40.740 --> 00:00:46.064
+at the box , adjust various parameters, then turn it into a static mesh.
+
+00:00:47.034 --> 00:00:52.803
+We reset the world location to 0, because we pulled the box to an arbitrary place on our scene.
+
+00:00:53.802 --> 00:01:00.362
+Next, we change the dimensions in the brush settings of our box. We set arbitrary large values ​​for x and y:
+
+00:01:00.362 --> 00:01:07.464
+for example, 5000 and let the thickness be 20. Start the game. We now have enough space to
+
+00:01:07.464 --> 00:01:14.394
+move the character. For animation testing, this will be very convenient. Let's take a look at the speed of the character.
+
+00:01:14.394 --> 00:01:21.524
+Open the character's blueprint. In the component tree, select character movement, as we remember, this
+
+00:01:21.524 --> 00:01:27.030
+component is responsible for the movement of the character. The component has many different property constants
+
+00:01:27.030 --> 00:01:33.761
+that affect the movement of the character. We are now interested in a constant called MaxWalkSpeed.
+
+00:01:34.118 --> 00:01:37.953
+It determines the maximum speed of movement of the character in the world.
+
+00:01:37.953 --> 00:01:45.361
+This value is measured in units per second. Units are also known as centimeters - this is a unit of measure for distance in UE.
+
+00:01:45.361 --> 00:01:50.160
+The default is 600. Let's quickly check through the blueprint
+
+00:01:50.160 --> 00:01:57.801
+that this is the case. Open up the event graph. Let's use the function that each actor has.
+
+00:01:57.801 --> 00:02:05.636
+It's called GetVelocity. This function returns the current speed of the actor along each of the axes: xy z.
+
+00:02:05.636 --> 00:02:12.431
+The return type is FVector. We are interested in the length of this vector. To get
+
+00:02:12.431 --> 00:02:19.414
+this value, let's use a function of the FVector class called VectorLength and the Tick function of our
+
+00:02:19.414 --> 00:02:26.800
+actor, let's display the value of this value. To do this, there is a PrintString node that
+
+00:02:26.800 --> 00:02:31.957
+displays a message on the game screen. In fact, this is a call to the AddOnScreenDebugMessage function.
+
+00:02:31.957 --> 00:02:38.629
+We connect VectorLength to PrintString. We have created an automatic node for converting float to string. Compile.
+
+00:02:39.775 --> 00:02:45.490
+We launch the project. We see that when the character stands still, our speed is zero, and if
+
+00:02:45.490 --> 00:02:51.130
+we move, the speed increases to 600. Let's change the value of the constant
+
+00:02:51.130 --> 00:02:55.862
+to some large value, for example, 1600, to check that everything works for us.
+
+00:02:57.779 --> 00:03:03.952
+Our character now moves very quickly. Its speed changes from 0 to 1600.
+
+00:03:03.952 --> 00:03:10.622
+Let's return the value to 600, let it be the default and delete all our debug output.
+
+00:03:11.476 --> 00:03:12.988
+We figured out the speed.
+
+00:03:12.988 --> 00:03:20.142
+Let's now proceed directly to the creation of animation blueprints. Create a folder called animations.
+
+00:03:22.712 --> 00:03:28.272
+There are several ways to create an animated blueprint. The first one is to find the
+
+00:03:29.116 --> 00:03:37.100
+skeletal mesh of our character. Right-click create -&gt; new blueprint and the second way is in the content
+
+00:03:37.100 --> 00:03:43.128
+browser, in the animations folder, right-click and select animation -&gt; animation blueprint.
+
+00:03:43.128 --> 00:03:49.514
+In the pop-up window, we need to select the skeleton of our character and click on the ok button.
+
+00:03:52.159 --> 00:03:57.436
+We call this asset ABP_BaseCharacter.
+
+00:03:59.263 --> 00:04:06.370
+We open. Before us is a special editor called the animation blueprint editor. We will set up all the animation logic
+
+00:04:06.370 --> 00:04:11.742
+in it. This editor has two graphs: the first of them is the event graph.
+
+00:04:11.742 --> 00:04:16.761
+In fact, it is the same as in the classic blueprint. Here we will handle various
+
+00:04:16.761 --> 00:04:21.672
+animation events. It also has an update function, in fact it is the Tick function of the blueprint.
+
+00:04:22.310 --> 00:04:27.816
+The second graph is an animation graph, which is responsible for processing all animations, the final animation
+
+00:04:27.816 --> 00:04:33.501
+is sent to the output pose node , which will be presented in the current frame. On the right we have the asset browser open,
+
+00:04:33.501 --> 00:04:39.400
+where all the animations related to this skeleton are located. If you do not see any windows, you
+
+00:04:39.400 --> 00:04:46.486
+can open them. In the main menu in the window. Find them here.
+
+00:04:46.486 --> 00:04:55.653
+Find our run forward animation in the asset browser and drag it onto the anim graph.
+
+00:04:59.843 --> 00:05:06.973
+We connect this animation to the output pose. In the window with a preview animation, our running pose began to be shown.
+
+00:05:11.140 --> 00:05:17.520
+Specify the animation blueprint data in the mesh of our character, for this, in the animtaion section, change the
+
+00:05:18.055 --> 00:05:23.870
+animation asset to animation blueprint and select our asset in the combobox animation class.
+
+00:05:24.920 --> 00:05:29.870
+Compile. We launch our game. Visually, nothing has changed for us, but we have customized
+
+00:05:29.870 --> 00:05:36.000
+our animation through an animated blueprint. Now we can work with this further.
+
+00:05:36.682 --> 00:05:43.855
+In the asset browser, double-click on our run forward animation. The animation editor opens.
+
+00:05:43.855 --> 00:05:49.908
+It also has an asset browser on the right. We can view all the animations we have.
+
+00:05:50.859 --> 00:05:57.365
+So what is our current task? We have an idle animation. The character is at rest, does not move.
+
+00:05:59.850 --> 00:06:02.790
+And there is a running animation that we are already using run forward.
+
+00:06:02.790 --> 00:06:06.730
+We want to make it so that at speed 0 the idle animation is displayed,
+
+00:06:07.051 --> 00:06:13.025
+at speed 600 - run forward and there is a smooth transition between them when the speed changes.
+
+00:06:14.856 --> 00:06:24.117
+To do this, we will create an additional asset called blend space. Select BlendSpace1D from the menu.
+
+00:06:24.117 --> 00:06:31.457
+Select our skeleton in the window. We name the asset BS_Locomotion.
+
+00:06:35.350 --> 00:06:39.300
+Save and open the asset.
+
+00:06:41.980 --> 00:06:47.445
+This asset is needed for the animation blend, that is, to smoothly change one animation to another.
+
+00:06:47.445 --> 00:06:51.939
+It interpolates states and outputs intermediate values ​​between animation poses.
+
+00:06:51.939 --> 00:06:57.522
+Below we see a special layout, in which animation blending will take place.
+
+00:06:57.522 --> 00:07:07.639
+Our axis is now called None and has a minimum value of 0 and a maximum value of 100. Go to the right to the asset details window.
+
+00:07:08.008 --> 00:07:15.640
+Go to the axis settings category and change the name of our axis from None to velocity.
+
+00:07:16.330 --> 00:07:23.022
+In the layout below, the name of the axis immediately changed to velocity. The minimum value along the velocity axis
+
+00:07:23.022 --> 00:07:30.318
+is also 0, and the maximum will be 600. This corresponds to our maximum movement speed in the motion component.
+
+00:07:30.318 --> 00:07:32.636
+So we have configured our axis.
+
+00:07:32.636 --> 00:07:39.760
+Let's drag the animations we need into layout. Drag the idle animation to the section where the
+
+00:07:39.760 --> 00:07:48.320
+velocity is 0, and drag the run forward animation to the 600 section. We can drag the animation to any
+
+00:07:48.320 --> 00:07:53.806
+available section, or add another one. We have no limitation that there should be only 2.
+
+00:07:54.790 --> 00:07:59.266
+Moreover, we can change the Number Of Grid Division value in asset details.
+
+00:07:59.266 --> 00:08:06.789
+That is, change the number of animations that we can add. We currently have 5 animations available.
+
+00:08:08.633 --> 00:08:14.780
+The green circle is the preview assistant. By changing its position, we can
+
+00:08:14.780 --> 00:08:19.737
+see what the final animation pose will be at a specific speed value.
+
+00:08:23.876 --> 00:08:29.593
+All. We are done with creating our blend space. Go back to the animated blueprint.
+
+00:08:31.930 --> 00:08:39.403
+We throw our blend space onto the animation graph and connect it to the output pose.
+
+00:08:42.747 --> 00:08:52.311
+Compile. It remains for us to transfer the current speed of the actor to this animation BS_Locomotion node.
+
+00:08:53.378 --> 00:08:59.488
+To do this, create a new variable in the animation blueprint. We call it velocity.
+
+00:09:01.780 --> 00:09:04.971
+Change the type in details to float.
+
+00:09:06.353 --> 00:09:15.067
+We pull it out onto the graph and connect it to the blend space. The default value for our variable is 0.
+
+00:09:15.930 --> 00:09:22.225
+Let's change this value to 100. Our character starts to smoothly start,
+
+00:09:22.225 --> 00:09:29.154
+if we change it to 500, then he is already running. Last step. It is necessary to assign
+
+00:09:29.154 --> 00:09:36.275
+this variable to the current velocity of the actor. To do this, go back to the event graph.
+
+00:09:37.325 --> 00:09:44.054
+We will set this variable in the update function, that is, in fact, in the Tick of this blueprint.
+
+00:09:44.054 --> 00:09:48.082
+The event graph already contains a node called TryGetPawn.
+
+00:09:48.082 --> 00:09:53.682
+It returns a reference to the current instance pawn. In our case, this is BaseCharacter.
+
+00:09:53.682 --> 00:10:00.392
+Let's use the function that we considered at the beginning of the lesson GetVelocity. Every actor has it.
+
+00:10:03.344 --> 00:10:06.911
+We calculate the length of our velocity vector.
+
+00:10:08.800 --> 00:10:13.327
+We assign this value to the created velocity variable.
+
+00:10:17.454 --> 00:10:22.298
+Compile. We save and see what we got.
+
+00:10:23.347 --> 00:10:32.242
+Speed ​​0 - idle animation, click on the arrow. Our character starts to run and stops
+
+00:10:32.242 --> 00:10:39.202
+if we release the arrow. That's all. We have dealt with the blend space, created an animated blueprint.
+
+00:10:39.594 --> 00:10:43.940
+In subsequent lessons, we will continue to work with this animated blueprint.
+

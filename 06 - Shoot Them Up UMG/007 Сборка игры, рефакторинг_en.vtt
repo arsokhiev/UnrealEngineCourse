@@ -1,0 +1,100 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.289 --> 00:00:10.778
+Before we package the project and check all the changes that we made in this section, let's do a
+
+00:00:11.749 --> 00:00:17.263
+little refactoring. If we look at our GetWeaponComponent and GetHealthComponent functions,
+
+00:00:17.832 --> 00:00:23.380
+we will see that these functions are practically the same, the only difference is the type of component
+
+00:00:23.380 --> 00:00:29.910
+we want to receive. Therefore, it makes sense to separate them into one template function. Let's add a new
+
+00:00:29.910 --> 00:00:39.966
+header file, place it in the root of the project, in the public directory, call it STUUtils.
+
+00:00:42.220 --> 00:00:43.322
+Click the Add button.
+
+00:00:45.680 --> 00:00:48.890
+We declare a class. We call it STUUtils.
+
+00:00:50.888 --> 00:01:01.533
+Add a public section and create a template function, the function will be static.
+
+00:01:02.417 --> 00:01:11.300
+Will return a pointer to type T. We call the function GetSTUPlayerComponent. Let's add one parameter to the
+
+00:01:11.300 --> 00:01:17.300
+function - this is a pointer to the pawn, so that this template function does not depend on how
+
+00:01:17.300 --> 00:01:23.788
+we receive the pawn. Because in widget, for example, this is a specific GetOwningPlayerPawn function.
+
+00:01:25.296 --> 00:01:34.814
+We copy the body of any of the functions, paste it into our template function. The pointer to pawn
+
+00:01:34.814 --> 00:01:43.133
+is now passed in a parameter, so we check this pointer, if it is nullptr, then we return nullptr.
+
+00:01:43.133 --> 00:01:49.969
+Next, we also use this PlayerPawn pointer. Instead of a concrete component class, we
+
+00:01:49.969 --> 00:01:55.517
+substitute the template parameter T. In Cast, we also substitute this parameter.
+
+00:01:59.258 --> 00:02:07.010
+And we can simply revert the cast to the type of component we are requesting. That is, we added a templated function
+
+00:02:07.010 --> 00:02:12.784
+that returns a pointer to a specific pawn component type, if any.
+
+00:02:14.610 --> 00:02:17.055
+We include the STUUtils header file.
+
+00:02:19.522 --> 00:02:26.530
+And we will rewrite all the functions for receiving components through our template function: for the health component, we specify
+
+00:02:26.530 --> 00:02:34.600
+HealthComponent as template parameters and pass a pointer to pawn - GetOwningPlayerPawn.
+
+00:02:39.220 --> 00:02:42.910
+We do the same with another function, where we call the HealthComponent.
+
+00:02:46.485 --> 00:02:49.833
+And we do the same procedure for the WeaponComponent.
+
+00:02:54.469 --> 00:03:00.769
+We delete these two functions, we no longer need them, we also clean them in the .h file.
+
+00:03:03.851 --> 00:03:12.874
+And you can also remove the forward declaration. Let's go to the BaseWeapon class, remove the call to the LogAmmo function, because now
+
+00:03:12.874 --> 00:03:19.410
+everything is displayed in the interface and launched. I've tweaked the design of our widget a bit.
+
+00:03:19.410 --> 00:03:26.631
+Moved the lives down, also changed the color of all elements except the scopes to a darker one.
+
+00:03:28.634 --> 00:03:33.845
+For icons, this needs to be done in the bind function itself when we set up the SlateBrush.
+
+00:03:36.470 --> 00:03:42.310
+Also changed the names of all UI elements to more readable ones. It looks more neat now.
+
+00:03:43.937 --> 00:03:49.420
+Let's check the project in assembly. To do this, select the development or debug
+
+00:03:49.420 --> 00:03:54.048
+configuration so that trace is visible and pack it under windows.
+
+00:03:57.079 --> 00:03:58.518
+We are waiting for a while.
+
+00:04:00.279 --> 00:04:04.147
+The game was packed without errors. This concludes this section.
+

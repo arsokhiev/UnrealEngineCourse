@@ -1,0 +1,586 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.170 --> 00:00:13.043
+In this lesson, we are creating a widget that appears at the end of the game - Game Over widget.
+
+00:00:13.043 --> 00:00:18.073
+And on this final screen, we will display a table of statistics for all players.
+
+00:00:19.060 --> 00:00:22.144
+Let's start by adding a GameHUD widget.
+
+00:00:23.671 --> 00:00:30.331
+Now it is quite simple for us. Copy the property with the widget class.
+
+00:00:31.734 --> 00:00:34.620
+We name the property GameOverWidgetClass.
+
+00:00:36.751 --> 00:00:43.651
+In BeginPlay, add it to the GameWidgets associative array. Change the key to ESTUMatchState :: GameOver.
+
+00:00:44.430 --> 00:00:47.961
+And also replace the class with GameOverWidgetClass.
+
+00:00:48.670 --> 00:00:52.300
+Later in the loop, it will be automatically created and added to the viewport.
+
+00:00:53.989 --> 00:00:55.830
+We compile the project.
+
+00:00:57.122 --> 00:01:03.140
+Let's add a GameOver blueprint widget. To do this, let's just copy the GamePause widget.
+
+00:01:04.090 --> 00:01:09.182
+Press Ctrl + W and name the asset WBP_GameOver.
+
+00:01:12.181 --> 00:01:14.398
+Let's delete the SizeBox with the button.
+
+00:01:16.469 --> 00:01:26.209
+Also change the title to game over. The text can be aligned in the middle, let's do the same in GamePause.
+
+00:01:26.209 --> 00:01:32.750
+I forgot to do this. Return to the GameOver widget. Compile. Since we made a copy of the
+
+00:01:32.750 --> 00:01:40.363
+GamePause widget, its parent is STUPauseWidget. Temporarily change the parent to the base UserWidget class.
+
+00:01:41.617 --> 00:01:47.994
+Next, you need to specify the game over class of the widget in the GameHUD.
+
+00:01:51.800 --> 00:01:57.569
+In the GameData settings, we will specify the number of rounds = 2, the number of seconds of one round = 3
+
+00:01:57.569 --> 00:02:03.439
+for a quick test of the GameOver widget. We launch. The first round is over.
+
+00:02:04.765 --> 00:02:12.906
+The second ended. The game over widget was displayed. Let's now display all the statistics for the players on this screen.
+
+00:02:12.906 --> 00:02:16.590
+To do this, we need an additional widget - this will be a line
+
+00:02:16.590 --> 00:02:22.230
+with statistics for one player. In the game ower class of the widget, we will dynamically create the
+
+00:02:22.230 --> 00:02:27.300
+required number of lines depending on the number of players.
+
+00:02:29.794 --> 00:02:31.687
+We create a new widget.
+
+00:02:35.660 --> 00:02:39.157
+Let's call it WBP_PlayerStatRow.
+
+00:02:42.690 --> 00:02:49.234
+We open asset and start designing a line of statistics for one user.
+
+00:02:50.320 --> 00:02:53.653
+Let's add a root UI element. This will be a vertical box.
+
+00:02:58.190 --> 00:03:02.900
+Add a hotizontal box to the vertical box, which will directly
+
+00:03:02.900 --> 00:03:05.617
+contain all the data for one player.
+
+00:03:06.718 --> 00:03:12.503
+And additionally add spacer to the vertical box. It will add space between the lines.
+
+00:03:14.667 --> 00:03:17.217
+Set the size for Spacer to Y = 10.
+
+00:03:19.470 --> 00:03:23.661
+And set the vertical box to SizeToContent = true.
+
+00:03:25.451 --> 00:03:28.698
+Let's start adding text boxes to the horizontal box.
+
+00:03:30.357 --> 00:03:35.796
+The first field will be responsible for the player's name. Change the text to name.
+
+00:03:39.714 --> 00:03:45.956
+The second field will display the number of kills committed by the player. Replace the text with kills.
+
+00:03:49.730 --> 00:03:54.875
+The third field will store the number of player deaths. Change the text to deaths.
+
+00:03:58.159 --> 00:04:04.635
+And the last field will display the team number. Enter the text team.
+
+00:04:05.999 --> 00:04:11.626
+I missed. Team added to the vertical box, you need to add it to the horizontal box.
+
+00:04:12.849 --> 00:04:21.246
+We will set a certain size for each text field. We frame each text box into a SIzeBox element.
+
+00:04:22.167 --> 00:04:28.560
+For SIzeBox, which contains the username, we will override the width. Let's set the value to 400. We do the
+
+00:04:30.000 --> 00:04:33.640
+same with every other field.
+
+00:04:35.170 --> 00:04:40.300
+Make WidthOverride smaller, set 200. And you can also right-
+
+00:04:40.300 --> 00:04:47.259
+align the text . For the deaths and team field, we do it by analogy with the kills field.
+
+00:04:53.632 --> 00:04:56.330
+And the last moment - we will add an additional element
+
+00:04:56.330 --> 00:04:58.906
+that will highlight our character.
+
+00:05:01.014 --> 00:05:05.203
+Let's do this using the image element.
+
+00:05:06.213 --> 00:05:13.264
+Add widgets to the tree. Let's set the color to blue.
+
+00:05:15.000 --> 00:05:18.973
+We'll also change the transparency. Set alpha to 0.5
+
+00:05:20.288 --> 00:05:27.936
+This element should be stretched along the entire length of the horizontal box and placed on a layer below.
+
+00:05:27.936 --> 00:05:35.289
+The UI element that will help us do this is called overlay. Let's frame the horizontal box with this element.
+
+00:05:35.289 --> 00:05:43.896
+Overlay allows you to group different UI elements in layers. Drag the image into overlay and thus
+
+00:05:44.330 --> 00:05:51.970
+our picture and horizontal box appear in overlay. The picture is located on a layer below the horizontal box.
+
+00:05:53.060 --> 00:05:58.213
+The line for stats for one player is ready. Return to the game over widget.
+
+00:05:59.735 --> 00:06:03.213
+Open the user created tab and add
+
+00:06:04.110 --> 00:06:10.400
+PlayerStatRow to this widget in the vertical box. This widget will also be used
+
+00:06:10.400 --> 00:06:16.494
+as a title. We've added it now. Nothing will happen to it dynamically.
+
+00:06:17.803 --> 00:06:25.676
+Let's add a spacer to separate this header from the overall results table. For Y, set the size = 10.
+
+00:06:28.230 --> 00:06:30.202
+And now we need a
+
+00:06:30.847 --> 00:06:38.140
+vertical box, which will contain the entire table. In this box, we will create statistical data dynamically.
+
+00:06:39.819 --> 00:06:45.289
+In a few minutes, we will create a code that will add PlayerStatRow widgets
+
+00:06:45.289 --> 00:06:51.857
+to this vertical box , depending on how many players we had in the match.
+
+00:06:54.000 --> 00:06:57.170
+And as a result, we will have a final table.
+
+00:06:59.185 --> 00:07:06.310
+By default, we can set Visibility to Hidden for our image.
+
+00:07:08.430 --> 00:07:15.431
+We have prepared the visual part. We can move on to the code. Let's create two widgets. One will be the
+
+00:07:15.431 --> 00:07:20.564
+base class for our statistics line, and the second for GameOver.
+
+00:07:22.707 --> 00:07:24.597
+Go to the content browser.
+
+00:07:25.476 --> 00:07:28.835
+In C ++, classes.
+
+00:07:30.706 --> 00:07:32.776
+We create UserWidget.
+
+00:07:35.280 --> 00:07:38.333
+The first one is called STUGameOverWidget.
+
+00:07:43.210 --> 00:07:45.108
+We create the second widget.
+
+00:07:47.943 --> 00:07:51.294
+We call it STUPlayerStatRowWidget.
+
+00:07:56.090 --> 00:08:04.739
+Let's start STUPlayerStatRowWidget. Let's add a forward declaration of two UI classes. The first one is UImage.
+
+00:08:05.279 --> 00:08:13.675
+This class is the base class of the picture. The second class is UTextBlock. This class is responsible for the text block.
+
+00:08:15.594 --> 00:08:23.444
+In the protected section, create a property for each text block that we just created in the visual editor.
+
+00:08:29.330 --> 00:08:33.938
+And a separate property for the image of the indicator of our character.
+
+00:08:36.030 --> 00:08:43.553
+Let's create a public section and add a value setting function for each of the created elements.
+
+00:08:43.553 --> 00:08:48.496
+For text blocks, we will use the FText type as a parameter.
+
+00:08:49.450 --> 00:08:56.340
+For the picture, we need to make a setter that will set its visibility, so this function
+
+00:08:56.340 --> 00:09:03.201
+will have one parameter with a boolean value type. Create a body for each function in a .cpp file.
+
+00:09:07.410 --> 00:09:11.391
+Let's include header files with the TextBlock class and the Image class.
+
+00:09:13.127 --> 00:09:15.476
+Let's go to the SetPlayerName function.
+
+00:09:16.845 --> 00:09:23.207
+If the PlayerNameTextBlock pointer is null, then exit the function.
+
+00:09:26.080 --> 00:09:32.352
+And if non-zero, then you need to set the value of the text. This is done using the
+
+00:09:32.352 --> 00:09:38.420
+text block function called SetText. We pass the parameter of the Text function to it.
+
+00:09:39.653 --> 00:09:43.584
+We write similar code for all text block setter functions.
+
+00:09:46.026 --> 00:09:52.896
+In the SetPlayerIndicatorVisibility function, we need to call the SetVisibility function.
+
+00:09:53.620 --> 00:10:00.169
+And depending on the Visible parameter, pass the ESlateVisibility value: Visible or Hidden
+
+00:10:00.169 --> 00:10:02.186
+to the function .
+
+00:10:04.218 --> 00:10:08.622
+There is no logic in this widget - only setting the values ​​of text fields
+
+00:10:08.622 --> 00:10:15.000
+and the visibility of the indicator picture. Go to the game over header file for the widget.
+
+00:10:15.000 --> 00:10:21.951
+Add #include "STUCoreTypes.h". We need it for the visibility of the ESTUMatchState type.
+
+00:10:23.488 --> 00:10:32.081
+Add a forward declaration for the UVerticalBox class. This is a container class for all lines of player statistics.
+
+00:10:33.404 --> 00:10:42.021
+In the public section, we declare the Initialize function. Add property VerticalBox to the protected section.
+
+00:10:43.350 --> 00:10:50.708
+We name it PlayerStatBox. The next property will store a single line widget class,
+
+00:10:50.708 --> 00:10:55.862
+on the basis of which we will create a table, that is, the STUPlayerStatRowWidgetClass class.
+
+00:11:00.590 --> 00:11:02.531
+We create a private section.
+
+00:11:03.690 --> 00:11:10.747
+We declare two functions in it. The first one is OnMatchStateChanged. The callback is familiar to us.
+
+00:11:12.587 --> 00:11:18.980
+The second function is cosmetic. A statistics table will be created in it. We call it UpdatePlayersStat.
+
+00:11:20.210 --> 00:11:24.591
+In the .cpp file, we create a body for each function.
+
+00:11:27.314 --> 00:11:34.573
+Let's copy the code from GameHUD, where we subscribe to the OnMatchStateChanged delegate. We copy it
+
+00:11:35.330 --> 00:11:41.455
+into our GameOverWidget, into the Initialize function. Changing classes.
+
+00:11:42.629 --> 00:11:49.048
+We include the header file STUGameModeBase. We can immediately implement the OnMatchStateChanged function.
+
+00:11:49.048 --> 00:11:54.815
+When the state of the game has changed to game over, we need to create a statistics table,
+
+00:11:54.815 --> 00:12:01.892
+so we check if State == ESTUMatchState :: GameOver,
+
+00:12:03.560 --> 00:12:06.740
+then in this case we call the UpdatePlayersStat function.
+
+00:12:07.781 --> 00:12:12.320
+Let's include all the header files that are needed to implement the logic.
+
+00:12:14.116 --> 00:12:20.813
+We include the header file STUPlayerState. From the PlayerState of the player we will directly take all the data.
+
+00:12:22.679 --> 00:12:27.015
+Next, we need the STUPlayerStatRowWidget header file.
+
+00:12:29.060 --> 00:12:31.410
+And the header file VerticalBox.
+
+00:12:33.975 --> 00:12:41.192
+Let's go to our main function UpdatePlayersStat. First, we check the pointer to the world and the pointer to the PlayerStatBox,
+
+00:12:41.192 --> 00:12:46.970
+if they are zero, then exit. Next, we create a loop to iterate over all the controllers.
+
+00:12:46.970 --> 00:12:53.349
+In the loop, we get a pointer to the controller. Next, using the controller, we get a pointer to the PlayerState.
+
+00:12:56.122 --> 00:13:02.167
+We create PlayerStatRowWidget. We go through all the controllers, get the PlayerState
+
+00:13:02.167 --> 00:13:07.669
+and for each PlayerState we create our own statistics line widget.
+
+00:13:11.318 --> 00:13:19.496
+Now we need to set all the text fields in PlayerStatRowWidget according to the data that is in PlayerState.
+
+00:13:22.502 --> 00:13:25.239
+The first function we'll call SetPlayerName.
+
+00:13:27.640 --> 00:13:32.722
+In PlayerState, in the base class there is a function called GetPlayerName,
+
+00:13:33.690 --> 00:13:40.500
+that is, in PlayerState there is a variable that is responsible for the player's name. By default, this can
+
+00:13:40.500 --> 00:13:47.122
+be an empty string for AI controllers, and playercontroller is usually set to the
+
+00:13:47.122 --> 00:13:53.899
+name of your computer. We'll set our own names later. The GetPlayerName function
+
+00:13:53.899 --> 00:13:58.560
+returns a string of type FString. We need to convert it to FText,
+
+00:13:58.560 --> 00:14:03.715
+for this we can use the static FText function called FromString.
+
+00:14:06.900 --> 00:14:15.080
+Next, we call a function that sets the text for the number of kills. The GetKillsNum function in PlayerState returns
+
+00:14:15.080 --> 00:14:22.130
+an integer. We need to convert int32 to FText. You cannot do this directly,
+
+00:14:23.230 --> 00:14:29.359
+but you can first convert int32 to FString, and then FString to FText.
+
+00:14:33.205 --> 00:14:35.895
+The design turns out to be a little cumbersome.
+
+00:14:36.348 --> 00:14:44.340
+Let's create a helper function in our STUUtils class that will convert from int32 to FText.
+
+00:14:45.470 --> 00:14:52.969
+Let's go to the STUUtils class. We create a static function. The return type will be FText.
+
+00:14:55.190 --> 00:14:57.938
+Let's call the function TextFromInt.
+
+00:14:59.540 --> 00:15:04.101
+And we pass as a parameter an integer that needs to be converted to FText.
+
+00:15:05.879 --> 00:15:09.430
+That is, our function will encapsulate double conversion.
+
+00:15:12.640 --> 00:15:18.016
+And now we can use this function. The only thing you need to include is the appropriate include.
+
+00:15:22.520 --> 00:15:26.478
+We call the TextFromInt function.
+
+00:15:27.912 --> 00:15:34.519
+And pass it an integer, which is returned by the GetKillsNum function.
+
+00:15:36.782 --> 00:15:40.483
+We do a similar procedure for the number of deaths.
+
+00:15:43.068 --> 00:15:44.839
+And for the team number.
+
+00:15:47.010 --> 00:15:52.178
+It remains to call the last function, which will set the visibility of the indicator picture.
+
+00:15:55.240 --> 00:16:02.868
+As a parameter, we can pass the value returned by the IsPlayerController function of the controller.
+
+00:16:03.380 --> 00:16:09.187
+That is, if the current controller is a custom one, then our indicator picture will be displayed.
+
+00:16:09.187 --> 00:16:15.643
+Thus, we have created one line and now we need to add it to a vertical box
+
+00:16:15.643 --> 00:16:21.380
+called PlayerStatBox. The function for adding a child element to a UI component
+
+00:16:21.380 --> 00:16:29.360
+is called AddChild. We pass in it a pointer to the current widget line. One more thing:
+
+00:16:29.360 --> 00:16:35.570
+we have created a vertical box in the visual editor and for the test we have already added
+
+00:16:35.570 --> 00:16:42.160
+lines there manually. You can foresee this situation and at the very
+
+00:16:42.160 --> 00:16:48.144
+beginning of the UpdatePlayersStat function, programmatically remove all child elements from the PlayerStatBox.
+
+00:16:50.000 --> 00:16:57.434
+The function that can do this is called ClearChildren. This ensures that the vertical box is empty
+
+00:16:57.434 --> 00:17:02.927
+before we dynamically start adding player statistics lines to it.
+
+00:17:02.927 --> 00:17:10.360
+Let's also deal with player name. Let's go to the STUGameModeBase class. Into the CreateTeamsInfo function.
+
+00:17:10.360 --> 00:17:17.438
+In the loop where we set the team ID and color, we can also set the player's name in PlayerState,
+
+00:17:17.438 --> 00:17:22.988
+for this we call the SetPlayerName function, which is in the base PlayerState class
+
+00:17:22.988 --> 00:17:28.046
+and, depending on the value returned by the IsPlayerController controller function, we
+
+00:17:29.270 --> 00:17:34.892
+will pass "Player "or" Bot ".
+
+00:17:37.310 --> 00:17:41.480
+Our bots will all be called the same - just "Bot", although you can create an additional
+
+00:17:41.480 --> 00:17:46.948
+variable for the loop and use it to make unique names: "Bot1", "Bot2" and so on.
+
+00:17:46.948 --> 00:17:50.720
+Or you can create a special function that will generate
+
+00:17:50.720 --> 00:17:55.570
+different names, for example, from some array. Compile the code.
+
+00:17:56.929 --> 00:18:06.531
+Let's start to finalize the interface. We need to change the parent class of the GameOver widget. Install STUGameOverWidget.
+
+00:18:07.956 --> 00:18:16.523
+The console displayed information that we do not have a vertical box named PlayerStatBox. Our lowest vertical box
+
+00:18:16.523 --> 00:18:22.721
+will be responsible for storing all lines of statistics, so we call it PlayerStatBox.
+
+00:18:24.110 --> 00:18:29.821
+Next, go to the Graph tab on the right and in the details panel,
+
+00:18:30.800 --> 00:18:42.592
+you need to specify the class for our PlayerStatRow widget, specify WBP_PlayerStatRow. Compile.
+
+00:18:44.067 --> 00:18:49.039
+Go to the statistics line widget and also replace the parent class.
+
+00:18:50.950 --> 00:18:56.275
+Now you need to change the names of all text blocks and the picture.
+
+00:19:03.094 --> 00:19:06.077
+Compile the widget. There are no errors.
+
+00:19:06.623 --> 00:19:12.742
+Let's check everything. Let's put only one round to test it even faster.
+
+00:19:16.004 --> 00:19:23.894
+We start the game. We are waiting for the end. The table was displayed. We had four players and the player was highlighted.
+
+00:19:25.174 --> 00:19:30.585
+Now imagine the following situation: there can be many more players.
+
+00:19:30.585 --> 00:19:38.656
+Let's simulate this situation. Let's put the number of players, for example, 20. Let's start.
+
+00:19:41.040 --> 00:19:46.500
+Game over. Our list looks terrible. It does not fit on the screen, that is, we can say
+
+00:19:46.500 --> 00:19:53.530
+that our interface is broken. Let's fix this. Let's put PlayerStatBox into a special UI element
+
+00:19:53.530 --> 00:19:59.686
+called ScrollBox. It masks content and adds a scrollbar.
+
+00:20:01.594 --> 00:20:09.393
+By default, the vertical box has SizeToContent set to true, so if we run it now, we won't see any difference,
+
+00:20:09.393 --> 00:20:16.050
+because the ScrollBox also stretched the vertical box, to correct this, we need to
+
+00:20:16.050 --> 00:20:22.900
+explicitly set the height for the ScrollBox . To do this, frame it with a SizeBox and override a parameter
+
+00:20:22.900 --> 00:20:31.710
+called MaxDesireHeight. Set the value to 300, so the maximum
+
+00:20:31.710 --> 00:20:37.351
+possible height of the ScrollBox will be 300, regardless of the number of lines.
+
+00:20:37.840 --> 00:20:44.541
+So game over. We have a ScrollBox and a slider. The mouse wheel also works.
+
+00:20:44.541 --> 00:20:50.398
+The visual part can be slightly customized. Shadows that do not look very nice at the top and bottom,
+
+00:20:50.980 --> 00:20:57.307
+also the scrollbar only appears when you hover over the slider - this also looks strange.
+
+00:20:57.307 --> 00:21:05.962
+Go to the game over widget. Let's start by removing the shadows. In the style category of TopShadowBrush,
+
+00:21:05.962 --> 00:21:11.753
+set the DrawAs parameter to None. We do the same for the BottomShadowBrush.
+
+00:21:12.950 --> 00:21:20.223
+The next property to set is called AlwaysShowScrollBarTrack.
+
+00:21:20.223 --> 00:21:28.535
+Set the value to true to always display the track on the scrollbar. Next, go to PlayerStatRow.
+
+00:21:31.300 --> 00:21:34.813
+Let's add an extra Spacer that will slightly
+
+00:21:34.813 --> 00:21:38.598
+separate the last text field from the ScrollBar.
+
+00:21:43.990 --> 00:21:47.708
+Let's set the value on X = 50.
+
+00:21:49.340 --> 00:21:55.111
+In GameOver, let's also increase the Spacer, which separates the header from the general table.
+
+00:21:55.951 --> 00:22:00.363
+Set the value for Y = 40.
+
+00:22:02.122 --> 00:22:04.122
+Check.
+
+00:22:07.270 --> 00:22:10.000
+Everything looks much nicer.
+
+00:22:10.773 --> 00:22:19.033
+The very last moment. Let's increase the width of the scrollbar a bit. To do this, go to the ScrollBox.
+
+00:22:20.930 --> 00:22:29.644
+The parameter we need is called ScrollBarThickness. Let's set the width to scrollbar = 12. The
+
+00:22:33.890 --> 00:22:35.753
+strip has become wider.
+
+00:22:38.717 --> 00:22:45.513
+Let's do the last test. Let's put the number of players = 4. Launch.
+
+00:22:47.819 --> 00:22:53.550
+The ScrollBar is not displayed because the total table height is less than 300.
+

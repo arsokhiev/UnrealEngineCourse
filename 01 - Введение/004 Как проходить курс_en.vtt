@@ -1,0 +1,127 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.017 --> 00:00:10.710
+Hello everyone! We have a final lesson in the introductory section. Now we will talk in more detail
+
+00:00:10.710 --> 00:00:17.830
+about what our course consists of and how best to take it. Now we are at the fourth
+
+00:00:17.830 --> 00:00:23.500
+lesson of the introductory section, after which we move on to section 2, in which we will talk
+
+00:00:23.500 --> 00:00:30.220
+about the basics of C ++ in the Unreal Engine and the architecture of the engine. All the code for this section is located in
+
+00:00:30.220 --> 00:00:35.290
+the GeometrySandbox repository, which we downloaded in the previous lesson. If you are familiar with the
+
+00:00:35.290 --> 00:00:40.750
+main types of Unreal Engine, logging, the concept of UPROPERTY, UFUNCTION, delegates,
+
+00:00:40.750 --> 00:00:47.140
+UENUM, USTRUCTURE, then you can safely skip this section. But even if you know all this, it
+
+00:00:47.140 --> 00:00:53.258
+will be useful to watch the last two lectures on UnrealBuildTool and the garbage collector.
+
+00:00:54.195 --> 00:01:00.730
+All the chapters that follow will relate to our main course project, ShootThemUp. We also got
+
+00:01:00.730 --> 00:01:07.000
+access to this repository in the previous lesson. All sections are grouped by topic: animations, user
+
+00:01:07.000 --> 00:01:12.340
+interface, special effects, artificial intelligence, sound, and so on. The game project is gradually
+
+00:01:12.340 --> 00:01:18.220
+developing with each section, so I recommend not jumping from section to section, but watching
+
+00:01:18.220 --> 00:01:24.520
+them sequentially. Almost every section has a homework lesson. It can be identified by the
+
+00:01:24.520 --> 00:01:30.460
+title of the title. At the beginning of this type of lesson, I explain what needs to be done and give brief
+
+00:01:30.460 --> 00:01:36.183
+directions on how to do it better. After that, you need to pause the video and do the task.
+
+00:01:36.183 --> 00:01:40.436
+After that, you can continue to watch the video and check the result.
+
+00:01:40.436 --> 00:01:46.190
+Some lecture titles contain English words. It is not possible to translate some terms into Russian
+
+00:01:46.190 --> 00:01:53.060
+. Hope this doesn't confuse you too much. At the end of each section there will be a
+
+00:01:53.060 --> 00:01:57.920
+special lesson in which we will build the game and do a little refactoring of the code
+
+00:01:57.920 --> 00:02:02.750
+that we wrote in this section. This will allow us to significantly improve the quality of the code,
+
+00:02:02.750 --> 00:02:08.900
+quickly find errors, if any, and after each section have a compiled version of the game.
+
+00:02:08.900 --> 00:02:14.838
+There will also be a small test at the end of each section to check the digestibility of the material.
+
+00:02:15.530 --> 00:02:19.730
+Also, if you think that I am speaking too slowly, you can increase
+
+00:02:19.730 --> 00:02:26.050
+the playback speed in the player . With a speed increase of 1.25 or 1.5 times, in general,
+
+00:02:26.050 --> 00:02:31.925
+listening is quite comfortable, so you can choose the most optimal option for yourself.
+
+00:02:34.736 --> 00:02:39.340
+For all sections, where necessary, additional links will be attached to the documentation,
+
+00:02:39.340 --> 00:02:44.830
+or to some articles in Wikipedia. I recommend browsing the links to the documentation.
+
+00:02:44.830 --> 00:02:48.840
+There is a lot of additional information on these pages
+
+00:02:48.840 --> 00:02:54.000
+that can be useful both for understanding and for improving the level of your competencies.
+
+00:02:56.417 --> 00:03:01.135
+For this tutorial, I'll include a link to the Unreal Engine documentation root.
+
+00:03:04.230 --> 00:03:11.906
+And as a bonus to our course, I created my own wiki. The link will also be in the resources of the lesson.
+
+00:03:11.906 --> 00:03:18.880
+Here you can find all the necessary information, all the links that will be useful when taking the course.
+
+00:03:20.783 --> 00:03:26.320
+There is a glossary on the wiki. This is a glossary of all the terms that will be used in the course.
+
+00:03:26.320 --> 00:03:28.631
+The dictionary is divided into several categories.
+
+00:03:28.631 --> 00:03:33.850
+I recommend skimming through all the concepts before starting the course. In fact,
+
+00:03:33.850 --> 00:03:40.485
+there are not so many of them, and then, as you watch the course, return to the dictionary as needed.
+
+00:03:41.918 --> 00:03:49.414
+And additionally there are hotkey sections for the Unreal Editor and for Visual Studio.
+
+00:03:51.154 --> 00:03:57.431
+And also a list of console commands with descriptions that we will use in our tutorials.
+
+00:03:57.431 --> 00:04:01.740
+If something is not clear or any difficulties arise,
+
+00:04:01.740 --> 00:04:07.470
+you can ask your question in a special section of the course called "Questions and Answers".
+
+00:04:07.470 --> 00:04:14.132
+This concludes the introductory section. We are starting the main part of the course and I wish everyone the best of luck!
+

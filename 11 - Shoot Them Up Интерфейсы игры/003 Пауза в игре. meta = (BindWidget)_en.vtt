@@ -1,0 +1,586 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.890 --> 00:00:13.516
+In this tutorial, we will create pause logic. We will stop the game by pressing any key.
+
+00:00:13.516 --> 00:00:20.187
+Let's create an additional widget for the pause mode and by pressing a button in the interface we will return
+
+00:00:20.187 --> 00:00:23.425
+to the game mode. This functionality can be used
+
+00:00:23.425 --> 00:00:29.192
+when calling settings to exit the game, and so on. Let's start by adding a key.
+
+00:00:29.192 --> 00:00:40.966
+Go to project settings, to the input category and create an action mapping. Let's call it PauseGame. I assigned the "P" key.
+
+00:00:44.690 --> 00:00:50.098
+Let's move on to the code. We will react to the key press in the playercontroller,
+
+00:00:50.098 --> 00:00:56.313
+and not in the character, as before. So the pause will be available for us even if our character died.
+
+00:00:56.313 --> 00:01:01.800
+Let's go to the base class playercontroller. Bind of input to playercontroller happens
+
+00:01:01.800 --> 00:01:06.966
+in a special function called SetupInputComponent. The semantic load
+
+00:01:06.966 --> 00:01:11.190
+of this function is the same as in the character class, the only difference is
+
+00:01:11.190 --> 00:01:17.948
+that the playercontroller function does not have an InputComponent pointer parameter. This component is a member of the class,
+
+00:01:17.948 --> 00:01:24.498
+so we can refer to it directly. We create a private section.
+
+00:01:24.498 --> 00:01:32.251
+We declare a callback function that will be called when a key is pressed. Let's call it OnPauseGame.
+
+00:01:34.260 --> 00:01:37.305
+We create the body of each of the functions in a .cpp file.
+
+00:01:39.172 --> 00:01:42.202
+We call the parent function SetupInputComponent.
+
+00:01:44.136 --> 00:01:48.567
+The class member pointer to the input component is named InputComponent.
+
+00:01:50.000 --> 00:01:55.268
+If the component is zero, then exit the function.
+
+00:01:56.750 --> 00:02:03.698
+And if not, then in the same way as we did in the character class, we call the BindAction function.
+
+00:02:05.154 --> 00:02:08.385
+The first parameter is the name - PauseGame.
+
+00:02:09.698 --> 00:02:20.204
+The second parameter InputEvent is IE_Pressed, the third is a pointer to the object and the fourth is the function that we want to call directly.
+
+00:02:22.420 --> 00:02:27.624
+So, when you press the "P" key, the OnPauseGame functions will be called for us.
+
+00:02:27.624 --> 00:02:34.074
+We need to pause our game. For this, GameMode has a special function
+
+00:02:34.074 --> 00:02:41.283
+called SetPause. First, we check the game world and GameMode for nullptr.
+
+00:02:41.283 --> 00:02:45.808
+If at least one of the given pointers is null, then we exit the function.
+
+00:02:47.750 --> 00:02:54.093
+We include the header file of the base GameMode. Cast to our GameMode class is not needed
+
+00:02:54.592 --> 00:03:01.017
+because the SetPause function is in the base class. Let's call her.
+
+00:03:03.269 --> 00:03:12.301
+It takes two parameters. The first of which is a controller that wants to pause the game, and the second parameter
+
+00:03:12.301 --> 00:03:19.138
+is a special kind of delegate that determines whether we can pause or not. We will not consider it.
+
+00:03:19.138 --> 00:03:23.963
+Leave it as default. We can pause with the default value.
+
+00:03:23.963 --> 00:03:30.690
+We need to override the SetPause function in our GameMode class, because besides the pause itself, we also want
+
+00:03:30.690 --> 00:03:37.968
+to change the state of our match. Under the hood, in the SetPause function, the ticks of all actors are stopped.
+
+00:03:40.000 --> 00:03:43.668
+We override the SetPause function in our class.
+
+00:03:45.518 --> 00:03:47.058
+We create the body of the function.
+
+00:03:49.530 --> 00:03:54.303
+When calling this function, we need to change MatchState to Pause.
+
+00:03:54.303 --> 00:04:00.000
+Also note that the function has a boolean return value.
+
+00:04:00.530 --> 00:04:05.294
+We can return the value that the parent SetPause function returns.
+
+00:04:06.790 --> 00:04:10.960
+The only point: since the function returns a boolean value,
+
+00:04:10.960 --> 00:04:15.790
+a situation is possible when a pause has not been set. We don't care about the implementation
+
+00:04:15.790 --> 00:04:20.590
+details right now , but it is important to know that it can return either false or true,
+
+00:04:20.590 --> 00:04:26.870
+so in order for the function that we have overridden to work one hundred percent correctly, let's create a
+
+00:04:26.870 --> 00:04:32.912
+local variable into which we will pre-assign the value of the parent function.
+
+00:04:34.788 --> 00:04:40.888
+And we will set a new MatchState only if a pause has been set.
+
+00:04:43.934 --> 00:04:47.611
+Let's see what we got. We compile the project.
+
+00:04:49.470 --> 00:04:50.856
+We start the game.
+
+00:04:51.786 --> 00:04:58.700
+Press the P key. The game has stopped, the Tick function is not called for the actors. Let's make it so that instead of
+
+00:04:58.700 --> 00:05:02.180
+the user interface, we have a special
+
+00:05:02.180 --> 00:05:09.468
+pause widget shown . Create a new blueprint widget. We call it WBP_GamePause.
+
+00:05:11.620 --> 00:05:12.848
+We open the asset.
+
+00:05:13.843 --> 00:05:20.000
+Let's start with an element called a vertical box. There will be several elements in the widget. They will be grouped
+
+00:05:20.000 --> 00:05:26.902
+in a vertical box. We set the anchor in the middle. Position to 0. Alignment to 0.5
+
+00:05:30.573 --> 00:05:36.133
+SizeToContent to true. Add text to the box element.
+
+00:05:39.026 --> 00:05:41.616
+In the text, we will display GamePause.
+
+00:05:42.962 --> 00:05:47.045
+We make the size of the text larger. Let 's
+
+00:05:48.970 --> 00:05:54.042
+say 100. Let's make this widget show when we press the P key.
+
+00:05:55.560 --> 00:06:05.231
+Let's create a widget in GameHUD that will be responsible for pause. Add a new property. We call it PauseWidgetClass.
+
+00:06:05.231 --> 00:06:10.390
+In total, we will have 3 widgets: PlayerHUD, Pause and also a GameOver widget, where we will
+
+00:06:10.390 --> 00:06:17.481
+display statistics. We will use the TMap associative array to store all the widgets.
+
+00:06:19.023 --> 00:06:20.938
+The key type will be MatchState.
+
+00:06:23.453 --> 00:06:26.382
+The value type is a pointer to UserWidget.
+
+00:06:30.080 --> 00:06:32.281
+Let's call the variable GameWidgets.
+
+00:06:33.455 --> 00:06:38.750
+We also need an additional variable of the UUserWidget type, which will store a
+
+00:06:38.750 --> 00:06:43.962
+pointer to the current Wdiget. Let's call this variable CurrentWidget.
+
+00:06:46.561 --> 00:06:49.300
+By default, we will assign the value nullptr.
+
+00:06:49.897 --> 00:06:51.620
+Go to the .cpp file.
+
+00:06:52.767 --> 00:06:57.870
+In the BeginPlay function, the PlayerHUDWidget is already created. It is necessary to unify the logic for
+
+00:06:57.870 --> 00:07:05.107
+creating widgets. For this we will use our GameWidgets associative array.
+
+00:07:06.320 --> 00:07:13.790
+We call the Add function, which adds a key-value pair to the TMap. The widget that will be shown
+
+00:07:13.790 --> 00:07:21.440
+during the game, that is, in the InProgress state, is the PlayerHUDWidget, so the pointer
+
+00:07:21.440 --> 00:07:27.057
+returned by the CreateWidget function is passed as the second parameter to the Add function.
+
+00:07:27.057 --> 00:07:33.950
+Copy the line. Let's add a second pair. The next state is pause. For this state, we have to create a
+
+00:07:33.950 --> 00:07:41.651
+widget from the PauseWidgetClass. So, we have created two widgets, added to our associative array.
+
+00:07:42.561 --> 00:07:49.788
+Now we can in a loop add each of the created widgets to the viewport. To do this, we create a range loop.
+
+00:07:52.037 --> 00:07:58.110
+Each of the TMap elements has a special type called TPair. This is a special
+
+00:07:58.110 --> 00:08:04.051
+template that stores a key and a value. Create a local variable GameWidget,
+
+00:08:04.051 --> 00:08:10.000
+into which we assign directly a value, that is, a raw pointer to the UserWidget.
+
+00:08:12.196 --> 00:08:14.412
+Let's check the given pointer to nullptr.
+
+00:08:16.440 --> 00:08:19.921
+If it is zero, then we call the continue operator.
+
+00:08:21.670 --> 00:08:32.363
+If not zero, then we call the AddToViewport function. Thus, in the BeginPlay function we add all the widgets to the viewport
+
+00:08:32.363 --> 00:08:36.830
+and after that we need to make each widget invisible. To do this, you can
+
+00:08:36.830 --> 00:08:42.860
+call a widget function called SetVisibility. The function has one parameter, which is an enum of
+
+00:08:42.860 --> 00:08:48.587
+type ESlateVisibility. We could see the value of this enum in the blueprint of the widget.
+
+00:08:49.340 --> 00:08:52.370
+We need to select the value Hidden, that is, hidden.
+
+00:08:55.000 --> 00:09:02.623
+So, we have created all the widgets. Added to viewport and made them invisible. You can remove the PlayerHUDWidget creation code.
+
+00:09:02.623 --> 00:09:07.785
+We no longer need it, and now every time our MatchState changes,
+
+00:09:07.785 --> 00:09:14.517
+we need to include a widget that corresponds to this state. Let's go to the OnMatchStateChanged function.
+
+00:09:14.517 --> 00:09:20.540
+We've created an additional pointer called CurrentWidget. This pointer will
+
+00:09:20.540 --> 00:09:27.830
+hold the currently visible widget. Therefore, first we check: if CurrentWidget is non-zero, then we
+
+00:09:27.830 --> 00:09:34.160
+need to set the visibility of the current widget to Hidden. The very first time this code will
+
+00:09:34.160 --> 00:09:41.130
+not be executed , because our CurrentWidget is zero by default. After that, you need to check if
+
+00:09:41.130 --> 00:09:47.584
+an element with the State key exists in our associative array. To do this, TMap has a Contains function
+
+00:09:47.584 --> 00:09:52.530
+that returns true if an element with the given key exists, for example, we have
+
+00:09:52.530 --> 00:09:58.110
+not added a widget for the GameOver state now, so if we try to get values ​​with the GameOver key,
+
+00:09:58.110 --> 00:10:04.170
+we will get an error. If an element with a State key exists, then we set the CurrentWidget
+
+00:10:04.170 --> 00:10:10.283
+pointer to the value of this element. To do this, we will use the parenthesis operator []
+
+00:10:10.283 --> 00:10:16.920
+and after that we need to make the changed CurrentWidget visible. To do this,
+
+00:10:16.920 --> 00:10:24.069
+pass the ESlateVisibility :: Visible element to the SetVisibility function of the widget. Let's see how it works. We compile the project.
+
+00:10:25.509 --> 00:10:35.425
+In the GameHUD blueprint, specify PauseWidgetClass - WBP_GamePause. We launch the project. Press the P key.
+
+00:10:35.425 --> 00:10:39.896
+PlayerHUDWidget has become invisible, and the pause widget is displayed.
+
+00:10:39.896 --> 00:10:47.018
+We continue with the widget. We need to add a button, when clicking on which we will have a pause to remove.
+
+00:10:47.820 --> 00:10:53.655
+Find an element called Button. Add it to the vertical box.
+
+00:10:54.800 --> 00:11:01.967
+We have it stretched along the entire length of the vertical box. We can change the alignment. Center:
+
+00:11:01.967 --> 00:11:07.730
+horizontally and vertically. We'll also add a Spacer element to slightly defuse the space
+
+00:11:07.730 --> 00:11:13.850
+between the title and the button. Let there be 40 units in Y. There are several ways to
+
+00:11:13.850 --> 00:11:18.664
+resize an element in layout. One of them is to put it in a special container
+
+00:11:18.664 --> 00:11:24.830
+called SizeBox. Right-click. Choose WrapWith SizeBox. In the details panel
+
+00:11:24.830 --> 00:11:30.433
+there are properties that can override the size. In WidthOverride, you can override the
+
+00:11:30.433 --> 00:11:38.013
+width of the button, and HeightOverride override the height of the button. Let's also add a text element.
+
+00:11:40.070 --> 00:11:45.000
+Make the text a child of the button. Let's enter the text continue.
+
+00:11:45.940 --> 00:11:51.561
+Let's change the style of the button. We select it in the tree. Open the style category.
+
+00:11:53.317 --> 00:12:01.690
+Change the Tint for the Normal state to red. Change the color on hover. To do this, in the Hovered state
+
+00:12:01.690 --> 00:12:07.850
+, change the Tint to black, you can also change the Pressed state - this is the state
+
+00:12:07.850 --> 00:12:15.469
+when the button is pressed. You can simply copy the red color from the Normal state.
+
+00:12:17.410 --> 00:12:26.250
+Compile. Let's start the game. Click on P. A button appeared. The cursor is not shown for us.
+
+00:12:26.250 --> 00:12:32.631
+If we press shift + f1, then we can deliver the cursor. When you hover over the button, we see how its states change.
+
+00:12:32.631 --> 00:12:38.766
+Our next task is to show the cursor when we have entered the pause state and, when we click on the button,
+
+00:12:38.766 --> 00:12:44.798
+return Tick to all actors. Let's create a basic C ++ class for the pause widget.
+
+00:12:45.696 --> 00:12:49.457
+And we will program all the logic we need in this widget.
+
+00:12:52.850 --> 00:12:55.730
+We call it STUPauseWidget.
+
+00:12:57.890 --> 00:13:05.864
+Click on the Create Class button. The widget class has been created. We declare the Initialize function.
+
+00:13:09.751 --> 00:13:15.545
+We need a button UI element. To do this, create a protected section.
+
+00:13:17.613 --> 00:13:25.395
+Add the UPROPERTY macro. For property, you need to specify special meta information that will associate the button
+
+00:13:25.842 --> 00:13:29.280
+that is in the blueprint with the button that we
+
+00:13:29.280 --> 00:13:34.818
+will use in C ++. The specifier is called BindWidget.
+
+00:13:37.546 --> 00:13:41.642
+The class responsible for the button is called UButton.
+
+00:13:43.218 --> 00:13:47.264
+Let's call the button ClearPauseButton.
+
+00:13:48.582 --> 00:13:53.289
+You also need to make a forward declaration of this class.
+
+00:13:55.030 --> 00:14:02.791
+We create a private section. We need a callback function that will be called when the button is pressed.
+
+00:14:02.791 --> 00:14:09.391
+The delegate we will subscribe to is dynamic, so we add the UFUNCTION macro.
+
+00:14:09.391 --> 00:14:18.473
+We call the function OnClearPause. We create a body for each function.
+
+00:14:25.843 --> 00:14:29.173
+We need a header file for the base class GameMode.
+
+00:14:31.265 --> 00:14:38.018
+And also the header file of the button. It is located at Components / Button.h
+
+00:14:40.372 --> 00:14:51.580
+Let's go to the Initialize function. So little mistake: it has a boolean return value. Let's change. We need to call the parent
+
+00:14:51.580 --> 00:14:58.242
+Initialize function before calling the button, otherwise the pointer to the UButton will be null.
+
+00:14:58.242 --> 00:15:04.356
+Therefore, we will store the return value of Initialize in the local variable InitStatus.
+
+00:15:07.313 --> 00:15:11.702
+We check that our button exists.
+
+00:15:15.000 --> 00:15:22.425
+If everything is ok, then we can subscribe to the delegate, which is called when we click on the button. The delegate is called OnClicked.
+
+00:15:24.147 --> 00:15:31.658
+There are several delegates. There is a delegate OnPressed, OnReleased, OnHovered, and so on.
+
+00:15:32.980 --> 00:15:42.120
+We call AddDynamic. The first parameter is this, a pointer to the current object, and the second parameter is a reference
+
+00:15:42.120 --> 00:15:49.190
+to the object's function. We pass OnClearPause there. Thus, when the ClearPauseButton button
+
+00:15:49.190 --> 00:15:56.546
+is pressed, the OnClearPause function will be called, where the main logic will be. And at the end of the function, add a return statement.
+
+00:15:57.452 --> 00:16:00.911
+And we return the value of the InitStatus variable.
+
+00:16:02.507 --> 00:16:04.508
+Let's go to the OnClearPause function.
+
+00:16:06.006 --> 00:16:12.441
+First, we need to check the pointers to the world and to the game mode.
+
+00:16:16.080 --> 00:16:23.105
+If the pointers are nonzero, then we call the game mode function called ClearPause.
+
+00:16:23.105 --> 00:16:28.490
+This function is the opposite of the SetPause function. It runs Tick functions for all actors.
+
+00:16:28.490 --> 00:16:34.706
+In our game mode, it also needs to be overridden, because we need to change the state of the match.
+
+00:16:37.992 --> 00:16:42.509
+Add the function to the STUGameModeBase header file.
+
+00:16:46.094 --> 00:16:47.900
+We create the body of the function.
+
+00:16:51.850 --> 00:16:57.981
+ClearPause also returns a boolean value, so we'll do the same for SetPause.
+
+00:16:57.981 --> 00:17:05.841
+Let's create an additional PauseCleared variable. Let's assign it the value of the parent ClearPause function.
+
+00:17:08.394 --> 00:17:14.139
+If the value PauseCleared = true, then we change the state of our match to InProgress.
+
+00:17:17.050 --> 00:17:24.548
+And at the very end, we return the PauseCleared value. We figured out the reset of the pause.
+
+00:17:24.548 --> 00:17:32.435
+The last thing to do is to display the mouse cursor in the paused state. We will do this in playercontroller.
+
+00:17:32.435 --> 00:17:39.329
+To do this, we will redefine the BeginPlay function, in which we will also subscribe to changing the game state.
+
+00:17:39.800 --> 00:17:45.140
+And in case of a pause, we will show the cursor. We also need a callback function
+
+00:17:45.140 --> 00:17:50.632
+that will be called when the game state changes. We created exactly the same one in GameHUD.
+
+00:17:52.320 --> 00:17:59.045
+Let's include the STUCoreTypes header file so that ESTUMatchState is available.
+
+00:18:01.300 --> 00:18:03.805
+We create the body of the BeginPlay function.
+
+00:18:08.230 --> 00:18:13.900
+We can simply copy the code from the GameHUD that subscribes
+
+00:18:13.900 --> 00:18:21.355
+to the OnMatchStateChanged delegate. Now we need the STUGameModeBase header file.
+
+00:18:21.355 --> 00:18:28.301
+Therefore, we can replace the GameModeBase header file with STUGameModeBase.
+
+00:18:31.134 --> 00:18:34.180
+We change the class of the function we are adding.
+
+00:18:36.120 --> 00:18:39.425
+We can also copy the body of the OnMatchStateChanged function.
+
+00:18:40.957 --> 00:18:47.457
+The controller is now subscribed to the MatchState change too. Therefore, when the state changes, we can check:
+
+00:18:48.390 --> 00:18:54.134
+if the current state = InProgress, that is, we are in the game, then the cursor does not need to be shown.
+
+00:18:57.640 --> 00:19:04.455
+The Boolean variable in the controller that is responsible for showing the cursor is called bShowMouseCursor.
+
+00:19:05.848 --> 00:19:12.610
+We set it to false, and in all other states the cursor will be shown. That is, in the case of a pause,
+
+00:19:12.610 --> 00:19:17.980
+we show the cursor and will also show it in the case of the GameOver state, which we will
+
+00:19:17.980 --> 00:19:24.070
+consider a little later in this section. That is, in our particular game, everything is quite simple with this.
+
+00:19:25.504 --> 00:19:27.844
+Let's check. We compile the project.
+
+00:19:30.000 --> 00:19:38.120
+For our blueprint widget, let's change the base class (file -&gt; reparent blueprint). Find STUPauseWidget. We select it.
+
+00:19:38.758 --> 00:19:44.170
+And we have a widget compilation error. The Compile Result displays a message that the button that
+
+00:19:44.170 --> 00:19:51.520
+we created in C ++ СlearPauseButton was not found in this blueprint. So how, if we
+
+00:19:51.520 --> 00:19:58.755
+declare any UI element in C ++ and specify the BindWidget meta information in the property,
+
+00:19:59.428 --> 00:20:05.767
+we must have an element with the given name in the widget. Therefore, we rename the button to ClearPauseButton
+
+00:20:05.767 --> 00:20:11.874
+and the compilation was successful. We start the game. Press "P".
+
+00:20:12.440 --> 00:20:18.200
+The cursor is available, but we can see that mouse hover events are not firing. We need to explicitly
+
+00:20:18.200 --> 00:20:25.460
+click in the viewport. When you press the button, the pause is removed, but the cursor is visible and we additionally
+
+00:20:25.460 --> 00:20:31.238
+need to click to return control to the character. We also need to correct this.
+
+00:20:33.041 --> 00:20:39.347
+We will not consider the detailed work of the input system in the UE - this is a separate topic for conversation.
+
+00:20:39.347 --> 00:20:44.736
+To explicitly specify the type of input, you can use the playercontroller function
+
+00:20:44.736 --> 00:20:51.753
+called SetInputMode. It has one parameter. The type of the FInputModeDataBase parameter.
+
+00:20:51.753 --> 00:20:56.416
+There are several data structures that inherit from the base structure.
+
+00:20:56.416 --> 00:21:04.444
+Each of them is responsible for a specific input. GameAndUI, GameOnly and UIOnly. When the match is in the InProgress state,
+
+00:21:04.444 --> 00:21:09.642
+we pass an object of the FInputModeGameOnly structure as a parameter,
+
+00:21:09.642 --> 00:21:15.782
+and in all other cases we pass an object of the FInputModeUIOnly type.
+
+00:21:19.461 --> 00:21:20.752
+We compile the project.
+
+00:21:22.439 --> 00:21:31.202
+Checking. Press "P". The input method is set UI. The button immediately changes its state on hover,
+
+00:21:31.202 --> 00:21:39.624
+when you click on Continue, the control returns to the character immediately without an additional click. Everything is working.
+
+00:21:40.243 --> 00:21:47.851
+Let's add an additional decorative element to the widget called BackgroundBlur. This is a postprocessing effect.
+
+00:21:47.851 --> 00:21:53.824
+Blur effect. We add it to the CanvasPanel, at the very bottom level.
+
+00:21:53.824 --> 00:22:03.230
+Stretch in width and height. Offset is done by zeros. The main property of this element is BlurStrenght, that is, how much the
+
+00:22:03.230 --> 00:22:12.273
+background is blurred. Let's put, for example, value = 4. Compile, run. Press "P".
+
+00:22:12.273 --> 00:22:20.645
+The background is now blurred, thanks to this, all elements will be displayed more clearly. This concludes the lesson.
+

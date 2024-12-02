@@ -1,0 +1,220 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.684 --> 00:00:12.240
+Let's start a new section. In this tutorial, let's see how interfaces are implemented in the UE.
+
+00:00:12.240 --> 00:00:17.660
+Let's find out what a user widget is and display the character's life count.
+
+00:00:17.660 --> 00:00:21.607
+Before we start, let's add an extra function to the lives component.
+
+00:00:22.815 --> 00:00:27.595
+Let's call it GetHealthPercent.
+
+00:00:27.595 --> 00:00:32.853
+It will return the percentage of the remaining lives, that is, if there is zero lives, it will return zero percent,
+
+00:00:32.853 --> 00:00:41.875
+if the number of lives is equal to MaxHealth, then it will return 100 percent. To do this, we need to divide Health by MaxHealth.
+
+00:00:46.316 --> 00:00:52.729
+And so that we don't accidentally have division by 0. Let's put a check in the BeginPlay function.
+
+00:00:54.490 --> 00:01:04.317
+Let's write check (MaxHealth&gt; 0). A negative value for life is also not correct. Launch editor.
+
+00:01:04.805 --> 00:01:10.637
+Let's start creating the user interface. The first thing we will create is a new folder.
+
+00:01:10.637 --> 00:01:18.470
+Let's call it UI and let's create our first widget. To do this, right-click
+
+00:01:18.470 --> 00:01:27.910
+and select widget blueprint from the ser interface menu. We call it WBP_PlayerHUD.
+
+00:01:28.520 --> 00:01:33.958
+In this lesson, we will work exclusively with blueprints. Opening up our new asset.
+
+00:01:35.786 --> 00:01:41.749
+Before us is the unreal engine interface editor. It's called UMG (Unreal Motion Graphics).
+
+00:01:41.749 --> 00:01:49.040
+There is a palette window on the left. All user interface elements available to us are located here: buttons,
+
+00:01:49.040 --> 00:01:56.620
+checkboxes, sliders and just, for example, text. Elements can be dragged from the palette
+
+00:01:56.620 --> 00:02:03.348
+to the stage, which is essentially our screen. Below the palette is the hierarchy window.
+
+00:02:03.348 --> 00:02:08.690
+It shows how UI elements are grouped relative to each other: who is the parent,
+
+00:02:08.690 --> 00:02:14.900
+who is the inheritor, and so on. The root component is called Canvas Panel. Let's pull out an additional
+
+00:02:14.900 --> 00:02:20.558
+component on the stage , which is called the Horizontal Box - this element is used to align
+
+00:02:20.558 --> 00:02:26.453
+and group other elements in the form of a string. In the hierarchy window, we can rearrange our elements
+
+00:02:26.453 --> 00:02:32.240
+and drag some of them into the Horizontal Box, so they become children
+
+00:02:32.240 --> 00:02:38.180
+and the transformation of these elements changes depending on the transformation of the parent.
+
+00:02:38.768 --> 00:02:44.110
+Select the text block element. All possible properties of this element are
+
+00:02:44.110 --> 00:02:52.392
+presented in the details panel on the right . We can change the text, we can change the color of the text,
+
+00:02:54.976 --> 00:03:06.208
+the font size, we can adjust the alignment, if it makes sense, visibility, and so on. Quite a lot of properties.
+
+00:03:06.208 --> 00:03:14.300
+We have to work with some of them. You can also, for example, set up items in a horizontal box to completely
+
+00:03:14.300 --> 00:03:20.506
+fill the entire space. To do this, select the button and press fill in front of the property size.
+
+00:03:21.220 --> 00:03:27.340
+Click the compile button and let's see how we can add this widget to our viewport.
+
+00:03:28.770 --> 00:03:34.350
+This can be done in absolutely any class: in character, in game mode, in a controller,
+
+00:03:34.350 --> 00:03:41.008
+anywhere, but we have a special HUD class where we painted our crosshair,
+
+00:03:42.000 --> 00:03:46.321
+so let's consider this class as the controller of our interfaces.
+
+00:03:46.857 --> 00:03:51.367
+Let's create a blueprint class based on it. We call BP_STUGameHUD.
+
+00:03:53.710 --> 00:03:59.647
+And go to the event graph. On BeginPlay, let's create our widget.
+
+00:03:59.647 --> 00:04:06.598
+This is done using the CreateWidget node. In the class parameter, we need to select our widget.
+
+00:04:08.526 --> 00:04:15.930
+And after that, call the AddToViewport function on the created object. Compile.
+
+00:04:17.360 --> 00:04:25.004
+In world settings, change the HUD class to blueprint and launch the game. Our interface has been added.
+
+00:04:25.004 --> 00:04:32.600
+If we press Shift + F1, then this will free our cursor and it will become available for the user
+
+00:04:32.600 --> 00:04:38.210
+interface. How to do this programmatically so that the cursor is available in the game, we will see a little
+
+00:04:38.210 --> 00:04:45.233
+later in our course. So, the widget has been added. Let's now display the number of lives.
+
+00:04:47.525 --> 00:04:57.000
+First, remove all our test elements and add an element called the progress bar,
+
+00:04:57.000 --> 00:05:02.170
+in fact, this element consists of two pictures: one picture is the background, and the other picture
+
+00:05:02.170 --> 00:05:07.821
+is responsible for filling the progress bar, changes its size depending on the percentage.
+
+00:05:08.720 --> 00:05:13.730
+Go to the details panel and find the percent property, if we change it,
+
+00:05:13.730 --> 00:05:19.130
+the filling of this element changes. Let's go to the style section
+
+00:05:20.160 --> 00:05:25.590
+and change the Tint parameter in the property Fill Image - make the fill color green.
+
+00:05:28.800 --> 00:05:35.095
+Another important concept that we need to know when working with UMG is property binding.
+
+00:05:35.680 --> 00:05:41.170
+Opposite many properties, we see a checkbox called bind. It allows us to create
+
+00:05:41.170 --> 00:05:46.630
+an update function for a specific property, and if we click on bind in
+
+00:05:46.630 --> 00:05:53.230
+front of property percent, then the create binding popup appears. Click on it.
+
+00:05:53.230 --> 00:06:00.057
+We have automatically created the GetPercent function and the interface editor has 2 states: the first is the designer
+
+00:06:00.057 --> 00:06:05.638
+where we were, and the second is a graph that is analogous to the event graph of a blueprint,
+
+00:06:05.638 --> 00:06:10.723
+that is, we can also modify the interface depending on the events in the game.
+
+00:06:12.438 --> 00:06:22.305
+Let's rename the get percent function, click on it and name it GetHealthPercent. We bind this function
+
+00:06:22.305 --> 00:06:27.385
+to property percent. This means that whenever the return value changes,
+
+00:06:28.141 --> 00:06:32.930
+we will get an updated percent in our user interface. Let's
+
+00:06:32.930 --> 00:06:38.575
+access our character, for this the widget has a special function called
+
+00:06:38.575 --> 00:06:46.001
+GetOwningPlayerPawn, which returns a pointer to the pawn that we are currently controlling.
+
+00:06:46.001 --> 00:06:51.860
+All our components for the character are in the protected section, that is, we can
+
+00:06:51.860 --> 00:06:57.650
+not directly access the health component, but actors have a special template function
+
+00:06:57.650 --> 00:07:03.620
+called GetComponentByClass and as a template parameter it takes the component class of
+
+00:07:03.620 --> 00:07:09.390
+interest to us , that is, we specify with you STUHealthComponent. We can call the function
+
+00:07:09.390 --> 00:07:17.750
+we made at the beginning of this tutorial GetHealthPercent and substitute the result into the return value of the bind function.
+
+00:07:18.930 --> 00:07:24.660
+Let's check all our pointers for validity, for this there is a special
+
+00:07:24.660 --> 00:07:30.644
+IsValid macro. We check the validity of the pawn and the health component.
+
+00:07:31.340 --> 00:07:34.192
+We can also copy the return node.
+
+00:07:36.312 --> 00:07:41.548
+And if something is not valid for us, then we return 0.
+
+00:07:42.117 --> 00:07:47.588
+Let's check what we got. At the start of the game, our progress bar is completely filled.
+
+00:07:48.000 --> 00:07:54.500
+If we run into a damage actor, then the amount of life decreases and the progress bar displays the
+
+00:07:54.500 --> 00:08:01.360
+quantitative percentage of our life, and if we die, then it is empty. The only thing is, let's change the
+
+00:08:01.360 --> 00:08:06.614
+refresh rate of life in character, because now they look a little twitchy.
+
+00:08:06.614 --> 00:08:18.419
+Let's put heal update time = 0.03 in the health component. We launch. We run into the damage actor and the lives increase more smoothly.
+
+00:08:19.070 --> 00:08:25.018
+That's all. In this lesson we got acquainted with UMG in blueprints, in the next we will move on to C ++
+

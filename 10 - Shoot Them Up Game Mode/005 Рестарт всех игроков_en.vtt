@@ -1,0 +1,184 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.158 --> 00:00:10.591
+In this tutorial, we will respawn all the characters. Every time a new round starts,
+
+00:00:10.591 --> 00:00:15.065
+we need to reload the characters and spawn them in their starting positions.
+
+00:00:15.065 --> 00:00:21.000
+Let's create two additional functions in the game mode header file. We'll call the first one ResetPlayers
+
+00:00:21.510 --> 00:00:27.807
+and the second one ResetOnePlayer. The function will have one parameter - a pointer to the controller.
+
+00:00:27.807 --> 00:00:33.090
+Characters can be destroyed during the game. We will need to respawn them, but
+
+00:00:33.090 --> 00:00:39.723
+nothing happens to the controllers . We spawned them on StartPlay and they are on stage throughout the game.
+
+00:00:39.723 --> 00:00:43.505
+We create a body for each function.
+
+00:00:43.505 --> 00:00:49.832
+When a new round starts, we need to call the ResetPlayers function. Let's go into it.
+
+00:00:50.816 --> 00:00:59.237
+We need a pointer to UWorld, so let's make sure it's not nullptr. Information about all the controllers that are in the world
+
+00:00:59.237 --> 00:01:03.917
+can be obtained through a special iterator that is located in the UWorld object.
+
+00:01:03.917 --> 00:01:10.649
+The function for getting the iterator is called GetControllerIterator. Having received this iterator, we can create a loop
+
+00:01:10.649 --> 00:01:16.568
+through all the controllers in the world. We will execute the loop until the iterator is not zero
+
+00:01:16.568 --> 00:01:23.756
+and each time the loop will move the pointer. To do this, we use the iterator increment operator.
+
+00:01:23.756 --> 00:01:30.378
+For those who are not familiar with the concept of iterators, I recommend that you familiarize yourself with it in the framework of the C ++ Standard Library.
+
+00:01:30.378 --> 00:01:35.096
+We already used iterators when we created our own test in the previous section.
+
+00:01:35.096 --> 00:01:40.669
+Let's call the ResetOnePlayer function for each controller that is on the stage.
+
+00:01:40.669 --> 00:01:45.593
+To get a raw pointer to a controller, call the Get iterator function.
+
+00:01:46.164 --> 00:01:52.907
+Let's move to the ResetOnePlayer function and call the game mode function we are familiar with, which is called RestartPlayer.
+
+00:01:52.907 --> 00:01:58.988
+We pass the pointer to the controller into it. Let's open the code for this function again.
+
+00:02:01.152 --> 00:02:10.830
+And let's move to the RestartPlayerAtPlayerStart function. If the pointer to pawn is not nullptr, then the current rotation of the pawn is calculated,
+
+00:02:10.830 --> 00:02:16.740
+written to the SpawnRotation variable, and then the controller's rotation is simply updated,
+
+00:02:16.740 --> 00:02:22.300
+that is, nothing special will happen - the pawn will remain in its place. If the pointer is null, then the character
+
+00:02:22.300 --> 00:02:27.276
+was killed during the game and he will be spawned again, that is, in fact, the logic
+
+00:02:27.276 --> 00:02:32.940
+that runs on StartPlay will work. In an amicable way, we need to do destroy for all pawns
+
+00:02:32.940 --> 00:02:38.610
+that remain in the game, and then the restart function will work. This logic can be implemented through a
+
+00:02:38.610 --> 00:02:46.214
+special actor function called reset. Let's check that the controller and the pawn it owns are nonzero.
+
+00:02:46.214 --> 00:02:51.855
+If the controller has pawn = nullptr, then the restart player function will work as we need.
+
+00:02:53.502 --> 00:02:57.459
+If the conditions are met, then we call the pawn - reset function.
+
+00:02:59.205 --> 00:03:05.613
+Let's move on to this function. It is overridden in pawn. The destroy function will be called if one of the following conditions is met:
+
+00:03:05.613 --> 00:03:11.340
+controller = nullptr, or the pointer to the PlayerState of the controller is not nullptr. In our case, the first condition is
+
+00:03:11.340 --> 00:03:16.500
+never met, because we pre-check the controller for nullptr. The second condition
+
+00:03:16.500 --> 00:03:21.960
+will be met, what is PlayerState, we will learn in the next lesson. Let's summarize.
+
+00:03:21.960 --> 00:03:26.910
+Every time a round starts, we call ResetPlayer, iterate over all the controllers, and call the
+
+00:03:26.910 --> 00:03:31.682
+ResetOnePlayer function for each of the controllers. We launch the project.
+
+00:03:31.682 --> 00:03:39.281
+Let's open the blueprint game mode. For the test, let's set the number of players equal to two. Compile.
+
+00:03:42.130 --> 00:03:52.244
+We launch the project. We are waiting for a new round to begin. Something terrible is happening. A bunch of NPCs spawned. Let's fix this.
+
+00:03:52.244 --> 00:03:58.542
+Why this happened, we will find out very soon when we switch to visual studio. To fix this bug,
+
+00:03:58.542 --> 00:04:06.255
+open the AICharacter and in the details panel we find the property Auto Possess AI,
+
+00:04:06.255 --> 00:04:15.835
+which we have placed in the world or spawn. Set to Disabled. Compile blueprint. We start the game.
+
+00:04:17.640 --> 00:04:21.832
+And when starting a new round, this bug is no longer repeated.
+
+00:04:21.832 --> 00:04:27.822
+When a new round begins, our character will respawn, and nothing happens to the NPC.
+
+00:04:28.801 --> 00:04:33.121
+Let's go to the tree of world objects and enter PlayerState in the search.
+
+00:04:34.856 --> 00:04:39.262
+As we can see, only one PlayerState was found - this is the PlayerState of our character.
+
+00:04:39.262 --> 00:04:44.138
+The NPC does not have it, so it will not be called in the Reset function.
+
+00:04:44.138 --> 00:04:53.709
+Let's see how to spawn PlayerState for an NPC. First, open the AICharacter class and change the AutoPossessAI variable.
+
+00:04:53.709 --> 00:05:00.652
+Set it to Disabled. Let's move on to the base pawn code.
+
+00:05:01.720 --> 00:05:08.734
+And in the .cpp file, let's see how the AutoPossess variable is used. Let's search the file
+
+00:05:08.734 --> 00:05:17.057
+and find the PostInitializedComponents function. If AutoPossessAI is placed in world or spawned,
+
+00:05:17.057 --> 00:05:22.920
+then the spawn default controller function will be called, so when the game starts, we will spawn one
+
+00:05:22.920 --> 00:05:28.881
+extra AI controller. At the beginning of the next round, during the restart of this controller,
+
+00:05:28.881 --> 00:05:34.409
+an additional pawn will spawn, which in turn will spawn another controller, and so on.
+
+00:05:34.409 --> 00:05:40.275
+All this will happen in the iterator loop, which is why we have a huge number of characters spawned.
+
+00:05:40.275 --> 00:05:45.936
+Go to game mode base. Let's open the code of the Reset function again.
+
+00:05:46.577 --> 00:05:54.139
+Destroy will happen if the pointer to PlayerState is not nullptr. For PlayerController, PlayerState
+
+00:05:54.139 --> 00:05:59.333
+spawns automatically, but for AIController this must be explicitly specified.
+
+00:05:59.333 --> 00:06:08.533
+Let's go to the AIController class. The Boolean variable that determines whether the PlayerState spawns is called bWantsPlayerState.
+
+00:06:08.533 --> 00:06:13.145
+We set its value to true in the class constructor. We compile the project.
+
+00:06:15.030 --> 00:06:16.414
+We start the game.
+
+00:06:17.384 --> 00:06:26.392
+We are waiting for the start of the next round and now both players are respawning. If you enter PlayerState again in the scene object tree.
+
+00:06:26.392 --> 00:06:31.496
+Now we have two PlayerState actors: one of ours, one for the NPC.
+

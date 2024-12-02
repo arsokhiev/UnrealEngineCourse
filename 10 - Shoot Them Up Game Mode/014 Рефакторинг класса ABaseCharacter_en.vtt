@@ -1,0 +1,175 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.357 --> 00:00:07.933
+In this tutorial, we'll do a little refactoring.
+
+00:00:07.933 --> 00:00:14.226
+Some of the functionality that BaseCharacter contains is purely human-controlled
+
+00:00:14.226 --> 00:00:18.318
+and has nothing to do with AICharacter. Therefore, we will create a separate class,
+
+00:00:18.318 --> 00:00:23.909
+which we will call PlayerCharacter and transfer part of the BaseCharacter functionality to it.
+
+00:00:27.000 --> 00:00:33.378
+So let's get started. The camera and spring arm components are absolutely unnecessary in AICharacter.
+
+00:00:33.378 --> 00:00:39.260
+Let's start by transferring the forward declaration of these classes. We insert them into the player character class.
+
+00:00:41.796 --> 00:00:45.436
+We also need a constructor in the player character.
+
+00:00:48.193 --> 00:00:49.293
+We replace the class.
+
+00:00:53.276 --> 00:00:57.408
+We transfer directly the property of the components.
+
+00:01:00.000 --> 00:01:01.920
+We create a protected section.
+
+00:01:04.640 --> 00:01:06.010
+Insert property.
+
+00:01:08.035 --> 00:01:08.681
+Further.
+
+00:01:09.564 --> 00:01:17.509
+A health component is needed. Let's remove the text component. In the next section, we will change lives.
+
+00:01:17.509 --> 00:01:24.611
+Next comes the property, which is needed in both AICharacter and PlayerCharacter. Therefore, we leave them.
+
+00:01:24.611 --> 00:01:28.354
+We will redefine the OnDeath function in PlayerCharacter.
+
+00:01:28.354 --> 00:01:35.359
+It has functionality that is specific to PlayerCharacter and is not needed in AICharacter.
+
+00:01:37.250 --> 00:01:41.671
+SetupPlayerInputComponent is completely portable.
+
+00:01:41.671 --> 00:01:48.898
+This function is meaningless for AICharacter. We create an additional section public.
+
+00:01:52.670 --> 00:01:57.408
+Let's make the IsRunning function virtual. In the base class, it will return false.
+
+00:01:57.408 --> 00:02:06.489
+AICharacter cannot run, but this functionality can be added if desired. We override the function in PlayerCharacter.
+
+00:02:08.410 --> 00:02:09.995
+Add override.
+
+00:02:13.560 --> 00:02:19.407
+The GetMovementDirection and SetPlayerColor functions are needed in both classes.
+
+00:02:19.407 --> 00:02:25.343
+And all variables and functions related to running and movement can be transferred to PlayerCharacter.
+
+00:02:25.861 --> 00:02:30.447
+We do not touch the OnHealthChanged and OnGrandLanded functions. They refer to the basic functionality.
+
+00:02:31.669 --> 00:02:36.779
+Create a private section in PlayerCharacter. And paste the copied block.
+
+00:02:40.440 --> 00:02:45.865
+It is also possible to remove the forward declaration for the text component. We won't need it anymore.
+
+00:02:47.174 --> 00:02:53.159
+This is where we are done with the header files. Move to the BaseCharacter .cpp file.
+
+00:02:54.700 --> 00:03:00.908
+Let's copy the constructor completely. We replace the class.
+
+00:03:04.219 --> 00:03:07.662
+Setting up the MovementComponent is done in the base class.
+
+00:03:07.662 --> 00:03:11.919
+In PlayerCharacter, simply call the base class constructor via Super.
+
+00:03:14.323 --> 00:03:20.239
+We also remove health, weapon, text components.
+
+00:03:22.577 --> 00:03:30.765
+In the base class, we do the opposite: delete the camera and spring arm. The text component is also no longer needed.
+
+00:03:30.765 --> 00:03:38.030
+We transfer the header files of the camera, spring arm and also the input component can be immediately captured.
+
+00:03:42.456 --> 00:03:50.506
+Next, on BeginPlay, remove the check for the text component. Everything else remains unchanged.
+
+00:03:51.290 --> 00:03:56.468
+We clear the OnHealthChaged.
+
+00:03:56.468 --> 00:04:05.496
+SetupPlayerInput is completely portable to PlayerCharacter. We replace the class everywhere.
+
+00:04:08.912 --> 00:04:12.429
+Also in PlayerCharacter you need to include the header file of the weapon component.
+
+00:04:19.833 --> 00:04:26.048
+Next, we transfer the functions related to the movement to the PlayerCharacter.
+
+00:04:34.840 --> 00:04:36.412
+We replace the class everywhere.
+
+00:04:40.230 --> 00:04:43.679
+In the base class, the IsRunning function will return false.
+
+00:04:48.330 --> 00:04:51.314
+Next, copy the OnDeath function.
+
+00:04:54.480 --> 00:05:03.773
+We replace the class. Specific to PlayerCharacter is setting the controller to a spectating state.
+
+00:05:03.773 --> 00:05:09.000
+It doesn't make sense to an NPC. We add a parent call to the OnDeath function
+
+00:05:09.000 --> 00:05:16.272
+so as not to lose all the logic of the base class. In the base class, remove the logic for setting the spectating state.
+
+00:05:17.318 --> 00:05:21.000
+This completes the refactoring. We have simplified the base class.
+
+00:05:21.000 --> 00:05:28.010
+Thus, unnecessary information that is specific to the character controlled by the user will not get into the AICharacter.
+
+00:05:30.399 --> 00:05:31.444
+We compile the project.
+
+00:05:34.273 --> 00:05:37.626
+So we have a compilation error. Let's see what's the matter.
+
+00:05:39.055 --> 00:05:43.347
+The log says that if we redefine the function with macros UFUNCTION,
+
+00:05:43.347 --> 00:05:48.490
+then it is not necessary to specify it in the child class UFUNCTION. All meta information will be the same
+
+00:05:48.490 --> 00:05:57.405
+for this function. Therefore, we remove the UFUNCTION macro from the player character. Let's compile one more time.
+
+00:05:59.237 --> 00:06:04.838
+Create an inheritor of PlayerCharacter, a child of the blueprint class.
+
+00:06:08.053 --> 00:06:12.951
+We call it FROM_PlayerCharacter, place it in the player directory.
+
+00:06:14.585 --> 00:06:21.000
+I will now speed up the video, we need to transfer all the settings from BaseCharacter to PlayerCharacter again.
+
+00:06:28.867 --> 00:06:32.040
+The blueprint is ready. We specify it in the DefaultPawnClass.
+
+00:06:35.437 --> 00:06:39.552
+BP_BaseCharacter can be removed. We don't need it anymore.
+
+00:06:41.456 --> 00:06:46.626
+We launch. Everything works. The refactoring was successful.
+

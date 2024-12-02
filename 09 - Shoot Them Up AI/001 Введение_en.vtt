@@ -1,0 +1,28 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.841 --> 00:00:09.780
+Hello everyone! We are starting a new section in which we will look at artificial intelligence.
+
+00:00:10.147 --> 00:00:16.039
+Let's program the brains of our character. Let's explore the various unreal subsystems that allow you to do this.
+
+00:00:16.039 --> 00:00:21.653
+Let's pay the most attention to the behavior tree - the tree of behavior. We will teach our NPC
+
+00:00:21.653 --> 00:00:26.905
+to move around the scene, pick up health pickups, ammunition.
+
+00:00:27.786 --> 00:00:36.812
+Let's create services that will find the enemy, automatically shoot, and change weapons. Let's consider what decorator, task is.
+
+00:00:36.812 --> 00:00:42.380
+We will also consider a special subsystem EQS, which allows you to
+
+00:00:43.143 --> 00:00:48.663
+analyze the space around the character. At the end of the section, we will get a completely playable version.
+
+00:00:49.147 --> 00:00:54.420
+Plus, let's look at how to output specific debug information related to artificial intelligence.
+

@@ -1,0 +1,181 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.000 --> 00:00:10.077
+Let's take a look at the next thing. Let's open the blueprint of our character.
+
+00:00:11.014 --> 00:00:19.102
+Let's go to the weapon component. To begin with, we can change the
+
+00:00:19.102 --> 00:00:27.860
+order of the weapons by dragging the grenade launcher to the top in the array. Now he will be the main weapon.
+
+00:00:29.430 --> 00:00:38.524
+Let's also temporarily change the launcher's ammo count, in our DefaultAmmo structure,
+
+00:00:39.000 --> 00:00:51.887
+change the number of clips. We do this in order for the AI ​​character to quickly shoot his ammunition. He shot once .. two .. three ..
+
+00:00:52.902 --> 00:00:56.196
+After that he has no cartridges and he cannot shoot.
+
+00:00:57.000 --> 00:01:06.381
+When the AI ​​character runs out of ammo, we need to automatically switch weapons. Let's get down to it in this tutorial.
+
+00:01:07.404 --> 00:01:11.472
+Let's switch weapons by modifying the weapon component.
+
+00:01:12.326 --> 00:01:18.116
+Let's go to our classes, to the components and create an inheritor of STUWeaponComponent.
+
+00:01:19.065 --> 00:01:25.905
+Create a new class, name it STUAIWeaponComponent. Click create class.
+
+00:01:27.436 --> 00:01:33.144
+Before writing the code, we need to make small changes to the base weapon class and weapon component.
+
+00:01:33.144 --> 00:01:37.529
+We will have to weaken the access to some functions and class members.
+
+00:01:37.930 --> 00:01:45.238
+BaseWeapon will only have one change. We need to move the IsAmmoEmpty function from the protected
+
+00:01:45.238 --> 00:01:53.090
+section to the public section. Go to the weapon component. We make the StartFire and NextWeapon functions virtual.
+
+00:01:53.090 --> 00:01:57.331
+After that we can override them in AIWeaponComponent.
+
+00:01:59.417 --> 00:02:04.205
+We transfer the array of weapons and the pointer to the current weapon to the protected section.
+
+00:02:04.205 --> 00:02:09.000
+This way we can access them in our AIWeaponComponent.
+
+00:02:10.768 --> 00:02:14.109
+We do the same with the CanFire and CanEquip functions.
+
+00:02:18.100 --> 00:02:20.830
+And we also transfer the EquipWeapon function.
+
+00:02:25.680 --> 00:02:29.217
+Go to the header file AIWeaponComponent.
+
+00:02:29.217 --> 00:02:34.592
+Let's create a public section and override the StartFire and NextWeapon
+
+00:02:37.287 --> 00:02:39.837
+functions. Let's create a body for each function.
+
+00:02:42.350 --> 00:02:44.790
+We include the header file for the base weapon class.
+
+00:02:46.940 --> 00:02:50.646
+Let's start with the StartFire function. It will be simple enough.
+
+00:02:51.663 --> 00:02:56.933
+Before we start shooting, we need to put the same check as in the basic function.
+
+00:02:56.933 --> 00:03:04.330
+Call the CanFire function and if we cannot shoot, then we exit the function. Next, we check
+
+00:03:04.330 --> 00:03:09.700
+if we have ammunition in the current weapon. To do this, we call the function that we just moved
+
+00:03:09.700 --> 00:03:16.483
+to the public section - IsAmmoEmpty. If there is no ammo, then we call the NextWeapon function.
+
+00:03:16.483 --> 00:03:23.875
+That is, we change the weapon to the next, and if the ammunition remains, then we call the StartFire function of the current weapon.
+
+00:03:25.750 --> 00:03:32.550
+So, the first function is ready. The NextWeapon function remains. It will be a little more complicated. First, we will also use the
+
+00:03:32.550 --> 00:03:40.482
+check from the base function: if CanEquip returns false, then we immediately exit the NextWeapon function.
+
+00:03:40.482 --> 00:03:45.324
+Next, we create a local variable called NextIndex.
+
+00:03:46.570 --> 00:03:51.000
+NextIndex will equal the current index, incremented by one.
+
+00:03:52.616 --> 00:04:00.819
+And let's take the whole expression modulo the size of the Weapons array so that NextIndex does not go beyond its limits.
+
+00:04:00.819 --> 00:04:08.382
+The variable CurrentWeaponIndex is not available for us. It also needs to be moved to the protected section
+
+00:04:08.382 --> 00:04:14.307
+so that child classes can access it. Return to the weapon component.
+
+00:04:14.307 --> 00:04:21.242
+There are only two weapons in our game, but let's solve the problem in general. For this we need a whie loop.
+
+00:04:21.242 --> 00:04:27.000
+Main loop condition: NextIndex does not equal CurrentWeaponIndex.
+
+00:04:27.000 --> 00:04:32.597
+We will increase NextIndex by one until we find a weapon that has ammo.
+
+00:04:32.597 --> 00:04:38.730
+If, in the end, NextIndex turns out to be equal to CurrentWeaponIndex, we will end the loop. This will mean
+
+00:04:38.730 --> 00:04:46.100
+that we do not have a weapon that has ammunition. If the weapon with NextIndex has ammunition,
+
+00:04:46.100 --> 00:04:53.610
+that is, the IsAmmoEmpty function returns false, then we can immediately break and end the loop,
+
+00:04:53.610 --> 00:05:01.485
+that is, we have found the weapon we need. If this weapon is empty, then we increase the next index by one
+
+00:05:03.661 --> 00:05:06.680
+AND also take it modulo the size of the array.
+
+00:05:09.990 --> 00:05:19.951
+At the end, after the loop, we check: if CurrentWeaponIndex is not equal to NextIndex, then this means that we have found some other weapon.
+
+00:05:21.789 --> 00:05:28.469
+In this case, we are setting the CurrentWeaponIndex variable to NextIndex.
+
+00:05:29.549 --> 00:05:33.128
+And we change weapons using the EquipWeapon function.
+
+00:05:36.078 --> 00:05:38.487
+We pass in the CurrentWeaponIndex function.
+
+00:05:40.343 --> 00:05:48.313
+The last thing we need to do is override the weapon component in the AICharacter.
+
+00:05:49.387 --> 00:05:52.901
+We include the header file AIWeaponComponent.
+
+00:05:54.651 --> 00:06:00.631
+And let's copy the code with which we redefined the motion component.
+
+00:06:05.735 --> 00:06:13.575
+We insert the code for calling the parent constructor and change the component to the weapon component.
+
+00:06:16.816 --> 00:06:19.625
+And we also specify the correct name of the component.
+
+00:06:21.374 --> 00:06:22.749
+We compile the project.
+
+00:06:22.987 --> 00:06:27.614
+Let's temporarily make our rifle with the final ammunition to see that everything works.
+
+00:06:27.614 --> 00:06:36.000
+Let's set the number of stores - 3 and also the damage amount to zero, so that we won't be accidentally killed. We start the game.
+
+00:06:37.678 --> 00:06:46.756
+Let's catch up with our NPC, we need to get into the field of sight. So he started shooting. Shoots from a grenade launcher, he has 3 rounds.
+
+00:06:47.773 --> 00:06:54.473
+Missiles ran out, he switched to the rifle. Also fires several clips.
+
+00:06:58.880 --> 00:07:04.240
+And after that, the change does not take place, because each weapon has an empty ammunition load.
+

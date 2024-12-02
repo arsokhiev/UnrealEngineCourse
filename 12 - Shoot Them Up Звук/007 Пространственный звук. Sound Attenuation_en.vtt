@@ -1,0 +1,163 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.400 --> 00:00:09.774
+Let's see how the sound will play if we start the game with bots enabled.
+
+00:00:12.610 --> 00:00:28.420
+Click play. Sheer cacophony. This is because the volume of the sound does not depend on the distance
+
+00:00:28.420 --> 00:00:33.751
+to our character. Let's see how such a dependency can be created in UE.
+
+00:00:33.751 --> 00:00:43.965
+Again, temporarily disable all bots, go to the content browser in ExternalContent, in the directory with sounds,
+
+00:00:45.235 --> 00:00:52.087
+in the projectile directory, in wav. These sound files were created to sound the rocket flight,
+
+00:00:52.087 --> 00:00:59.172
+which we launch from the launcher. Let's create a separate Sound Que for them. Let's call it projectile fly.
+
+00:01:00.760 --> 00:01:08.825
+Open asset. We can immediately install the sound class - weapon. Add sound waves to our new sound que.
+
+00:01:11.040 --> 00:01:14.174
+We connect it to output via the random node.
+
+00:01:17.572 --> 00:01:21.820
+Sound waves data can be looped. Select the sound waves in turn
+
+00:01:21.820 --> 00:01:27.723
+and set the property looping to true for each of them. We are testing.
+
+00:01:33.062 --> 00:01:40.851
+This sound will be emitted by the rocket during flight. Sound que can be pulled onto the stage.
+
+00:01:40.851 --> 00:01:47.531
+The Editor will automatically create an actor that has a component called AudioComponent.
+
+00:01:47.531 --> 00:01:52.168
+This component contains a pointer to the SoundQue and knows how to manage it.
+
+00:01:52.168 --> 00:01:57.820
+We will look at it a little later in the code and also, so that the sounds of the
+
+00:01:57.820 --> 00:02:06.664
+character's steps do not interfere with us , we can completely turn them off. To do this, in the sound class character, set volume to 0.
+
+00:02:10.981 --> 00:02:12.339
+Start the game.
+
+00:02:17.798 --> 00:02:26.255
+I will temporarily turn off the sound of the game. Let's open up a console and enter a command called audio3dvisualize.
+
+00:02:26.255 --> 00:02:31.521
+This command activates the debug information of the sounds. Outputs text with the name of the sound,
+
+00:02:31.521 --> 00:02:38.142
+with volume. Sound active or not. And, as we can see, regardless of the distance, the volume is 0.75
+
+00:02:38.953 --> 00:02:44.702
+The UE has a special asset that allows you to change the sound settings depending on the
+
+00:02:44.702 --> 00:02:54.792
+distance to the listener. It's called SoundAttenuation. We create an asset. We name it SA_ProjectileFly.
+
+00:02:56.320 --> 00:03:02.980
+Let's set it up in our SoundQue right away by clicking on the output node
+
+00:03:02.980 --> 00:03:10.055
+and in the details panel, find the Attenuation Settings property. We choose projectile fly.
+
+00:03:11.823 --> 00:03:18.437
+Go to the Attenuation asset. There are a lot of settings, we will not consider all of them.
+
+00:03:18.437 --> 00:03:25.429
+This is more related to the work of the sound engineer, we will have enough settings called Attenuation Distance.
+
+00:03:25.429 --> 00:03:32.173
+These settings are responsible for changing the sound volume depending on the distance to our character.
+
+00:03:32.173 --> 00:03:36.859
+By default, the sound is limited to a sphere. The attenuation function is linear.
+
+00:03:36.859 --> 00:03:41.920
+In the inner radius, the sound is maximum and will decay evenly up to the falloff distance.
+
+00:03:47.948 --> 00:03:50.888
+We went beyond the falloff distance. No sound is heard.
+
+00:04:06.515 --> 00:04:11.520
+So now the sound depends on the distance to the character. Exploring all sound settings
+
+00:04:11.520 --> 00:04:18.420
+is a separate topic. I additionally copied from attenuation settings from shooter game. They are located
+
+00:04:18.420 --> 00:04:27.494
+in the audio settings folder. The shooter game uses different attenuation settings for different types of effects.
+
+00:04:27.494 --> 00:04:33.252
+We will trust the sound designer of the Unreal Engine and will use these presets in our game.
+
+00:04:38.222 --> 00:04:46.302
+Let's set up different Attenuation Settings for our SoundQue. Go to our sound directory. Let's start with the character.
+
+00:04:47.673 --> 00:04:55.064
+For steps, the asset is called footsteps. We find it in the content browser.
+
+00:04:57.376 --> 00:05:01.992
+Set it to run and walk SoundQue.
+
+00:05:07.171 --> 00:05:11.954
+For jump sounds, install an asset named foley.
+
+00:05:21.700 --> 00:05:25.175
+For interface sounds, Attenuation Settings are not needed.
+
+00:05:26.646 --> 00:05:28.325
+Go to the weapon folder.
+
+00:05:30.420 --> 00:05:35.785
+For the gear and reload sounds, set the foley asset.
+
+00:05:48.992 --> 00:05:52.207
+Also let's finish the projectile sound.
+
+00:05:58.968 --> 00:06:03.702
+Our test asset can be deleted. Click force delete.
+
+00:06:07.142 --> 00:06:12.000
+And in SoundQue we specify Attenuation Settings, which is called projectile.
+
+00:06:15.720 --> 00:06:18.355
+We transfer SoundQue to our launcher folder.
+
+00:06:20.929 --> 00:06:26.402
+We can immediately add this sound to our rocket.
+
+00:06:27.040 --> 00:06:31.634
+Go to the weapon directory, open the projectile blueprint.
+
+00:06:32.304 --> 00:06:37.142
+To play sound, we need an audio component, add it in blueprints.
+
+00:06:40.322 --> 00:06:44.834
+We set our SQ_ProjectileFly in the property Sound.
+
+00:06:46.629 --> 00:06:50.443
+The viewport displays the debug sphere Attenuation Settings.
+
+00:06:53.469 --> 00:07:04.664
+We return the sounds of the character, set the volume to one and also return the logic of our bots.
+
+00:07:07.410 --> 00:07:15.524
+We start the game. We will also remove the projectile sound from the stage so that it does not interfere with us.
+
+00:07:16.610 --> 00:07:18.418
+We start again.
+
+00:07:47.684 --> 00:07:50.850
+The volume of all sounds now depends on the distance.
+

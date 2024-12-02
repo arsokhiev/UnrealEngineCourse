@@ -1,0 +1,49 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.068 --> 00:00:09.528
+Let's check that the package for our game is being created correctly.
+
+00:00:11.787 --> 00:00:16.000
+While the game is packing, let's take a look at the changes I made to our files.
+
+00:00:16.941 --> 00:00:21.048
+In the health component, after the signature declaration, it is better to add a semicolon operator.
+
+00:00:21.486 --> 00:00:27.130
+The project compiles without a semicolon, but the file formatting may be broken.
+
+00:00:27.719 --> 00:00:34.300
+Further, when declaring delegate signatures, we will explicitly add the Signature postfix. Then there is a cosmetic change: first
+
+00:00:34.300 --> 00:00:39.700
+comes the constructor, then the delegates, then the UFINCTION, and then the regular functions. Also added a
+
+00:00:39.700 --> 00:00:47.882
+Health category for the IsDead function. In the BaseCharacter.h file, I changed the categories for LandedDamageVelocity and LandedDamage.
+
+00:00:47.882 --> 00:00:52.917
+Within the meaning of these variables, the Damage category is more suitable than the Movement category.
+
+00:00:52.917 --> 00:00:59.969
+I also added the variable LifeSpanOnDeath, which we have equal to five seconds, so that there is no hardcode.
+
+00:01:02.706 --> 00:01:05.136
+Added check for PlayerInputComponent.
+
+00:01:10.619 --> 00:01:13.598
+Let's get the speed through the actor: GetVelocity function
+
+00:01:13.799 --> 00:01:19.910
+and not through the CharacterMovementComponent, although there is no difference, it's just more concise, less code.
+
+00:01:21.201 --> 00:01:25.930
+The game was packed successfully, everything works. Please note that we do not see the spheres, because
+
+00:01:25.930 --> 00:01:30.790
+the DrawDebugSphere function belongs to debug functions and when building the project in the shipping configuration,
+
+00:01:30.790 --> 00:01:37.090
+this function is simply excluded from the code files, while the ApplyDamage logic works.
+

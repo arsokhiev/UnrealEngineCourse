@@ -1,0 +1,178 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.190 --> 00:00:13.243
+Let's redo all our logic in C ++. To do this, we will need to create a C ++ widget class.
+
+00:00:13.243 --> 00:00:20.495
+And change the parent blueprint class of the asset not to it. Go to the UI directory.
+
+00:00:20.495 --> 00:00:28.514
+Find the UserWidget class in the list.
+
+00:00:28.514 --> 00:00:39.126
+We call our C ++ class STUPlayerHUDWidget. Click create class.
+
+00:00:40.670 --> 00:00:46.180
+Open the header file of the widget class we created. We create a public section.
+
+00:00:47.789 --> 00:00:55.571
+We will need a function that will be available in the blueprint and will return the current percentage of life.
+
+00:00:55.571 --> 00:01:01.012
+The return type is float, we call the GetHealthPercent function.
+
+00:01:02.727 --> 00:01:08.337
+We specify the const specifier and go to the .cpp file.
+
+00:01:11.980 --> 00:01:18.810
+We need a header file for the lives component. Let's connect it. We create a local variable
+
+00:01:18.810 --> 00:01:23.280
+that will store a pointer to our player. The function that returns a pointer
+
+00:01:23.280 --> 00:01:28.925
+to pawn in widgets is called the same as in blueprints - GetOwningPlayerPawn.
+
+00:01:30.705 --> 00:01:38.032
+If the pointer is invalid, then we can simply return a zero value for the percentage.
+
+00:01:39.470 --> 00:01:47.405
+Next, we need to get a pointer to our component. To do this, we create a local variable Component.
+
+00:01:49.183 --> 00:01:54.166
+Let's use the GetComponentByClass function of actors.
+
+00:01:54.860 --> 00:01:59.825
+As a parameter, this function takes the SubClass of the component we want to find.
+
+00:02:00.325 --> 00:02:05.798
+Our HealthComponent only has a C ++ version, so we can use the StaticClass function.
+
+00:02:06.423 --> 00:02:11.780
+By analogy, as we did with you when setting up game mode. The GetComponentByClass function returns a
+
+00:02:11.780 --> 00:02:17.950
+pointer to the UActorComponent, so we need to cast our Component pointer
+
+00:02:17.950 --> 00:02:24.099
+to the health component. We create an additional variable HealthComponent.
+
+00:02:26.626 --> 00:02:37.041
+And we cast to the HealthComponent type. We can not check the Component pointer against nullptr, because the Cast &lt;&gt; template function
+
+00:02:37.041 --> 00:02:43.055
+already has this check. Roughly speaking, Cast of a null pointer returns a null pointer.
+
+00:02:43.324 --> 00:02:50.931
+And now the HealthComponent needs to be checked and we also return zero percent, the pointer to the component is zero.
+
+00:02:50.931 --> 00:02:57.000
+And if the pointer to the component is not nullptr, then we return the value of its GetHealthPercent function.
+
+00:03:00.520 --> 00:03:07.010
+Let's also write the creation of the widget in C ++. To do this, go to the game HUD.
+
+00:03:07.769 --> 00:03:14.649
+Create a protected section, create a property that will store the PlayerHUD class.
+
+00:03:15.979 --> 00:03:19.191
+Let's use the template we know - TSubclassOf.
+
+00:03:20.545 --> 00:03:25.393
+Let's pass the base UserWidget class as a parameter (let all widgets be available).
+
+00:03:25.393 --> 00:03:29.671
+Although in general it is possible to pass our concrete class as well.
+
+00:03:31.467 --> 00:03:36.262
+We name the property - PlayerHUDWidgetClass.
+
+00:03:40.243 --> 00:03:45.113
+And add the BeginPlay function, in which our PlayerHUDWidget will be created.
+
+00:03:47.190 --> 00:03:54.757
+We create the body of the BeginPlay function. We include the header file where the base widget class is located.
+
+00:03:55.151 --> 00:03:58.752
+It is located at Blueprint / UserWidget.h
+
+00:04:01.058 --> 00:04:03.371
+Add a call to the basic BeginPlay function.
+
+00:04:06.546 --> 00:04:11.036
+We create a local pointer PlayerHUDWidget.
+
+00:04:15.928 --> 00:04:20.672
+And we call the function, which is also defined in the UserWidget header file.
+
+00:04:20.672 --> 00:04:27.735
+It is called CreateWidget. This is a templated function that takes a widget type as a parameter.
+
+00:04:28.206 --> 00:04:30.417
+We'll specify a basic UserWidget.
+
+00:04:32.820 --> 00:04:38.270
+The first parameter is a pointer to the owner object, you can pass this, you can pass GetWorld.
+
+00:04:40.360 --> 00:04:49.345
+The second is the widget class that we want to create directly. If the widget has been created,
+
+00:04:50.498 --> 00:05:00.123
+that is, the PlayerWidget pointer is valid, then we need to call the AddToViewport widget function.
+
+00:05:01.800 --> 00:05:07.571
+In general, all the logic that we wrote in blueprints is one-to-one the same as the logic in C ++.
+
+00:05:07.571 --> 00:05:14.279
+Even the function names are the same. Also, the AddToViewport function has a Z-Order parameter,
+
+00:05:14.279 --> 00:05:22.963
+which is responsible for the rendering order of the widget. Since we have one widget, we don't care about this parameter. Let it be the default 0.
+
+00:05:24.521 --> 00:05:29.420
+Open the asset of our widget. Let's change the parent of this widget.
+
+00:05:29.420 --> 00:05:38.800
+This is done in the file -&gt; reparent blueprint menu. Select STUPlayerHUDWidget from the list.
+
+00:05:40.221 --> 00:05:48.239
+And if to the right side of the editor, we will see that the parent class has changed.
+
+00:05:48.998 --> 00:05:51.483
+We delete all nodes from the graph.
+
+00:05:53.390 --> 00:05:59.810
+And add a call to the GetHealthPercent function. All the logic and capabilities of our widget
+
+00:05:59.810 --> 00:06:06.850
+will be hidden in C ++, and in the UMG editor we will decorate our widget from a design point of view.
+
+00:06:07.475 --> 00:06:13.308
+We also go to the HUD class, remove everything from the BeginPlay. Click on the class defaults button.
+
+00:06:14.560 --> 00:06:21.440
+And in the details panel, we set the class of our widget.
+
+00:06:22.430 --> 00:06:23.595
+Compile.
+
+00:06:25.600 --> 00:06:26.859
+We start the game.
+
+00:06:29.464 --> 00:06:34.692
+Nothing has changed from the point of view of the program's operation, but all the logic has moved to C ++.
+
+00:06:34.692 --> 00:06:40.515
+The interface is created dynamically. This is quite convenient. Designers can work
+
+00:06:40.515 --> 00:06:45.581
+independently on different versions of the user interface, that is, for example,
+
+00:06:47.414 --> 00:06:54.316
+change the fill color of a progressbar. And all we need to do to check is go
+
+00:06:55.499 --> 00:07:01.499
+to the HUD class and change the widget to another. And our user interface will be updated.
+

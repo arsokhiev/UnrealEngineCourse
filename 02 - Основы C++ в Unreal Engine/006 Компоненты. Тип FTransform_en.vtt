@@ -1,0 +1,403 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:07.340 --> 00:00:11.240
+In this lesson, we will finally add a visual representation to our actor.
+
+00:00:12.140 --> 00:00:16.370
+We will use unreal engine components. Components are
+
+00:00:16.370 --> 00:00:20.763
+objects with specific functionality that we can add to an actor to
+
+00:00:20.763 --> 00:00:24.860
+extend its capabilities. From the point of view of object-oriented
+
+00:00:24.860 --> 00:00:29.990
+programming, this technique is called composition. Let's declare a pointer to our
+
+00:00:29.990 --> 00:00:38.090
+first component. The pointer will be of type UStaticMeshComponent. Let's call it BaseMesh.
+
+00:00:39.420 --> 00:00:43.460
+It is easy to guess from the name that this component contains a static mesh,
+
+00:00:43.460 --> 00:00:48.970
+that is, some geometry that we will soon install in the editor.
+
+00:00:48.970 --> 00:00:55.300
+We add VisibleAnywhere to the property, that is, we say to unreal that we want to see this
+
+00:00:55.300 --> 00:01:01.399
+component available in the editor. We also need to include the header file for our component.
+
+00:01:03.797 --> 00:01:11.476
+It is located in Components / StaticMeshComponent. There are several types of components in unreal.
+
+00:01:12.160 --> 00:01:17.463
+Some of them contain only logic. They have no visual representation,
+
+00:01:17.463 --> 00:01:22.040
+there is no transformation in the scene. This type of component is suitable, for example,
+
+00:01:22.040 --> 00:01:27.950
+for managing a character's inventory, or for a health component. Another type of component
+
+00:01:27.950 --> 00:01:31.820
+has a visual representation, has a transformation. These include,
+
+00:01:31.820 --> 00:01:37.850
+for example, the StaticMesh component, the component for managing the particle system and many others.
+
+00:01:39.229 --> 00:01:42.668
+In the course of our course, we will consider some of them.
+
+00:01:44.589 --> 00:01:52.220
+Go to the .cpp file of our actor. Let's create a BaseMesh component in the constructor. To create
+
+00:01:52.220 --> 00:01:58.235
+our component, we will use a function called CreateDefaultSubobject.
+
+00:01:59.340 --> 00:02:03.600
+This function is template. It takes the type of the subobject to create
+
+00:02:03.600 --> 00:02:09.000
+as a template parameter . In our case, this is UStaticMeshComponent.
+
+00:02:10.367 --> 00:02:17.280
+And it returns a pointer to the created subobject. The function also takes two arguments. The first argument is the
+
+00:02:17.280 --> 00:02:25.190
+name of the component. Let's call it BaseMesh. We see that the type of the first parameter, FName, is a different kind of
+
+00:02:25.190 --> 00:02:31.070
+string in the unreal engine. This is a lighter weight string. It has less functionality and
+
+00:02:31.070 --> 00:02:36.770
+is not suitable for string manipulation. This type of string is used mainly to set the
+
+00:02:36.770 --> 00:02:43.549
+names of components, names of players, parameters of materials, body parts in the skeleton, and so on.
+
+00:02:45.000 --> 00:02:49.500
+We will not consider the second argument, it is not important for us now and we will simply leave it
+
+00:02:49.500 --> 00:02:55.260
+by default false. The last thing we will do with you before starting editor is to
+
+00:02:55.260 --> 00:03:01.232
+point the root component to our actor. To do this, we will use the SetRootComponent function
+
+00:03:01.232 --> 00:03:09.293
+and pass a pointer to our static mesh BaseMesh component into it. By specifying the root component,
+
+00:03:09.293 --> 00:03:16.090
+we are declaring that the transformation of our actor will match the transformation of this component.
+
+00:03:17.420 --> 00:03:18.842
+Launch editor.
+
+00:03:20.900 --> 00:03:27.290
+We remove our old actors from the stage. Select with Shift. Click Delete. We throw out our BaseGeometry actor
+
+00:03:27.290 --> 00:03:33.080
+in the viewport and we see that our actor has gizmo, that is, arrows
+
+00:03:33.080 --> 00:03:38.849
+for manipulating in the 3d scene. We can finally change its position in space with you.
+
+00:03:40.610 --> 00:03:46.970
+Let's look in the details panel BaseGeometry of the actor. We see that the BaseMesh component has appeared. We
+
+00:03:46.970 --> 00:03:52.710
+just created it in C ++. Also in the details panel there is a transform. We can
+
+00:03:52.710 --> 00:03:59.369
+change the position of the actor using these input fields. Rotation and scale are also available.
+
+00:03:59.930 --> 00:04:07.305
+Let's look at the static mesh category. Clicking on the combobox opens the static mesh selector.
+
+00:04:08.251 --> 00:04:15.373
+In our case, it is empty, because we did not add any visual content when creating the project.
+
+00:04:16.480 --> 00:04:21.092
+This can be fixed in the content browser. There is a large green Add New button on the left.
+
+00:04:21.880 --> 00:04:27.750
+Choose add feature or content pack from the menu. In the window that opens, on the content pack tab,
+
+00:04:27.750 --> 00:04:32.670
+there is a starter content button. Basic geometry, materials are located here.
+
+00:04:32.670 --> 00:04:38.700
+You can add a pack and select meshes from there, but we'll use a different method. Click on the
+
+00:04:38.700 --> 00:04:46.321
+static mesh combobox . In the lower right corner, click on the view options. Set the show engine content checkbox
+
+00:04:47.097 --> 00:04:52.120
+and the list shows static meshes that are supplied with the editor. Let's find
+
+00:04:52.120 --> 00:04:58.060
+a more adequate geometry in the list, for example, enter cube. Our actor has become a cube. Its
+
+00:04:58.060 --> 00:05:03.435
+transformation is the same as the transformation of the root component of our static mesh.
+
+00:05:03.435 --> 00:05:11.368
+We can drag &amp; drop another actor and put a sphere in the static mesh component.
+
+00:05:12.900 --> 00:05:17.520
+Thus, using only one base actor and a static mesh component, we
+
+00:05:17.520 --> 00:05:22.831
+created two completely different instances, with different geometry and transformations.
+
+00:05:27.998 --> 00:05:31.783
+Let's access the transformation of our actor from code.
+
+00:05:32.918 --> 00:05:35.730
+Let's use an actor function called
+
+00:05:35.730 --> 00:05:42.651
+GetActorTransform. This function returns an object of type FTransform.
+
+00:05:43.920 --> 00:05:49.289
+Create a Transform variable and assign the return value of this function to it.
+
+00:05:51.320 --> 00:05:56.840
+Hover the mouse over FTransform, press F12 and see that this structure contains
+
+00:05:56.840 --> 00:06:03.105
+three variables: rotation, translation and scale. Let's get them out of there.
+
+00:06:04.129 --> 00:06:10.929
+To do this, we will use the getter methods of this structure. The first one is GetLocation.
+
+00:06:12.270 --> 00:06:18.507
+This function returns an object of type FVector - the position of our actor in 3d space.
+
+00:06:19.495 --> 00:06:27.370
+Press F12 on FVector and see that this structure contains three components: x, y and z. Next, we create a
+
+00:06:27.370 --> 00:06:35.124
+variable of the FRotator type. This type is responsible for the angles of rotation in 3d space.
+
+00:06:36.055 --> 00:06:42.554
+The transform function that returns this object is called the Rotator. And we create the third variable Scale.
+
+00:06:42.554 --> 00:06:49.140
+It is also of type FVector. The function that returns the actor's
+
+00:06:49.140 --> 00:06:57.407
+scale is called GetScale3D. Let's print all these variables to the output log. Commenting out printTypes.
+
+00:06:57.960 --> 00:07:03.745
+Copy the log with the output of the actor's name. Duplicate this line.
+
+00:07:04.710 --> 00:07:10.626
+We'll start with transform. Each of these types has a helper function
+
+00:07:10.626 --> 00:07:16.169
+that allows you to translate internal data into a string. The function is called ToString.
+
+00:07:18.109 --> 00:07:23.090
+If we press F12 on ToString, we will see that the print of all
+
+00:07:23.090 --> 00:07:29.807
+transformation elements occurs inside the function . Next, duplicate the line, write Location.
+
+00:07:31.092 --> 00:07:33.343
+Location.ToString
+
+00:07:35.007 --> 00:07:36.847
+Press F12.
+
+00:07:37.510 --> 00:07:40.740
+We see that within this function all the components of the
+
+00:07:40.740 --> 00:07:48.000
+vector are collected into a line , with some accuracy. We do the same with Rotation.
+
+00:07:49.730 --> 00:07:51.460
+Rotation.ToString
+
+00:07:54.260 --> 00:07:58.152
+The last variable Scale is displayed in the same way.
+
+00:08:01.802 --> 00:08:08.780
+So our log swears at something .. I named our variable Rotator, and I output Rotation ..
+
+00:08:08.780 --> 00:08:17.230
+Let's rename Rotator to Rotation. The last thing we do with you. Let's render the Transform in a slightly
+
+00:08:17.230 --> 00:08:23.590
+different way. The transform has an additional function called ToHumanReadableString.
+
+00:08:23.590 --> 00:08:31.480
+It is more informative. Let's write Human Transform and change the logging level to Error so that it is
+
+00:08:31.480 --> 00:08:38.225
+more noticeable when outputting to the console. Press F12, go to the internals of ToHumanReadableString.
+
+00:08:38.225 --> 00:08:45.246
+And we see that the conversion to a string in this function is more detailed. Launch the unreal engine.
+
+00:08:47.580 --> 00:08:50.430
+We launch our project. We look into the log and see
+
+00:08:50.430 --> 00:08:54.705
+that there are two actors on the stage. For each of which its own set of parameters was displayed:
+
+00:08:55.582 --> 00:09:02.352
+transformation, location, rotation, scale and a line in a more detailed form was printed in red.
+
+00:09:04.544 --> 00:09:08.096
+I prepared the printTransform function in advance, where I removed all the conclusions
+
+00:09:08.096 --> 00:09:11.940
+that we made in this lesson, so that we just do not waste time with you.
+
+00:09:13.130 --> 00:09:17.270
+Next, let's add some interactivity and teach our factor to move according to the
+
+00:09:17.270 --> 00:09:23.000
+sine law . To do this, each frame will change the z coordinate of the actor by the formula. We need
+
+00:09:23.000 --> 00:09:30.272
+two parameters. To do this, go to the .h file. We create a property there. We specify the EditAnywhere specifier.
+
+00:09:31.776 --> 00:09:35.773
+Let's add this property to the Movement category.
+
+00:09:37.248 --> 00:09:43.326
+The first parameter will be the amplitude, that is, how much the actor will deviate from the original point.
+
+00:09:44.530 --> 00:09:49.150
+Let's set 50. The initial value is not so important to us now, because
+
+00:09:49.150 --> 00:09:56.673
+we can always change it in the editor . Copy this parameter and change the amplitude to frequency.
+
+00:09:57.679 --> 00:10:02.391
+Frequency will be responsible for the oscillation frequency relative to the initial position of the actor.
+
+00:10:03.570 --> 00:10:06.600
+Let's put it a little smaller. Let's say 2.
+
+00:10:09.170 --> 00:10:13.130
+We also need to cache the initial position of the actor. For this, we create
+
+00:10:13.130 --> 00:10:20.942
+an additional variable of the FVector type. We create it in a private section and name it InitialLocation.
+
+00:10:23.020 --> 00:10:27.550
+We return to the .cpp file, go to BeginPlay and immediately initialize
+
+00:10:27.550 --> 00:10:32.870
+our InitialLocation variable. Let's assign it the return value of
+
+00:10:32.870 --> 00:10:40.794
+the GetActorLocation function - this is an additional function for getting access to the location of the actor.
+
+00:10:41.370 --> 00:10:47.143
+We can do it as we did before, that is, through GetActorTransform (). GetLocation (),
+
+00:10:47.143 --> 00:10:52.450
+but we can do it using only one function. The position of the actor in space
+
+00:10:52.450 --> 00:10:58.780
+will change every frame, so go to the Tick function and create a variable of the FVector type
+
+00:10:58.780 --> 00:11:07.379
+called CurrentLocation. We also assign the value of the GetActorLocation function to it.
+
+00:11:10.130 --> 00:11:15.920
+We will now change the Z coordinate of the current position of the actor according to our
+
+00:11:15.920 --> 00:11:21.608
+formula and set the position of our actor to the changed CurrentLocation.
+
+00:11:22.438 --> 00:11:26.802
+Z0 in our formula is InitialLocation.Z
+
+00:11:29.016 --> 00:11:34.020
+Next we have the amplitude. Let's use our amplitube variable. We need to
+
+00:11:34.020 --> 00:11:38.710
+multiply the amplitude by the sine value. To do this, we will use a special structure in unreal
+
+00:11:38.710 --> 00:11:44.590
+called FMath. This framework defines various static mathematical
+
+00:11:44.590 --> 00:11:49.973
+functions, including sine, cosine, and other trigonometric functions.
+
+00:11:51.460 --> 00:11:53.626
+We write frequency
+
+00:11:55.010 --> 00:11:57.617
+and multiply by time.
+
+00:11:58.542 --> 00:12:03.420
+We need to get the time somehow. You can use the number of seconds that
+
+00:12:03.420 --> 00:12:09.660
+have passed since the start of the game. We create a variable time and get the given time
+
+00:12:09.660 --> 00:12:15.030
+using a pointer to the global object of the game world. To get this pointer,
+
+00:12:15.030 --> 00:12:19.545
+you need to use the GetWorld () function - every actor has this function.
+
+00:12:20.236 --> 00:12:24.700
+This object has a method called GetTimeSeconds. This method
+
+00:12:24.700 --> 00:12:29.650
+returns the number of seconds that have passed since the start of the game, that is, when we pressed the
+
+00:12:29.650 --> 00:12:34.980
+play button in the editor, or launched the .exe file of the game. It remains for us to update the position of
+
+00:12:34.980 --> 00:12:40.170
+our actor. To do this, we will use a method called SetActorLocation. We pass
+
+00:12:40.170 --> 00:12:46.563
+this method as an argument the variable that we just calculated - CurrentLocation.
+
+00:12:47.570 --> 00:12:50.270
+This function changes the current position of the actor in the world,
+
+00:12:50.270 --> 00:12:55.370
+and we have just implemented the function of moving along a sinusoid.
+
+00:12:56.696 --> 00:12:58.129
+Launch editor.
+
+00:13:00.290 --> 00:13:05.780
+So let's see what we got. Press the play button. Our actors perform synchronous
+
+00:13:05.780 --> 00:13:10.682
+oscillations about their starting position. This is fine because the default parameters are
+
+00:13:10.682 --> 00:13:16.589
+exactly the same. Let's fix it up. We select the first actor. Find the category
+
+00:13:16.589 --> 00:13:27.220
+Movement and set the amplitude to 100, and the frequency to 4. Set the second actor's amplitude to 250,
+
+00:13:27.220 --> 00:13:36.275
+and the frequency to 5. Start. Each actor moves in accordance with its parameters. Press Esc.
+
+00:13:37.533 --> 00:13:41.330
+Click on the actor. We go into the Movement category and we see
+
+00:13:41.330 --> 00:13:46.400
+that we have changed the parameters and a yellow arrow appeared on the right in front of each field.
+
+00:13:46.400 --> 00:13:53.069
+If we click on it, then the value returns to the default. This is sometimes very convenient.
+

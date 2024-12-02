@@ -1,0 +1,184 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.684 --> 00:00:09.418
+In this lesson, we will slightly modify the class of our basic weapon.
+
+00:00:09.418 --> 00:00:15.261
+Let's fire on a timer, that is, if the mouse button is held down, then the shooting will continue automatically.
+
+00:00:15.993 --> 00:00:22.450
+First, let's split our fire function into two functions: the first will be called StartFire, and the second will be called StopFire,
+
+00:00:22.450 --> 00:00:28.637
+that is, when the button is held down, we start the timer, and when we release the button,
+
+00:00:28.637 --> 00:00:38.396
+the shooting stops. Duplicate bind and StopFire will be called on Release.
+
+00:00:40.620 --> 00:00:42.430
+Next, go to the weapon component.
+
+00:00:45.120 --> 00:00:56.490
+We divide the fire function into StartFire and StopFire. Go to the .cpp file of the weapon component.
+
+00:00:57.972 --> 00:01:07.048
+We rename Fire to StartFire and also in the class of the base weapon we will have to create start and stop functions. Duplicate.
+
+00:01:08.585 --> 00:01:12.935
+We call the function StopFire and change the function of CurrentWeapon.
+
+00:01:15.395 --> 00:01:18.807
+Let's go to the BaseWeapon class.
+
+00:01:24.290 --> 00:01:28.610
+Change the name Fire to StartFire. We create StopFire.
+
+00:01:31.700 --> 00:01:42.288
+We do the same in the .cpp file.
+
+00:01:43.970 --> 00:01:50.870
+We've done a little refactoring and are now ready to write the timer code. When the user clicks
+
+00:01:50.870 --> 00:01:57.727
+on the mouse, we have to take the first shot with you. Actually, the MakeShot function is responsible for this.
+
+00:01:57.727 --> 00:02:02.840
+Therefore, we leave the call to this function. Next, we set the timer, for this we get a
+
+00:02:02.840 --> 00:02:09.048
+link to it using the GetWorldTimerManager function and call the SetTimer function.
+
+00:02:09.640 --> 00:02:15.000
+We register a handle for a timer that does not exist yet - ShotTimerHandle.
+
+00:02:19.332 --> 00:02:24.732
+Further, a pointer to an object - this, then a link to a function - directly MakeShot.
+
+00:02:27.309 --> 00:02:34.394
+Next, we specify a variable that will be responsible for the frequency of the timer - TimeBetweenShots.
+
+00:02:35.343 --> 00:02:40.621
+And as the last parameter, we specify true, that is, the call of the function by timer will be repeated for us.
+
+00:02:40.621 --> 00:02:45.860
+Next, go to StopFire, MakeShot can be removed, that is, when the user releases the
+
+00:02:45.860 --> 00:02:53.702
+mouse button, we must stop our timer with you. To do this, call the ClearTimer function.
+
+00:02:54.955 --> 00:02:57.218
+We pass the Handle of the timer into it.
+
+00:03:05.570 --> 00:03:10.015
+Let's go to the header file and create the variables we need.
+
+00:03:12.820 --> 00:03:14.830
+We create a private section.
+
+00:03:16.035 --> 00:03:23.046
+Create a class member descriptor for the timer.
+
+00:03:25.213 --> 00:03:32.282
+And we create a property for the timing of the timer. Copy the property macro.
+
+00:03:34.240 --> 00:03:42.386
+Copy the name of the TimeBetweenShots variable and set some small value, for example 0.1 seconds.
+
+00:03:43.140 --> 00:03:49.470
+In general, our logic is ready, but we can slightly diversify our mechanics so that the shots
+
+00:03:49.470 --> 00:03:55.327
+are always at no point, and so that each time there is a slight deviation from the direction of the shot.
+
+00:03:56.183 --> 00:04:02.250
+Let's implement it. So, when we have a shot, we get the start and end points
+
+00:04:02.250 --> 00:04:07.100
+using the GetTraceData function. Let's go into it with you and move on.
+
+00:04:08.740 --> 00:04:13.460
+Let's change the ShootDirection, that is, we somehow need to deflect
+
+00:04:13.460 --> 00:04:19.480
+the direction vector with you so that it is barely noticeable. We can mentally build a cone with the top of
+
+00:04:19.480 --> 00:04:24.932
+which is at the point of the shot, and the height corresponds to the ShootDirection.
+
+00:04:25.404 --> 00:04:30.000
+And all we need to do is take some vector from the given cone.
+
+00:04:30.635 --> 00:04:39.251
+The FMath class has a special function that will do all the work for us. It's called VRandCone.
+
+00:04:41.693 --> 00:04:48.866
+The function takes several arguments: this is the direction of the cone and the angle of the opening of the cone (aka the angle at the vertex).
+
+00:04:48.866 --> 00:04:56.800
+We have the vector of the direction of the cone. It corresponds to ViewRotation.Vector The
+
+00:04:56.800 --> 00:05:02.230
+second variable, which is responsible for the angle of the cone, we need to create. And the parameter is not responsible for the full angle,
+
+00:05:02.230 --> 00:05:07.900
+but for the half of the angle. Therefore, we call it HalfRad. Let's make the Property for this angle in degrees,
+
+00:05:07.900 --> 00:05:14.800
+so the HalfRad variable will be local and in fact it will convert our property of the angle
+
+00:05:14.800 --> 00:05:23.052
+in degrees to radians. To do this, we will use the FMath function called DegreesToRadians.
+
+00:05:24.094 --> 00:05:29.005
+Let's call the property, which will store half the angle of the cone, BulletSpread.
+
+00:05:32.324 --> 00:05:33.954
+We create it in the .h file.
+
+00:05:35.670 --> 00:05:39.000
+Again we set some adequate arbitrary value.
+
+00:05:39.000 --> 00:05:43.362
+Let it be 1.5 - that is, the total angle of the cone from us is 3 degrees.
+
+00:05:45.999 --> 00:05:54.761
+Now we have everything ready for sure. Shooting takes place on a timer and each subsequent shot will be slightly randomized
+
+00:05:54.761 --> 00:05:56.737
+in a 3-degree cone.
+
+00:05:56.737 --> 00:06:02.520
+This mechanic can be developed as follows: when the character becomes very ill, that is, for example, he has a low
+
+00:06:02.520 --> 00:06:06.966
+level of health, then the angle of this cone gradually begins to increase.
+
+00:06:06.966 --> 00:06:12.000
+That is, it becomes more difficult to hit when shooting. Let's see what we've got.
+
+00:06:14.591 --> 00:06:15.435
+Click play.
+
+00:06:17.901 --> 00:06:18.902
+We start shooting.
+
+00:06:20.705 --> 00:06:26.420
+We see that the shooting now occurs on a timer, if we do not release the mouse button and the distribution
+
+00:06:26.420 --> 00:06:33.260
+occurs in a small cone. It looks more natural than if we were shooting
+
+00:06:33.260 --> 00:06:39.347
+at one point all the time. We also have a small problem that we will fix a little later:
+
+00:06:39.347 --> 00:06:45.969
+if the character was killed, and the mouse button was held down, then the timer will continue to work for us
+
+00:06:45.969 --> 00:06:52.559
+and this is not correct. Shot lines are not found, because we have to check for a zero owner,
+
+00:06:52.559 --> 00:06:58.834
+but if you log any message in the MakeShot function, you can make sure that it continues to be called.
+

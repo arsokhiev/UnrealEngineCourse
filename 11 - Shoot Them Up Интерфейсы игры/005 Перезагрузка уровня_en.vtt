@@ -1,0 +1,172 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:05.555 --> 00:00:10.883
+In this tutorial, we will add an additional button to the game over widget, which will reload the map.
+
+00:00:10.883 --> 00:00:19.366
+In other words, restart our game. Add the UButton class to the game over forward declaration widget.
+
+00:00:21.662 --> 00:00:24.304
+We create a property for the button.
+
+00:00:26.690 --> 00:00:29.358
+Let's call our button ResetLevelButton.
+
+00:00:30.984 --> 00:00:35.246
+And we also need a function that will be called when this button is pressed.
+
+00:00:38.680 --> 00:00:40.576
+Let's call it OnResetLevel.
+
+00:00:44.210 --> 00:00:46.902
+Go to the .cpp file. We create the body of the function.
+
+00:00:50.532 --> 00:00:59.233
+We'll need several header files. One is the button header file, and the other is Kismet / GameplayStatics.
+
+00:00:59.233 --> 00:01:02.800
+This library contains a helper function that will help
+
+00:01:02.800 --> 00:01:10.477
+us reload the level. For the button to bind correctly, the Initialize function must be called before this.
+
+00:01:10.477 --> 00:01:15.713
+But I forgot one thing if we go to UserWidget, the Initialize function.
+
+00:01:15.713 --> 00:01:21.520
+Then at the very end there is a function called NativeOnInitialized.
+
+00:01:21.520 --> 00:01:27.220
+It is called if the initialization is successful. It is also virtual, we can override it.
+
+00:01:27.220 --> 00:01:34.328
+And use it instead of the Initialize function. Let's do it. Go to the game over widget.
+
+00:01:36.310 --> 00:01:38.514
+We override it in the protected section.
+
+00:01:39.932 --> 00:01:42.000
+And we just delete the Initialize function.
+
+00:01:44.334 --> 00:01:46.423
+We do the same in the .cpp file.
+
+00:01:48.920 --> 00:01:50.600
+We call the parent function.
+
+00:01:53.108 --> 00:01:55.158
+And we don't need return anymore.
+
+00:01:57.141 --> 00:02:04.275
+To make everything the same for us, we can do the same in other widgets. Let's do it quickly.
+
+00:02:05.779 --> 00:02:07.715
+In the PlayerHUD widget.
+
+00:02:11.714 --> 00:02:12.912
+In the Pause widget.
+
+00:02:15.580 --> 00:02:18.099
+And we will also correct their header files.
+
+00:02:27.195 --> 00:02:34.098
+Return to the game over widget. Add a callback function to our new button's OnClicked delegate.
+
+00:02:41.090 --> 00:02:48.923
+Let's go to the OnResetLevel function. The function we are going to use is able to load levels by name.
+
+00:02:49.828 --> 00:02:54.752
+Let's create a local variable of type FName, let's name it CurrentLevelName.
+
+00:02:56.642 --> 00:03:05.230
+Our working map is called TestLevel. We assign a string literal to the given variable. The function is
+
+00:03:05.230 --> 00:03:15.913
+in the GameplayStatics class. The function is static. It is called OpenLevel. We pass this or GetWorld () as the first parameter.
+
+00:03:18.139 --> 00:03:24.701
+The second parameter is the name of the level. Leave the remaining parameters as default. We are not interested in them.
+
+00:03:24.701 --> 00:03:29.260
+This is one way to start the game over. The map will be loaded again, all
+
+00:03:29.260 --> 00:03:35.384
+objects will be created, all timers will be set. That is, everything is the same that happens at the very first start.
+
+00:03:35.384 --> 00:03:41.468
+This is the so-called hard reset. There is an alternative way - through the ResetLevel function,
+
+00:03:41.468 --> 00:03:47.033
+which is in the base game mode class, but this method requires additional work,
+
+00:03:47.033 --> 00:03:52.761
+because the base implementation calls a special reset function on all actors on the stage.
+
+00:03:52.761 --> 00:03:58.838
+And we will have to implement it for almost every class of ours. This method is more time consuming, but it allows you
+
+00:03:58.838 --> 00:04:04.447
+to start a new game without recreating all the objects. You can call it soft reset in quotes.
+
+00:04:04.447 --> 00:04:10.491
+We will not do that. It is too long. Therefore, we will use the OpenLevel function.
+
+00:04:10.491 --> 00:04:19.497
+Also, using the GameplayStatics library, you can get the name of the current level. Thus, get rid of the hard code.
+
+00:04:19.497 --> 00:04:24.823
+The function returns a string of type FString called GetCurrentLevelName.
+
+00:04:27.000 --> 00:04:31.473
+It also has a world context object parameter - we pass this.
+
+00:04:33.871 --> 00:04:41.432
+And in order to convert FString to FName, we just need to call the FName constructor with the FString parameter.
+
+00:04:48.248 --> 00:04:49.178
+Compile the code.
+
+00:04:51.947 --> 00:04:54.155
+Compilation error, let's see what's wrong.
+
+00:04:56.431 --> 00:05:01.561
+In the Pause widget class, I forgot to change the return type from NativeOnInitialized.
+
+00:05:03.038 --> 00:05:04.302
+Run it again.
+
+00:05:05.531 --> 00:05:13.909
+Let's add a button to the game over widget. We can just copy from the game pause widget so they look the same.
+
+00:05:13.909 --> 00:05:16.798
+But before that, let's see one more thing.
+
+00:05:16.798 --> 00:05:25.612
+In the button details panel, in the behaviors category, you can find the property Cursor. Let's set the cursor of the hand type for the button.
+
+00:05:25.612 --> 00:05:31.400
+Now, when you hover over the button, the cursor will change its icon. Copy completely size box.
+
+00:05:32.990 --> 00:05:39.480
+Go to the game over class and insert the size box into the vertical box element.
+
+00:05:40.624 --> 00:05:42.766
+We can also immediately add a spacer
+
+00:05:45.833 --> 00:05:49.448
+in front of the size box, set the value to y = 40.
+
+00:05:51.324 --> 00:05:54.821
+Change the text on the button - Reset Level.
+
+00:05:57.667 --> 00:06:02.347
+And also we need to change the name of the button to Reset Level Button.
+
+00:06:04.957 --> 00:06:09.106
+Compile. We start the game.
+
+00:06:10.870 --> 00:06:19.296
+When you hover over the button, the cursor icon changes and when pressed, our map reloads.
+

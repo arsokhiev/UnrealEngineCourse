@@ -1,0 +1,208 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:06.080 --> 00:00:11.208
+In this tutorial, we will fix one bug with the camera. You may have noticed this behavior before.
+
+00:00:11.208 --> 00:00:19.093
+When we are close to some objects, then due to the collision of the spring arm component, the camera enters
+
+00:00:19.093 --> 00:00:26.300
+into the character. Let's make the following fix. Add a spherical collision to the camera and as soon as this
+
+00:00:26.300 --> 00:00:32.187
+collision intersects with the collision of the capsule, we will make the character's mesh invisible.
+
+00:00:32.187 --> 00:00:41.948
+Add a forward declaration for the sphere component. We work in the PlayerCharacter class. We create a property for the component.
+
+00:00:45.180 --> 00:00:47.658
+Let's call it CameraCollisionComponent.
+
+00:00:51.160 --> 00:00:53.287
+Add the BeginPlay function.
+
+00:00:55.800 --> 00:01:00.535
+Move to the .cpp file. We create a body for the BeginPlay function.
+
+00:01:02.200 --> 00:01:05.377
+Include the sphere component's header file.
+
+00:01:09.326 --> 00:01:13.016
+And let's create it in the constructor.
+
+00:01:18.630 --> 00:01:21.835
+We attach this collision to the camera component.
+
+00:01:24.520 --> 00:01:28.810
+Let's set the collision radius as well. Let's put some small one.
+
+00:01:31.893 --> 00:01:33.343
+Let there be 10 units.
+
+00:01:37.560 --> 00:01:40.830
+And we will explicitly indicate the reaction of the collision to all channels.
+
+00:01:43.855 --> 00:01:48.615
+The type of reaction is overlap, that is, when collisions intersect.
+
+00:01:52.120 --> 00:01:58.239
+Next, you need to make bind functions that will be called when collision crossing events occur.
+
+00:01:59.465 --> 00:02:02.414
+Let's also add check.
+
+00:02:05.650 --> 00:02:12.301
+There are two delegates for overlap events: the first one is called OnComponentBeginOverlap.
+
+00:02:12.301 --> 00:02:15.941
+It is called when one collision begins to cross another.
+
+00:02:16.690 --> 00:02:21.370
+This is a dynamic delegate - we need to use the AddDynamic macro.
+
+00:02:23.194 --> 00:02:27.904
+Let's add a non-existent function: OnCameraCollisionBeginOverlap.
+
+00:02:32.160 --> 00:02:38.730
+The second delegate is named OnComponentEndOverlap. It is called when collisions no longer have intersection points.
+
+00:02:42.697 --> 00:02:48.557
+For our callback functions, we need to copy the signature of the delegate. It is quite cumbersome.
+
+00:02:50.084 --> 00:02:51.614
+Has 6 parameters.
+
+00:02:53.543 --> 00:02:59.211
+Let's copy it completely without transferring it to the player character header file.
+
+00:03:02.720 --> 00:03:06.639
+We also need to add the UFUNCTION macro.
+
+00:03:08.977 --> 00:03:15.497
+We declare the first function OnCameraCollisionBeginOverlap. Paste the copied signature.
+
+00:03:17.860 --> 00:03:20.399
+And you need to remove the extra commas.
+
+00:03:23.810 --> 00:03:27.843
+We declare the second function OnCameraCollisionEndOverlap.
+
+00:03:28.927 --> 00:03:35.077
+The second delegate has a different signature. Let's copy it as well. Press f12.
+
+00:03:36.770 --> 00:03:44.386
+Find the signature at the top of the .h file. The delegate has 4 parameters. We copy them.
+
+00:03:45.868 --> 00:03:55.503
+Insert player character into the header file. Also clean the commas. We create a body for each function.
+
+00:03:55.503 --> 00:04:01.297
+The most interesting thing is that we will not need any of the parameters that are passed to the function.
+
+00:04:01.297 --> 00:04:06.766
+In both callbacks, we will call a helper function called CheckCameraOverlap.
+
+00:04:06.766 --> 00:04:14.657
+In it, we will check whether the spherical collision crosses the capsule or not. We declare the function in the .h file.
+
+00:04:18.712 --> 00:04:20.522
+We create the body of the function.
+
+00:04:22.210 --> 00:04:28.423
+Let's create a local boolean variable. Let's call it HideMesh. Set it to true
+
+00:04:28.423 --> 00:04:35.877
+if the components overlap and false if not. To determine this, we will use the function of the UPrimitiveComponent class
+
+00:04:35.877 --> 00:04:42.515
+called IsOverlappingComponent. It takes another component as a parameter
+
+00:04:42.515 --> 00:04:46.989
+and returns true if component collisions intersect.
+
+00:04:48.870 --> 00:04:51.390
+Let's pass the capsule component as a parameter.
+
+00:04:52.789 --> 00:04:56.537
+We also include the header file of the capsule component.
+
+00:05:00.710 --> 00:05:07.561
+Depending on whether the components intersect or not, we can change the visibility of our mesh.
+
+00:05:07.561 --> 00:05:10.818
+To do this, we will use the SetOwnerNoSee function.
+
+00:05:10.818 --> 00:05:15.922
+and pass HideMesh to it as a parameter. Let's check what happened. Compile.
+
+00:05:17.077 --> 00:05:19.077
+Open the character's blueprint.
+
+00:05:21.254 --> 00:05:25.864
+Go to viewport. We make sure that a collision has been added to the camera.
+
+00:05:28.031 --> 00:05:29.329
+We start the game.
+
+00:05:30.525 --> 00:05:31.923
+We run to the wall.
+
+00:05:33.325 --> 00:05:43.462
+And if the camera enters the capsule, then the mesh disappears, but the child mesh of the weapon is visible. This can also be tweaked.
+
+00:05:44.217 --> 00:05:49.151
+In our specific case, we can do the following thing: get an array of all the
+
+00:05:49.151 --> 00:05:54.852
+children of the mesh and also set their visibility according to the HideMesh flag.
+
+00:05:56.250 --> 00:06:02.757
+You can use a function called GetChildrenComponents to get child components.
+
+00:06:05.820 --> 00:06:15.380
+If the first parameter is set to true, then descendants from all levels are returned, if false, then only descendants of the first level are returned.
+
+00:06:15.380 --> 00:06:22.463
+The second parameter is an array by reference; pointers to all child components will be passed to it.
+
+00:06:25.749 --> 00:06:28.439
+Create this MeshChildren array.
+
+00:06:29.307 --> 00:06:35.153
+After that, we need to go through all the components and set the visibility depending on the flag.
+
+00:06:35.723 --> 00:06:44.790
+Create a range for loop. The only thing is that Scene Component is one of the most basic classes in the component hierarchy
+
+00:06:44.790 --> 00:06:51.130
+and it does not have the SetOwnerNoSee function. this function appears in the
+
+00:06:51.130 --> 00:06:57.229
+component hierarchy for the UPrimitiveComponent type, so we will cast to this type.
+
+00:07:01.203 --> 00:07:03.571
+If the pointer is nonzero,
+
+00:07:06.521 --> 00:07:10.000
+then the SetOwnerNoSee function can be called.
+
+00:07:10.000 --> 00:07:17.196
+Just in case, let me remind you: We considered SetOwnerNoSee when we worked with the text component of lives.
+
+00:07:19.390 --> 00:07:25.606
+Let's click on the functions F12. Make sure the SetOwnerNoSee is indeed in the UPrimitiveComponent.
+
+00:07:25.606 --> 00:07:32.134
+And UPrimitiveComponent itself inherits from USceneComponent. We compile the project.
+
+00:07:32.836 --> 00:07:37.378
+We start the game. We run to the wall.
+
+00:07:39.021 --> 00:07:45.078
+And we don't see the weapon. The special effects spawn, but we will not tweak them in any way.
+
+00:07:45.078 --> 00:07:47.969
+Fixing meshes is enough for us.
+
